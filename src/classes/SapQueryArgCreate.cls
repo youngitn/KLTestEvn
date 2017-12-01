@@ -858,7 +858,7 @@ public with sharing class SapQueryArgCreate {
         SapWebServiceQueryArgs arg = new SapWebServiceQueryArgs();
         arg.conditions = conditions;
         arg.assemble = assemble;
-        arg.approval = approval;
+        arg.approval = approval; 
         return arg;
     } 
 
@@ -951,7 +951,7 @@ public with sharing class SapQueryArgCreate {
             lstCon.add(createCondition(index,'Risk_kind__c','String','LIKE',Risk_kind));
             index = index + 1;
         }
-        return JSON.serialize(createQueryArg('CustomerCreditLoan',lstCon));    
+        return JSON.serialize(createQueryArg('CustomerCreditLoanQuery',lstCon));    
     }
     
 

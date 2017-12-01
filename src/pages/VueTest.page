@@ -1,0 +1,37 @@
+<apex:page applybodytag="false" applyhtmltag="false" doctype="html-5.0"  showheader="false" sidebar="false" applyHtmlTag="false" showHeader="false" controller="TextPage01Extension">
+    <html>
+        <head>
+            <title>
+                Page Title
+            </title>
+            
+        </head>
+        <body>
+          <div id="app-2">
+            <div title="{{message}}">
+              鼠标悬停几秒钟查看此处动态绑定的提示信息！
+            </div>
+          </div>
+            <!-- REQUIRED SLDS WRAPPER -->
+            <div id="app">
+                {{message}}
+            </div>
+            <!-- MASTHEAD -->
+            <h1 class="slds-text-heading--label slds-m-bottom--small">
+                Page Title
+            </h1>
+            <!-- / MASTHEAD -->
+            <!-- PRIMARY CONTENT WRAPPER -->
+            <div class="slds-grid">
+            </div>
+            <!-- / PRIMARY CONTENT WRAPPER -->
+            <!-- / REQUIRED SLDS WRAPPER -->
+        </body>
+    </html>
+    
+    <script src="{!URLFOR($Resource.TryVuejs, '/libs/vue.js')}">
+    </script>
+    <script src="{!URLFOR($Resource.TryVuejs, '/app/app.js')}">
+      
+    </script> 
+</apex:page>

@@ -1,5 +1,5 @@
 /**********************************************************************
- 名    称：从SAP同步数据到SF
+ 名    称：从SAP同步数据到SF 
  目    的：把SAP放在同步队列中的数据同步到SF
  作    者：刘文俊(liuwenjun@bluelinksys.com)
  创建日期：2017-05-12
@@ -142,6 +142,8 @@ global class SyncFromSapToSfSchedule implements Schedulable {
             syncPMTicket(arg);   //PM通知单
         }else if(arg.approval == SapApprovalEnum.SALESPRICE){
             syncSalesPrice(arg);   //销售定价业务流程 
+        }else if(arg.approval == SapApprovalEnum.CUSTOMERCREDITLOAN){
+            syncCustomerCreditLoan(arg);   //客户信用贷款主数据申请
         }else{    //以后有其它的流程请加在这里上面
             System.debug('*** 同步时出现未协商好的流程名称：' + arg.approval);
         }
@@ -724,6 +726,76 @@ global class SyncFromSapToSfSchedule implements Schedulable {
     }
 
 
+
+
+//客户信用贷款主数据申请
+    public static void syncCustomerCreditLoan(SyncSapToSfReturnArgs args){
+      //处理返回结果
+        Approval_Managed__c main = (Approval_Managed__c)JSON.deserialize(JSON.serialize(args.content.main), 
+               Approval_Managed__c.class);
+        System.debug(LoggingLevel.INFO, '*** main: ' + main);
+        /*List<Approval_Managed_Item__c> items = new List<Approval_Managed_Item__c> ();
+        if(args.content.details.containsKey('items')){
+            items = (List<Approval_Managed_Item__c>)JSON.deserialize(JSON.serialize(args.content.details.get('items')), List<Approval_Managed_Item__c>.class);
+            System.debug(LoggingLevel.INFO, '*** items: ' + items);
+        }*/
+        //CustomerCreditLoan 对应的记录类型
+         Id recordTypeID = HarryUtils.getRecordTypeIdByDevNameAndObjName('CustomerCreditLoan','Approval_Managed__c');
+         main.RecordTypeId = recordTypeID;
+         // main.SAPID__c = main.Abnormal_Code__c;//args.keyno; 
+         if (!String.isBlank(main.Applicant_Code__c)) {
+            List<Contact> lstCon = [SELECT Id FROM Contact WHERE number__c = :main.Applicant_Code__c];
+            if (lstCon.size()>0) {
+                main.Applicant__c = lstCon[0].Id;
+            }
+         }
+
+         Id userid = Utils.getUserIdByContactID(main.Applicant__c);
+         //List<User> lstUser = [SELECT Id FROM User WHERE isactive = true AND Id = :userid];
+         //if (lstUser.size()>0) {
+          main.OwnerId = userid!=null?userid:UserInfo.getUserId();
+         //}else {
+         // main.OwnerId = UserInfo.getUserId();
+         //}
+
+         try {
+             insert main;
+            System.debug(LoggingLevel.INFO, '*** main.Id: ' + main.Id);
+         }
+         catch (DMLException e) {
+             System.debug(' DML Exception: ' + e);
+         }
+         /*List<Approval_Managed_Item__c> lstAddItems = new List<Approval_Managed_Item__c>();
+         for (Approval_Managed_Item__c cami : items) {
+            //子表对应查找字段 这个要注意
+            cami.Purchasing_Request__c = main.Id;
+            //PurchaseApp_Detail 对应的记录类型
+            cami.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName('PurchaseApp_Detail','Approval_Managed_Item__c');
+            lstAddItems.add(cami);
+         }
+         if (lstAddItems.size()>0) {
+             try {
+                System.debug(LoggingLevel.INFO, '*** lstAddItems: ' + lstAddItems);
+                 insert lstAddItems;
+             }
+             catch (DMLException e) {
+                 System.debug(' DML Exception: ' + e);
+             }
+         }*/
+        try{
+            //自动提交数据待审批
+            Approval.ProcessSubmitRequest req = new Approval.ProcessSubmitRequest();
+            req.setObjectId(main.Id);
+            req.setComments('SAP同步数据，系统自动提交，等待审批!');
+            Approval.ProcessResult result = Approval.process(req);
+            if(!result.isSuccess()){
+                System.debug('*** 自动提交采购申请审批出错(出差)：' + result.getErrors());
+            }
+        }catch(Exception ex){
+            System.debug('*** 自动提交采购申请审批出错(出差)：' + ex.getMessage());
+        }
+    }
+    
 
 
     //销售报价单审批流程(同销售订单一样，只是记录类型不一样)

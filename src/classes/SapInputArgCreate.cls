@@ -2237,5 +2237,52 @@ public without sharing class SapInputArgCreate {
         return strArgs; 
     }
 
+//客户信贷主数据申请
+   //创建传送给SAP Web Service的请PM通知单参数STEP1
+    public static String createSapCustomerCreditLoanInputArgs(String CustomerCreditLoanID){
+        String sql = Utils.getApprovalSQL(SapApprovalEnum.CUSTOMERCREDITLOAN,true);
+        sql = sql + ' WHERE Id = \'' + CustomerCreditLoanID + '\'';
+        List<Approval_Managed__c> lstItems = Database.query(sql);
+        
+        if(lstItems.size() > 0){
+            return createSapCustomerCreditLoanInputArgs(lstItems.get(0));
+        }else{
+            return '';
+        }
+    }
+    //创建传送给SAP Web Service的请假参数STEP2
+    public static String createSapCustomerCreditLoanInputArgs(Approval_Managed__c amCustomerCreditLoan){
+        List<Approval_Managed_Item__c> items = new List<Approval_Managed_Item__c>();
+        
+            System.debug('*** xxxxxxxxxxx：' + amCustomerCreditLoan.Id);
+            System.debug(LoggingLevel.INFO, '*** items: ' + items);
+        return createSapCustomerCreditLoanInputArgs(amCustomerCreditLoan,items);
+    }
+    //创建传送给SAP Web Service的请假参数STEP3
+    public static String createSapCustomerCreditLoanInputArgs(Approval_Managed__c amCustomerCreditLoan,List<Approval_Managed_Item__c> items){
+        String strArgs = '';
+        try{
+            Map<String,String> main = Utils.convertSObjectToMap(amCustomerCreditLoan);
+            System.debug('*** main' + main);
+            Map<String,List<Map<String,String>>> details = new Map<String,List<Map<String,String>>>();
+
+            if(items != null){
+                List<Map<String,String>> lstItems = new List<Map<String,String>>();
+                for(Approval_Managed_Item__c item : items){
+                    lstItems.add(Utils.convertSObjectToMap(item));
+                }
+                details.put('items', lstItems);
+            }
+
+            System.debug(LoggingLevel.INFO, '*** step3: ');
+            String operate = 'INSERT';
+            strArgs = Utils.serializeToJson(operate,SapApprovalEnum.CUSTOMERCREDITLOAN,main,details);
+        }catch(Exception ex){
+            System.debug('*** 客户信贷主数据申请回写参数错误：' + ex.getMessage() + '\n' + ex.getStackTraceString());
+        }
+
+        return strArgs; 
+    }
+
 
 }

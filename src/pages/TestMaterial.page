@@ -157,7 +157,7 @@
                 });
             }
             $scope.download = function(item){
-                 <!-- 这个用来干嘛？-->
+                 //<!-- 这个用来干嘛？-->
                  var jsonStr = JSON.stringify(item);
 
 

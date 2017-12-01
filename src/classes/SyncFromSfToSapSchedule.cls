@@ -131,7 +131,7 @@ global class SyncFromSfToSapSchedule implements Schedulable {
             }else if(job.Approval_Name__c == SapApprovalEnum.PURCHASEAPPLICATION){
                 //采购申请单(新莱IT人员处理)
                 returnJson = Utils.postToSAP(SapInputArgCreate.createSapPurchaseRequestInputArgs(job.ApprovalID__c));
-            }else if(job.Approval_Name__c == SapApprovalEnum.LEAVE){
+            }else if(job.Approval_Name__c == SapApprovalEnum.LEAVE){ 
                 //员工请假
                 returnJson = Utils.postToSAP(SapInputArgCreate.createSapAmleaveInputArgs(job.ApprovalID__c));
 
@@ -142,6 +142,10 @@ global class SyncFromSfToSapSchedule implements Schedulable {
             }else if(job.Approval_Name__c == SapApprovalEnum.SALESPRICE){
                 //销售定价业务流程 
                 returnJson = Utils.postToSAP(SapInputArgCreate.createSapSalesPriceInputArgs(job.ApprovalID__c));
+
+            }else if(job.Approval_Name__c == SapApprovalEnum.CUSTOMERCREDITLOAN){
+                //客户信用贷款主数据申请
+                returnJson = Utils.postToSAP(SapInputArgCreate.createSapCustomerCreditLoanInputArgs(job.ApprovalID__c));
 
             }else if(job.Approval_Name__c == SapApprovalEnum.PURCHASEORDER){
                 //标准采购订单
