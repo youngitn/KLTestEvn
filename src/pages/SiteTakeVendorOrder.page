@@ -1,0 +1,10 @@
+<!-- 在HTML body部分中的JavaScripts会在页面加载的时候被执行。
+     在HTML head部分中的JavaScripts会在被调用的时候才执行。 -->
+<apex:page showheader="false">
+<head>
+<script></script>
+</head>
+
+<body>正在建设中.......</body>
+
+</apex:page>

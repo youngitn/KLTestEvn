@@ -1,0 +1,1526 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"s",
+				"size()\tInteger"
+			],
+			[
+				"i",
+				"Id(摘要項目識別碼)\tId(18)"
+			],
+			[
+				"F",
+				"FeedComment"
+			],
+			[
+				"check",
+				"ui:inputCheckbox\taura"
+			],
+			[
+				"L",
+				"Long\t[Standard Apex Class]"
+			],
+			[
+				"m",
+				"minute()\tInteger"
+			],
+			[
+				"rem",
+				"removeAttr\t.removeAttr()"
+			],
+			[
+				"a",
+				"Applicant__c(申請人)\tReference(Contact)"
+			],
+			[
+				"in",
+				"insert"
+			],
+			[
+				"add",
+				"PUBLIC addHours(Integer hours) \tDatetime"
+			],
+			[
+				"get",
+				"Sobject.getSObject(String field)\tSObject"
+			],
+			[
+				"Obj",
+				"object"
+			],
+			[
+				"si",
+				"PUBLIC size() \tInteger"
+			],
+			[
+				"educ",
+				"EducationTrainingName__c(課程名稱)\tString(120)"
+			],
+			[
+				"Apex",
+				"ApexPages\tNameSpace"
+			],
+			[
+				"e",
+				"equals"
+			],
+			[
+				"pi",
+				"PicklistRecordField\tConnectApi"
+			],
+			[
+				"r",
+				"RecurrenceInterval(週期間隔)\tInteger"
+			],
+			[
+				"Prop",
+				"PropertyExtension\tApexClass"
+			],
+			[
+				"date",
+				"Date\tSystem"
+			],
+			[
+				"is",
+				"IsAllDayEvent(全天事件)\tBoolean"
+			],
+			[
+				"St",
+				"Start_Time__c"
+			],
+			[
+				"for",
+				"fore\tfor (each)"
+			],
+			[
+				"De",
+				"debug(ANY o)\tvoid"
+			],
+			[
+				"og",
+				"Organizational__c\tSobject"
+			],
+			[
+				"Organization__",
+				"Organizational__c\tSobject"
+			],
+			[
+				"Og",
+				"Organization\tSobject"
+			],
+			[
+				"try",
+				"tryc\tTry Catch"
+			],
+			[
+				"REST",
+				"Is_Reset_Approvaler__c(*重新計算審批人)\tBoolean"
+			],
+			[
+				"Sap",
+				"SapApprovalEnum\tApexClass"
+			],
+			[
+				"obj",
+				"Object"
+			],
+			[
+				"re",
+				"return"
+			],
+			[
+				"In",
+				"Integer\t[Standard Apex Class]"
+			],
+			[
+				"do",
+				"doIt"
+			],
+			[
+				"input",
+				"inputEmpid"
+			],
+			[
+				"ed",
+				"EducationTrainingTime__c(課程時間)\tDatetime"
+			],
+			[
+				"Co",
+				"Contact\tSobject"
+			],
+			[
+				"v",
+				"valueOf(Object o)\tString"
+			],
+			[
+				"x",
+				"xxx"
+			],
+			[
+				"li",
+				"Limits\tLimits"
+			],
+			[
+				"appro",
+				"Approval_Name__c(流程名称)\tString(255)"
+			],
+			[
+				"be",
+				"beforeupdate"
+			],
+			[
+				"te",
+				"text\ttype"
+			],
+			[
+				"I",
+				"Integer\tSystem"
+			],
+			[
+				"Sy",
+				"System\tSystem"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/classes/AMEducationTrainingHandler.cls",
+			"settings":
+			{
+				"buffer_size": 9784,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMEducationTrainingHandlerTest.cls",
+			"settings":
+			{
+				"buffer_size": 932,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMEducationTrainingExtensionTest.cls",
+			"settings":
+			{
+				"buffer_size": 5731,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "\n\nString a = 'aaa-30210003,bbb-30210011,ccc-30210122';\n\nList<String> pList = a.split(',');\nList<String> empidList = new List<String>();\nfor (String b:pList){\n\t//b.substringAfter('-');\n\tempidList.add(b.substringAfter('-'));\n\t\n}\n\n\nSystem.debug(empidList);\n\nfor(User ps :[SELECT Id, Email FROM User WHERE Number__c IN : empidList]){\n                        //sendMailToParticipants(ps.get(0).email, cam);\n                        System.debug('----->'+ps.email);\n                    }\n\nSystem.debug([SELECT Id, InstanceName, IsSandbox, Name, OrganizationType FROM Organization].IsSandbox);\n\n\n\n\nDate myDate = Date.newInstance(2011, 11, 18);\nTime myTime = Time.newInstance(3, 3, 3, 0);\nTime myTime2 = Time.newInstance(4, 3, 3, 0);\nDateTime dt = DateTime.newInstance(myDate, myTime);\nDateTime t1 = DateTime.newInstance(2011, 11, 18, 3, 3, 3);\nDateTime t2 = DateTime.newInstance(2011, 11, 18, 4, 3, 3);\nSystem.debug('WWWW='+(myTime.getTime()));\nSystem.debug('WWWW='+(myTime2.getTime()-myTime.getTime())/60000);\n",
+			"settings":
+			{
+				"buffer_size": 1003,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: DateTime t1 = DateTime.newInstance(2011, 11, 18, 3, 3, 3);\nExecute Anonymous: DateTime t2 = DateTime.newInstance(2011, 11, 18, 4, 3, 3);\nExecute Anonymous: System.debug('WWWW='+(t2.getTime()));\nExecute Anonymous: System.debug('WWWW='+(t2.getTime()-t1.getTime())/60000);\n14:38:31.13 (13633679)|USER_INFO|[EXTERNAL]|00528000005lirp|roger.ibmap@gmail.com|China Standard Time|GMT+08:00\n14:38:31.13 (13655034)|EXECUTION_STARTED\n14:38:31.13 (13658420)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n14:38:31.13 (14290187)|USER_DEBUG|[3]|DEBUG|WWWW=1321560183000\n14:38:31.13 (14341034)|USER_DEBUG|[4]|DEBUG|WWWW=60\n14:38:31.14 (14366811)|CUMULATIVE_LIMIT_USAGE\n14:38:31.14 (14366811)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 0 out of 100\n  Number of query rows: 0 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 0 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n14:38:31.14 (14366811)|CUMULATIVE_LIMIT_USAGE_END\n\n14:38:31.13 (14399250)|CODE_UNIT_FINISHED|execute_anonymous_apex\n14:38:31.13 (15114570)|EXECUTION_FINISHED\n",
+			"settings":
+			{
+				"buffer_size": 1472,
+				"line_ending": "Windows",
+				"name": "Execute Anonymous Result",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: DateTime t1 = DateTime.newInstance(2011, 11, 18, 3, 3, 3);\nExecute Anonymous: DateTime t2 = DateTime.newInstance(2011, 11, 18, 4, 3, 3);\nExecute Anonymous: System.debug('WWWW='+(t2.getTime()));\nExecute Anonymous: System.debug('WWWW='+(t2.getTime()-t1.getTime())/6000);\n14:38:02.15 (15159406)|USER_INFO|[EXTERNAL]|00528000005lirp|roger.ibmap@gmail.com|China Standard Time|GMT+08:00\n14:38:02.15 (15187094)|EXECUTION_STARTED\n14:38:02.15 (15192316)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n14:38:02.15 (15854607)|USER_DEBUG|[3]|DEBUG|WWWW=1321560183000\n14:38:02.15 (15905699)|USER_DEBUG|[4]|DEBUG|WWWW=600\n14:38:02.15 (15932257)|CUMULATIVE_LIMIT_USAGE\n14:38:02.15 (15932257)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 0 out of 100\n  Number of query rows: 0 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 0 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n14:38:02.15 (15932257)|CUMULATIVE_LIMIT_USAGE_END\n\n14:38:02.15 (15963900)|CODE_UNIT_FINISHED|execute_anonymous_apex\n14:38:02.15 (16711267)|EXECUTION_FINISHED\n",
+			"settings":
+			{
+				"buffer_size": 1472,
+				"line_ending": "Windows",
+				"name": "Execute Anonymous Result",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: DateTime t1 = DateTime.newInstance(2011, 11, 18, 3, 3, 3);\nExecute Anonymous: DateTime t2 = DateTime.newInstance(2011, 11, 18, 4, 3, 3);\nExecute Anonymous: System.debug('WWWW='+(t2.getTime()));\nExecute Anonymous: System.debug('WWWW='+(t2.getTime()-t1.getTime()));\n14:35:07.16 (16972719)|USER_INFO|[EXTERNAL]|00528000005lirp|roger.ibmap@gmail.com|China Standard Time|GMT+08:00\n14:35:07.16 (16992919)|EXECUTION_STARTED\n14:35:07.16 (16996779)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n14:35:07.16 (17589223)|USER_DEBUG|[3]|DEBUG|WWWW=1321560183000\n14:35:07.16 (17639601)|USER_DEBUG|[4]|DEBUG|WWWW=3600000\n14:35:07.17 (17680377)|CUMULATIVE_LIMIT_USAGE\n14:35:07.17 (17680377)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 0 out of 100\n  Number of query rows: 0 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 0 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n14:35:07.17 (17680377)|CUMULATIVE_LIMIT_USAGE_END\n\n14:35:07.16 (17713750)|CODE_UNIT_FINISHED|execute_anonymous_apex\n14:35:07.16 (18487891)|EXECUTION_FINISHED\n",
+			"settings":
+			{
+				"buffer_size": 1471,
+				"line_ending": "Windows",
+				"name": "Execute Anonymous Result",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: DateTime t1 = DateTime.newInstance(2011, 11, 18, 3, 3, 3);\nExecute Anonymous: DateTime t2 = DateTime.newInstance(2011, 11, 18, 4, 3, 3);\nExecute Anonymous: \nExecute Anonymous: System.debug('WWWW='+(t2.getTime()-t1.getTime()));\n14:33:51.11 (11245935)|USER_INFO|[EXTERNAL]|00528000005lirp|roger.ibmap@gmail.com|China Standard Time|GMT+08:00\n14:33:51.11 (11265307)|EXECUTION_STARTED\n14:33:51.11 (11269567)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n14:33:51.11 (11903864)|USER_DEBUG|[4]|DEBUG|WWWW=3600000\n14:33:51.11 (11935695)|CUMULATIVE_LIMIT_USAGE\n14:33:51.11 (11935695)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 0 out of 100\n  Number of query rows: 0 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 0 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n14:33:51.11 (11935695)|CUMULATIVE_LIMIT_USAGE_END\n\n14:33:51.11 (11967457)|CODE_UNIT_FINISHED|execute_anonymous_apex\n14:33:51.11 (12696923)|EXECUTION_FINISHED\n",
+			"settings":
+			{
+				"buffer_size": 1371,
+				"line_ending": "Windows",
+				"name": "Execute Anonymous Result",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: DateTime t1 = DateTime.newInstance(2011, 11, 18, 3, 3, 3);\nExecute Anonymous: DateTime t2 = DateTime.newInstance(2011, 11, 18, 4, 3, 3);\nExecute Anonymous: \nExecute Anonymous: System.debug('WWWW='+(t1.getTime()-t2.getTime()));\n14:32:06.14 (14982534)|USER_INFO|[EXTERNAL]|00528000005lirp|roger.ibmap@gmail.com|China Standard Time|GMT+08:00\n14:32:06.14 (15005724)|EXECUTION_STARTED\n14:32:06.14 (15008874)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n14:32:06.14 (15579806)|USER_DEBUG|[4]|DEBUG|WWWW=-3600000\n14:32:06.15 (15615220)|CUMULATIVE_LIMIT_USAGE\n14:32:06.15 (15615220)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 0 out of 100\n  Number of query rows: 0 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 0 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n14:32:06.15 (15615220)|CUMULATIVE_LIMIT_USAGE_END\n\n14:32:06.14 (15649810)|CODE_UNIT_FINISHED|execute_anonymous_apex\n14:32:06.14 (16697928)|EXECUTION_FINISHED\n",
+			"settings":
+			{
+				"buffer_size": 1372,
+				"line_ending": "Windows",
+				"name": "Execute Anonymous Result",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: DateTime t1 = DateTime.newInstance(2011, 11, 18, 3, 3, 3);\nExecute Anonymous: DateTime t2 = DateTime.newInstance(2011, 11, 18, 4, 3, 3);\nExecute Anonymous: \nExecute Anonymous: System.debug('WWWW='+(t1.getTime()));\n14:31:43.14 (14039838)|USER_INFO|[EXTERNAL]|00528000005lirp|roger.ibmap@gmail.com|China Standard Time|GMT+08:00\n14:31:43.14 (14060082)|EXECUTION_STARTED\n14:31:43.14 (14063250)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n14:31:43.14 (14698358)|USER_DEBUG|[4]|DEBUG|WWWW=1321556583000\n14:31:43.14 (14740072)|CUMULATIVE_LIMIT_USAGE\n14:31:43.14 (14740072)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 0 out of 100\n  Number of query rows: 0 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 0 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n14:31:43.14 (14740072)|CUMULATIVE_LIMIT_USAGE_END\n\n14:31:43.14 (14784821)|CODE_UNIT_FINISHED|execute_anonymous_apex\n14:31:43.14 (15600142)|EXECUTION_FINISHED\n",
+			"settings":
+			{
+				"buffer_size": 1364,
+				"line_ending": "Windows",
+				"name": "Execute Anonymous Result",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: DateTime t1 = DateTime.newInstance(2011, 11, 18, 3, 3, 3);\nExecute Anonymous: DateTime t2 = DateTime.newInstance(2011, 11, 18, 4, 3, 3);\nExecute Anonymous: \nExecute Anonymous: System.debug('WWWW='+(t1.minute()));\n14:31:09.14 (14246159)|USER_INFO|[EXTERNAL]|00528000005lirp|roger.ibmap@gmail.com|China Standard Time|GMT+08:00\n14:31:09.14 (14276739)|EXECUTION_STARTED\n14:31:09.14 (14281321)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n14:31:09.14 (15068787)|USER_DEBUG|[4]|DEBUG|WWWW=3\n14:31:09.15 (15109677)|CUMULATIVE_LIMIT_USAGE\n14:31:09.15 (15109677)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 0 out of 100\n  Number of query rows: 0 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 0 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n14:31:09.15 (15109677)|CUMULATIVE_LIMIT_USAGE_END\n\n14:31:09.14 (15150997)|CODE_UNIT_FINISHED|execute_anonymous_apex\n14:31:09.14 (15950322)|EXECUTION_FINISHED\n",
+			"settings":
+			{
+				"buffer_size": 1351,
+				"line_ending": "Windows",
+				"name": "Execute Anonymous Result",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: Date myDate = Date.newInstance(2011, 11, 18);\nExecute Anonymous: Time myTime = Time.newInstance(3, 3, 3, 0);\nExecute Anonymous: DateTime dt = DateTime.newInstance(myDate, myTime);\nExecute Anonymous: DateTime t1 = DateTime.newInstance(2011, 11, 18, 3, 3, 3);\nExecute Anonymous: DateTime t2 = DateTime.newInstance(2011, 11, 18, 4, 3, 3);\nExecute Anonymous: \nExecute Anonymous: System.debug('WWWW='+(t1.minute()-t2.minute()));\n14:30:37.23 (23580271)|USER_INFO|[EXTERNAL]|00528000005lirp|roger.ibmap@gmail.com|China Standard Time|GMT+08:00\n14:30:37.23 (23600822)|EXECUTION_STARTED\n14:30:37.23 (23604834)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n14:30:37.23 (24496838)|USER_DEBUG|[7]|DEBUG|WWWW=0\n14:30:37.24 (24540837)|CUMULATIVE_LIMIT_USAGE\n14:30:37.24 (24540837)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 0 out of 100\n  Number of query rows: 0 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 0 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n14:30:37.24 (24540837)|CUMULATIVE_LIMIT_USAGE_END\n\n14:30:37.23 (24601941)|CODE_UNIT_FINISHED|execute_anonymous_apex\n14:30:37.23 (25471020)|EXECUTION_FINISHED\n",
+			"settings":
+			{
+				"buffer_size": 1562,
+				"line_ending": "Windows",
+				"name": "Execute Anonymous Result",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "35.0 APEX_CODE,FINEST;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;SYSTEM,DEBUG;VALIDATION,INFO;VISUALFORCE,INFO;WAVE,INFO;WORKFLOW,INFO\nExecute Anonymous: System.debug(URL.getSalesforceBaseUrl().getHost().left(2).equalsignorecase('cs'));\n09:35:31.6 (6499074)|USER_INFO|[EXTERNAL]|00528000005lirp|roger.ibmap@gmail.com|China Standard Time|GMT+08:00\n09:35:31.6 (6517950)|EXECUTION_STARTED\n09:35:31.6 (6521864)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n09:35:31.6 (6718035)|HEAP_ALLOCATE|[72]|Bytes:3\n09:35:31.6 (6757090)|HEAP_ALLOCATE|[77]|Bytes:152\n09:35:31.6 (6773109)|HEAP_ALLOCATE|[342]|Bytes:408\n09:35:31.6 (6822092)|HEAP_ALLOCATE|[355]|Bytes:408\n09:35:31.6 (6839574)|HEAP_ALLOCATE|[467]|Bytes:48\n09:35:31.6 (6870758)|HEAP_ALLOCATE|[139]|Bytes:6\n09:35:31.6 (6892276)|HEAP_ALLOCATE|[EXTERNAL]|Bytes:1\n09:35:31.6 (6987733)|STATEMENT_EXECUTE|[1]\n09:35:31.6 (6990271)|STATEMENT_EXECUTE|[1]\n09:35:31.6 (7040197)|HEAP_ALLOCATE|[50]|Bytes:5\n09:35:31.6 (7067617)|HEAP_ALLOCATE|[56]|Bytes:5\n09:35:31.6 (7074981)|HEAP_ALLOCATE|[64]|Bytes:7\n09:35:31.6 (7095965)|SYSTEM_MODE_ENTER|false\n09:35:31.6 (7110773)|HEAP_ALLOCATE|[1]|Bytes:5\n09:35:31.6 (7170996)|HEAP_ALLOCATE|[1]|Bytes:64\n09:35:31.6 (7181334)|SYSTEM_METHOD_ENTRY|[1]|Url.Url()\n09:35:31.6 (7185474)|STATEMENT_EXECUTE|[1]\n09:35:31.6 (7191675)|SYSTEM_METHOD_EXIT|[1]|Url\n09:35:31.6 (7204846)|METHOD_ENTRY|[1]||System.Url.getSalesforceBaseUrl()\n09:35:31.6 (7368927)|METHOD_EXIT|[1]||System.Url.getSalesforceBaseUrl()\n09:35:31.6 (7379865)|SYSTEM_MODE_EXIT|false\n09:35:31.6 (7406034)|SYSTEM_MODE_ENTER|false\n09:35:31.6 (7413353)|HEAP_ALLOCATE|[1]|Bytes:5\n09:35:31.6 (7427202)|METHOD_ENTRY|[1]||System.Url.getHost()\n09:35:31.6 (7492152)|METHOD_EXIT|[1]||System.Url.getHost()\n09:35:31.6 (7497877)|SYSTEM_MODE_EXIT|false\n09:35:31.6 (7530414)|HEAP_ALLOCATE|[1]|Bytes:2\n09:35:31.6 (7539068)|HEAP_ALLOCATE|[1]|Bytes:2\n09:35:31.6 (7572383)|USER_DEBUG|[1]|DEBUG|false\n09:35:31.7 (7600922)|CUMULATIVE_LIMIT_USAGE\n09:35:31.7 (7600922)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 0 out of 100\n  Number of query rows: 0 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 0 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n09:35:31.7 (7600922)|CUMULATIVE_LIMIT_USAGE_END\n\n09:35:31.6 (7630237)|CODE_UNIT_FINISHED|execute_anonymous_apex\n09:35:31.6 (8333214)|EXECUTION_FINISHED\n",
+			"settings":
+			{
+				"buffer_size": 2650,
+				"line_ending": "Windows",
+				"name": "Execute Anonymous Result",
+				"scratch": true
+			}
+		},
+		{
+			"file": "src/classes/AMVendorExtension.cls",
+			"settings":
+			{
+				"buffer_size": 12322,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/AMVendor.page",
+			"settings":
+			{
+				"buffer_size": 40949,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/ApprovalContact.page",
+			"settings":
+			{
+				"buffer_size": 10240,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/ApprovalContactExtension.cls",
+			"settings":
+			{
+				"buffer_size": 4397,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMEducationTrainingExtension.cls",
+			"settings":
+			{
+				"buffer_size": 7817,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/CheckChatterTest.cls",
+			"settings":
+			{
+				"buffer_size": 993,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/triggers/CheckChatter.trigger",
+			"settings":
+			{
+				"buffer_size": 4680,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/AMEducationTraining.page",
+			"settings":
+			{
+				"buffer_size": 18442,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<input autocomplete=\"off\" id=\"StartDateTime_time\" name=\"StartDateTime_time\" onchange=\"ActivityFunction.updateEndTime('StartDateTime','StartDateTime_time', 'EndDateTime', 'EndDateTime_time');ActivityFunction.checkDuration('IsRecurrence','evt15','StartDateTime','StartDateTime_time','EndDateTime','EndDateTime_time');\" onfocus=\"ActivityFunction.saveStartTime('StartDateTime','StartDateTime_time');ActivityFunction.showTimePicker('StartDateTime_time')\" size=\"8\" tabindex=\"5\" type=\"text\" value=\"4:00 下午\">",
+			"settings":
+			{
+				"buffer_size": 500,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/classes/AMVendorHandler.cls",
+			"settings":
+			{
+				"buffer_size": 3570,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control:",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 452.0
+	},
+	"console":
+	{
+		"height": 199.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"import urllib.request,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+	],
+	"file_history":
+	[
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/toolingapi.sublime-settings",
+		"/D/mmworkspace/TestEvn/src/pages/AMEducationTraining.page",
+		"/D/mmworkspace/TestEvn/src/pages/ApprovalContact.page",
+		"/D/mmworkspace/TestEvn/src/classes/PushApprovalDataToSapHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/Utils.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SapInputArgCreate.cls",
+		"/D/mmworkspace/TestEvn/src/workflows/User.workflow",
+		"/d/young_cheng/young/KL-TEST-20171121/src/pages/AMInventoryProcess.page",
+		"/d/young_cheng/young/KL-TEST-20171121/src/classes/AMInventoryProcessExtension.cls",
+		"/d/young_cheng/young/KL-TEST-20171121/src/classes/ApprovalContactExtensionTest.cls",
+		"/d/young_cheng/young/KL-TEST-20171121/src/pages/ApprovalContact.page",
+		"/d/young_cheng/young/KL-TEST-20171121/src/classes/ApprovalContactExtension.cls",
+		"/d/young_cheng/young/KL-TEST-20171120/src/pages/AMEducationTraining.page",
+		"/d/young_cheng/young/KL-TEST-20171120/src/classes/AMEducationTrainingHandler.cls",
+		"/d/young_cheng/young/KL-TEST-20171120/src/classes/AMEducationTrainingExtensionTest.cls",
+		"/d/young_cheng/young/KL-TEST-20171120/src/classes/AMEducationTrainingExtension.cls",
+		"/D/mmworkspace/SB_Cheng/src/classes/ProcessRollBackTest.cls",
+		"/D/mmworkspace/SB_Cheng/src/classes/SynchronousOrganization.cls",
+		"/D/mmworkspace/SB_Cheng/src/pages/AMEducationTraining.page",
+		"/D/mmworkspace/SB_Cheng/src/classes/Utils.cls",
+		"/d/young_cheng/young/KL-TEST-20171114/src/classes/SapContentOfArgs.cls",
+		"/d/young_cheng/young/KL-TEST-20171117/src/classes/AMEducationTrainingHandlerTest.cls",
+		"/d/young_cheng/young/KL-TEST-20171117/src/pages/AMEducationTraining.page",
+		"/d/young_cheng/young/KL-TEST-20171117/src/classes/Utils.cls",
+		"/d/young_cheng/young/KL-TEST-20171117/src/classes/AMEducationTrainingExtension.cls",
+		"/d/young_cheng/young/KL-TEST-20171117/src/classes/AMEducationTrainingExtensionTest.cls",
+		"/d/young_cheng/young/KL-TEST-20171117/src/classes/SapApprovalEnumTest.cls",
+		"/D/mmworkspace/SB_Cheng/src/classes/SapApprovalEnum.cls",
+		"/d/young_cheng/young/KL-TEST-20171114/src/pages/ApprovalHome.page",
+		"/D/mmworkspace/SB_Cheng/src/classes/ApprovalHomeController.cls",
+		"/D/mmworkspace/SB_Cheng/src/classes/AMEducationTrainingExtension.cls",
+		"/d/young_cheng/young/KL-TEST-20171117/src/classes/AMEducationTrainingHandler.cls",
+		"/d/young_cheng/young/KL-TEST-20171114/src/classes/SapApprovalEnum.cls",
+		"/d/young_cheng/young/KL-TEST-20171114/src/pages/AMEducationTraining.page",
+		"/d/young_cheng/young/KL-TEST-20171114/src/classes/ApprovalHomeController.cls",
+		"/d/young_cheng/young/KL-TEST-20171114/src/classes/AMEducationTrainingExtension.cls",
+		"/d/young_cheng/young/KL-TEST-20171114/src/classes/AMEducationTrainingHandler.cls",
+		"/d/young_cheng/young/KL-TEST-20171114/src/triggers/ApprovalManage1Trigger.trigger",
+		"/D/mmworkspace/SB_Cheng/src/triggers/ApprovalManage1Trigger.trigger",
+		"/D/mmworkspace/SB_Cheng/src/classes/AMEducationTrainingHandler.cls",
+		"/C/Users/young_cheng/Desktop/new_event_way",
+		"/D/mmworkspace/SB_Cheng/src/pages/AMBusinessTravel.page",
+		"/D/mmworkspace/SB_Cheng/src/classes/YoungUtil.cls",
+		"/D/mmworkspace/SB_Cheng/src/pages/ApprovalHome.page",
+		"/D/mmworkspace/SB_Cheng/src/classes/EmailUtils.cls",
+		"/d/young_cheng/young/KL-TEST-20171114/src/classes/SynchronousOrganization.cls",
+		"/D/mmworkspace/SB_Cheng/src/classes/AMExpenseReimburseHandler.cls",
+		"/D/mmworkspace/SB_Cheng/src/classes/ApprovalManualShareHandler.cls",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/haoide/config/settings/toolingapi.sublime-settings",
+		"/C/ProgramData/Microsoft/Windows/Start Menu/Programs/Sublime Text 3.lnk",
+		"/D/mmworkspace/SB_Cheng/src/classes/EmailUtils .cls",
+		"/D/mmworkspace/SB_Cheng/src/classes/AMEducationTrainingExtensionTest.cls",
+		"/D/mmworkspace/SB_Cheng/src/classes/AMEducationTrainingController.cls",
+		"/D/mmworkspace/SB_Cheng/src/classes/AMEducationTrainingHandlerTest.cls",
+		"/D/mmworkspace/SB_Cheng/src/classes/TestUtil.cls",
+		"/D/mmworkspace/SB_Cheng/src/classes/ApprovalNodeFieldController.cls",
+		"/D/mmworkspace/SB_Cheng/src/pages/ApprovalNodeField.page",
+		"/D/mmworkspace/SB_Cheng/src/pages/tabbedAccount1.page",
+		"/D/mmworkspace/SB_Cheng/src/pages/EducationTrainingVF.page",
+		"/D/mmworkspace/SB_Cheng/src/triggers/TestTrigger.trigger",
+		"/D/mmworkspace/SB_Cheng/src/pages/tabbedAccount.page",
+		"/D/mmworkspace/SB_Cheng/src/pages/tabbedAccount .page",
+		"/C/Users/young_cheng/Desktop/salesforceApexEmailExample",
+		"/D/mmworkspace/SB_Cheng/src/classes/ApprovalPermissionHandler.cls",
+		"/D/mmworkspace/SB_Cheng/src/triggers/ProcessRollBackTest.trigger",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/DocBlockr/README.md",
+		"/D/mmworkspace/SB_Cheng/src/triggers/HelloWorldTrigger.trigger",
+		"/D/mmworkspace/SB_Cheng/src/classes/AMAbnormalQualityHandler.cls-meta.xml",
+		"/D/mmworkspace/SB_Cheng/src/pages/TimeLineTest.page",
+		"/D/mmworkspace/SB_Cheng/src/classes/AMStaffTransferExtension.cls",
+		"/D/mmworkspace/SB_Cheng/src/classes/AMAbnormalQualityHandler.cls",
+		"/D/mmworkspace/SB_Cheng/src/classes/CustomAccountLookupController.cls",
+		"/D/mmworkspace/SB_Cheng/src/pages/CustomAccountLookup.page",
+		"/D/mmworkspace/SB_Cheng/src/pages/MyCustomLookup.page",
+		"/D/mmworkspace/SB_Cheng/src/classes/MyCustomLookupController.cls",
+		"/D/mmworkspace/SB_Cheng/src/pages/ApexParam1.page",
+		"/C/Users/young_cheng/Desktop/網購平台JS_配置_Join2Menu.js",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/CodeFormatter/CodeFormatter.sublime-settings",
+		"/D/mmworkspace/SB_Cheng/src/classes/AccountRemoter.cls",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/CodeFormatter/Default (Windows).sublime-keymap",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/Package Control/Package Control.sublime-settings",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/SublimeAStyleFormatter/SublimeAStyleFormatter.sublime-settings",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/SublimeAStyleFormatter/Default (Windows).sublime-keymap",
+		"/D/mmworkspace/SB_Cheng/src/classes/ApexParam1Controller.cls",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/DocBlockr/Base File.sublime-settings",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/Base File.sublime-settings",
+		"/D/mmworkspace/SB_Cheng/src/classes/HarryUtils.cls",
+		"/D/mmworkspace/SB_Cheng/src/pages/ApexParam.page",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/mavensmate.sublime-settings",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/MavensMate/mavensmate.sublime-settings",
+		"/d/young_cheng/young/KL_CHENG-20171017/src/pages/EducationTrainingVF.page",
+		"/d/young_cheng/young/KL_CHENG-20171017/src/classes/AMEducationTrainingController.cls",
+		"/d/young_cheng/young/KL_CHENG-20171017/src/classes/EducationTrainingController.cls",
+		"/d/young_cheng/young/KL_CHENG-20171025/src/classes/AMEducationTrainingHandler.cls",
+		"/d/young_cheng/young/KL_CHENG-20171002/src/classes/Utils.cls",
+		"/d/young_cheng/young/KL_CHENG-20171002/src/classes/AMVisitorHostsHandler.cls",
+		"/d/young_cheng/young/KL_CHENG-20171002/src/classes/AMBookDinnerHander.cls",
+		"/d/young_cheng/young/KL_CHENG-20171011/src/classes/AMBookDinnerHandlerTest.cls",
+		"/d/young_cheng/young/KL_CHENG-20171025/src/classes/AMAbnormalQualityExtensionTest.cls",
+		"/d/young_cheng/young/KL_CHENG-20171025/src/classes/AM123.cls",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/haoide/config/keymap/Default (Windows).sublime-keymap",
+		"/d/young_cheng/young/KL_CHENG-20171025/src/pages/EducationTrainingVF.page",
+		"/d/young_cheng/young/KL_CHENG-20171025/src/classes/AMEducationTrainingController.cls",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.sublime-settings",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/CodeFormatter/README.md",
+		"/d/young_cheng/young/KL_CHENG-20171025/src/classes/AMCostCenterSendHandler.cls",
+		"/d/young_cheng/young/KL_CHENG-20171025/src/classes/PushApprovalDataToSapHandler.cls",
+		"/d/young_cheng/young/KL_CHENG-20171025/src/triggers/ApprovalManage1Trigger.trigger",
+		"/d/young_cheng/young/KL_CHENG-20171024/src/classes/AMEducationTrainingHandler.cls",
+		"/d/young_cheng/young/KL_CHENG-20171025/src/triggers/ContactTrigger.trigger",
+		"/d/young_cheng/young/KL_CHENG-20171024/src/classes/ApprovalHomeController.cls",
+		"/d/young_cheng/young/KL_CHENG-20171002/src/classes/SapApprovalEnum.cls",
+		"/d/young_cheng/young/KL_CHENG-20171024/src/triggers/ApprovalManage1Trigger.trigger",
+		"/d/young_cheng/young/KL_CHENG-20171024/src/pages/EducationTrainingVF.page",
+		"/d/young_cheng/young/KL_CHENG-20171002/src/classes/HarryUtils.cls",
+		"/d/young_cheng/young/KL_CHENG-20171024/src/classes/AMEducationTrainingController.cls",
+		"/d/young_cheng/young/KL_CHENG-20171020/src/classes/AMBusinessTravelExtension.cls",
+		"/d/young_cheng/young/KL_CHENG-20171020/src/classes/AMAbnormalQualityExtension.cls",
+		"/d/young_cheng/young/KL_CHENG-20171020/src/classes/AMITServiceRequestHandler.cls",
+		"/d/young_cheng/young/KL_CHENG-20171020/src/classes/AMEducationTrainingController.cls",
+		"/d/young_cheng/young/KL_CHENG-20171020/src/classes/ApprovalHomeController.cls",
+		"/d/young_cheng/young/KL_CHENG-20171020/src/pages/ApprovalHome.page",
+		"/d/young_cheng/young/KL_CHENG-20171020/src/triggers/ApprovalManage1Trigger.trigger",
+		"/d/young_cheng/young/KL_CHENG-20171020/src/classes/AMBookDinnerHander.cls",
+		"/d/young_cheng/young/KL_CHENG-20171020/src/pages/EducationTrainingVF.page",
+		"/d/young_cheng/young/KL_CHENG-20171020/src/classes/AMITServiceRequestExtension.cls",
+		"/d/young_cheng/young/KL_CHENG-20171002/src/classes/ApprovalHomeController.cls"
+	],
+	"find":
+	{
+		"height": 40.0
+	},
+	"find_in_files":
+	{
+		"height": 104.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"parentId",
+			"save",
+			"公司",
+			"Is_Based_Invoice__c",
+			"\t账户组",
+			"\t\n账户组",
+			"createSapVendorInputArgs",
+			"serializeToJson",
+			"json",
+			"postTo",
+			"供应商主",
+			"供",
+			"SyncFromSfToSapSchedule",
+			"PushToSapOnce"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 18,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/classes/AMEducationTrainingHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9784,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8799,
+								8799
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3192.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/classes/AMEducationTrainingHandlerTest.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 932,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								922,
+								922
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 20,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/classes/AMEducationTrainingExtensionTest.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5731,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3833,
+								3833
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1824.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1003,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								931,
+								931
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1472,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								723,
+								673
+							]
+						],
+						"settings":
+						{
+							"is_debug_log": true,
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1472,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								723,
+								671
+							]
+						],
+						"settings":
+						{
+							"is_debug_log": true,
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1471,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								652,
+								665
+							]
+						],
+						"settings":
+						{
+							"is_debug_log": true,
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1371,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								615,
+								622
+							]
+						],
+						"settings":
+						{
+							"is_debug_log": true,
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1372,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								615,
+								623
+							]
+						],
+						"settings":
+						{
+							"is_debug_log": true,
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1364,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								602,
+								615
+							]
+						],
+						"settings":
+						{
+							"is_debug_log": true,
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 18,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1351,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1351,
+								1351
+							]
+						],
+						"settings":
+						{
+							"is_debug_log": true,
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1562,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								912,
+								912
+							]
+						],
+						"settings":
+						{
+							"is_debug_log": true,
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2650,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1906,
+								1911
+							]
+						],
+						"settings":
+						{
+							"is_debug_log": true,
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 21,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "src/classes/AMVendorExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12322,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5802,
+								5818
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 19.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "src/pages/AMVendor.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 40949,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3664,
+								3640
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 798.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "src/pages/ApprovalContact.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10240,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1252,
+								1252
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "src/classes/ApprovalContactExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4397,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								215,
+								215
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"file": "src/classes/AMEducationTrainingExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7817,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2615,
+								2633
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1425.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "src/classes/CheckChatterTest.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 993,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								993
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "src/triggers/CheckChatter.trigger",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4680,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1733,
+								1733
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 722.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 20,
+					"file": "src/pages/AMEducationTraining.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18442,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								426,
+								426
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 21,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 500,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								317,
+								449
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 22,
+					"file": "src/classes/AMVendorHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3570,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1471,
+								1471
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 22,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 39.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.MavensMate-OutputPanel":
+	{
+		"height": 201.0
+	},
+	"output.error":
+	{
+		"height": 120.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "TestEvn.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"checkc",
+				"src\\triggers\\CheckChatter.trigger"
+			],
+			[
+				"amedu",
+				"src\\classes\\AMEducationTrainingExtension.cls"
+			],
+			[
+				"amed",
+				"src\\classes\\AMEducationTrainingHandlerTest.cls"
+			],
+			[
+				"approvalcon",
+				"src\\classes\\ApprovalContactExtension.cls"
+			],
+			[
+				"approvalc",
+				"src\\pages\\ApprovalContact.page"
+			],
+			[
+				"amv",
+				"src\\pages\\AMVendor.page"
+			],
+			[
+				"pushtosap",
+				"src\\classes\\PushApprovalDataToSapHandler.cls"
+			],
+			[
+				"amven",
+				"src\\classes\\AMVendorHandler.cls"
+			],
+			[
+				"u",
+				"src\\classes\\Utils.cls"
+			],
+			[
+				"aminventoryprocess",
+				"src\\pages\\AMInventoryProcess.page"
+			],
+			[
+				"amedhand",
+				"KL-TEST-20171117\\src\\classes\\AMEducationTrainingHandler.cls"
+			],
+			[
+				"travel",
+				"SB_Cheng\\src\\pages\\AMBusinessTravel.page"
+			],
+			[
+				"apphome",
+				"KL-TEST-20171114\\src\\pages\\ApprovalHome.page"
+			],
+			[
+				"home",
+				"SB_Cheng\\src\\pages\\ApprovalHome.page"
+			],
+			[
+				"sap",
+				"SB_Cheng\\src\\classes\\SapApprovalEnum.cls"
+			],
+			[
+				"ema",
+				"SB_Cheng\\src\\classes\\EmailUtils.cls"
+			],
+			[
+				"synchronousorganization",
+				"KL-TEST-20171114\\src\\classes\\SynchronousOrganization.cls"
+			],
+			[
+				"email",
+				"src\\classes\\EmailUtils .cls"
+			],
+			[
+				"approvalnode",
+				"src\\classes\\ApprovalNodeFieldController.cls"
+			],
+			[
+				"approvalnodefield",
+				"src\\pages\\ApprovalNodeField.page"
+			],
+			[
+				"vf",
+				"src\\pages\\EducationTrainingVF.page"
+			],
+			[
+				"approvalmanualsharehandler",
+				"src\\classes\\ApprovalManualShareHandler.cls"
+			],
+			[
+				"",
+				"src\\classes\\AMEducationTrainingHandler.cls"
+			],
+			[
+				"utils",
+				"src\\classes\\Utils.cls"
+			],
+			[
+				"uit",
+				"src\\classes\\Utils.cls"
+			],
+			[
+				"amstafftransfer",
+				"src\\classes\\AMStaffTransferExtension.cls"
+			],
+			[
+				"my",
+				"src\\pages\\MyCustomLookup.page"
+			],
+			[
+				"ed",
+				"src\\pages\\EducationTrainingVF.page"
+			],
+			[
+				"apex1",
+				"src\\pages\\ApexParam1.page"
+			],
+			[
+				"ap",
+				"src\\pages\\ApexParam.page"
+			],
+			[
+				"util",
+				"src\\classes\\Utils.cls"
+			],
+			[
+				"edu",
+				"src\\pages\\EducationTrainingVF.page"
+			],
+			[
+				"educa",
+				"KL_CHENG-20171017\\src\\pages\\EducationTrainingVF.page"
+			],
+			[
+				"amvi",
+				"KL_CHENG-20171002\\src\\classes\\AMVisitorHostsHandler.cls"
+			],
+			[
+				"ambookdinnerhand",
+				"KL_CHENG-20171002\\src\\classes\\AMBookDinnerHander.cls"
+			],
+			[
+				"handl",
+				"KL_CHENG-20171011\\src\\classes\\AMBookDinnerHandlerTest.cls"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 528.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

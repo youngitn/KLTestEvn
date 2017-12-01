@@ -1,0 +1,65 @@
+<apex:page standardController="Approval_Managed__c" extensions="AMMeasuringInstRequestExtension" >
+<!-- 计量器具请购详细信息 -->
+<html>
+<body>
+<apex:sectionHeader title="计量器具请购申请流程" subtitle="新建/计量器具请购申请流程"></apex:sectionHeader>
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="标准审批编辑" collapsible="false">
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人公司代码 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 审核状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="计量器具请购详细信息" collapsible="false">
+                <!-- 工厂 -->
+                <apex:inputField id="factory" value="{!am.Factory__c}" required="true"  ></apex:inputField>
+                <!-- 成本中心 -->
+                <apex:inputField id="Dept_of_CostCenter" value="{!am.Dept_of_CostCenter__c}" required="true"></apex:inputField>
+                <!-- 资产类型 -->
+                <apex:inputField id="Asset_Type" value="{!am.Asset_Type__c}" required="true"></apex:inputField>
+                <!-- 计量器具名称 -->
+                <apex:inputField value="{!am.Gage_Name__c}" required="true"></apex:inputField>
+                <!-- 品名规格 -->
+                <apex:inputField value="{!am.Name_and_Spec__c}" required="true"></apex:inputField>
+                <!-- 需求日期 -->
+                <apex:inputField value="{!am.Required_date__c }" required="true"></apex:inputField>
+                <!-- 预算金额 -->
+                <apex:inputField value="{!am.Amount_of_Budget__c}"></apex:inputField>
+                <!-- 预算币种 -->
+                <apex:inputField id="Currcency_Budget" value="{!am.Currcency_Budget__c}"></apex:inputField>
+
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="使用人" >
+            <!-- 使用人 -->
+                <apex:inputField id="Employee__c" value="{!am.Employee__c}" required="true"></apex:inputField> 
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="其他原因" >
+            <!-- 其他原因 -->
+                <apex:inputField value="{!am.Reason_of_Description__c}" style="width: 175%;height: 120%"></apex:inputField>
+            </apex:pageBlockSection>
+
+        </apex:pageBlock>
+    </apex:form>>
+</body>
+</html>
+</apex:page>

@@ -1,0 +1,599 @@
+<apex:page standardController="Approval_Managed1__c" extensions="AMVisitorHostsExtension">
+<!-- 來賓接待申請流程 -->
+<html>
+<head>
+
+ <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+    <script>
+        var j$ = jQuery.noConflict();
+        function toggleData(){
+            var cmb = j$("select[id$='dropvalue']");
+            var approvalValue = cmb.val();
+            var approvalName = cmb.find("option:selected").text();
+            console.log('approvalValue: ' + approvalValue);
+            var desc = j$("textarea[id$='desc']");
+            if(approvalValue == "N"){
+                  desc.hide();
+                  desc.parent().prev().children("label").hide();
+            }else{
+                desc.show();
+                desc.parent().prev().children("label").show();
+            }
+        }
+        function toggle(){
+            var cmb = j$("select[id$='pickup_plane_YN']");
+            var approvalValue = cmb.val();
+            var approvalName = cmb.find("option:selected").text();
+            console.log('approvalValue: ' + approvalValue);
+            // var pickup_plane_date = j$("input[id$='pickup_plane_date']");
+            var pickup_plane_date = j$('.needtohidebypicklist');
+            if(approvalValue == "N"){
+            	// document.getElementById("pickup_plane_date").style.display='block';
+                pickup_plane_date.each(function(){
+                    // j$(this).hide();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().hide();
+                        j$(this).parent().parent().prev().children().hide();
+                    }else{
+                        j$(this).parent().hide();
+                        j$(this).parent().prev().children().hide();
+                    }
+                    // j$(this).next().hide();
+                });
+                
+            }else{
+                pickup_plane_date.each(function(){
+                    // j$(this).show();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().show();
+                        j$(this).parent().parent().prev().children().show();
+                    }else{
+                        j$(this).parent().show();
+                        j$(this).parent().prev().children().show();
+                    }
+                    // j$(this).next().show();
+                });
+                // pickup_plane_date.show();
+                // pickup_plane_date.parent().parent().prev().children().show();
+                // pickup_plane_date.next().show();
+
+                // document.getElementById("pickup_plane_date").style.display='none';
+            }
+        }
+
+         // (S) 2017/06/09  
+ function deliver_plane(){
+            var cmb = j$("select[id$='deliver_plane_YN']");
+            var approvalValue = cmb.val();
+            var approvalName = cmb.find("option:selected").text();
+            console.log('approvalValue: ' + approvalValue);
+            var deliver_plane_date = j$('.deliver_plane_hide');
+            if(approvalValue == "N"){
+                 deliver_plane_date.each(function(){
+                    // j$(this).hide();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().hide();
+                        j$(this).parent().parent().prev().children().hide();
+                    }else{
+                        j$(this).parent().hide();
+                        j$(this).parent().prev().children().hide();
+                    }
+                    // j$(this).next().hide();
+                });
+                
+            }else{
+                deliver_plane_date.each(function(){
+                    // j$(this).show();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().show();
+                        j$(this).parent().parent().prev().children().show();
+                    }else{
+                        j$(this).parent().show();
+                        j$(this).parent().prev().children().show();
+                    }
+                    // j$(this).next().show();
+                });
+               
+            }
+        }
+
+          function pickup_car(){
+            var cmb = j$("select[id$='pickup_car_YN']");
+            var approvalValue = cmb.val();
+            var approvalName = cmb.find("option:selected").text();
+            console.log('approvalValue: ' + approvalValue);
+            var pickup_car_date = j$('.pickup_car_hide');
+            if(approvalValue == "N"){
+                 pickup_car_date.each(function(){
+                    // j$(this).hide();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().hide();
+                        j$(this).parent().parent().prev().children().hide();
+                    }else{
+                        j$(this).parent().hide();
+                        j$(this).parent().prev().children().hide();
+                    }
+                    // j$(this).next().hide();
+                });
+                
+            }else{
+                pickup_car_date.each(function(){
+                    // j$(this).show();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().show();
+                        j$(this).parent().parent().prev().children().show();
+                    }else{
+                        j$(this).parent().show();
+                        j$(this).parent().prev().children().show();
+                    }
+                    // j$(this).next().show();
+                });
+               
+            }
+        }
+
+         function deliver_car(){
+            var cmb = j$("select[id$='deliver_car_YN']");
+            var approvalValue = cmb.val();
+            var approvalName = cmb.find("option:selected").text();
+            console.log('approvalValue: ' + approvalValue);
+            var deliver_car_date = j$('.deliver_car_hide');
+            if(approvalValue == "N"){
+                 deliver_car_date.each(function(){
+                    // j$(this).hide();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().hide();
+                        j$(this).parent().parent().prev().children().hide();
+                    }else{
+                        j$(this).parent().hide();
+                        j$(this).parent().prev().children().hide();
+                    }
+                    // j$(this).next().hide();
+                });
+                
+            }else{
+                deliver_car_date.each(function(){
+                    // j$(this).show();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().show();
+                        j$(this).parent().parent().prev().children().show();
+                    }else{
+                        j$(this).parent().show();
+                        j$(this).parent().prev().children().show();
+                    }
+                    // j$(this).next().show();
+                });
+               
+            }
+        }
+
+         function hotel(){
+            var cmb = j$("select[id$='hotel_YN']");
+            var approvalValue = cmb.val();
+            var approvalName = cmb.find("option:selected").text();
+            console.log('approvalValue: ' + approvalValue);
+            var hotel_checkin_date = j$('.hotel_hide');
+            if(approvalValue == "N"){
+                 hotel_checkin_date.each(function(){
+                    // j$(this).hide();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().hide();
+                        j$(this).parent().parent().prev().children().hide();
+                    }else{
+                        j$(this).parent().hide();
+                        j$(this).parent().prev().children().hide();
+                    }
+                    // j$(this).next().hide();
+                });
+                
+            }else{
+                hotel_checkin_date.each(function(){
+                    // j$(this).show();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().show();
+                        j$(this).parent().parent().prev().children().show();
+                    }else{
+                        j$(this).parent().show();
+                        j$(this).parent().prev().children().show();
+                    }
+                    // j$(this).next().show();
+                });
+               
+            }
+        }
+        //(E)  2017/06/09
+
+    //(S)  2017/08/03
+    function meal(){
+            var cmb = j$("select[id$='meal_YN']");
+            var approvalValue = cmb.val();
+            var approvalName = cmb.find("option:selected").text();
+            console.log('approvalValue: ' + approvalValue);
+            var meal_date = j$('.meal_hide');
+            if(approvalValue == "N"){
+                 meal_date.each(function(){
+                    // j$(this).hide();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().hide();
+                        j$(this).parent().parent().prev().children().hide();
+                    }else{
+                        j$(this).parent().hide();
+                        j$(this).parent().prev().children().hide();
+                    }
+                    // j$(this).next().hide();
+                });
+                
+            }else{
+                meal_date.each(function(){
+                    // j$(this).show();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().show();
+                        j$(this).parent().parent().prev().children().show();
+                    }else{
+                        j$(this).parent().show();
+                        j$(this).parent().prev().children().show();
+                    }
+                    // j$(this).next().show();
+                });
+               
+            }
+        }     
+
+    function souvenir(){
+            var cmb = j$("select[id$='souvenir_YN']");
+            var approvalValue = cmb.val();
+            var approvalName = cmb.find("option:selected").text();
+            console.log('approvalValue: ' + approvalValue);
+            var how_many_souvenir = j$('.souvenir_hide');
+            if(approvalValue == "N"){
+                 how_many_souvenir.each(function(){
+                    // j$(this).hide();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().hide();
+                        j$(this).parent().parent().prev().children().hide();
+                    }else{
+                        j$(this).parent().hide();
+                        j$(this).parent().prev().children().hide();
+                    }
+                    // j$(this).next().hide();
+                });
+                
+            }else{
+                how_many_souvenir.each(function(){
+                    // j$(this).show();
+                    if(j$(this).parent()[0].className == 'dateInput dateOnlyInput' || j$(this).parent()[0].className == 'dateInput'){
+                        j$(this).parent().parent().show();
+                        j$(this).parent().parent().prev().children().show();
+                    }else{
+                        j$(this).parent().show();
+                        j$(this).parent().prev().children().show();
+                    }
+                    // j$(this).next().show();
+                });
+               
+            }
+        }
+
+    //(E)  2017/08/03   
+
+    //(S)  2017/09/28
+      function notice(){
+            // var cmb = j$("select[id$='customer_name']");
+            // var customer_nameValue = cmb.val();
+            // console.log('customer_nameValue: ' + customer_nameValue);
+            // var desc = j$('.Notice_hide');       
+            //   if(customer_nameValue == "testname"){       
+            //      j$(this).show();              
+            //    }
+               j$("input[id$='customer_name']").change(function(){
+                    //alert("aaa");
+                    if(j$("input[id$='customer_name']").val() == "Applied Materials, Inc."){
+                        j$("textarea[id$='notice']").val("Ian不吃蝦"); 
+                    }
+                   
+               });
+               }       
+    //(E)  2017/09/28
+
+     j$(document).ready(function(){
+
+         notice();
+     });
+    </script>
+
+</head>
+
+<body>
+<apex:sectionHeader title="來賓接待申請流程" subtitle="新建/编輯"></apex:sectionHeader>
+    <!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" >
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+                <!--apex:inputField value="{!am.Approval_Name__c}"></apex:inputField-->
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="主要信息" >
+                
+                <!--apex:outputField value="{!am.Dept_Name__c}"></apex:outputField-->
+
+                <apex:inputField value="{!am.reception_date__c}"></apex:inputField>
+
+                <apex:inputField value="{!am.leave_date__c}"></apex:inputField>
+
+                <apex:inputField value="{!am.reception_emp_name__c}"></apex:inputField>
+
+                <apex:outputField value="{!am.reception_emp_no__c}"></apex:outputField>                
+
+                <apex:inputField value="{!am.company_person__c}"></apex:inputField>
+
+                <apex:inputField value="{!am.Cost_Center__c}"></apex:inputField>
+
+            </apex:pageBlockSection>    
+
+            <apex:pageBlockSection title="來賓資料信息" >
+
+                <apex:inputField id="customer_name" value="{!am.customer_name__c}"></apex:inputField>
+
+                <apex:inputField value="{!am.customer_no__c}"></apex:inputField>
+
+                <apex:inputField value="{!am.Customer_name1__c}"></apex:inputField>
+
+                <apex:inputField value="{!am.how_many_visitor__c}"></apex:inputField>
+
+            <!--/apex:pageBlockSection-->    
+
+            <!--apex:pageBlockSection columns="1"-->
+
+                <apex:inputField value="{!am.visit_reason__c}"></apex:inputField>    
+
+                <apex:inputField id="notice" value="{!am.notice__c}"></apex:inputField>
+
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="代訂餐盒料信息" columns="1" >  
+
+                <apex:inputField id="meal_YN" value="{!am.meal_YN__c}" onchange="meal()"></apex:inputField>  
+
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection >    
+
+                <apex:inputField value="{!am.meal_date__c}" styleClass="meal_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.select_meal__c}" styleClass="meal_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.meat_vegetarian__c}" styleClass="meal_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.meal_box_type__c}" styleClass="meal_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.meal_expense__c}" styleClass="meal_hide"></apex:inputField>
+
+            </apex:pageBlockSection>    
+
+            <apex:pageBlockSection title="餽贈禮品信息" columns="1" >
+
+                <apex:inputField id="souvenir_YN" value="{!am.souvenir_YN__c}" onchange="souvenir()"></apex:inputField> 
+
+            </apex:pageBlockSection>    
+
+            <apex:pageBlockSection >
+
+                <apex:inputField value="{!am.how_many_souvenir__c}" styleClass="souvenir_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.souvenir__c}" styleClass="souvenir_hide"></apex:inputField>
+
+            </apex:pageBlockSection>
+
+
+            <apex:pageBlockSection title="派車接送至公司信息" columns="1" >
+
+   
+                <apex:inputField id="pickup_car_YN" value="{!am.pickup_car_YN__c}" onchange="pickup_car()"></apex:inputField>
+
+            </apex:pageBlockSection>    
+
+            <apex:pageBlockSection >                
+
+                <apex:inputField value="{!am.pickup_car_time__c}" styleClass="pickup_car_hide"></apex:inputField>     
+
+                <apex:inputField value="{!am.pickup_car_place__c}" styleClass="pickup_car_hide"></apex:inputField> 
+
+            </apex:pageBlockSection>    
+
+            <apex:pageBlockSection title="派車送離公司信息" columns="1" >
+
+                <apex:inputField id="deliver_car_YN" value="{!am.deliver_car_YN__c}" onchange="deliver_car()"></apex:inputField>
+
+            </apex:pageBlockSection>    
+
+            <apex:pageBlockSection >
+
+                <apex:inputField value="{!am.deliver_car_time__c}" styleClass="deliver_car_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.deliver_car_place__c}" styleClass="deliver_car_hide"></apex:inputField>
+
+            </apex:pageBlockSection>    
+
+            <apex:pageBlockSection title="安排接機信息" columns="1" >
+
+                <apex:inputField id="pickup_plane_YN" value="{!am.pickup_plane_YN__c}" onchange="toggle()"></apex:inputField>
+
+            </apex:pageBlockSection>    
+
+            <apex:pageBlockSection >
+
+                <apex:inputField value="{!am.pickup_plane_time__c}" styleClass="needtohidebypicklist"></apex:inputField> 
+
+                <apex:inputField value="{!am.pickup_airport__c}" styleClass="needtohidebypicklist"></apex:inputField>
+
+                <apex:inputField value="{!am.pickup_airline__c}" styleClass="needtohidebypicklist" style="width:173px;"></apex:inputField>
+
+                <apex:inputField value="{!am.pickup_fly_no__c}" styleClass="needtohidebypicklist"></apex:inputField>
+
+                <apex:inputField value="{!am.pickup_plane_other__c}" styleClass="needtohidebypicklist"></apex:inputField>
+
+            </apex:pageBlockSection>    
+
+            <apex:pageBlockSection title="安排送機信息" columns="1" >
+
+                <apex:inputField id="deliver_plane_YN" value="{!am.deliver_plane_YN__c}" onchange="deliver_plane()"></apex:inputField>
+
+            </apex:pageBlockSection>    
+
+            <apex:pageBlockSection >
+
+                <apex:inputField value="{!am.deliver_plane_time__c}" styleClass="deliver_plane_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.deliver_airport__c}" styleClass="deliver_plane_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.deliver_airline__c}" styleClass="deliver_plane_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.deliver_fly_no__c}" styleClass="deliver_plane_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.deliver_plane_other__c}" styleClass="deliver_plane_hide"></apex:inputField>
+
+            </apex:pageBlockSection>    
+
+            <apex:pageBlockSection title="安排住宿信息" columns="1" >
+
+                <apex:inputField id="hotel_YN" value="{!am.hotel_YN__c}" onchange="hotel()"></apex:inputField>
+
+            </apex:pageBlockSection>    
+
+            <apex:pageBlockSection columns="3" >
+
+                <apex:inputField value="{!am.hotel_name__c}" styleClass="hotel_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.hotel_checkin_date__c}" styleClass="hotel_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.hotel_checkout_date__c}" styleClass="hotel_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.hotel_pay_method__c}" styleClass="hotel_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.hotel_guest_name__c}" styleClass="hotel_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.hotel_guest_phone__c}" styleClass="hotel_hide"></apex:inputField>      
+
+                <apex:inputField value="{!am.hotel_other_require__c}" styleClass="hotel_hide"></apex:inputField>
+
+                <!--apex:inputField id="pickup_plane_YN" value="{!am.pickup_plane_YN__c}" onchange="toggle()"></apex:inputField>
+
+                <apex:inputField value="{!am.notice__c}"></apex:inputField>
+
+                  <apex:inputField value="{!am.pickup_plane_date__c}" styleClass="needtohidebypicklist"></apex:inputField>
+
+                  <apex:inputField value="{!am.pickup_plane_time__c}" styleClass="needtohidebypicklist"></apex:inputField>
+
+                  <apex:inputField value="{!am.pickup_airport__c}" styleClass="needtohidebypicklist"></apex:inputField>
+
+                  <apex:inputField value="{!am.pickup_airline__c}" styleClass="needtohidebypicklist" style="width:173px;"></apex:inputField>
+
+                  <apex:inputField value="{!am.pickup_fly_no__c}" styleClass="needtohidebypicklist"></apex:inputField>
+
+                  <apex:inputField value="{!am.pickup_fly_person_no__c}" styleClass="needtohidebypicklist"></apex:inputField>
+
+
+                <apex:inputField id="dropvalue" value="{!am.pickup_board_YN__c}" onchange="toggleData()"></apex:inputField>               
+                
+
+                <apex:inputField id="desc" value="{!am.pickup_board_content__c}"></apex:inputField>     
+                      
+
+                <apex:inputField id="deliver_plane_YN" value="{!am.deliver_plane_YN__c}" onchange="deliver_plane()"></apex:inputField>                
+
+                <apex:inputField value="{!am.deliver_plane_date__c}" styleClass="deliver_plane_hide"></apex:inputField>
+
+
+                <apex:inputField value="{!am.deliver_plane_time__c}" styleClass="deliver_plane_hide"></apex:inputField>             
+                
+
+                <apex:inputField value="{!am.deliver_airport__c}" styleClass="deliver_plane_hide"></apex:inputField>                
+
+                <apex:inputField value="{!am.deliver_airline__c}" styleClass="deliver_plane_hide"></apex:inputField>              
+                
+
+                <apex:inputField value="{!am.deliver_method__c}" styleClass="deliver_plane_hide"></apex:inputField>      
+
+                <apex:inputField value="{!am.deliver_fly_person_no__c}" styleClass="deliver_plane_hide"></apex:inputField>                
+                
+                
+                <apex:inputField id="pickup_car_YN" value="{!am.pickup_car_YN__c}" onchange="pickup_car()"></apex:inputField>
+                
+
+                <apex:inputField value="{!am.pickup_car_date__c}" styleClass="pickup_car_hide"></apex:inputField>                
+                
+
+                <apex:inputField value="{!am.pickup_car_guest_name__c}" styleClass="pickup_car_hide"></apex:inputField>
+                    
+
+                 <apex:inputField value="{!am.pickup_car_guest_phone__c}" styleClass="pickup_car_hide"></apex:inputField>                                                               
+                    
+                 <apex:inputField value="{!am.pickup_car_time__c}" styleClass="pickup_car_hide"></apex:inputField>
+                
+
+                <apex:inputField value="{!am.pickup_car_place__c}" styleClass="pickup_car_hide"></apex:inputField>               
+                
+                
+                <apex:inputField id="deliver_car_YN" value="{!am.deliver_car_YN__c}" onchange="deliver_car()"></apex:inputField>       
+                
+                <apex:inputField value="{!am.deliver_car_date__c}" styleClass="deliver_car_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.deliver_car_guest_name__c}" styleClass="deliver_car_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.deliver_car_guest_phone__c}" styleClass="deliver_car_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.deliver_car_time__c}" styleClass="deliver_car_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.deliver_car_place__c}" styleClass="deliver_car_hide"></apex:inputField>
+
+                <apex:inputField id="hotel_YN" value="{!am.hotel_YN__c}" onchange="hotel()"></apex:inputField>
+
+                <apex:inputField value="{!am.hotel_name__c}" styleClass="hotel_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.hotel_checkin_date__c}" styleClass="hotel_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.hotel_checkout_date__c}" styleClass="hotel_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.hotel_pay_method__c}" styleClass="hotel_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.hotel_guest_name__c}" styleClass="hotel_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.hotel_guest_phone__c}" styleClass="hotel_hide"></apex:inputField>
+
+                <apex:inputField value="{!am.hotel_other_require__c}" styleClass="hotel_hide"></apex:inputField>       
+                
+                <apex:inputField value="{!am.others__c}"></apex:inputField>
+                
+                <apex:inputField value="{!am.how_many_souvenir__c}"></apex:inputField-->     
+
+ </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+<script>
+
+</script>
+</body>
+</html>
+
+</apex:page>

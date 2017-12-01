@@ -1,0 +1,280 @@
+<apex:page controller="ApprovalContactExtension" docType="html-5.0" showHeader="true" readOnly="true">												
+
+	<head>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+  		<link rel="stylesheet" href="/resources/demos/style.css"/>
+	    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
+	    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+ 	    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+		<apex:stylesheet value="{!URLFOR($Resource.loading,'loading.gif')}" />
+		<style>
+			th.dataTableTh{
+				background: #f2f3f3;
+			    border-width: 1px 0 1px 1px;
+			    border-style: solid;
+			    border-color: #ccc;
+			    color: #000;
+			    font-weight: bold;
+			    padding: 5px 2px 4px 5px;
+			}
+			td.dataTableTd{
+				padding: 5px 3px;
+				text-align:left;
+				border-width: 1px 0px 1px 0px;
+				border-style: solid;
+				border-color: #ededed;
+    			color: #000;
+			}
+			td.rfc_info{
+				width: 200px;
+				padding: 5px 3px;
+				text-align:left;
+				border-width: 1px 0px 1px 0px;
+				border-style: solid;
+				border-color: #ededed;
+    			color: #000;
+			}
+			.colOper{
+				width:35px;
+				padding: 5px 0 5px 5px;
+				text-align: left;
+				border-width: 1px 0px 1px 0px;
+				border-style: solid;
+				border-color: #ededed;
+			}
+			.detailList tbody tr td table{
+				width:100%;
+				border-width: 1px;
+				border-style: solid;
+			    border-color: #ddd;
+			}
+			.detailList tbody tr td table tr{
+				background-color: #fff;
+			}
+			.detailList tbody tr td table tr:hover{
+				background-color: #eee;
+			}
+			.btnLink:link{
+				color: #015ba7;
+			    text-decoration: none;
+			    font-weight: normal;
+			}
+			.btnLink:hover{
+				color: #f00;
+			    text-decoration: none;
+			    font-weight: normal;
+			}
+			.btnLink:visited{
+				color: #015ba7;
+			    text-decoration: none;
+			    font-weight: normal;
+			}
+			.data2Col{padding-left:0px !important;padding-right:0px !important;}
+			.tertiaryPalette{background:#4c280f !important;border-color:#4c280f !important}
+			.requiredInput{
+               float: right;
+           }
+		</style>
+		<script>
+			// Apex直接進js
+			var objList = jQuery.parseJSON('{!JSENCODE(objList)}');
+			
+			for (var i = objList.length - 1; i >= 0; i--) {
+				console.log(objList[i]);
+			}
+		    $( function() {
+			    $( "#tabs" ).tabs();
+			    $('#example').DataTable( {
+				        "data": objList,
+					    "columns": [
+					    	{ "data": "Department" },
+					    	{ "data": "Contact_Code" },
+					        { "data": "Contact_Name" },
+					        {"data": "profileImageUrl" }
+					    ],
+					    "columnDefs": [
+						    { "title": "部門", "targets": 0 },
+						    { "title": "員工編號", "targets": 1 },
+						    { "title": "姓名", "targets": 2 },
+						    { "title": "大頭貼", "targets": 3 ,"data": "profileImageUrl", "render":function ( data, type, row, meta ){return "<img src="+data+"></img>";}
+								}
+						  ]
+				        
+				    } );
+		    } );
+		</script>
+	</head>
+	<!-- 灰屏 -->
+    <apex:outputpanel id="aaa">
+        <apex:actionstatus id="retrieveStatus">
+            <apex:facet name="start" >
+                <div class="waitingSearchDiv" id="el_loading" style=" background-color: #fbfbfb ;
+                       height: 2000px;opacity :0.65;width:100%;" >
+                    <div class="waitingHolder" style="position: fixed;top : 30%; right:50%;width: 91px;" >
+                        <img class="waitingImage" src="/img/loading.gif" title="正在加载数据，请稍候..." />
+                        <span class="waitingDescription" >正在加载数据，请稍候 ...</span >
+                    </div>
+                </div> 
+            </apex:facet>
+        </apex:actionstatus>
+    </apex:outputpanel>
+	<apex:form >
+		 <!-- 刷新选择流程数据 -->
+        <apex:actionFunction action="{!query}" id="QueryApprovalData" name="QueryApprovalData" reRender="lstApproval" status="retrieveStatus">
+            <!--<apex:param assignTo="{!selectedModelGroupValue}" name="modelGroupValue" value=""></apex:param>
+            <apex:param assignTo="{!selectedStatusValue}" name="statusValue" value=""></apex:param>
+            <apex:param assignTo="{!selectedApprovalStartTime}" name="startTime" value=""></apex:param>
+            <apex:param assignTo="{!selectedApprovalEndTime}" name="endTime" value=""></apex:param>  --> 
+        </apex:actionFunction>          
+		<apex:pageBlock title="電話簿">
+
+		<div id="tabs">
+		  <ul>
+	        <li><a href="#tabs-1">查詢聯絡人</a></li>
+	        <li><a href="#tabs-2">TWKL會議室</a></li>
+	        <li><a href="#tabs-3">KSKL會議室</a></li>
+	        <li><a href="#tabs-4">TEST</a></li>
+	      </ul>
+
+		  <div id="tabs-1">
+			<!--第一行-->
+			<div style="width:100%;float:left;padding:10px 0px; vertical-align: middle;">
+				<div style="float:left;">
+			  <h1>工廠:</h1>
+					 <apex:inputField id="cmbfactory" value="{!meta.Human_Range__c}" label="">
+					 </apex:inputField>
+			  </div>
+			  <div style="float:left;margin-left:5px;">
+				<h1>部門:</h1>
+					 <apex:inputField id="cmbDeptName" value="{!meta.Department}" Style="width:100px" label=""></apex:inputField>
+			  </div>
+			</div>
+			<!-- 第二行 -->
+			<div style="width:100%;float:left;padding:10px 0px; vertical-align: middle;">
+			  <div style="float:left;margin-left:5px;">
+				<h1>輸入工號：</h1>　
+					<apex:inputField id="cmbContactCode" value="{!meta.Number__c}" Style="width:100px" label=""></apex:inputField>
+		      </div>
+			  <div style="float:left;margin-left:5px;">
+				<h1>輸入員工姓名：</h1>　
+					<apex:inputField id="cmbContactName" value="{!meta.SAPID__c}" Style="width:100px" label=""></apex:inputField>
+			  </div>
+			  <div style="float:left;margin-left:5px;">
+				<h1>輸入email：</h1>　
+					<apex:inputField id="cmbContactEmail" value="{!meta.Native_Place__c}" Style="width:100px" label=""></apex:inputField>
+			  </div>
+			  <div style="left;">
+					<input type="button" value="{!$Label.Query}" onclick="queryApproval()" style="padding:2px 10px;" class="btn" />
+			  </div>
+			</div>
+
+			<apex:pageBlockSection id="lstApproval" title="{!selectedContactNameValue}查询结果列表" columns="1">
+				<!-- 不选择审批流程时显示的Table -->
+				<apex:dataTable value="{!allApproval}" var="row">		
+					<!-- 所有流程公共显示字段 -->
+					<!-- <apex:column styleClass="dataTableTd" headerValue="工廠" headerClass="dataTableTh" value="{!row.factory}">
+					</apex:column> -->
+					<apex:column styleClass="dataTableTd" headerValue="部門" headerClass="dataTableTh" value="{!row.Department}">
+					</apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="聯絡人工號" headerClass="dataTableTh" value="{!row.Contact_Code}" >
+					</apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="聯絡人姓名" headerClass="dataTableTh" value="{!row.Contact_Name}" >
+					</apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="分機號碼" headerClass="dataTableTh" value="{!row.Extension_Number}" >
+					</apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="手機簡碼" headerClass="dataTableTh" value="{!row.Phone}">
+					</apex:column>
+					<!-- <apex:column styleClass="dataTableTd" headerValue="Email" headerClass="dataTableTh" value="{!row.Email}">
+					</apex:column> -->
+					<apex:column styleClass="dataTableTd" headerValue="頭像" headerClass="dataTableTh" id="img">
+					<apex:image url="{!row.profileImageUrl}" id="profileImage" style="display:block; margin:auto;"/>
+					</apex:column>				
+				</apex:dataTable>
+			</apex:pageBlockSection>
+		  </div>
+
+		
+
+	      <div id="tabs-2">
+	        <table border="0"  cellpadding='5'>
+	          <th style="text-align:center;">
+	            TWKL:04-2681-5088<br/>
+	            TW業務單位:04-2681-0509<br/>
+	            TW採購單位:04-2681-5359<br/> 
+	          </th>
+		      <tr>
+		        <td>
+			      <table border="1" class="smlTable" rules="all" cellpadding='5'>
+				    <tr>
+					  <th rowspan="3" style="vertical-align:middle;">TW東六-會議室</th>
+					  <td>B1 大會議室 (有投影)</td><td>15153</td>
+				    </tr>
+				    <tr><td>B1 小會議室 (無投影)</td><td>15154</td></tr>
+				    <tr><td>2F 視訊會議室 (財務,資訊)</td><td>15216</td></tr>
+			      </table>
+			    
+			      <table border="1" class="smlTable" rules="all" cellpadding='5'>
+				    <tr>
+					  <th rowspan="6" style="vertical-align:middle;">TW東九-會議室</th>
+					  <td>1F 水星 (管理部)</td><td>13117</td>
+				    </tr>
+				    <tr><td>2F 金星 (業務部)</td><td>13267</td></tr>
+				    <tr><td>2F 木星 (有投影)</td><td>13104</td></tr>
+				    <tr><td>2F 土星 (無投影)</td><td>13229</td></tr>
+				    <tr><td style="vertical-align:middle;">2F 天王星 (大會議室-視訊)</td><td>13214<br/>13327</td></tr>
+				    <tr><td>3F 海王星 (研發部)</td><td>13331</td></tr>
+			      </table>
+			    </td>
+			  </tr>
+			</table>
+	      </div>
+
+	      <div id="tabs-3">
+	        <table border="0"  cellpadding='5'>
+	          <th style="text-align:center;">
+	            KS公司總機: 0512-57871991-1010/12101(寶萊分機)<br/>
+	            KS公司傳真: 0512-57871472<br/>
+	          </th> 
+	          <tr>
+	            <td>
+	              <table border="1" class="smlTable" rules="all" cellpadding='5'>
+	                <tr>
+	                <!-- <th rowspan="10" style="vertical-align:middle;">KS昆山會議室</th>
+			         -->
+			        <th colspan="2" style="text-align:center;">KS昆山會議室</th> 
+			        </tr>
+			        <tr><td>六角</td><td>10826</td></tr>
+			        <tr><td>跑車</td><td>10825</td></tr>
+			        <tr><td>樓梯</td><td>10827</td></tr>
+			        <tr><td>U 形</td><td>10828</td></tr>
+			        <tr><td>視訊</td><td>10818</td></tr>
+			        <tr><td>多媒體</td><td>10829</td></tr>
+			        <tr><td>電話會議室1</td><td>10901</td></tr>
+			        <tr><td>電話會議室2</td><td>10902</td></tr>
+			        <tr><td>電話會議室3</td><td>10903</td></tr>
+			      </table>
+			    </td>
+			  </tr>
+	        </table>
+	      </div>
+
+	       <div id="tabs-4">
+	       <table id="example" class="display" width="100%"></table>
+	      <apex:dataTable value="{!allApproval}" var="row">		
+
+					<apex:column styleClass="dataTableTd"  headerClass="dataTableTh" value="{!row.Klphone}">
+					</apex:column>
+						</apex:dataTable>
+						
+	      </div>
+	    </div>
+		
+		</apex:pageBlock>
+	</apex:form>
+	<script>
+		function queryApproval(){
+			QueryApprovalData();
+		}
+	</script>
+</apex:page>

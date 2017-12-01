@@ -1,0 +1,69 @@
+<apex:page standardController="Approval_Managed2__c" extensions="AMQTW_CustomerComplaintExtension"  sidebar="false">
+<!-- QTW客訴申請流程 -->
+<head>
+    <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+    <style>
+            input.text {
+                text-align: center;
+            }
+            div.scroll{
+                width:1200px; 
+                height:200px; 
+                overflow:scroll;
+            }
+            textarea{
+                width: 75%
+            }
+            table.list th,table.list td{
+                text-align: center;
+            }
+     </style>
+
+</head>
+
+  <apex:sectionHeader title="QTW客訴申請流程" subtitle="新建/编輯 QTW客訴申請流程"></apex:sectionHeader>
+    <!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+      <apex:pageBlock >
+        <apex:pageBlockButtons >
+        	<apex:commandButton action="{!save}" style="padding:3px 5px;"  value="保存"/>
+        	<apex:commandButton action="{!cancel}" style="padding:3px 5px;" value="取消" immediate="true"/>
+        </apex:pageBlockButtons>
+
+            <apex:pageBlockSection title="基本資訊" collapsible="false">
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}" id="Name"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"  id="Approval_Name__c"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}" id="Applicant__c"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"  id="Dept_Name__c"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期 -->
+                <apex:outputField value="{!am.Bill_Date__c}" id="Bill_Date__c"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Status__c}" id="Status__c"></apex:outputField>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="QTW客訴申請流程" >
+                <!-- 申請單位代碼-->
+                <apex:inputField value="{!am.Applicationcode__c}" ></apex:inputField>
+                <!-- 公司代碼 -->
+                <apex:inputField value="{!am.Applicant_Corp_Code__c}" ></apex:inputField> 
+                <!-- 客戶代碼 -->
+                <apex:inputField value="{!am.Cust_code__c}" ></apex:inputField> 
+                <!-- 需求回覆日期 -->
+                <apex:inputField value="{!am.Demand_date__c}" ></apex:inputField> 
+                <!-- 客戶描述 -->
+                <!-- 客訴單內容 -->
+                <apex:inputField value="{!am.Form_content__c}" ></apex:inputField> 
+              </apex:pageBlockSection>
+
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

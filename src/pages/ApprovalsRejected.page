@@ -1,0 +1,28 @@
+<apex:page controller="ApprovalsRejectedController">
+<script>
+	function navigateUrl(){
+		window.parent.location = '/04i';
+	}
+	function myrefresh(){
+	window.location.reload();
+	}
+	setTimeout('myrefresh()',10000); //指定60秒刷新一次
+</script>
+	<apex:form >
+		<!--<apex:pageBlock title="{!$Label.approval_Project}">-->
+		<apex:pageBlock title="被拒绝的项目">
+			<apex:pageBlockTable value="{!lstPending}" var="item">
+				<apex:column headerValue="{!$Label.approval_RecordName}">
+						<apex:outputLink styleClass="btnLink" target="_blank" value="/{!(item.recordId)}">{!item.recordName}</apex:outputLink>
+				</apex:column>
+				<apex:column value="{!item.approvalRecordName}" headerValue="{!$Label.approval_Name}"/>
+				<apex:column value="{!item.approval_Rejectedinfo}" headerValue="{!$Label.approval_Rejectedinfo}"/>
+				<apex:column value="{!item.sObjectLabel}" headerValue="{!$Label.apporval_Object}"/>
+				<apex:column value="{!item.submiterName}" headerValue="{!$Label.approval_submitter}"/>
+				<apex:column value="{!item.applicantName}" headerValue="{!$Label.approval_Applicant}"/>
+ 				<apex:column value="{!item.submitDate}" headerValue="{!$Label.approval_SubmitDate}"/>
+
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

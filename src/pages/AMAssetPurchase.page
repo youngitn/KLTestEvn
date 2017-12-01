@@ -1,0 +1,163 @@
+<apex:page standardController="Approval_Managed__c" extensions="AMAssetPurchaseExtension" >
+<!-- 资产购置流程 -->
+<html>
+<head>
+    <!-- <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" /> -->
+</head>
+<body>
+<apex:sectionHeader title="资产购置流程" subtitle="新建/编辑资产购置流程"></apex:sectionHeader>
+    <!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" >
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期 -->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Status__c}"></apex:outputField>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="资产信息" >
+                <!-- 资本投资订单 -->
+                <apex:inputField value="{!am.Capital_Order__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Capital_Order__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Capital_Order__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Capital_Order__c'))}"></apex:outputField>
+                <!-- 采购订单号 -->
+<!--                 <apex:inputField value="{!am.Real_Purchase__c}"></apex:inputField>
+ -->                <!-- 预付订单号 -->
+                <apex:inputField value="{!am.Purchase__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Purchase__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Purchase__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Purchase__c'))}"></apex:outputField>
+                <!-- 供应商 -->
+                <apex:inputField value="{!am.Vendor__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Vendor__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Vendor__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Vendor__c'))}"></apex:outputField>
+                <!-- 采购价格 -->
+                <apex:inputField value="{!am.Price_Purchase__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Price_Purchase__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Price_Purchase__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Price_Purchase__c'))}"></apex:outputField>
+                <!-- 数量 -->
+                <apex:inputField value="{!am.Quantity__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Quantity__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Quantity__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Quantity__c'))}"></apex:outputField>
+                <!-- 请购单号 -->
+                <apex:inputField value="{!am.REQ_Code__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'REQ_Code__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.REQ_Code__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'REQ_Code__c'))}"></apex:outputField>
+                <!-- 交货周期 -->
+                <apex:inputField value="{!am.Period_Delivery__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Period_Delivery__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Period_Delivery__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Period_Delivery__c'))}"></apex:outputField>
+                <!-- 厂内产能是否可以负荷 -->
+                <apex:inputField value="{!am.Is_Ok_Factory_Burthen__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Is_Ok_Factory_Burthen__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Is_Ok_Factory_Burthen__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Is_Ok_Factory_Burthen__c'))}"></apex:outputField>
+                <!-- 资产型号 -->
+                <apex:inputField value="{!am.Model_of_Asset__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Model_of_Asset__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Model_of_Asset__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Model_of_Asset__c'))}"></apex:outputField>
+                <!-- 存货号 -->
+                <apex:inputField value="{!am.Stock_Number__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Stock_Number__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Stock_Number__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Stock_Number__c'))}"></apex:outputField>
+                <!-- 资产金额 -->
+                <apex:inputField value="{!am.Amount_Asset__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Amount_Asset__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Amount_Asset__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Amount_Asset__c'))}"></apex:outputField>
+                <!-- 资产状态 -->
+                <apex:inputField value="{!am.Status_Asset__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Status_Asset__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Status_Asset__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Status_Asset__c'))}"></apex:outputField>
+                <!-- 资产分类 -->
+                <apex:inputField value="{!am.Kind_of_Asset__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Kind_of_Asset__c'))}" style="width:173px;"></apex:inputField>
+                <apex:outputField value="{!am.Kind_of_Asset__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Kind_of_Asset__c'))}" style="width:173px;"></apex:outputField>
+                <!-- 预算币种 -->
+                <apex:inputField value="{!am.Currcency_Budget__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Currcency_Budget__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Currcency_Budget__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Currcency_Budget__c'))}"></apex:outputField>
+                <!-- 预算金额 -->
+                <apex:inputField value="{!am.Amount_of_Budget__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Amount_of_Budget__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Amount_of_Budget__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Amount_of_Budget__c'))}"></apex:outputField>
+                <!-- 预计发生金额 -->
+                <apex:inputField value="{!am.Amount_of_Forecast__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Amount_of_Forecast__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Amount_of_Forecast__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Amount_of_Forecast__c'))}"></apex:outputField>
+                <!-- 执照牌号 -->
+                <apex:inputField value="{!am.License_Number__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'License_Number__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.License_Number__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'License_Number__c'))}"></apex:outputField>
+                <!-- 设备号 -->
+                <apex:inputField value="{!am.Device_Number__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Device_Number__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Device_Number__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Device_Number__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="资产购置申请详细信息" >
+                <!-- 资产名称 -->
+                <apex:inputField value="{!am.Asset_Name__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Asset_Name__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Asset_Name__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Asset_Name__c'))}"></apex:outputField>
+                <!-- 型号规格 -->
+                <apex:inputField value="{!am.Model_and_Spec__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Model_and_Spec__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Model_and_Spec__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Model_and_Spec__c'))}"></apex:outputField>
+                <!-- 工厂 -->
+                <apex:inputField value="{!am.Factory__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Factory__c'))}" style="width:173px;"></apex:inputField>
+                <apex:outputField value="{!am.Factory__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Factory__c'))}" style="width:173px;"></apex:outputField>
+                <!-- 需求日期 -->
+                <apex:inputField value="{!am.Required_date__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Required_date__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Required_date__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Required_date__c'))}"></apex:outputField>
+                <!-- 工作中心 -->
+                <apex:inputField value="{!am.Work_Center__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Work_Center__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Work_Center__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Work_Center__c'))}"></apex:outputField>
+                <!-- 资产类型 -->
+                <apex:inputField value="{!am.Asset_Type__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Asset_Type__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Asset_Type__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Asset_Type__c'))}"></apex:outputField>
+                <!-- 资产编号 -->
+                <apex:inputField value="{!am.Asset_Code__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Asset_Code__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Asset_Code__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Asset_Code__c'))}"></apex:outputField>
+                <!-- 资产主编号(内文) -->
+                <apex:inputField value="{!am.Asset_Code_Inner__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Asset_Code_Inner__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Asset_Code_Inner__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Asset_Code_Inner__c'))}"></apex:outputField>
+                <!-- 库存注记 -->
+                <apex:inputField value="{!am.Stock_Note__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Stock_Note__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Stock_Note__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Stock_Note__c'))}"></apex:outputField>
+                <!-- 正式资产编号 -->
+                <apex:inputField value="{!am.Asset_Code_Official__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Asset_Code_Official__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Asset_Code_Official__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Asset_Code_Official__c'))}"></apex:outputField>
+                <!-- 预算外已支出金额 -->
+                <apex:inputField value="{!am.Amount_of_Paid__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Amount_of_Paid__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Amount_of_Paid__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Amount_of_Paid__c'))}"></apex:outputField>
+                <!-- 预定保管人 -->
+                <apex:inputField value="{!am.Keeper_Reserved__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Keeper_Reserved__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Keeper_Reserved__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Keeper_Reserved__c'))}"></apex:outputField>
+                <!-- 是否非预算 -->
+                <apex:inputField value="{!am.Is_Budgeted__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Is_Budgeted__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Is_Budgeted__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Is_Budgeted__c'))}"></apex:outputField>
+                <!-- 成本中心 -->
+                <apex:inputField value="{!am.Dept_of_CostCenter__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Dept_of_CostCenter__c'))}" style="width:173px;"></apex:inputField>
+                <apex:outputField value="{!am.Dept_of_CostCenter__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Dept_of_CostCenter__c'))}" style="width:173px;"></apex:outputField>
+                <!-- 币种 -->
+                <apex:inputField value="{!am.Currency__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Currency__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Currency__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Currency__c'))}"></apex:outputField>
+                <!-- 负责成本中心 -->
+                <apex:inputField value="{!am.Responsible_CostCenter__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Responsible_CostCenter__c'))}" style="width:173px;"></apex:inputField>
+                <apex:outputField value="{!am.Responsible_CostCenter__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Responsible_CostCenter__c'))}" style="width:173px;"></apex:outputField>
+                <!-- 物料号 -->
+                <apex:inputField value="{!am.Material_Number__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Material_Number__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Material_Number__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Material_Number__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1">
+                <!-- 购置原因 -->
+                <apex:inputField value="{!am.Reason_of_Purchase__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Reason_of_Purchase__c'))}" style="width: 50%"></apex:inputField>
+                <apex:outputField value="{!am.Reason_of_Purchase__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Reason_of_Purchase__c'))}" style="width: 50%"></apex:outputField>
+                <!-- 影响本期损益结果 -->
+                <apex:inputField value="{!am.Result_Effect_Current_Period__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Result_Effect_Current_Period__c'))}" style="width: 50%"></apex:inputField>
+                <apex:outputField value="{!am.Result_Effect_Current_Period__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Result_Effect_Current_Period__c'))}" style="width: 50%"></apex:outputField>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+<script>
+
+</script>
+</body>
+</html>
+</apex:page>

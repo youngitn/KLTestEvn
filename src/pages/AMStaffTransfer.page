@@ -1,0 +1,133 @@
+<apex:page standardController="Approval_Managed__c" extensions="AMStaffTransferExtension">
+<!-- 员工异动管理流程 -->
+<apex:sectionHeader title="员工异动管理流程" subtitle="新建/编辑员工异动管理流程"></apex:sectionHeader>
+    <!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="流程审批信息" >
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期 -->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Status__c}"></apex:outputField>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="员工异动信息" >
+                <!-- 员工 -->
+                <apex:inputField value="{!am.Employee__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Employee__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Employee__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Employee__c'))}"></apex:outputField>
+                <!-- 员工（工号） -->
+                <apex:outputField value="{!am.Employee_Code__c}"></apex:outputField>
+                <!-- 员工（姓名） -->
+                <apex:outputField value="{!am.Employee_Name__c}"></apex:outputField>
+                <!-- 人事范围 -->
+                <apex:inputField value="{!am.Human_Range__c}"></apex:inputField>
+                <!-- 原工作单位 -->
+                <apex:inputField value="{!am.Work_Company_Old__c}"></apex:inputField>
+                <!-- 异动工作单位 -->
+                <apex:inputField value="{!am.Work_Company_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Work_Company_New__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Work_Company_New__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Work_Company_New__c'))}"></apex:outputField>
+                <!-- 原职务 -->
+                <apex:inputField value="{!am.Job_Title_Old__c}"></apex:inputField>
+                <!-- 异动职务 -->
+                <apex:inputField value="{!am.Job_Title_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Job_Title_New__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Job_Title_New__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Job_Title_New__c'))}"></apex:outputField>
+                <!-- 原员工组 -->
+                <apex:outputField value="{!am.Staff_Group_Name__c}"></apex:outputField>
+                <!-- 员工组 -->
+                <apex:inputField value="{!am.Staff_Group_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Staff_Group_New__c'))}" style="width:173px;"></apex:inputField>
+                <apex:outputField value="{!am.Staff_Group_New__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Staff_Group_New__c'))}" style="width:173px;"></apex:outputField>
+                <!-- 原员工子组 -->
+                <apex:outputField value="{!am.Staff_Sub_Group_Name__c}"></apex:outputField>
+                <!-- 员工子组 -->
+                <apex:inputField value="{!am.Staff_Sub_Group_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Staff_Sub_Group_New__c'))}" style="width:173px;"></apex:inputField>
+                <apex:outputField value="{!am.Staff_Sub_Group_New__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Staff_Sub_Group_New__c'))}" style="width:173px;"></apex:outputField>
+                <!-- 原职等职级 -->
+                <apex:inputField value="{!am.Job_Title_Level_Old__c}"></apex:inputField>
+                <!-- 异动职等职级 -->
+                <apex:inputField value="{!am.Job_Title_Level_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Job_Title_Level_New__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Job_Title_Level_New__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Job_Title_Level_New__c'))}"></apex:outputField>
+                <!-- 异动职务编号 -->
+                <apex:inputField value="{!am.Job_Title_New_Code__c}"></apex:inputField>
+                <!-- 操作原因 -->
+                <apex:inputField value="{!am.Reason_of_Operate__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Reason_of_Operate__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Reason_of_Operate__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Reason_of_Operate__c'))}"></apex:outputField>
+                <!-- 是否薪资调整 -->
+                <apex:inputField value="{!am.Is_Salary_Adjust__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Is_Salary_Adjust__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Is_Salary_Adjust__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Is_Salary_Adjust__c'))}"></apex:outputField>
+                <!-- 生效日期 -->
+                <apex:inputField value="{!am.Validate_Date__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Validate_Date__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Validate_Date__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Validate_Date__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1">
+                <!-- 说明 -->
+                <apex:inputField value="{!am.Remark_of_Explain__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Remark_of_Explain__c'))}" style="width: 50%"></apex:inputField>
+                <apex:outputField value="{!am.Remark_of_Explain__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Remark_of_Explain__c'))}" style="width: 50%"></apex:outputField>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="工作移交确认" >
+                <!-- 工作移交是否完成 -->
+                <apex:inputField value="{!am.Is_Work_Transfered__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Is_Work_Transfered__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Is_Work_Transfered__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Is_Work_Transfered__c'))}"></apex:outputField>
+                 <!-- 交接日期 -->
+                <apex:inputField value="{!am.Transfer_Date__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Transfer_Date__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Transfer_Date__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Transfer_Date__c'))}"></apex:outputField>
+                <!-- 上级主管 -->
+                <apex:inputField value="{!am.Supervisor1__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Supervisor1__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Supervisor1__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Supervisor1__c'))}"></apex:outputField>
+                <!-- 交接人 -->
+                <apex:inputField value="{!am.Handover_Man1__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Handover_Man1__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Handover_Man1__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Handover_Man1__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="工作柜钥匙确认">
+                <!-- 工作柜钥匙是否交还 -->
+                <apex:inputField value="{!am.Is_Key_Returned__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Is_Key_Returned__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Is_Key_Returned__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Is_Key_Returned__c'))}"></apex:outputField>
+                <!-- 上级主管 -->
+                <apex:inputField value="{!am.Supervisor2__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Supervisor2__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Supervisor2__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Supervisor2__c'))}"></apex:outputField>
+                <!-- 交接人 -->
+                <apex:inputField value="{!am.Handover_Man2__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Handover_Man2__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Handover_Man2__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Handover_Man2__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="所借物品确认">
+                <!-- 所借物品是否交还 -->
+                <apex:inputField value="{!am.Is_Good_Regurned__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Is_Good_Regurned__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Is_Good_Regurned__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Is_Good_Regurned__c'))}"></apex:outputField>
+                <!-- 上级主管 -->
+                <apex:inputField value="{!am.Supervisor3__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Supervisor3__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Supervisor3__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Supervisor3__c'))}"></apex:outputField>
+                <!-- 交接人 -->
+                <apex:inputField value="{!am.Handover_Man3__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Handover_Man3__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Handover_Man3__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Handover_Man3__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="领用物品/文件/工具确认">
+                <!-- 工具文件是否交还 -->
+                <apex:inputField value="{!am.Is_Tools_Returned__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Is_Tools_Returned__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Is_Tools_Returned__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Is_Tools_Returned__c'))}"></apex:outputField>
+                <!-- 上级主管 -->
+                <apex:inputField value="{!am.Supervisor4__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Supervisor4__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Supervisor4__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Supervisor4__c'))}"></apex:outputField>
+                <!-- 交接人 -->
+                <apex:inputField value="{!am.Handover_Man4__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Handover_Man4__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Handover_Man4__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Handover_Man4__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

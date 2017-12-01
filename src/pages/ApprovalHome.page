@@ -1,0 +1,499 @@
+<apex:page controller="ApprovalHomeController" showHeader="true">
+    <head>
+        <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.loading,'loading.gif')}" />
+        <style>
+            th.dataTableTh{
+                background: #f2f3f3;
+                border-width: 1px 0 1px 1px;
+                border-style: solid;
+                border-color: #ccc;
+                color: #000;
+                font-weight: bold;
+                padding: 5px 2px 4px 5px;
+            }
+            td.dataTableTd{
+                padding: 5px 3px;
+                text-align:left;
+                border-width: 1px 0px 1px 0px;
+                border-style: solid;
+                border-color: #ededed;
+                color: #000;
+            }
+            .colOper{
+                width:35px;
+                padding: 5px 0 5px 5px;
+                text-align: left;
+                border-width: 1px 0px 1px 0px;
+                border-style: solid;
+                border-color: #ededed;
+            }
+            .detailList tbody tr td table{
+                width:100%;
+                border-width: 1px;
+                border-style: solid;
+                border-color: #ddd;
+            }
+            .detailList tbody tr td table tr{
+                background-color: #fff;
+            }
+            .detailList tbody tr td table tr:hover{
+                background-color: #eee;
+            }
+            .btnLink:link{
+                color: #015ba7 !important;
+                text-decoration: none;
+                font-weight: normal;
+                cursor: pointer;
+            }
+            .btnLink:hover{
+                color: #f00;
+                text-decoration: none;
+                font-weight: normal;
+                cursor: pointer;
+            }
+            .btnLink:visited{
+                color: #015ba7 !important;
+                text-decoration: none;
+                font-weight: normal;
+                cursor: pointer;
+            }
+            .data2Col{padding-left:0px !important;padding-right:0px !important;}
+            .tertiaryPalette{background:#4c280f !important;border-color:#4c280f !important}
+        </style>
+        <script>
+            var j$ = jQuery.noConflict();
+
+            function refreshApproval(){
+                var cmb = j$("select[id$='cmbApproval']");
+                var approvalValue = cmb.val();
+                var approvalName = cmb.find("option:selected").text();
+                if(approvalValue != ""){
+                    UpdateApprovalData(approvalValue,approvalName);
+                }
+            }
+            function getPrevPage(){
+                var cmb = j$("select[id$='cmbApproval']");
+                var approvalValue = cmb.val();
+                var approvalName = cmb.find("option:selected").text();
+                if(approvalValue != ""){
+                    PrevPage(approvalValue,approvalName);
+                }
+            }
+            function getNextPage(){
+                var cmb = j$("select[id$='cmbApproval']");
+                var approvalValue = cmb.val();
+                var approvalName = cmb.find("option:selected").text();
+                if(approvalValue != ""){
+                    NextPage(approvalValue,approvalName);
+                }
+            }
+            function getGotoPage(){
+                var cmb = j$("select[id$='cmbApproval']");
+                var approvalValue = cmb.val();
+                var approvalName = cmb.find("option:selected").text();
+                var paging = j$.trim(j$("#txtPaging").val());
+
+                var re = /^[1-9]+[0-9]*]*$/ ;//判断正整数
+            　　if (!re.test(paging)) {
+            　　　　alert("请输入一个有效的整数!");
+            　　　　return false;
+            　　}
+
+                if(approvalValue != "" && paging != ""){
+                    GotoPage(approvalValue,approvalName,paging);
+                }
+            }
+            function addNewApproval(){
+                var cmb = j$("select[id$='cmbApproval']");
+                var approvalValue = cmb.val();
+                var approvalName = cmb.find("option:selected").text();
+                if(approvalValue == ""){
+                    alert("请选择一个流程名称");
+                    return;
+                }else{
+                    CreateNewApproval(approvalValue,approvalName);
+                }
+            }
+        </script>
+    </head>
+    <!-- 灰屏 -->
+    <apex:outputpanel id="aaa">
+        <apex:actionstatus id="retrieveStatus">
+            <apex:facet name="start" >
+                <div class="waitingSearchDiv" id="el_loading" style=" background-color: #fbfbfb ;
+                       height: 2000px;opacity :0.65;width:100%;" >
+                    <div class="waitingHolder" style="position: fixed;top : 30%; right:50%;width: 91px;" >
+                        <img class="waitingImage" src="/img/loading.gif" title="正在加载数据，请稍候..." />
+                        <span class="waitingDescription" >正在加载数据，请稍候 ...</span >
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionstatus>
+    </apex:outputpanel>
+    <apex:form >
+         <!-- 刷新选择流程数据 -->
+        <apex:actionFunction action="{!UpdateApprovalData}" id="UpdateApprovalData" name="UpdateApprovalData" reRender="lstApproval" status="retrieveStatus">
+            <apex:param assignTo="{!selectedApprovalValue}" name="approvalValue" value=""></apex:param>
+            <apex:param assignTo="{!selectedApprovalName}" name="approvalName" value=""></apex:param>
+        </apex:actionFunction>
+        <apex:actionFunction action="{!CreateNewApproval}" id="CreateNewApproval" name="CreateNewApproval" reRender="lstApproval" status="retrieveStatus">
+            <apex:param assignTo="{!selectedApprovalValue}" name="approvalValue" value=""></apex:param>
+            <apex:param assignTo="{!selectedApprovalName}" name="approvalName" value=""></apex:param>
+        </apex:actionFunction>
+        <apex:actionFunction action="{!NextPage}" id="NextPage" name="NextPage" reRender="lstApproval" status="retrieveStatus">
+            <apex:param assignTo="{!selectedApprovalValue}" name="approvalValue" value=""></apex:param>
+            <apex:param assignTo="{!selectedApprovalName}" name="approvalName" value=""></apex:param>
+        </apex:actionFunction>
+        <apex:actionFunction action="{!PrevPage}" id="PrevPage" name="PrevPage" reRender="lstApproval" status="retrieveStatus">
+            <apex:param assignTo="{!selectedApprovalValue}" name="approvalValue" value=""></apex:param>
+            <apex:param assignTo="{!selectedApprovalName}" name="approvalName" value=""></apex:param>
+        </apex:actionFunction>
+        <apex:actionFunction action="{!GotoPage}" id="GotoPage" name="GotoPage" reRender="lstApproval" status="retrieveStatus">
+            <apex:param assignTo="{!selectedApprovalValue}" name="approvalValue" value=""></apex:param>
+            <apex:param assignTo="{!selectedApprovalName}" name="approvalName" value=""></apex:param>
+            <apex:param assignTo="{!pageCurr}" name="paging" value=""></apex:param>
+        </apex:actionFunction>
+        <apex:pageBlock title="流程创建">
+            <div style="width:100%;float:left;padding:10px 0px; vertical-align: middle;">
+                <div style="float:left;">
+                    {!$Label.lbl_Model_Group}：　
+                    <apex:inputField id="cmbModelGroup" value="{!meta.Model_Group__c}" label=""></apex:inputField>
+                </div>
+                <div style="float:left;margin-left:10px;">
+                    {!$Label.lbl_Selected_Approval}：　
+                    <apex:inputField id="cmbApproval" value="{!meta.Approval_Name__c}" label=""></apex:inputField>
+                </div>
+<!--                <div style="float:left;margin-left:20px;">
+                    <input type="button" value="{!$Label.btn_Refresh}" onclick="refreshApproval()" style="padding:2px 10px;" class="btn" />
+                </div> -->
+                <div style="float:left;margin-left:30px;">
+                    <input type="button" value="{!$Label.btn_New}" onclick="addNewApproval()" style="padding:2px 10px;" class="btn" />
+                </div>
+            </div>
+            <apex:pageBlockSection id="lstApproval" title="{!selectedApprovalName}列表" columns="1">
+                <apex:pageMessages />
+                <!-- Customer - 客户主数据维护流程 -->
+                <!-- Custom_Approval_Managed__c -->
+                <apex:dataTable value="{!lstCustomApproval}" var="row" rendered="{! selectedApprovalValue == 'Customer'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="{!('/apex/AMCustomer?id=' + row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Account_Number__c.label}" headerClass="dataTableTh"  value="{!row.Account_Number__c}"></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Account_Name__c.label}" headerClass="dataTableTh" value="{!row.Account_Name__c}"></apex:column>
+                </apex:dataTable>
+                <!-- Vendor - 供应商主数据维护流程 -->
+                <!-- Custom_Approval_Managed__c -->
+                <apex:dataTable value="{!lstCustomApproval}" var="row" rendered="{! selectedApprovalValue == 'Vendor'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Vendor_Number__c.label}" headerClass="dataTableTh" value="{!row.Vendor_Number__c}"></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Vendor_Name__c.label}" headerClass="dataTableTh" value="{!row.Vendor_Name__c}"></apex:column>
+                </apex:dataTable>
+                <!-- ExpenseReimburse - 费用报销流程 -->
+                <!-- Approval_Managed__c -->
+                <apex:dataTable value="{!lstApproval}" var="row" rendered="{! selectedApprovalValue == 'ExpenseReimburse'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Amount_of_General__c.label}" headerClass="dataTableTh" value="{!row.Amount_of_General__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Amount_of_Total__c.label}" headerClass="dataTableTh" value="{!row.Amount_of_Total__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- AdvanceCharge - 预付款申请流程 -->
+                <!-- Approval_Managed__c -->
+                <apex:dataTable value="{!lstApproval}" var="row" rendered="{! selectedApprovalValue == 'AdvanceCharge'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="{!('/apex/AMAdvanceCharge?id=' + row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant_Cost__c.label}" headerClass="dataTableTh" value="{!row.Applicant_Cost__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Amount_Prepay__c.label}" headerClass="dataTableTh" value="{!row.Amount_Prepay__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- StaffTransfer - 员工异动管理流程 -->
+                <!-- Approval_Managed__c -->
+                <apex:dataTable value="{!lstApproval}" var="row" rendered="{! selectedApprovalValue == 'StaffTransfer'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <!-- <apex:outputLink styleClass="btnLink" value="{!('/apex/AMStaffTransfer?id=' + row.id)}">{!$Label.Edit}</apex:outputLink> -->
+                        <apex:outputLink styleClass="btnLink" value="{! ('/' + row.id + '/e')}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Employee__c.label}" headerClass="dataTableTh" value="{!row.Employee__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Reason_of_Operate__c.label}" headerClass="dataTableTh" value="{!row.Reason_of_Operate__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- AssetPurchase – 资产购置流程 -->
+                <!-- Approval_Managed__c -->
+                <apex:dataTable value="{!lstApproval}" var="row" rendered="{! selectedApprovalValue == 'AssetPurchase'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="{!('/apex/AMAssetPurchase?id=' + row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Asset_Name__c.label}" headerClass="dataTableTh" value="{!row.Asset_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Reason_of_Purchase__c.label}" headerClass="dataTableTh" value="{!row.Reason_of_Purchase__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- StaffLeaveOffice – 员工主动离职流程 -->
+                <!-- Approval_Managed__c -->
+                <apex:dataTable value="{!lstApproval}" var="row" rendered="{! selectedApprovalValue == 'StaffLeaveOffice'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="{!('/apex/AMStaffLeaveOffice?id=' + row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Employee__c.label}" headerClass="dataTableTh" value="{!row.Employee__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Reason_of_Leave__c.label}" headerClass="dataTableTh" value="{!row.Reason_of_Leave__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- BusinessTravel  – 出差管理流程 -->
+                <!-- Custom_Approval_Managed__c -->
+                <apex:dataTable value="{!lstCustomApproval}" var="row" rendered="{! selectedApprovalValue == 'BusinessTravel'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Target_of_Travel__c.label}" headerClass="dataTableTh" value="{!row.Target_of_Travel__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Start_Travel_Datetime__c.label}" headerClass="dataTableTh" value="{!row.Start_Travel_Datetime__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.End_Travel_Datetime__c.label}" headerClass="dataTableTh" value="{!row.End_Travel_Datetime__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- SaleOrder  – 销售订单审批流程 -->
+                <!-- Custom_Approval_Managed__c -->
+                <apex:dataTable value="{!lstCustomApproval}" var="row" rendered="{! selectedApprovalValue == 'SaleOrder'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Bill_No__c.label}" headerClass="dataTableTh" value="{!row.Bill_No__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Reason_of_Order__c.label}" headerClass="dataTableTh" value="{!row.Reason_of_Order__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- PurchaseOrder  – 标准采购订单作业流程 -->
+                <!-- Approval_Managed__c -->
+                <apex:dataTable value="{!lstApproval}" var="row" rendered="{! selectedApprovalValue == 'PurchaseOrder'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Vendor__c.label}" headerClass="dataTableTh" value="{!row.Vendor__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Purchase_Group__c.label}" headerClass="dataTableTh" value="{!row.Purchase_Group__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- CostCenterSend  – 成本中心发料作业流程 -->
+                <!-- Custom_Approval_Managed__c -->
+                <apex:dataTable value="{!lstCustomApproval}" var="row" rendered="{! selectedApprovalValue == 'CostCenterSend'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="{!('/apex/AMCostCenterSend?id=' + row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Dept_of_CostCenter__c.label}" headerClass="dataTableTh" value="{!row.Dept_of_CostCenter__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Material_Voucherno__c.label}" headerClass="dataTableTh" value="{!row.Material_Voucherno__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- WasteDispose  – 废料处理流程 -->
+                <!-- Custom_Approval_Managed__c -->
+                <apex:dataTable value="{!lstCustomApproval}" var="row" rendered="{! selectedApprovalValue == 'WasteDispose'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="{!('/apex/AMWasteDispose?id=' + row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Type_of_Scrap__c.label}" headerClass="dataTableTh" value="{!row.Type_of_Scrap__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Amount_Receipts__c.label}" headerClass="dataTableTh" value="{!row.Amount_Receipts__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- PurchaseInformation  – 采购信息记录维护流程 -->
+                <!-- Custom_Approval_Managed__c -->
+                <apex:dataTable value="{!lstCustomApproval}" var="row" rendered="{! selectedApprovalValue == 'PurchaseInformation'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Number_of_Purchase_Info__c.label}" headerClass="dataTableTh" value="{!row.Number_of_Purchase_Info__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Kind_of_Material__c.label}" headerClass="dataTableTh" value="{!row.Kind_of_Material__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- AbnormalQuality  – 品质异常单流程 -->
+                <!-- Approval_Managed__c -->
+                <apex:dataTable value="{!lstApproval}" var="row" rendered="{! selectedApprovalValue == 'AbnormalQuality'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/apex/AMAbnormalQuality?id={!(row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Abnormal_Code__c.label}" headerClass="dataTableTh" value="{!row.Abnormal_Code__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Description__c.label}" headerClass="dataTableTh" value="{!row.Description__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Description_Avoid__c.label}" headerClass="dataTableTh" value="{!row.Description_Avoid__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- RFQ  – RFQ作业流程 -->
+                <!-- Custom_Approval_Managed__c -->
+                <apex:dataTable value="{!lstCustomApproval}" var="row" rendered="{! selectedApprovalValue == 'RFQ'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="{!('/apex/AMRFQ?id=' + row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Account_Number__c.label}" headerClass="dataTableTh" value="{!row.Account_Number__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Texture_of_Material__c.label}" headerClass="dataTableTh" value="{!row.Texture_of_Material__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Custom_Approval_Managed__c.fields.Surfacing__c.label}" headerClass="dataTableTh" value="{!row.Surfacing__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- EntertaineCost  – 交际应酬费申请流程 -->
+                <!-- Approval_Managed__c -->
+                <apex:dataTable value="{!lstApproval}" var="row" rendered="{! selectedApprovalValue == 'EntertaineCost'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Account_Name__c.label}" headerClass="dataTableTh" value="{!row.Account_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Place__c.label}" headerClass="dataTableTh" value="{!row.Place__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Employee_Name__c.label}" headerClass="dataTableTh" value="{!row.Employee_Name__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Kind_of_Cost__c.label}" headerClass="dataTableTh" value="{!row.Kind_of_Cost__c}" ></apex:column>
+                </apex:dataTable>
+                <!-- VisitorHosts – 來賓接待流程 -->              
+                <apex:dataTable value="{!lstApproval}" var="row" rendered="{! selectedApprovalValue == 'VisitorHosts'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="{!('/apex/AMVisitorHosts?id=' + row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed1__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed1__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed1__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>                 
+                </apex:dataTable>
+                <!-- Approval_Managed2__c -->
+                <!-- CancelTECOE – SAP生产工单取消TECO申请流程 -->                
+                <apex:dataTable value="{!lstApproval}" var="row" rendered="{! selectedApprovalValue == 'CancelTECO'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="{!('/apex/AMCancelTECOE?id=' + row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed2__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed2__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed2__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>             
+                </apex:dataTable>
+                <!-- InventoryProcess – 盤盈虧申請流程 -->             
+                <apex:dataTable value="{!lstApproval}" var="row" rendered="{! selectedApprovalValue == 'InventoryProcess'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="{!('/apex/AMInventoryProcess?id=' + row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed2__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed2__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed2__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>     
+                </apex:dataTable>
+               <!-- QTW_CustomerComplaint QTW客诉流程 -->
+               <apex:dataTable value="{!lstApproval}" var="row" rendered="{! selectedApprovalValue == 'QTW_CustomerComplaint'}">
+                    <apex:column styleClass="colOper" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="{!('/apex/AMQTW_CustomerComplaint?id=' + row.id)}">{!$Label.Edit}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed2__c.fields.Name.label}" headerClass="dataTableTh">
+                        <apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed2__c.fields.Applicant__c.label}" headerClass="dataTableTh" value="{!row.Applicant__c}" ></apex:column>
+                    <apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed2__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date__c}" ></apex:column>     
+                </apex:dataTable>  
+                 
+                <!--分页导航区-->
+                <apex:outputPanel rendered ="{! pageCount > 1}" style="width: 100%;text-align: center;margin-top:10px;">
+                    <apex:outputPanel style="margin-right:20px;float:left;font-weight: bold;padding:3px 5px;">
+                        当前页: <b style="color:red;">{! pageCurr} </b>/ {! pageCount}
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered ="{! pageCurr > 1}">
+                        <a onclick="getPrevPage()" class="btnLink" style="margin-right:5px;border:solid 1px #ccc;padding:3px 5px;">&lt; Prev</a>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{! pageCurr < pageCount}">
+                        <a onclick="getNextPage()" class="btnLink" style="margin-right:5px;border:solid 1px #ccc;padding:3px 5px;">Next &gt;</a>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="true">
+                        <input type="text" id="txtPaging" style="width:40px;margin:0px 5px;text-align: center;height: 17px;"/>
+                        <input type="button" onclick="getGotoPage()" style="cursor: pointer;" value="Goto"/>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

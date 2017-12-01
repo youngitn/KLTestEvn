@@ -1,0 +1,113 @@
+<apex:page standardController="Approval_Managed__c" extensions="AMStaffLeaveOfficeExtension">
+<!-- 员工主动离职流程 -->
+<html>
+<head>
+    <!-- <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" /> -->
+    <style>
+        textarea{
+                width: 75%
+            }
+    </style>
+</head>
+<body>
+<apex:sectionHeader title="员工主动离职流程" subtitle="新建/编辑员工主动离职流程"></apex:sectionHeader>
+    <!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" >
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据日期 -->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(公司代码) -->
+                <apex:outputField value="{!am.Applicant_Corp_Code__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="头信息" >
+                <!-- 员工 -->
+                <apex:inputField value="{!am.Employee__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Employee__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Employee__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Employee__c'))}"></apex:outputField>
+                <!-- 员工(工号) -->
+                <apex:outputField value="{!am.Employee_Code__c}"></apex:outputField>
+                <!-- 员工(姓名) -->
+                <apex:outputField value="{!am.Employee_Name__c}"></apex:outputField>
+                <!-- 人事范围 -->
+                <apex:inputField value="{!am.Human_Range__c}"></apex:inputField>
+                <!-- 部门 -->
+                <apex:inputField value="{!am.Department__c}"></apex:inputField>
+                <!-- 职务 -->
+                <apex:inputField value="{!am.Job_Title__c}"></apex:inputField>
+                <!-- 职等职级 -->
+                <apex:inputField value="{!am.Job_Title_Level__c}"></apex:inputField>
+                <!-- 出生日期 -->
+                <apex:inputField value="{!am.Birthday__c}"></apex:inputField>
+                <!-- 性别 -->
+                <apex:inputField value="{!am.sex__c}"></apex:inputField>
+                <!-- 籍贯 -->
+                <apex:inputField value="{!am.Native_Place__c}"></apex:inputField>
+                <!-- 电话 -->
+                <apex:inputField value="{!am.Phone__c}"></apex:inputField>
+                <!-- 工资管理员 -->
+                <apex:inputField value="{!am.Salary_Manager__c}"></apex:inputField>
+                <!-- 职务分类 -->
+                <apex:outputField value="{!am.Post_Category_Name__c}"></apex:outputField>
+                <!-- 到职日期 -->
+                <apex:inputField value="{!am.Take_Office_Date__c}"></apex:inputField>
+                <!-- 实际离职日 -->
+                <apex:inputField value="{!am.Leave_Office_Date__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Leave_Office_Date__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Leave_Office_Date__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Leave_Office_Date__c'))}"></apex:outputField>
+                <!-- 离职原因 -->
+                <apex:inputField value="{!am.Reason_of_Leave__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Reason_of_Leave__c'))}"  required="true"></apex:inputField>
+                <apex:outputField value="{!am.Reason_of_Leave__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Reason_of_Leave__c'))}"></apex:outputField>
+                <!-- 工种 -->
+                <apex:inputField value="{!am.Kind_of_Work__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Kind_of_Work__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Kind_of_Work__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Kind_of_Work__c'))}"></apex:outputField>
+                <!-- 操作类型 -->
+                <apex:inputField value="{!am.Operation_Type__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Operation_Type__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Operation_Type__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Operation_Type__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1">
+                <!-- 具体原因 -->
+                <apex:pageBlockSectionItem >
+                <apex:outputLabel for="resaon" value="具体原因"></apex:outputLabel>
+                <apex:inputField value="{!am.Reason_of_Purchase__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Reason_of_Purchase__c'))}" id="resaon" required="true"></apex:inputField>
+                </apex:pageBlockSectionItem>
+                <!-- 说明 -->
+                <apex:inputField value="{!am.Remark_of_Explain__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Remark_of_Explain__c'))}"  required="true"></apex:inputField>
+                <apex:outputField value="{!am.Remark_of_Explain__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Remark_of_Explain__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="人事约谈" columns="1">
+                 <!-- 离职原因(人事) -->
+                <apex:inputField value="{!am.Reason_of_Leave_Human__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Reason_of_Leave_Human__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Reason_of_Leave_Human__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Reason_of_Leave_Human__c'))}"></apex:outputField>
+                <!-- Q1(人事) -->
+                <apex:inputField value="{!am.Question_1__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Question_1__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Question_1__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Question_1__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="人事专员">
+                <!-- 生效日期 -->
+                <apex:inputField value="{!am.Validate_Date__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Validate_Date__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Validate_Date__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Validate_Date__c'))}"></apex:outputField>
+                <!-- 操作原因 -->
+                <apex:inputField value="{!am.Dismisson_Reason_of_Operate__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Dismisson_Reason_of_Operate__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Dismisson_Reason_of_Operate__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Dismisson_Reason_of_Operate__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</body>
+</html>
+</apex:page>

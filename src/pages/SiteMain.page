@@ -1,0 +1,221 @@
+<!--
+    目的：客户门户界面
+    作者：luoxin
+    创建时间：2017-03-28
+-->
+<apex:page showHeader="false" language="{!language}" controller="SiteMainExtension" action="{!check}">
+<head>
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'media/js/jquery.js')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+<style type="text/css">
+.float-right{
+  float: right;
+}
+.fa{
+ font-size: .8em;
+  line-height: 22px !important;
+}
+dropdown{
+  position: absolute;
+  top: 100px;
+  margin-left: 5px;
+}
+dropdown label, dropdown ul li{
+    display: block;
+    margin-bottom: 10px;
+    width: 200px;
+    height: 55px;
+    line-height: 54px;
+    font-weight: bold;
+    font-size: 18px;
+    background: #ffffff;
+    padding-left: 51px;
+    margin-bottom: 10px;
+        -webkit-box-shadow: #e0e3e5 0px 0px 20px;
+    -moz-box-shadow: #666 0px 0px 20px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 1px;
+    border-bottom: 3px solid red;
+    border-right: 1px solid #666;
+}
+dropdown label:hover, dropdown ul li:hover{
+  background: #333;
+  color: #FFF;
+  cursor: pointer;
+}
+dropdown label{
+  color: #333;
+  border-radius: 0 5px 0 0;
+  position: relative;
+  z-index: 2;
+}
+dropdown input{
+  display: none;
+}
+dropdown input ~ ul{
+  position: relative;
+  visibility: hidden;
+  opacity: 0;
+  top: -20px;
+  z-index: 1;
+}
+dropdown input:checked + label{
+  background: #C00;
+  color: #FFF;
+  border-radius: 1px
+}
+
+dropdown input:checked ~ ul{
+  visibility: visible;
+  opacity: 1;
+  top: 0;
+}
+.animate{
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  -ms-transition: all .3s;
+  -ms-transition: all .3s;
+  transition: all .3s;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden; /* Chrome and Safari */
+  -moz-backface-visibility:hidden; /* Firefox */
+  -ms-backface-visibility:hidden; /* Internet Explorer */
+}
+#apDiv1 {
+    position:absolute;
+    width:100%;
+    height:89px;
+    z-index:3;
+    color: #000;
+    background-color: #fffefe;
+    left: 2px;
+    top: 0px;
+    -webkit-box-shadow: #e0e3e5 0px 0px 20px;
+    -moz-box-shadow: #666 0px 0px 20px;
+    border-top: 3px solid red;
+    background-image: url({!URLFOR($Resource.DivBackground)});
+    background-size:100% 100%;
+}
+.UserInfo {
+    opacity: 0.8;
+    border-radius: 8px;
+    position: absolute;
+    width: 1100px;
+    height: 100%;
+    z-index: 4;
+    left: 220px;
+    margin-left: 10px;
+    /*border: 1;*/
+    /*border-style: solid;*/
+    /*border-color: #ada3a3;*/
+    top: 100px;
+    background-color: #fff;
+    color: #c00;
+    -moz-box-shadow: #666 0px 0px 20px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.current-page{
+  background: #aaaaaa;
+}
+
+</style>
+<script>
+  
+    var thisURL = document.URL;    
+    var  getval =thisURL.split('?')[1];  
+    var typeCV= getval.split("=")[1]; 
+</script>
+
+</head>
+
+
+<body>
+  <apex:form id="Main">
+    <apex:actionFunction action="{!check}" name="check"  status="status" oncomplete="jump()">
+    </apex:actionFunction>
+    <apex:actionFunction action="{!exit}" name="exit"  status="status">
+    </apex:actionFunction>
+
+      <div ng-app="app" ng-ctrl="ctrl" class="slds">
+        <apex:outputpanel >
+          <apex:actionstatus id="status">
+              <apex:facet name="start" >
+                  <div class="slds-spinner_container" id="el_loading" >
+                    <div class="slds-spinner slds-spinner--brand slds-spinner--large" aria-hidden="false" role="alert">
+                      <div class="slds-spinner__dot-a"></div>
+                      <div class="slds-spinner__dot-b"></div>
+                    </div>
+                  </div>
+              </apex:facet>
+          </apex:actionstatus>
+      </apex:outputpanel>
+      <div id="apDiv1" > 
+      </div>
+         
+        <dropdown>
+        <input id="toggle1" type="checkbox" checked="checked"/>
+        <label for="toggle1" class="animate">{!$Label.NavFence}<i class="fa fa-bars float-right"></i></label>
+        <ul class="animate">
+             <!-- <div > 
+             <li class="animate" ng-class ="{current-page:item.current}" ng-click="change(item)" ng-repeat = "item in route track by $index">{{ item.label}}<i class="fa fa-code float-right"></i></li> 
+            </div>  -->
+
+            <li class="animate"  onclick="change(this,'{!URL_Customer}/SiteUserInfo?username={!username}&language={!language}')">{!$Label.lbl_Customer_Info}<i class="fa fa-code float-right"></i>
+            </li>
+
+            <li class="animate" onclick="change(this,'{!URL_Customer}/SiteMyOrder?username={!username}&language={!language}')">{!$Label.MyOrder}<i class="fa fa-arrows-alt float-right"></i>
+            </li>
+            <li class="animate" onclick="change(this,'{!URL_Customer}/SiteTakeOrder?username={!username}&language={!language}')">{!$Label.SelfhelpOrder}<i class="fa fa-cog float-right"></i></li>
+            <li class="animate" onclick="change(this,'{!URL_Customer}/SiteMyBill?username={!username}&language={!language}')" >{!$Label.MyBill}<i class="fa fa-cog float-right"></i></li>
+            <li class="animate" onclick="change(this,'{!URL_Customer}/SiteFile?username={!username}&language={!language}')">{!$Label.DataDownload}<i class="fa fa-cog float-right"></i></li>
+            <li class="animate" onclick="change(this,'{!URL_Customer}/SiteMaterial?username={!username}&language={!language}')">{!$Label.FinanceDownload}<i class="fa fa-cog float-right"></i></li>
+
+
+            <li class="animate" onclick="ExitLogin()">{!$Label.Exit}<i class="fa fa-cog float-right"></i></li>
+
+        </ul>
+
+        </dropdown>
+
+        <div id="Main" class="UserInfo" >
+          <iframe id="iframe" frameborder="0" scrolling="none" height="100%" width="100%"></iframe>
+        </div>
+    </div>
+  </apex:form>
+<script>
+
+$(document).ready(function(){
+  change($('li:first'),'{!URL_Customer}/SiteUserInfo?username={!username}&language={!language}');
+});
+  var jumpUrl;
+  var currentpage ;
+  function change(obj,url){
+     jumpUrl = url;
+    check();
+    if(!!currentpage){
+      $(currentpage).removeClass('current-page');
+      }
+    $(obj).addClass('current-page');
+    currentpage = obj;
+    request("page");
+    return true;
+  }
+function jump() {
+  $('#iframe').attr("src",jumpUrl + '&cache=' + Math.random());
+}
+function iframeLoad()  
+{  
+    document.getElementById("iframe").height=0;  
+    document.getElementById("iframe").height=document.getElementById("iframe").contentWindow.document.body.scrollHeight;  
+}  
+
+function ExitLogin(){
+  exit();
+}
+</script>
+</body>
+</apex:page>

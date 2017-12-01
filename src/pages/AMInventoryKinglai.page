@@ -1,0 +1,207 @@
+<!--> 
+ 名    称：盘盈盘亏申请流程 
+ 目    的：
+ 作    者：刘忠林 
+ 创建日期：2017-11-1
+ 修 改 人： 
+ 修改原因：
+ 备    注：
+ 
+<-->
+
+
+<apex:page standardController="Approval_Managed__c" extensions="AMInventoryKinglaiExtension" >
+    <head>
+        <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+        <style>
+            input.text {
+                text-align: center;
+            }
+            div.scroll{
+                width:1200px; 
+                height:200px; 
+                overflow:scroll;
+            }
+            textarea{
+                width: 75%
+            }
+            table.list th,table.list td{
+                text-align: center;
+            }
+          </style>
+        <script>
+            function deleteItemDetail(rowID){
+                deleteDetail(rowID);
+            }
+             function queryMaterial(rowID){
+                queryMaterial(rowID);
+            }
+        </script>
+    </head>
+<html>
+<body>
+<apex:sectionHeader title="盘盈盘亏申请流程"></apex:sectionHeader>
+
+<!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true" id="messgae"></apex:pageMessages>
+
+    <apex:form id="form">
+
+        <!-- 子表删除行数调用function -->
+        <apex:actionFunction action="{!deleteDetail}" name="deleteDetail" id="deleteDetail" reRender="list1">
+           <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+
+         <apex:actionFunction action="{!queryMaterial}" id="queryMaterial" name="queryMaterial" reRender="list2,messgae">
+            <apex:param assignTo="{!resultRowID}" name="rowID" value="rowID"></apex:param>
+        </apex:actionFunction>
+        
+        <apex:actionFunction action="{!addDetail}" name="addDetail" id="addDetail" reRender="list1">
+           <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+
+
+        <apex:pageBlock title="盘盈盘亏" id="block"> 
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" collapsible="false">
+
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 审核状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="需求信息" collapsible="false">
+
+                <!-- 盘点类型 -->
+                <apex:inputField value="{!am.InventoryType__c}" required="true"></apex:inputField>
+                <!-- 工厂 -->
+                <apex:inputField value="{!am.Factory__c}" required="true"></apex:inputField>
+                 <!-- 成本中心 -->
+                <apex:inputField value="{!am.Dept_of_CostCenter__c}" required="true"></apex:inputField>
+
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1">
+                <!-- 备注信息-->
+                <apex:inputField value="{!am.Remark__c}" required="true" style="width: 70%"></apex:inputField>
+                <!-- 备总价格-->
+                <apex:inputField value="{!am.Total_Price__c}" ></apex:inputField>
+            </apex:pageBlockSection>
+   <!-- 。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。 -->
+           
+
+            <apex:outputPanel title="查询结果" layout="block" styleClass="scroll" id="list2" style="display:{!IF(isDeletedStatus,'','none')};"> 
+                <div class="pbSubheader brandTertiaryBgr tertiaryPaleette" style="background-color: pink"><h3>查询结果</h3></div>
+                <table class="list" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                       <th>操作</th> 
+                            <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Material_Number__c.Label}</th>
+                            <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Material_Description__c.Label}</th>
+                            <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Storage__c.Label}</th>
+                    </thead>
+                    <tbody>
+                    <apex:variable var="listIndex2" value="{!0}"/>
+                    <apex:repeat value="{!listson}" var="item">
+                    <tr>
+                        <td> 
+                        <apex:commandButton action="{!selectMaterial}" reRender="list2,list1" value="选中">
+                            <apex:param assignTo="{!selectRow}" name="selectRow" value="{!listIndex2}"></apex:param>
+                        </apex:commandButton>
+                        </td>
+                        <!-- 物料号码 --> 
+                        <td><apex:outputField value="{!item.Material_Number__c}"></apex:outputField></td>
+                         <!-- 物料描述 -->
+                        <td><apex:outputField value="{!item.Material_Description__c}"></apex:outputField></td>
+                        <!--库位-->
+                        <td><apex:outputField value="{!item.Storage__c}"></apex:outputField></td>
+                    </tr>
+                    <apex:variable var="listIndex2" value="{!listIndex2+1}"/>
+                    </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+           
+<!--  。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。 -->
+            <apex:outputPanel title="子表" styleClass="scroll" id="list1"> 
+                <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>明细</h3></div>
+                <apex:commandButton action="{!addDetail}" value="新增" reRender="list1,messgae" immediate="true"/>
+
+                <table class="list" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <th></th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Row_Index__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Material_Number__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Material_Description__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Storage__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.batch__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Quantity__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Tprice__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Amount_Price__c.Label}</th>
+                       
+                    </thead>
+                    <tbody>
+                    <apex:variable var="listIndex" value="{!1}"/>
+                    <apex:repeat value="{!listDetail}" var="item"> 
+                    <tr>
+                        <td>
+                            <input type="button" onclick="deleteItemDetail('{!listIndex}')" value="删除" class="btn" reRender="list1"/>
+                             <apex:param assignTo="{!rowID}" name="rowID" value="{!listIndex}"></apex:param>
+                        </td>
+                         <!-- 行号 --> 
+                        <td><apex:inputField value="{!item.Row_Index__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 物料号码 --> 
+                         <!-- <td>
+                            <span class="lookupInput">
+                            <apex:inputField value="{!item.Material_Number__c}" required="true" styleClass="text"/>
+                             <input type="button" onclick="queryMaterial('{!listIndex}')" value="查询" class="btn" reRender="list2"/>
+                             <apex:param assignTo="{!rowID}" name="rowID" value="{!listIndex}"></apex:param>
+
+                            </span>
+                        </td> -->
+                        <td>
+                            <span class="lookupInput">
+                            <apex:inputField value="{!item.Material_Number__c}" required="true" styleClass="text"/>
+<img src="/img/s.gif" alt="物料号" class="lookupIcon" onblur="this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" title="查询物料信息" onclick="queryMaterial('{!listIndex}')" style="cursor: pointer;" required="list2" />
+</span>
+                        </td> 
+                        <!-- 物料描述 -->
+                        <td><apex:outputField value="{!item.Material_Description__c}" style="width: 70px"></apex:outputField></td>
+                         <!--库位-->
+                        <td><apex:inputField value="{!item.Storage__c}" style="width: 70px"></apex:inputField></td>
+                         <!--批次 -->
+                        <td><apex:inputField value="{!item.batch__c}" style="width: 40px"></apex:inputField></td>
+                         <!--数量-->
+                        <td><apex:inputField value="{!item.Quantity__c}" style="width: 40px"></apex:inputField></td>
+                         <!--单价（RMB）-->
+                        <td><apex:inputField value="{!item.Tprice__c }" style="width: 40px"></apex:inputField></td>
+                         <!--总价（RMB）-->
+                        <td><apex:outputField value="{!item.Amount_Price__c }" style="width: 40px"></apex:outputField></td>
+                       
+                    </tr>
+                    <apex:variable var="listIndex" value="{!listIndex+1}"/>
+                    </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+
+        </apex:pageBlock>
+    </apex:form>
+</body>
+</html>
+</apex:page>

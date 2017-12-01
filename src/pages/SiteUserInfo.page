@@ -1,0 +1,185 @@
+<!--
+    目的：客户信息界面
+    作者：luoxin  
+    创建时间：2017-03-28
+-->
+<apex:page showheader="false" language="{!language}" cache="false" controller="SiteUserInfoExtension" action="{!getUserInfo}">
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'media/js/jquery.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.jquery, 'media/js/jquery.dadaTables.min.js')}"/> 
+
+<head>
+<style type="text/css">
+.pbSubheader {
+    background-color: #c00;
+    font-weight: bold;
+    font-size: 91%;
+    padding: 2px 2px 2px 5px;
+    margin-top: 15px;
+    overflow: hidden;
+    margin-bottom: 2px;
+}
+body{
+  overflow-x : hidden;   
+  overflow-y : hidden; 
+}
+input[type='button'] {
+    opacity: 0.6;
+    height: 23px;
+    border: 1px solid transparent;
+    border: 1;
+    outline: 0;
+    width: 75px;
+    line-height: 16px;
+    margin: 39px auto;
+    -webkit-transition: all 0s ease-in 0.1ms;
+    -moz-transition: all 0s ease-in 0.1ms;
+    transition: all 0s ease-in 0.1ms;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #635f5f;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+input[type='button']:hover{
+    cursor: pointer;
+    color:#36a0fe;
+}
+.waitingDescription {
+    margin-left: 6px;
+    font-weight: bold;
+    color: #ffc5c5;
+}  
+/*#loading{
+  background-color: #bd4932;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  margin-top: 0px;
+  top: 0px;
+} 
+#loading-center{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+#loading-center-absolute {
+  position: absolute;
+  left: 50%; 
+  top: 50%;
+  height: 200px;
+  width: 200px;
+  margin-top: -100px;
+  margin-left: -100px;
+}     
+#object{
+  width: 80px;
+  height: 80px;
+  background-color: #FFF;
+  -webkit-animation: animate 1s infinite ease-in-out;
+  animation: animate 1s infinite ease-in-out;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 60px;
+}
+@-webkit-keyframes animate {
+  0% { -webkit-transform: perspective(160px); }
+  50% { -webkit-transform: perspective(160px) rotateY(-180deg); }
+  100% { -webkit-transform: perspective(160px) rotateY(-180deg) rotateX(-180deg); }
+}
+  
+@keyframes animate {
+  0% { 
+    transform: perspective(160px) rotateX(0deg) rotateY(0deg);
+    -webkit-transform: perspective(160px) rotateX(0deg) rotateY(0deg); 
+  } 50% { 
+    transform: perspective(160px) rotateX(-180deg) rotateY(0deg);
+    -webkit-transform: perspective(160px) rotateX(-180deg) rotateY(0deg) ;
+  } 100% { 
+    transform: perspective(160px) rotateX(-180deg) rotateY(-180deg);
+    -webkit-transform: perspective(160px) rotateX(-180deg) rotateY(-180deg);
+  }
+}   */      
+</style>
+<script>
+
+//修改密码后提示修改成功
+$(window).load(function() {
+   if(getQueryString('confirm')==1)
+   {
+    alert("{!$Label.PwdSuccessed}");
+   }
+}) 
+//获取页面url参数方法
+function getQueryString(name) { 
+var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+var r = window.location.search.substr(1).match(reg); 
+if (r != null) return unescape(r[2]); return null; 
+} 
+
+function UpdatePwd(){
+location.href="/portal/SiteUpdatePassword?userName={!userName}&language={!language}";
+}
+
+</script>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache" />
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache" />
+<META HTTP-EQUIV="Expires" CONTENT="0" />
+
+</head>
+<!--    <div id="loading">
+      <div id="loading-center">
+        <div id="loading-center-absolute">
+          <div id="object"></div>
+        </div>
+      </div>
+    </div>   -->
+    <!-- <meta http-equiv="refresh" content="5"/> --> <!--时间 页面刷新-->
+<!--页面刷新  -->
+    <div class="slds-spinner_container" ng-hide="!loading" id="loader">
+        <div class="slds-spinner slds-spinner--brand slds-spinner--large" aria-hidden="false" role="alert">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+<apex:outputpanel >
+    <apex:actionstatus id="status">
+        <apex:facet name="start" >
+            <div class="waitingSearchDiv" id="el_loading" style=" background-color: #44464e ;
+                   height: 100%;opacity :0.65;width:100%;" >
+                <div class="waitingHolder" style="position: fixed;top : 30%; right:50%;width: 91px;" >
+                    <img class="waitingImage"  height="100px" src="{!URLFOR($Resource.loading) }" title="Please Wait..." />
+                    <span class="waitingDescription" >Waiting ...</span >
+                </div>
+            </div>
+        </apex:facet>
+    </apex:actionstatus>
+</apex:outputpanel>
+
+   <apex:pageBlock >
+        <apex:pageMessages id="messages" escape="true"></apex:pageMessages>  
+        <apex:pageBlockSection title="{!$Label.BasicInfo}"  columns="1" >
+<!--                 <apex:outputLabel value="{!$Label.Name}：" /> -->
+<!--                 <apex:outputLabel value="{!$Label.AccountNo}：" /> -->
+<!--                 <apex:outputLabel value="{!$Label.CustomerAccount}：" /> -->
+                <apex:outputField value="{!acc.Name}"/>
+<!--                 <apex:outputField value="{!acc.Id}"/>
+ -->                <apex:outputField value="{!acc.SAPID__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="{!$Label.FinanceInfo}" columns="1">
+<!--                 <apex:outputLabel value="{!$Label.TaxNo}：" /> -->
+<!--                 <apex:outputLabel value="{!$Label.CreditLine}：" /> -->
+<!--                 <apex:outputLabel value="{!$Label.OpeningAdd}：" /> -->
+<!--                 <apex:outputLabel value="{!$Label.CompanyAdd}：" /> -->
+<!--                 <apex:outputLabel value="{!$Label.ConsigneeAdd}：" /> -->
+                <apex:outputField value="{!acc.Tax_Number__c}"/>
+                <apex:outputField value="{!acc.Billing_Address1__c}"/>
+                <apex:outputField value="{!acc.Corp_Address__c}"/>
+                <apex:outputField value="{!acc.Shopping_Address1__c}"/>               
+        </apex:pageBlockSection>
+        <center>
+            <input type="button" onclick="UpdatePwd()" value="{!$Label.UpdatePwd}"/>
+            <input type="button" value="刷新" onclick="location.reload()"/> 
+        </center>
+        </apex:pageBlock>
+</apex:page>

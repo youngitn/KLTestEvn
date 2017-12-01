@@ -1,0 +1,29 @@
+<apex:page showheader="false">
+<head>
+<style type="text/css">
+.display{
+font-family: Arial,Helvetica,sans-serif;
+  font-size: 20px;
+  text-align:center;
+}
+.display td{
+border-bottom:1px solid #BBB;
+}
+.display tr:hover {
+background-color: #ccc;
+border-bottom: 2px solid #DDD;
+color: #333;
+}
+</style>
+</head>
+<div align="center">
+    <table  style="width:100%;" class="display">
+<tr ><td colspan="4">-</td><td colspan="5">--</td></tr>
+            <tr height="50px"><td></td><td>新莱订单号</td><td>新莱料号</td><td>描述</td><td>订单数量</td><td>系统交货周期</td><td>新莱库存数量</td><td>系统交期</td><td>供应商确认交期</td></tr>
+<tr><td></td><td>XL1000234</td><td>A1002</td><td>备注一</td><td>1000</td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td><td><input type="text" /></td></tr>
+            <tr><td></td><td>XL1000234</td><td>A1002</td><td>备注一</td><td>1000</td><td>90</td><td>100</td><td style="background-color:red">2017-04-25</td><td>2017-04-28</td></tr>
+            <tr><td></td><td>XL1000334</td><td>A1008</td><td>备注二</td><td>1000</td><td>120</td><td>100</td><td style="background-color:green">2017-07-16</td><td>2017-07-25</td></tr>
+    </table>
+                            <br></br> <br></br> <br></br> <br></br><input type="submit" style="font-size:20px" value="提交" align="center"></input>
+    </div>
+</apex:page>

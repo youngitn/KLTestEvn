@@ -1,0 +1,315 @@
+<apex:page standardController="Approval_Managed__c" extensions="AMAbnormalQualityExtension">
+<!-- 品质异常单流程 -->
+<html>
+
+<head>
+    <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+      <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+</head>
+<style>
+            input.text {
+                text-align: center;
+            }
+            div.scroll{
+                width:1200px; 
+                overflow:scroll;
+            }
+            textarea{
+                width: 75%
+            }
+</style>
+<script>
+            J$ = jQuery.noConflict();
+            J$(document).ready(function(){
+               J$("#[id$=rectify]").hide();
+            });
+            J$("#radio").click(function(){
+                 J$("#[id$=rectify]").show();
+            });
+            function selectProblem(rowID){
+                selectdProblem(rowID);
+            }
+</script>
+<body>
+    <apex:sectionHeader title="品质异常单流程" subtitle="编辑品质异常单流程"></apex:sectionHeader>
+    <!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+    <apex:actionStatus id="retrieveStatus">
+    <apex:facet name="start" >
+    <div class="slds">
+       <div class="slds-spinner_container"  id="loader">
+          <div class="slds-spinner slds-spinner--brand slds-spinner--large" aria-hidden="false" role="alert">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+</div>
+</apex:facet>
+</apex:actionStatus>
+<apex:actionFunction action="{!selectedProblem}" id="selectdProblem" name="selectdProblem" reRender="rectify">
+            <apex:param assignTo="{!problemRow}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" >
+                <!-- 流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Status__c}"></apex:outputField>
+                <!-- 单据日期 -->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="主要内容及团队" >
+                <!-- 异常单号 -->
+                <apex:inputField value="{!am.Abnormal_Code__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Abnormal_Code__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Abnormal_Code__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Abnormal_Code__c'))}"></apex:outputField>
+                <!-- 异常单类型 -->
+                <apex:inputField value="{!am.Abnormal_Type__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Abnormal_Type__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Abnormal_Type__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Abnormal_Type__c'))}"></apex:outputField>
+                <!-- 客户 -->
+                <apex:inputField value="{!am.Account__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Account__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Account__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Account__c'))}"></apex:outputField>
+                <!-- 异常单状态 -->
+                <apex:inputField value="{!am.Status_Abnormal__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Status_Abnormal__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Status_Abnormal__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Status_Abnormal__c'))}"></apex:outputField>
+                <!-- 描述 -->
+                <apex:inputField value="{!am.Description__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Description__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Description__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Description__c'))}"></apex:outputField>
+                <!-- 发现部门 -->
+                <apex:inputField value="{!am.Dept_of_Discovery__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Dept_of_Discovery__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Dept_of_Discovery__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Dept_of_Discovery__c'))}"></apex:outputField>
+                <!-- 订单号 -->
+                <apex:inputField value="{!am.Order__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Order__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Order__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Order__c'))}"></apex:outputField>
+                <!-- 开单人 -->
+                <apex:inputField value="{!am.Make_Man__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Make_Man__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Make_Man__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Make_Man__c'))}"></apex:outputField>
+                <!-- 工单总数量 -->
+                <apex:inputField value="{!am.Num_Order__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Num_Order__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Num_Order__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Num_Order__c'))}"></apex:outputField>
+                <!-- 不良数量 -->
+                <apex:inputField value="{!am.Num_Unqualified__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Num_Unqualified__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Num_Unqualified__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Num_Unqualified__c'))}"></apex:outputField>
+                <!-- 不良率(%) -->
+                <apex:inputField value="{!am.Rate_Unqualified__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Rate_Unqualified__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Rate_Unqualified__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Rate_Unqualified__c'))}"></apex:outputField>
+                <!-- 物料号 -->
+                <apex:inputField value="{!am.Material_Number__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Material_Number__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Material_Number__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Material_Number__c'))}"></apex:outputField>
+                <!-- 物料名称 -->
+                <apex:inputField value="{!am.Material_Name__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Material_Name__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Material_Name__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Material_Name__c'))}"></apex:outputField>
+                <!-- 物料描述 -->
+                <apex:inputField value="{!am.Material_Description__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Material_Description__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Material_Description__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Material_Description__c'))}"></apex:outputField>
+                <!-- 责任部门 -->
+                <apex:inputField value="{!am.Dept_of_Duty__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Dept_of_Duty__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Dept_of_Duty__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Dept_of_Duty__c'))}"></apex:outputField>
+                <!-- 责任部门主管 -->
+                <apex:inputField value="{!am.Manager_of_Duty__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Manager_of_Duty__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Manager_of_Duty__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Manager_of_Duty__c'))}"></apex:outputField>
+                <!-- 责任人 -->
+                <apex:inputField value="{!am.Person_Liable__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Person_Liable__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Person_Liable__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Person_Liable__c'))}"></apex:outputField>
+                <!-- 是否扣款 -->
+                <apex:inputField value="{!am.Is_Withhold__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Is_Withhold__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Is_Withhold__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Is_Withhold__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="指定主管/作业人">
+                <!--指定主管-->
+                <apex:pageBlockSectionItem >
+                <apex:outputLabel for="Speical_Dept" value="指定主管"></apex:outputLabel>
+                <apex:inputField value="{!am.Applicant_Cost__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Applicant_Cost__c'))}" id="Speical_Dept"></apex:inputField>
+                </apex:pageBlockSectionItem>
+                <!-- 指定作业人 -->
+                <apex:inputField value="{!am.Operator_Abnormal__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Operator_Abnormal__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Operator_Abnormal__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Operator_Abnormal__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>问题说明</h3></div>
+                <apex:outputPanel id="problem" layout="block" styleClass="scroll">
+                <table class="list" border="0" cellspacing="0" cellpadding="0"  id="tableBank">
+                    <thead>
+                        <th></th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Row_Index__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Project__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Project_No__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Code_Group__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Type_of_Bug__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Type_Description_Bug__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Text__c.Label}</th>
+                    </thead>
+                    <tbody>
+                <apex:variable var="problemIndex" value="{!0}"/>
+                <apex:repeat value="{!problemList}" var="item">
+                    <tr>
+                        <td>
+                        <input type="radio" name="radioButton" onclick="selectProblem('{!problemIndex}')" value="选择" id="radio" />
+                        </td>
+                        <!-- 行号 -->
+                        <td><apex:outputField value="{!item.Row_Index__c}" ></apex:outputField></td>
+                        <!-- 项目 -->
+                        <td><apex:outputField value="{!item.Project__c}" ></apex:outputField></td>
+                        <!-- 号 -->
+                        <td><apex:outputField value="{!item.Project_No__c}" ></apex:outputField></td>
+                        <!-- 代码组 -->
+                        <td><apex:outputField value="{!item.Code_Group__c}" ></apex:outputField></td>
+                        <!-- 缺陷类型 -->
+                        <td><apex:outputField value="{!item.Type_of_Bug__c}" ></apex:outputField></td>
+                        <!-- 缺陷类型描述 -->
+                        <td><apex:outputField value="{!item.Type_Description_Bug__c}" ></apex:outputField></td>
+                        <!-- 文本 -->
+                        <td><apex:outputField value="{!item.Text__c}" ></apex:outputField></td>
+                    </tr>
+                    <apex:variable var="problemIndex" value="{!problemIndex+1}"/>
+                </apex:repeat>
+                    </tbody>
+                </table>
+                </apex:outputPanel>
+                <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>纠正错误</h3></div>
+                <apex:outputPanel id="rectify" layout="block" >
+                <apex:commandButton action="{!newRectify}" value="新增" reRender="rectify" />
+                <table class="list" border="0" cellspacing="0" cellpadding="0"  id="table2">
+                    <thead>
+                        <th></th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Parent_Row_Index__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Row_Index__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Plan_Completed_Date__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Header__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Header_Code__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Text_Long__c.Label}</th>
+                    </thead>
+                    <tbody>
+                <apex:variable var="rectifyIndex" value="{!0}"/>
+                <apex:repeat value="{!rectifyList}" var="item">
+                    <tr>
+                        <td>
+                            <apex:commandButton action="{!deleteRectify}" value="删除" reRender="rectify" status="retrieveStatus">
+                                <apex:param assignTo="{!rectifyRow}" name="rectifyRow" value="{!rectifyIndex}"></apex:param>
+                            </apex:commandButton>
+                        </td>
+                        <td><apex:outputField value="{!item.Parent_Row_Index__c}" style="width: 40px"></apex:outputField></td>
+                        <!-- 行号 -->
+                        <td><apex:inputField value="{!item.Row_Index__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 计划完成日期 -->
+                        <td><apex:inputField value="{!item.Plan_Completed_Date__c}" style="width: 70px"></apex:inputField></td>
+                        <!-- 负责人 -->
+                        <td><apex:inputField value="{!item.Header__c}" style="width: 60px"></apex:inputField></td>
+                        <!-- 负责人(工号) -->
+                        <td><apex:outputField value="{!item.Header_Code__c}" style="width: 70px"></apex:outputField></td>
+                        <!-- 文本 -->
+                        <td><apex:inputField value="{!item.Text_Long__c}" style="width: 700px"></apex:inputField></td>
+                    </tr>
+                    <apex:variable var="rectifyIndex" value="{!rectifyIndex+1}"/>
+                </apex:repeat>
+                    </tbody>
+                </table>
+                </apex:outputPanel>
+
+            <apex:pageBlockSection title="根本原因分析" columns="1">
+                <!-- 根本原因分析1 -->
+                <apex:inputField value="{!am.Cause_of_Analysis1__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Cause_of_Analysis1__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Cause_of_Analysis1__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Cause_of_Analysis1__c'))}"></apex:outputField>
+                <!-- 根本原因分析2 -->
+                <apex:inputField value="{!am.Cause_of_Analysis2__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Cause_of_Analysis2__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Cause_of_Analysis2__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Cause_of_Analysis2__c'))}"></apex:outputField>
+                <!-- 根本原因分析3 -->
+                <apex:inputField value="{!am.Cause_of_Analysis3__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Cause_of_Analysis3__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Cause_of_Analysis3__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Cause_of_Analysis3__c'))}"></apex:outputField>
+                <!-- 根本原因分析4 -->
+                <apex:inputField value="{!am.Cause_of_Analysis4__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Cause_of_Analysis4__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Cause_of_Analysis4__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Cause_of_Analysis4__c'))}"></apex:outputField>
+                <!-- 根本原因分析5 -->
+                <apex:inputField value="{!am.Cause_of_Analysis5__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Cause_of_Analysis5__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Cause_of_Analysis5__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Cause_of_Analysis5__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+
+            <apex:outputPanel title="围堵措施" styleClass="scroll" id="containment"> 
+            <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>围堵措施</h3></div>
+                <apex:commandButton action="{!newContainment}" value="新增" reRender="containment" />
+                <table class="list" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <th></th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Row_Index__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Header__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Header_Code__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Text_Long__c.Label}</th>
+                    </thead>
+                    <tbody>
+                <apex:variable var="containmentIndex" value="{!0}"/>
+                <apex:repeat value="{!containmentList}" var="item">
+                    <tr>
+                        <td>
+                            <apex:commandButton action="{!deleteContainment}" value="删除" reRender="containment" >
+                                <apex:param assignTo="{!containmentRow}" name="containmentRow" value="{!containmentIndex}"></apex:param>
+                            </apex:commandButton>
+                        </td>
+                        <!-- 行号 -->
+                        <td><apex:inputField value="{!item.Row_Index__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 负责人 -->
+                        <td><apex:inputField value="{!item.Header__c}" style="width: 70px"></apex:inputField></td>
+                        <!-- 负责人(工号) -->
+                        <td><apex:outputField value="{!item.Header_Code__c}" style="width: 70px"></apex:outputField></td>
+                        <!-- 文本 -->
+                        <td><apex:inputField value="{!item.Text_Long__c}"  style="width: 800px"></apex:inputField></td>
+                    </tr>
+                    <apex:variable var="containmentIndex" value="{!containmentIndex+1}"/>
+                </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+            <apex:pageBlockSection title="效果确认">
+                <!-- 确认描述 -->
+                <apex:inputField value="{!am.Description_of_Effect__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Description_of_Effect__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Description_of_Effect__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Description_of_Effect__c'))}"></apex:outputField>
+                <!-- 确认人 -->
+                <apex:inputField value="{!am.Confirmor_of_Effect__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Confirmor_of_Effect__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Confirmor_of_Effect__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Confirmor_of_Effect__c'))}"></apex:outputField>
+                <!-- 确认日期 -->
+                <apex:inputField value="{!am.Confirm_Date_of_Effect__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Confirm_Date_of_Effect__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Confirm_Date_of_Effect__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Confirm_Date_of_Effect__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="防止再发措施" columns="1">
+                <!-- 具体措施说明 -->
+                <apex:inputField value="{!am.Description_Avoid__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Description_Avoid__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Description_Avoid__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Description_Avoid__c'))}"></apex:outputField>
+                <!-- 需平行处理料号 -->
+                <apex:inputField value="{!am.Material_Dealwith__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Material_Dealwith__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Material_Dealwith__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Material_Dealwith__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="客户满意度反馈">
+                <!-- 确认人 -->
+                <apex:inputField value="{!am.Confirmor_of_Feedback__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Confirmor_of_Feedback__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Confirmor_of_Feedback__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Confirmor_of_Feedback__c'))}"></apex:outputField>
+                <!-- 确认日期 -->
+                <apex:inputField value="{!am.Confirm_Date_of_Feedback__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Confirm_Date_of_Feedback__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Confirm_Date_of_Feedback__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Confirm_Date_of_Feedback__c'))}"></apex:outputField>
+                <!-- 拒绝人 -->
+                <apex:inputField value="{!am.Rejector__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Rejector__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Rejector__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Rejector__c'))}"></apex:outputField>
+                <!-- 拒绝日期 -->
+                <apex:inputField value="{!am.Reject_Date__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Reject_Date__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Reject_Date__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Reject_Date__c'))}"></apex:outputField>
+                <!-- 拒绝原因 -->
+                <apex:inputField value="{!am.Reject_Reason__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Reject_Reason__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Reject_Reason__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Reject_Reason__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+    </apex:form>
+
+</body>
+
+</html>
+
+</apex:page>

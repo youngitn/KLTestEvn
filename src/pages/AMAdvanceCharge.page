@@ -1,0 +1,109 @@
+<apex:page standardController="Approval_Managed__c" extensions="AMAdvanceChargeExtension">
+<html>
+<head>
+    <!-- <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" /> -->
+</head>
+<body>
+<apex:sectionHeader title="预付款申请流程" subtitle="新建/编辑预付款申请流程"></apex:sectionHeader>
+    <!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="流程审批信息" >
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期 -->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Status__c}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="预付款申请信息" >
+                <!-- 公司 -->
+                <apex:inputfield value="{!am.Corporation__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Corporation__c'))}" style="width:173px;"></apex:inputField>
+                <apex:outputField value="{!am.Corporation__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Corporation__c'))}"></apex:outputField>
+                <!-- 预付类型 -->
+                <apex:inputField value="{!am.Expense_Type_Prepay__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Expense_Type_Prepay__c'))}">
+                </apex:inputField>
+                <apex:outputField value="{!am.Expense_Type_Prepay__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Expense_Type_Prepay__c'))}">
+                </apex:outputField>
+                <!-- 供应商 -->
+                <apex:inputfield value="{!am.Vendor__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Vendor__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Vendor__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Vendor__c'))}"></apex:outputField>
+                <!-- 预付款申请人 -->
+                <apex:inputfield value="{!am.Applicant_Cost__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Applicant_Cost__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Applicant_Cost__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Applicant_Cost__c'))}"></apex:outputField>
+                <!-- 厂商名称 -->
+                <apex:outputField value="{!am.Supplier_Name__c}"></apex:outputField>
+                <!-- 预付款申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code_Cost__c}"></apex:outputField>
+                <!-- 厂商编号 -->
+                <apex:outputField value="{!am.Supplier_Number__c}"></apex:outputField>
+                <!-- 预付款申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name_Cost__c}"></apex:outputField>
+                <!-- 预付订单号 -->
+                <apex:inputfield value="{!am.Purchase__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Purchase__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Purchase__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Purchase__c'))}"></apex:outputField>
+                <!-- 请款金额 -->
+                <apex:inputfield value="{!am.Amount_Prepay__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Amount_Prepay__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Amount_Prepay__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Amount_Prepay__c'))}"></apex:outputField>
+                <!-- 请款货币 -->
+                <apex:inputfield value="{!am.Currency__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Currency__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Currency__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Currency__c'))}"></apex:outputField>
+                <!-- 供应商预付清账情况 -->
+                <apex:inputfield value="{!am.Remark_Vendor_Prepay__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Remark_Vendor_Prepay__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Remark_Vendor_Prepay__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Remark_Vendor_Prepay__c'))}"></apex:outputField>
+                <!-- 付款比例 -->
+                <apex:inputfield value="{!am.Percent_Pay__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Percent_Pay__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Percent_Pay__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Percent_Pay__c'))}"></apex:outputField>
+                <!-- PR申请部门 -->
+                <apex:inputfield value="{!am.Dept_PR_Approval__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Dept_PR_Approval__c'))}" style="width:173px;"></apex:inputField>
+                <apex:outputField value="{!am.Dept_PR_Approval__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Dept_PR_Approval__c'))}"></apex:outputField>
+                <!-- 申请人预付单未完成笔数 -->
+                <apex:inputfield value="{!am.Num_Unfinished__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Num_Unfinished__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Num_Unfinished__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Num_Unfinished__c'))}"></apex:outputField>
+                <!-- 采购订单金额 -->
+                <apex:inputfield value="{!am.Amount_of_Purchase__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Amount_of_Purchase__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Amount_of_Purchase__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Amount_of_Purchase__c'))}"></apex:outputField>
+                <!-- 预制发票号 -->
+                <apex:inputfield value="{!am.Preinvoice_No__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Preinvoice_No__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Preinvoice_No__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Preinvoice_No__c'))}"></apex:outputField>
+                
+                <!-- 付款条件 -->
+                <apex:inputfield value="{!am.Term_of_Payment__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Term_of_Payment__c'))}" style="width:173px;"></apex:inputField>
+                <apex:outputField value="{!am.Term_of_Payment__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Term_of_Payment__c'))}"></apex:outputField>
+                <!-- 订单已销金额 -->
+                <apex:inputfield value="{!am.Amount_Offset__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Amount_Offset__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Amount_Offset__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Amount_Offset__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1">
+                <!-- 说明 -->
+                <apex:inputfield value="{!am.Remark_of_Explain__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Remark_of_Explain__c'))}" style="width: 50%"></apex:inputField>
+                <apex:outputField value="{!am.Remark_of_Explain__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Remark_of_Explain__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="会计信息">
+                <!-- 付款类型 -->
+                <apex:inputfield value="{!am.Type_of_Payment__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Type_of_Payment__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Type_of_Payment__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Type_of_Payment__c'))}"></apex:outputField>
+                <!-- 确认金额 -->
+                <apex:inputfield value="{!am.Amount_Confirm__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Amount_Confirm__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Amount_Confirm__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Amount_Confirm__c'))}"></apex:outputField>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</body>
+</html>
+</apex:page>

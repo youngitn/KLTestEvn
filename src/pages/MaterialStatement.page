@@ -1,0 +1,41 @@
+<apex:page controller="MaterialDownload">
+<apex:outputText rendered="{!language='EL'||language='CN'}">
+    <div class="pagebreak">Statement of Compliance(CoC) 符合性声明:</div>
+    <div class="pagebreak">KINGLAI is authorized by the ASME for manufacturing and providing BPE fittings and tubings in accordancewith ASME BPE 2016, the certificate No. is BPE-104. Expires: June 5, 2018</div>
+    <div class="pagebreak">美国机械工程师学会（ASME）根据ASME BPE 现行标准，授权新莱生产和提供符合ASME BPE 2016标准的BPE管件和管道，证书编号BPE-104月5。</div>
+    <div class="pagebreak">We promise that: SF1 products meet or exceed int. Ra 0.51µm and ext.Ra 0.8µm requirements, SF4 products meet or exceed int. Ra 0.375µm and ext. Ra 0.8µm requirements. Ectropolishing is performed according to King Lai standard working instruction “BPE Tubing and Fitting Electropolishing Standard Working Instruction”(KSKL-I-302)</div>
+    <div class="pagebreak">我们承诺：SF1产品满足或超过内表面粗糙度0.51µm和外表面 0.8µm 的要求；SF4产品满足或超过内表面粗糙度 0.375µm 和外表面 0.8µm 的要求。新莱依据“BPE管道和管件电抛标准作业指导书”(KSKL-I-302)完成电抛处理</div>
+    <div class="pagebreak">We certify that this information is a true representation of the data that has been furnished by our raw material.</div>
+    <div class="pagebreak">我方承诺，此数据是由我们原材料得出的，且信息真实有效</div>
+    <div class="pagebreak">We have no knowledge of any mercury of low melting contamination.</div>
+    <div class="pagebreak">我们不清楚低熔点汞污染的内容</div>
+    <div class="pagebreak">Examined according to quality system BS EN ISO 9001:2008 by BSI. Certification number: FM 85641.</div>
+    <div class="pagebreak">由BSI(英标）对公司BS EN ISO 9001：2008质量系统进行管控。证书编号：FM 85641</div>
+    <div class="pagebreak">All products have heat treatment process except some specified products per customer order, the temperature is 040~1100°C, and quick cooling.</div>
+    <div class="pagebreak">除一些客户特殊指定订单外，所有产品均经过热处理，温度为1040~1100°C，快速冷却。</div>
+    <div class="pagebreak">This certificate is made by SAP system and is valid with electronic  signature.</div>
+    <div class="pagebreak">此材证通过SAP系统制作，电子签核同样有效。</div>
+    <div class="pagebreak">The materials listed herein have been tested for radioactivity and the tests confirm that the values are withinthe limits of the background radiation.</div>
+    <div class="pagebreak">此中列出的材料经过放射性测试及其他确保背景辐射在限定范围内的测试。</div>
+    <div class="pagebreak"> China Jiangsu province sanitation and safe product, approval number:0098, Jiangsu province(2012)</div>
+    <div class="pagebreak">中国江苏省涉及饮用水卫生安全产品，卫生许可批件号：（苏）卫水字（2012）第0098号</div>
+    <div class="pagebreak">KINGLAI fittings and tubings are in compliance with PED and relative standards.</div>
+    <div class="pagebreak">新莱管件和管道符合PED指令和相关标准。</div>
+    <div class="pagebreak">Ferrite content of King Lai ASME BPE code items meet ASME BPE requirement which level is 0_3%.</div>
+    <div class="pagebreak">新莱BPE产品满足ASME BPE标准中关于铁素体含量0-3%的要求。</div>
+</apex:outputText>
+<apex:outputText rendered="{!language='EN'}">
+    <div class="pagebreak">Statement of Compliance(CoC):</div>
+    <div class="pagebreak">KINGLAI is authorized by the ASME for manufacturing and providing BPE fittings and tubings in accordancewith ASME BPE 2016, the certificate No. is BPE-104. Expires: June 5, 2018</div>
+    <div class="pagebreak">We promise that: SF1 products meet or exceed int. Ra 0.51µm and ext.Ra 0.8µm requirements, SF4 products meet or exceed int. Ra 0.375µm and ext. Ra 0.8µm requirements. Ectropolishing is performed according to King Lai standard working instruction “BPE Tubing and Fitting Electropolishing Standard Working Instruction”(KSKL-I-302)</div>
+    <div class="pagebreak">We certify that this information is a true representation of the data that has been furnished by our raw material.</div>
+    <div class="pagebreak">We have no knowledge of any mercury of low melting contamination.</div>
+    <div class="pagebreak">Examined according to quality system BS EN ISO 9001:2008 by BSI. Certification number: FM 85641.</div>
+    <div class="pagebreak">All products have heat treatment process except some specified products per customer order, the temperature is 040~1100°C, and quick cooling.</div>
+    <div class="pagebreak">This certificate is made by SAP system and is valid with electronic  signature.</div>
+    <div class="pagebreak">The materials listed herein have been tested for radioactivity and the tests confirm that the values are withinthe limits of the background radiation.</div>
+    <div class="pagebreak"> China Jiangsu province sanitation and safe product, approval number:0098, Jiangsu province(2012)</div>
+    <div class="pagebreak">KINGLAI fittings and tubings are in compliance with PED and relative standards.</div>
+    <div class="pagebreak">Ferrite content of King Lai ASME BPE code items meet ASME BPE requirement which level is 0_3%.</div>
+</apex:outputText>
+</apex:page>

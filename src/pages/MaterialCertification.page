@@ -1,0 +1,5 @@
+<apex:page >
+    <!-- <div class="picture" style="width: 720px;height: 220px; background: url('/resource/1493091919000/pdf_certification_imgs') no-repeat; border: none;"></div> -->
+    <apex:image url="/resource/1493091910900/pdf_certification_imgs" /> 
+    <!-- <apex:image url="{!URLFOR($Resource.Material01,'img/j.bmp')}" /> -->
+</apex:page>

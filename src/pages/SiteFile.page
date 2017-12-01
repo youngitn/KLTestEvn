@@ -1,0 +1,72 @@
+<apex:page showheader="false" controller="SiteMyOrderExtension">
+<head>
+<apex:includeScript value="{!URLFOR($Resource.angularjs,'')}" />
+<apex:includeScript value="{!$Resource.cookiejs}" />
+<apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+</head>
+
+    <div ng-app="app" ng-controller="ctrl" class="slds">
+
+        <table  class="slds-table slds-table--bordered slds-table--cell-buffer ">
+            <thead >
+                <th class="slds-text-title--caps">文件名</th>
+                <th class="slds-text-title--caps">文件大小</th>
+                <th class="slds-text-title--caps">文件类型</th>
+                <th class="slds-text-title--caps">扩展名</th>
+                <th class="slds-text-title--caps">下载地址</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in files track by $index">
+                    <td class="slds-truncate">{{item.ContentDocument.Title}}</td>
+                    <td class="slds-truncate">{{item.ContentDocument.ContentSize}} B</td>
+                    <td class="slds-truncate">{{item.ContentDocument.FileType}}</td>
+                    <td class="slds-truncate">{{item.ContentDocument.FileExtension}}</td>
+                    <td class="slds-truncate"><a href="/sfc/servlet.shepherd/version/download/{{item.Id}}" target="_blank">下载</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="slds-spinner_container" ng-hide="!loading" id="loader">
+            <div class="slds-spinner slds-spinner--brand slds-spinner--large" aria-hidden="false" role="alert">
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+
+    </div>
+<script>
+
+var app = angular.module('app', []);
+app.controller('ctrl',function($scope,$q,$http){
+    $scope.files = [];
+    $scope.loading = true;
+
+    var promise = $q(function(resolve,reject){
+        // $http({
+        //     method: 'GET',
+        //     headers: {
+        //        'Authorization': 'Bearer ' + '{!$Api.Session_ID}'
+        //     },
+        //     url: '/sfc/servlet.shepherd/version/download/'
+        // }).then(function successCallback(response) {
+        //     resolve(response.data);
+        // }, function errorCallback(response) {
+        // });
+        SiteMyOrderExtension.queryAllContentDocuments(Cookies.get('apex__un'),function(res,event){
+            resolve(res);
+        });
+    });
+
+    promise.then(function(result){
+        $scope.files=result;
+        $scope.loading=false;
+    });
+
+});
+
+
+</script>
+
+
+</apex:page>

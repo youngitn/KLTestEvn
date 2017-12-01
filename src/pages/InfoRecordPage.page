@@ -1,0 +1,117 @@
+<apex:page standardController="Custom_Approval_Managed__c" extensions="InfoRecordController" sidebar="false">
+	<head>	
+	    <style>
+	    table.gridtable {
+	        font-family: verdana,arial,sans-serif;
+	        font-size:11px;
+	        color:#333333;
+	        border-width: 1px;
+	        border-color: #666666;
+	        border-collapse: collapse;
+	        margin: 5px 0;
+	    }
+	    table.gridtable th {
+	        border-width: 1px;
+	        padding: 1px;
+	        text-align:center;
+	        border-style: solid;
+	        font-size:12px;
+	        border-color: #666666;
+	        background-color:rgb(D1,D1,D1);
+	        width:10%;
+	    }
+	    table.gridtable td {
+	        border-width: 1px;
+	        padding: 1px;
+	        text-align:center;
+	        border-style: solid;
+	        border-color: #666666;
+	        background-color: #f6fafc;
+	    }
+	    table.gridtable img {
+	        width: 16px;
+	    }
+	    input.text {
+	        text-align: center;
+	    }
+	    div.scroll{
+	        width:1200px; 
+	        height:200px; 
+	        overflow:scroll;
+	    }
+	</style>
+	</head>
+
+    <apex:sectionHeader title="采购信息记录" subtitle="采购信息记录"></apex:sectionHeader>
+    
+    <!-- 页面信息提示区 -->    
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+    	<apex:pageBlock title="采购信息记录">    	
+                <apex:commandButton action="{!saveAction}" value="保存"/>
+                <apex:commandButton action="{!cancelAction}" value="取消"/>
+		    	<apex:pageBlockSection title="基本信息" collapsible="false">
+		            <!-- 审批流程编号 -->
+		            <apex:outputField value="{!infoRecord.Name}"></apex:outputField>
+		            <!-- 申请人部门 -->
+		            <apex:outputField value="{!infoRecord.Dept_Name__c}"></apex:outputField>
+		            <!-- 流程名称 -->
+		            <apex:outputField value="{!infoRecord.Approval_Name__c}"></apex:outputField>
+		            <!-- 申请人 -->
+		            <apex:outputField value="{!infoRecord.Applicant__c}"></apex:outputField>
+		            <!-- 单据状态 -->
+		            <apex:outputField value="{!infoRecord.Status__c}"></apex:outputField>
+		            <!-- 单据日期 -->
+		            <apex:outputField value="{!infoRecord.Bill_Date__c}"></apex:outputField>
+		        </apex:pageBlockSection>
+	           <apex:pageBlockSection title="抬头信息"  columns="3" collapsible="false">
+		            <!-- 锁定单号 -->
+		            <apex:outputField value="{!infoRecord.Number_of_Purchase_Info__c}"></apex:outputField>
+		            <!-- 状态 -->
+		            <apex:outputField value="{!infoRecord.Status_of_Purchase_Info__c}"></apex:outputField>
+		            <!-- 物料类型 -->
+<!-- 		            <apex:outputField value="{!infoRecord.Kind_of_Material__c}"></apex:outputField>
+ -->
+	           </apex:pageBlockSection>
+	           <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>询价结果目</h3></div>	   
+	           <apex:outputPanel id="output1" layout="block" styleClass="scroll">
+            		<apex:actionStatus startText="(waiting...)" id="retrieveStatus"/>
+            		<table class="list" border="0" cellspacing="0" cellpadding="0"  id="tableResult" >
+            			<thead>	                    
+	                    <th>行号</th>
+	                   <!--   <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Selected__c.Label}</th> -->
+	                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Quote__c.Label}</th>
+	                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Quote_Item__c.Label}</th>
+	                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Number_of_Purchase__c.Label}</th>
+	                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Number_of_Item__c.Label}</th>
+	                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Remark__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Vendor__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Material_Number__c.Label}</th> 
+	                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Material_Description__c.Label}</th>
+	                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Material_Number_of_Vendor__c.Label}</th>
+	                    </thead>
+	                    <tbody>
+		                    <apex:variable var="listIndex" value="{!1}"/>
+		                    <apex:repeat value="{!listResult}" var="item">
+		                        <tr>
+		                            <td>{!listIndex}</td>
+		                            <!-- <td><apex:inputField value="{!item.Selected__c}" styleClass="text removeDate"/></td>-->
+		                            <td><apex:inputField value="{!item.Quote__c}" styleClass="text" style="width: 40px"/></td>
+		                            <td><apex:inputField value="{!item.Quote_Item__c}" styleClass="text"/></td>
+		                            <td><apex:inputField value="{!item.Number_of_Purchase__c}" styleClass="text"/></td>
+		                            <td><apex:inputField value="{!item.Number_of_Item__c}"  styleClass="text"/></td>
+		                            <td><apex:inputField value="{!item.Remark__c}" styleClass="text"/></td>
+		                            <td><apex:inputField value="{!item.Vendor__c}" styleClass="text"/></td>
+		                            <td><apex:inputField value="{!item.Material_Number__c}" styleClass="text"/></td>
+		                            <td><apex:inputField value="{!item.Material_Description__c}" styleClass="text"/></td>
+		                            <td><apex:inputField value="{!item.Material_Number_of_Vendor__c}" styleClass="text"/></td>
+		                        </tr>
+		                        <apex:variable var="listIndex" value="{!listIndex+1}"/>
+	                        </apex:repeat>
+	                    </tbody>
+            		</table>
+	           </apex:outputPanel>   
+    	</apex:pageBlock>
+
+    </apex:form>
+</apex:page>

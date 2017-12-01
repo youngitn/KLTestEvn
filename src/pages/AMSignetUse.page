@@ -1,0 +1,469 @@
+<apex:page standardController="Approval_Managed__c" extensions="AMSignetUseExtension" >
+<html>
+<head>
+    <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+    <script>
+     var j$ = jQuery.noConflict();
+ 
+        j$(document).ready(function(){
+            var cmb = j$("select[id$='file_type']");
+            var approvalValue = cmb.val();
+            console.log('approvalValue: ' + approvalValue);
+            
+            var desc1 = j$("[id$='FileName']");
+
+            var desc2 = j$("[id$='New_account']"); 
+
+            var desc3 = j$("[id$='Quantity']"); 
+
+            var desc4 = j$("[id$='Summary_content']"); 
+
+            var desc5 = j$("[id$='company_number']"); 
+
+            var desc6 = j$("[id$='Account_Number']");
+
+            var desc7 = j$("[id$='Account']"); 
+
+            var desc8 = j$("[id$='Term_of_Payment']");
+
+            var desc9 = j$("[id$='payment_terms_describe']");
+
+            var desc10 = j$("[id$='Citic_policy_no']");
+
+            var desc11 = j$("[id$='Overdue_amount']");
+
+            var desc12 = j$("[id$='Retention_penalty']");
+
+            var desc13 = j$("[id$='acacetin']");
+
+            var desc14 = j$("[id$='Currency']");
+
+            var desc15 = j$("[id$='Acceptance_condition']");
+
+            var desc16 = j$("[id$='Content_acceptance']");
+
+            var desc17 = j$("[id$='Delivery_contract_review']");
+
+            var desc18 = j$("[id$='Standards']");
+
+            var desc19 = j$("[id$='Standard_parts']");
+
+            var desc20 = j$("[id$='Field1Intellectual_property']");
+
+            var desc21 = j$("[id$='Retention']");
+
+            var desc22 = j$("[id$='Contract_number']"); 
+            
+       });
+            function toggleData(){
+            var cmb = j$("select[id$='file_type']");
+            var approvalValue = cmb.val();
+            console.log('approvalValue: ' + approvalValue);
+            
+            var desc1 = j$("[id$='FileName']");
+
+            var desc2 = j$("[id$='New_account']"); 
+
+            var desc3 = j$("[id$='Quantity']"); 
+
+            var desc4 = j$("[id$='Summary_content']"); 
+
+            var desc5 = j$("[id$='company_number']"); 
+
+            var desc6 = j$("[id$='Account_Number']");
+
+            var desc7 = j$("[id$='Account_Name']"); 
+
+            var desc8 = j$("[id$='Term_of_Payment']");
+
+            var desc9 = j$("[id$='payment_terms_describe']");
+
+            var desc10 = j$("[id$='Citic_policy_no']");
+
+            var desc11 = j$("[id$='Overdue_amount']");
+
+            var desc12 = j$("[id$='Retention_penalty']");
+
+            var desc13 = j$("[id$='acacetin']");
+
+            var desc14 = j$("[id$='Currency']");
+
+            var desc15 = j$("[id$='Acceptance_condition']");
+
+            var desc16 = j$("[id$='Content_acceptance']");
+
+            var desc17 = j$("[id$='Delivery_contract_review']");
+
+            var desc18 = j$("[id$='Standards']");
+
+            var desc19 = j$("[id$='Standard_parts']");
+
+            var desc20 = j$("[id$='Field1Intellectual_property']");
+
+            var desc21 = j$("[id$='Retention']");
+
+            var desc22 = j$("[id$='Contract_number']"); 
+
+            if (approvalValue == "01") {
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.show();
+                desc2.parent().prev().children("label").show();
+
+                desc3.show();
+                desc3.parent().prev().children("label").show();
+
+                desc4.show();
+                desc4.parent().prev().children("label").show();
+
+                desc5.show();
+                desc5.parent().prev().children("label").show();
+
+                desc6.show();
+                desc6.parent().prev().children("label").show();
+
+                desc7.show();
+                desc7.parent().prev().children("label").show();
+
+                desc8.show();
+                desc8.parent().prev().children("label").show();
+
+                desc9.show();
+                desc9.parent().prev().children("label").show();
+
+                desc10.show();
+                desc10.parent().prev().children("label").show();
+
+                desc11.show();
+                desc11.parent().prev().children("label").show();
+
+                desc12.show();
+                desc12.parent().prev().children("label").show();
+
+                desc13.show();
+                desc13.parent().prev().children("label").show();
+
+                desc14.show();
+                desc14.parent().prev().children("label").show();
+
+                desc15.show();
+                desc15.parent().prev().children("label").show();
+
+                desc16.show();
+                desc16.parent().prev().children("label").show();
+
+                desc17.show();
+                desc17.parent().prev().children("label").show();
+
+                desc18.show();
+                desc18.parent().prev().children("label").show();
+
+                desc19.show();
+                desc19.parent().prev().children("label").show();
+
+                desc20.show();
+                desc20.parent().prev().children("label").show();
+
+                desc21.show();
+                desc21.parent().prev().children("label").show();
+
+                desc22.show();
+                desc22.parent().prev().children("label").show();
+
+            }else if (approvalValue == "02") {                
+                desc1.show();
+                desc1.parent().prev().children("label").show();
+
+                desc2.hide();
+                desc2.parent().prev().children("label").hide();
+
+                desc3.show();
+                desc3.parent().prev().children("label").show();
+
+                desc4.show();
+                desc4.parent().prev().children("label").show();
+
+                desc5.hide();
+                desc5.parent().prev().children("label").hide();
+
+                desc6.show();
+                desc6.parent().prev().children("label").show();
+
+                desc7.show();
+                desc7.parent().prev().children("label").show();
+
+                desc8.hide();
+                desc8.parent().prev().children("label").hide();
+
+                desc9.hide();
+                desc9.parent().prev().children("label").hide();
+
+                desc10.hide();
+                desc10.parent().prev().children("label").hide();
+
+                desc11.hide();
+                desc11.parent().prev().children("label").hide();
+
+                desc12.hide();
+                desc12.parent().prev().children("label").hide();
+
+                desc13.show();
+                desc13.parent().prev().children("label").show();
+
+                desc14.show();
+                desc14.parent().prev().children("label").show();
+
+                desc15.hide();
+                desc15.parent().prev().children("label").hide();
+
+                desc16.hide();
+                desc16.parent().prev().children("label").hide();
+
+                desc17.hide();
+                desc17.parent().prev().children("label").hide();
+
+                desc18.hide();
+                desc18.parent().prev().children("label").hide();
+
+                desc19.hide();
+                desc19.parent().prev().children("label").hide();
+
+                desc20.hide();
+                desc20.parent().prev().children("label").hide();
+
+                desc21.hide();
+                desc21.parent().prev().children("label").hide();
+
+                desc22.hide();
+                desc22.parent().prev().children("label").hide();
+
+            }else if (approvalValue == "03") {
+                  desc1.show();
+                desc1.parent().prev().children("label").show();
+
+                desc2.hide();
+                desc2.parent().prev().children("label").hide();
+
+                desc3.show();
+                desc3.parent().prev().children("label").show();
+
+                desc4.show();
+                desc4.parent().prev().children("label").show();
+
+                desc5.hide();
+                desc5.parent().prev().children("label").hide();
+
+                desc6.show();
+                desc6.parent().prev().children("label").show();
+
+                desc7.show();
+                desc7.parent().prev().children("label").show();
+
+                desc8.hide();
+                desc8.parent().prev().children("label").hide();
+
+                desc9.hide();
+                desc9.parent().prev().children("label").hide();
+
+                desc10.hide();
+                desc10.parent().prev().children("label").hide();
+
+                desc11.hide();
+                desc11.parent().prev().children("label").hide();
+
+                desc12.hide();
+                desc12.parent().prev().children("label").hide();
+
+                desc13.show();
+                desc13.parent().prev().children("label").show();
+
+                desc14.show();
+                desc14.parent().prev().children("label").show();
+
+                desc15.hide();
+                desc15.parent().prev().children("label").hide();
+
+                desc16.hide();
+                desc16.parent().prev().children("label").hide();
+
+                desc17.hide();
+                desc17.parent().prev().children("label").hide();
+
+                desc18.hide();
+                desc18.parent().prev().children("label").hide();
+
+                desc19.hide();
+                desc19.parent().prev().children("label").hide();
+
+                desc20.hide();
+                desc20.parent().prev().children("label").hide();
+
+                desc21.hide();
+                desc21.parent().prev().children("label").hide();
+
+                desc22.hide();
+                desc22.parent().prev().children("label").hide();
+
+            }else if (approvalValue == "04"){
+                desc1.show();
+                desc1.parent().prev().children("label").show();
+
+                desc2.hide();
+                desc2.parent().prev().children("label").hide();
+
+                desc3.show();
+                desc3.parent().prev().children("label").show();
+
+                desc4.show();
+                desc4.parent().prev().children("label").show();
+
+                desc5.hide();
+                desc5.parent().prev().children("label").hide();
+
+                desc6.show();
+                desc6.parent().prev().children("label").show();
+
+                desc7.hide();
+                desc7.parent().prev().children("label").hide();
+
+                desc8.hide();
+                desc8.parent().prev().children("label").hide();
+
+                desc9.hide();
+                desc9.parent().prev().children("label").hide();
+
+                desc10.hide();
+                desc10.parent().prev().children("label").hide();
+
+                desc11.hide();
+                desc11.parent().prev().children("label").hide();
+
+                desc12.hide();
+                desc12.parent().prev().children("label").hide();
+
+                desc13.show();
+                desc13.parent().prev().children("label").show();
+
+                desc14.show();
+                desc14.parent().prev().children("label").show();
+
+                desc15.hide();
+                desc15.parent().prev().children("label").hide();
+
+                desc16.hide();
+                desc16.parent().prev().children("label").hide();
+
+                desc17.hide();
+                desc17.parent().prev().children("label").hide();
+
+                desc18.hide();
+                desc18.parent().prev().children("label").hide();
+
+                desc19.hide();
+                desc19.parent().prev().children("label").hide();
+
+                desc20.hide();
+                desc20.parent().prev().children("label").hide();
+
+                desc21.hide();
+                desc21.parent().prev().children("label").hide();
+
+                desc22.hide();
+                desc22.parent().prev().children("label").hide();
+            }
+        }
+    </script>
+</head>
+<body>
+<apex:sectionHeader title="用印流程" subtitle="新建/用印流程"></apex:sectionHeader>
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" collapsible="false">
+
+                
+                <!-- 单据编号 -->
+                <!--<apex:outputField value="{!am.Bill_number__c}"></apex:outputField> -->
+
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 审核状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+
+            </apex:pageBlockSection> 
+
+            <apex:pageBlockSection title="头信息" collapsible="false">
+            	<!-- 章类型 -->
+            	<apex:inputField id="signet_type" value="{!am.signet_type__c}" required="true"></apex:inputField>
+            	<!-- 文件类型 -->
+            	<apex:inputField id="file_type" value="{!am.file_type__c}" required="true" onchange="toggleData()"></apex:inputField>
+            	<!-- 文件名称 -->
+            	<apex:inputField id="FileName" value="{!am.FileName__c}" required="true"></apex:inputField>
+            	
+            	<!-- 数量 -->
+            	<apex:inputField id="Quantity" value="{!am.Quantity__c}" required="true"></apex:inputField>
+            	<!-- 内容概述 -->
+            	<apex:inputField id="Summary_content" value="{!am.Summary_content__c}" required="true" style="width: 80%"></apex:inputField>
+            	<!-- 公司代码 -->
+            	<apex:inputField id="company_number" value="{!am.company_number__c}"></apex:inputField>
+            	
+                 <!-- 客户 -->
+                <apex:inputField id="Account" value="{!am.Account__c}" ></apex:inputField>
+                <!-- 客户编号 -->
+                <apex:outputField id="Account_Number" value="{!am.Account_Number__c}"></apex:outputField> 
+            	<!-- 付款条件 -->
+            	<apex:inputField id="Term_of_Payment" value="{!am.Term_of_Payment__c}"></apex:inputField>
+            	<!-- 付款条件描述 -->
+            	<!-- <apex:inputField id="payment_terms_describe" value="{!am.payment_terms_describe__c}" style="width: 80%"></apex:inputField> -->
+            	<!-- 中信保单号 -->
+            	<apex:inputField id="Citic_policy_no" value="{!am.Citic_policy_no__c}"></apex:inputField>
+            	<!-- 逾期账款总额 -->
+            	<apex:inputField id="Overdue_amount" value="{!am.Overdue_amount__c}"></apex:inputField>
+            	<!-- 质保金&违约金比例（%） -->
+            	<apex:inputField id="Retention_penalty" value="{!am.Retention_penalty__c}"></apex:inputField>
+            	<!-- 合约金额 -->
+            	<apex:inputField id="acacetin" value="{!am.acacetin__c}" required="true"></apex:inputField>
+            	<!-- 币别 -->
+            	<apex:inputField id="Currency" value="{!am.Currency__c}" required="true"></apex:inputField>
+            	<!-- 验收条件 -->
+            	<apex:inputField id="Acceptance_condition" value="{!am.Acceptance_condition__c}" ></apex:inputField>
+            	<!-- 验收条件内容 -->
+            	<apex:inputField id="Content_acceptance" value="{!am.Content_acceptance__c}" style="width: 80%"></apex:inputField>
+                <!-- 新客户 -->
+                <apex:inputField id="New_account" value="{!am.New_account__c}" ></apex:inputField> 
+            	<!-- 交期合约审查 -->
+            	<apex:inputField id="Delivery_contract_review" value="{!am.Delivery_contract_review__c}"></apex:inputField>
+            	<!-- 是否达标 -->
+            	<apex:inputField id="Standards" value="{!am.Standards__c}"></apex:inputField>
+            	<!-- 是否标件 -->
+            	<apex:inputField id="Standard_parts" value="{!am.Standard_parts__c}"></apex:inputField>
+            	<!-- 有知识产权项 -->
+            	<apex:inputField id="Field1Intellectual_property" value="{!am.Field1Intellectual_property__c}"></apex:inputField>
+            	<!-- 有质保金 -->
+            	<apex:inputField id="Retention" value="{!am.Retention__c}" ></apex:inputField>
+            	<!-- 合同编号 -->
+            	<apex:inputField id="Contract_number" value="{!am.Contract_number__c}"></apex:inputField>
+
+            </apex:pageBlockSection>          
+        </apex:pageBlock>
+    </apex:form>>
+</body>
+</html>
+</apex:page>

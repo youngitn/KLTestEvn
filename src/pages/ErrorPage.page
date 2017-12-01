@@ -1,0 +1,11 @@
+<apex:page showHeader="false"  cache="false">
+      <center>
+      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>
+        <hr/>
+        <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>
+       <p style="color: red;font-size:16px" align="center">系统错误！请联系系统管理员！</p>
+              <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>      <br></br>
+        <hr/>
+      </center>
+      <br/>
+</apex:page>

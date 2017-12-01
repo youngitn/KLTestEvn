@@ -1,0 +1,790 @@
+<apex:page extensions="AMVendorExtension" sidebar="false" standardcontroller="Custom_Approval_Managed__c">
+    <head>
+        <apex:includescript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}">
+        </apex:includescript>
+        <style>
+            input.text {
+            text-align: center;
+        }
+        div.scroll{
+            width:1200px; 
+            /*height:200px; */
+            overflow:scroll;
+        }
+        textarea{
+            width: 75%
+        }
+        select.wid{
+            width: 100%
+        }
+        table.list th,table.list td{
+            text-align: center;
+        }
+        </style>
+        <script>
+            var j$ = jQuery.noConflict();
+            function deleteItemBankDetail(rowID){
+                deleteBankDetail(rowID);
+            }
+              function deleteItemContact(rowID){
+                removeContact(rowID);
+            }
+           function deleteItemPF(rowID){
+                removePF(rowID);
+            }
+
+            function JSqueryVendor(){
+                var seCorporation = document.getElementById('{!$Component.form.block.blockSection.Corporation__c}').value;
+                var sePurchase = document.getElementById('{!$Component.form.block.blockSection.Purchase_Org__c}').value;
+                var seGroup = document.getElementById('{!$Component.form.block.blockSection.Account_Group__c}').value;
+                var seVendorName = document.getElementById('{!$Component.form.block.blockSection.Vendor_Name__c}').value;
+                var seVendorNumber = document.getElementById('{!$Component.form.block.blockSection.Vendor_Number__c}').value;
+                
+                console.log("公司代码"+seCorporation+"采购组:"+sePurchase+" 账户组:"+seGroup+" 名称:"+seVendorName+"  供应商代码:"+seVendorNumber);
+                queryVendorN(seCorporation,sePurchase,seGroup,seVendorName,seVendorNumber);
+                return false;
+
+            }
+             function changeTerm(x){
+                document.getElementById('{!$Component.form.block.detailInfo.Term_of_Payment_Corp__c}').value = document.getElementById(x).value;
+            }
+
+            //2017/11/24 新增台灣新萊欄位判斷
+            j$(function() {
+
+
+                //现金管理群组
+                var cmg =  j$("select[id$='Cash_Manage_Group__c']");
+                //當公司別異動為台灣新萊 勾選 基于收货的发票验证   
+                var Corporation = j$("select[id$='Corporation__c']");
+                var inv = j$("input[id$='Is_Based_Invoice__c']");
+                var invlabel = j$("label[for$='Is_Based_Invoice__c']");
+                var eq3000 = '3000';
+                //帳戶組描述 對應 现金管理群组    
+                var agc = j$("select[id$='Account_Group__c']");
+                var tg =  j$("#Partner");
+                checked(Corporation,inv,eq3000);
+                var Term_of_Payment_Corp = j$("select[id$='Term_of_Payment_Corp__c'],label[for$='Term_of_Payment_Corp__c']");
+                var Sorting_Code = j$("select[id$='Sorting_Code__c']");
+                Corporation.change(
+                    function(){
+
+                        if (Corporation.val() == eq3000 ){
+                            
+                            inv.attr("checked",true);
+                            inv.hide();
+                            invlabel.hide();
+                            setTimeout(bindAction,100);
+                            //隱藏現金管理群組欄位和標籤-->
+                            cmg.hide();
+                            j$("label[for$='Cash_Manage_Group__c']").hide();
+                            //隱藏現金管理群組欄位和標籤<--
+                            
+                            Term_of_Payment_Corp.hide();
+
+                            Sorting_Code.val('000');
+
+
+                        }else{
+                            inv.attr("checked",false);
+                            inv.show();
+                            invlabel.show();
+                            tg.show();
+
+                            cmg.show();
+                            j$("label[for$='Cash_Manage_Group__c']").show();
+                            Term_of_Payment_Corp.show();
+                        }
+                       
+                }); 
+
+                //當公司別異動為台灣新萊 存檔時必填欄位檢查
+                j$("input[id$='save']").click(function (){
+                    var msg = '';
+                    if(Corporation.val() == eq3000){
+
+                        var  lan = j$("select[id$='Language__c']");
+                        var tna = j$("input[id$='Tax_Number_Additional__c']");
+                        if(lan.val() == null || lan.val() == ''){
+                            msg += ' 語言 ';
+                        }
+                        if(cmg.val() == null || cmg.val() == '' ){
+                            msg += ' 現金管理群組 ';
+                        }
+                        //台灣國貿條件沒輸入的話
+                        var itt = j$("select[id$='International_Trade_Term__c']");
+                        if (itt.val() == null || itt.val() == ''){
+                            itt.val('注');
+                        }
+                        if(tna.val() == null || tna.val() == '' ){
+                            msg += ' 加值稅登記號碼 ';
+                        }
+
+                    }
+                    if(msg != ''){
+                        alert('必填欄位: ' + msg + ' 未填寫!');
+                        return false;
+                    }
+                });
+
+              
+
+             });
+
+            function showHide(agc,target,eq){
+
+                if(agc.val() == eq){
+                     target.hide();
+                }else{
+                    target.show();
+                }
+            }
+
+            function checked(c,inv,eq){
+                if(c.val() == eq){
+                      inv.attr("checked",true);
+                }else{
+                     inv.attr("checked",false);
+                }
+            }
+            function bindAction(){
+                ///alert('請選擇帳戶組');
+                
+                var In = new Map([['Z001','K1'], ['Z002','K2'], ['Z004','K4'],['Z005','K5'],['Z006','K3']]);
+                var agc = j$("select[id$='Account_Group__c']");
+                var p = j$("#Partner");
+                showHide(agc, p, 'Z002');
+                j$("select[id$='Cash_Manage_Group__c']").val(In.get(agc.val())); 
+                agc.change(
+                    function(){
+                                                                         
+                          showHide(j$(this), p, 'Z002');
+                                                   
+                          j$("select[id$='Cash_Manage_Group__c']").val(In.get(j$(this).val()));  
+                          //alert(j$("select[id$='Cash_Manage_Group__c']").val());
+                                                                         
+                    }
+                );
+            }
+           
+        </script>
+    </head>
+    <apex:sectionheader subtitle="新建/编辑供应商数据" title="供应商主数据维护-cang">
+    </apex:sectionheader>
+    <!-- 页面信息提示区 -->
+    <apex:pagemessages escape="true">
+    </apex:pagemessages>
+    <!-- <button onclick='bindAction()'>asf</button> -->
+    <apex:form id="form">
+        <apex:actionstatus id="loading">
+            <apex:facet name="start">
+                <span class="waitingSearchDiv" id="el_loading" style=" background-color: #fbfbfb ;
+                   height: 100%; opacity:0.65; width:100%;">
+                    <span class="waitingHolder" style="top : 50%; width: 91px;">
+                        <img class="waitingImage" src="/img/loading.gif" title="Please Wait..."/>
+                        <span style="font-size: 15px;">
+                            Loading...
+                        </span>
+                    </span>
+                </span>
+            </apex:facet>
+        </apex:actionstatus>
+        <!-- 各子表删除行数调用function -->
+        <apex:actionfunction action="{!deleteBankDetail}" id="deleteBankDetail" name="deleteBankDetail" rerender="output1">
+            <apex:param assignto="{!rowID}" name="rowID" value="">
+            </apex:param>
+        </apex:actionfunction>
+        <apex:actionfunction action="{!removeContact}" id="removeContact" name="removeContact" rerender="output2">
+            <apex:param assignto="{!rowID}" name="rowID" value="">
+            </apex:param>
+        </apex:actionfunction>
+        <apex:actionfunction action="{!removePF}" id="removePF" name="removePF" rerender="output3">
+            <apex:param assignto="{!rowID}" name="rowID" value="">
+            </apex:param>
+        </apex:actionfunction>
+        <apex:actionfunction action="{!queryVendor}" id="queryVendor" immediate="true" name="queryVendorN" rerender="VendorMain,message" status="loading">
+            <apex:param assignto="{!cusAP.Corporation__c}" name="seCorporation" value="seCorporation">
+            </apex:param>
+            <apex:param assignto="{!cusAP.Purchase_Org__c}" name="sePurchase" value="sePurchase">
+            </apex:param>
+            <apex:param assignto="{!cusAP.Account_Group__c}" name="seGroup" value="seGroup">
+            </apex:param>
+            <apex:param assignto="{!cusAP.Vendor_Name__c}" name="seVendorName" value="seVendorName">
+            </apex:param>
+            <apex:param assignto="{!cusAP.Vendor_Number__c}" name="seVendorNumber" value="seVendorNumber">
+            </apex:param>
+        </apex:actionfunction>
+        <apex:pageblock id="block" title="供应商主数据">
+            <!-- -->
+            <apex:pageblockbuttons >
+                <apex:commandbutton id="save" action="{!saveAction}" style="padding:3px 5px;" value="保存">
+                </apex:commandbutton>
+                <apex:commandbutton action="{!cancelAction}" style="padding:3px 5px;" value="取消">
+                </apex:commandbutton>
+            </apex:pageblockbuttons>
+            <apex:pageblocksection collapsible="false" title="基本信息">
+                <!-- 审批流程编号 -->
+                <apex:outputfield value="{!cusAP.Name}">
+                </apex:outputfield>
+                <!-- 流程名称 -->
+                <apex:outputfield value="{!cusAP.Approval_Name__c}">
+                </apex:outputfield>
+                <!-- 申请人(工号) -->
+                <apex:outputfield value="{!cusAP.Applicant_Code__c}">
+                </apex:outputfield>
+                <!-- 申请人部门 -->
+                <apex:outputfield value="{!cusAP.Dept_Name__c}">
+                </apex:outputfield>
+                <!-- 申请人(姓名) -->
+                <apex:outputfield value="{!cusAP.Applicant_Name__c}">
+                </apex:outputfield>
+                <!-- 单据日期 -->
+                <apex:outputfield value="{!cusAP.Bill_Date__c}">
+                </apex:outputfield>
+                <!-- 申请人(公司代码) -->
+                <apex:outputfield value="{!cusAP.Applicant_Corp_Code__c}">
+                </apex:outputfield>
+                <!-- 单据状态 -->
+                <apex:outputfield value="{!cusAP.Approval_Status__c}">
+                </apex:outputfield>
+            </apex:pageblocksection>
+            <apex:pageblocksection collapsible="false" columns="2" id="blockSection" title="供应商信息">
+                <!-- 类型 -->
+                <apex:inputfield id="type__c" required="true" value="{!cusAP.type__c}">
+                </apex:inputfield>
+                <!-- 公司代码 -->
+                <apex:inputfield id="Corporation__c" required="true" style="width:173px;" value="{!cusAP.Corporation__c}">
+                </apex:inputfield>
+                <!-- 采购组织-->
+                <apex:inputfield id="Purchase_Org__c" required="true" value="{!cusAP.Purchase_Org__c}">
+                </apex:inputfield>
+                <!-- 账户组-->
+                <apex:inputfield id="Account_Group__c" required="true" value="{!cusAP.Account_Group__c}">
+                </apex:inputfield>
+                <!-- 供应商名称 -->
+                <apex:inputfield id="Vendor_Name__c" required="true" value="{!cusAP.Vendor_Name__c}">
+                </apex:inputfield>
+                <!-- 供应商代码 -->
+                <apex:inputfield id="Vendor_Number__c" value="{!cusAP.Vendor_Number__c}">
+                </apex:inputfield>
+                <!-- 名称补充 -->
+                <apex:inputfield id="Name_Additional__c" value="{!cusAP.Name_Additional__c}">
+                </apex:inputfield>
+                <!-- 标题 -->
+                <apex:inputfield id="Title__c" required="true" value="{!cusAP.Title__c}">
+                </apex:inputfield>
+                <!-- -->
+                <!--检索项1-->
+                <apex:inputfield id="Retrieve_Item1__c" required="true" value="{!cusAP.Retrieve_Item1__c}">
+                </apex:inputfield>
+                <!--检索项2-->
+                <apex:inputfield id="Retrieve_Item2__c" value="{!cusAP.Retrieve_Item2__c}">
+                </apex:inputfield>
+                <apex:commandbutton onclick=" return JSqueryVendor();" value="查询供应商">
+                </apex:commandbutton>
+            </apex:pageblocksection>
+            <apex:pageblocksection columns="1">
+                <apex:outputpanel id="VendorMain" layout="block" style="display:{!IF(displayQueryResult,'','none')};" styleclass="scroll">
+                    <table border="0" cellpadding="0" cellspacing="0" class="list">
+                        <thead>
+                            <th>
+                                操作
+                            </th>
+                            <!--<th>{!$ObjectType.Custom_Approval_Managed__c.Fields.type__c.Label}</th>-->
+                            <th>
+                                {!$ObjectType.Custom_Approval_Managed__c.Fields.Corporation__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Custom_Approval_Managed__c.Fields.Purchase_Org__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Custom_Approval_Managed__c.Fields.Account_Group__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Custom_Approval_Managed__c.Fields.Vendor_Name__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Custom_Approval_Managed__c.Fields.Vendor_Number__c.Label}
+                            </th>
+                            <!--<th>{!$ObjectType.Custom_Approval_Managed__c.Fields.Name_Additional__c.Label}</th>-->
+                            <!-- <th>{!$ObjectType.Custom_Approval_Managed__c.Fields.Title__c.Label}</th>
+                            <th>{!$ObjectType.Custom_Approval_Managed__c.Fields.Retrieve_Item1__c.Label}</th>
+                            <th>{!$ObjectType.Custom_Approval_Managed__c.Fields.Retrieve_Item2__c.Label}</th>
+                            -->
+                        </thead>
+                        <apex:variable value="{!0}" var="VendorIndex">
+                        </apex:variable>
+                        <apex:repeat value="{!camList}" var="item">
+                            <tr>
+                                <td>
+                                    <apex:commandbutton action="{!selectVendor}" immediate="true" rerender="outputs,blockSection,VerdorMain,detailInfo,addressInfo,descriptionInfo" value="选中">
+                                        <apex:param assignto="{!VendorRow}" name="VendorRow" value="{!VendorIndex}">
+                                        </apex:param>
+                                    </apex:commandbutton>
+                                </td>
+                                <td>
+                                    <apex:outputfield value="{!item.Corporation__c}">
+                                    </apex:outputfield>
+                                </td>
+                                <td>
+                                    <apex:outputfield value="{!item.Purchase_Org__c}">
+                                    </apex:outputfield>
+                                </td>
+                                <td>
+                                    <apex:outputfield value="{!item.Account_Group__c}">
+                                    </apex:outputfield>
+                                </td>
+                                <td>
+                                    <apex:outputfield value="{!item.Vendor_Name__c}">
+                                    </apex:outputfield>
+                                </td>
+                                <td>
+                                    <apex:outputfield value="{!item.Vendor_Number__c}">
+                                    </apex:outputfield>
+                                </td>
+                                <!--  <td><apex:outputField value="{!item.Name_Additional__c}"></apex:outputField></td>-->
+                                <!--  <td><apex:outputField value="{!item.Title__c}"></apex:outputField></td>
+                                <td><apex:outputField value="{!item.Retrieve_Item1__c}"></apex:outputField></td>
+                                <td><apex:outputField value="{!item.Retrieve_Item2__c}"></apex:outputField></td>-->
+                            </tr>
+                            <apex:variable value="{!VendorIndex+1}" var="VendorIndex">
+                            </apex:variable>
+                        </apex:repeat>
+                    </table>
+                </apex:outputpanel>
+            </apex:pageblocksection>
+            <apex:pageblocksection collapsible="false" columns="2" id="detailInfo" title="供应商详细信息">
+                <!--街道-->
+                <!--<apex:inputField value="{!cusAP.Reserved_Street__c}" id="Reserved_Street__c"/>-->
+                <!--国家-->
+                <apex:inputfield id="Country__c" required="true" value="{!cusAP.Country__c}">
+                </apex:inputfield>
+                <!--地区-->
+                <apex:inputfield id="Area__c" value="{!cusAP.Area__c}">
+                </apex:inputfield>
+                <!--公司地址省-->
+                <apex:inputfield id="Province__c" value="{!cusAP.Province__c}">
+                </apex:inputfield>
+                <!--公司地址市-->
+                <apex:inputfield id="City__c" value="{!cusAP.City__c}">
+                </apex:inputfield>
+                <!--公司地址详细地址-->
+                <apex:inputfield id="Corp_Address__c" required="true" value="{!cusAP.Corp_Address__c}">
+                </apex:inputfield>
+                <!--时区-->
+                <apex:inputfield id="Time_Zone__c" value="{!cusAP.Time_Zone__c}">
+                </apex:inputfield>
+                <!--邮政编码-->
+                <apex:inputfield id="Postcode__c" value="{!cusAP.Postcode__c}">
+                </apex:inputfield>
+                <!--门牌号-->
+                <apex:inputfield id="House_Number__c" value="{!cusAP.House_Number__c}">
+                </apex:inputfield>
+                <!--公司邮政编码-->
+                <apex:inputfield id="Corp_Postcode__c" value="{!cusAP.Corp_Postcode__c}">
+                </apex:inputfield>
+                <apex:inputfield id="Language__c" value="{!cusAP.Language__c}">
+                </apex:inputfield>
+                <!--标准通信方法-->
+                <apex:inputfield id="Standard_Contac_Method__c" value="{!cusAP.Standard_Contac_Method__c}">
+                </apex:inputfield>
+                <!--移动电话-->
+                <apex:inputfield id="Mobile_Phone__c" value="{!cusAP.Mobile_Phone__c}">
+                </apex:inputfield>
+                <!--电话-->
+                <apex:inputfield id="Phone__c" value="{!cusAP.Phone__c}">
+                </apex:inputfield>
+                <!--分机号-->
+                <apex:inputfield id="Phone_Extension_Number__c" value="{!cusAP.Phone_Extension_Number__c}">
+                </apex:inputfield>
+                <!--传真-->
+                <apex:inputfield id="Fax__c" value="{!cusAP.Fax__c}">
+                </apex:inputfield>
+                <!--分机号-->
+                <apex:inputfield id="Fax_Extension_Number__c" value="{!cusAP.Fax_Extension_Number__c}">
+                </apex:inputfield>
+                <!--Email-->
+                <apex:inputfield id="Email__c" value="{!cusAP.Email__c}">
+                </apex:inputfield>
+                <!--税号-->
+                <apex:inputfield id="Tax_Number__c" value="{!cusAP.Tax_Number__c}">
+                </apex:inputfield>
+                <!--加值税登记号码-->
+                <apex:inputfield id="Tax_Number_Additional__c" value="{!cusAP.Tax_Number_Additional__c}">
+                </apex:inputfield>
+                <!--业务类型-->
+                <apex:inputfield id="Business_Type__c" value="{!cusAP.Business_Type__c}">
+                </apex:inputfield>
+                <!--工业类型-->
+                <apex:inputfield id="Industry_Type__c" value="{!cusAP.Industry_Type__c}">
+                </apex:inputfield>
+                <!--基于收货的发票验证-->
+                <apex:inputfield id="Is_Based_Invoice__c" value="{!cusAP.Is_Based_Invoice__c}">
+                </apex:inputfield>
+                <!--采购组-->
+                <apex:inputfield id="Purchase_Group__c" value="{!cusAP.Purchase_Group__c}">
+                </apex:inputfield>
+                <!--计划交货时间(天)-->
+                <apex:inputfield id="Plan_Delivery_Days__c" value="{!cusAP.Plan_Delivery_Days__c}">
+                </apex:inputfield>
+                <!--统驭科目-->
+                <apex:inputfield id="Control_Subject__c" required="true" value="{!cusAP.Control_Subject__c}">
+                </apex:inputfield>
+                <!--排序码-->
+                <apex:inputfield id="Sorting_Code__c" required="true" value="{!cusAP.Sorting_Code__c}">
+                </apex:inputfield>
+                <!--现金管理群组-->
+                <apex:inputfield id="Cash_Manage_Group__c" value="{!cusAP.Cash_Manage_Group__c}">
+                </apex:inputfield>
+                <!--付款条件(供应商_采购)-->
+                <apex:inputfield id="Term_of_Payment_Vendor__c" onchange="changeTerm(this.id)" required="true" value="{!cusAP.Term_of_Payment_Vendor__c}">
+                </apex:inputfield>
+                <!--国际贸易条件-->
+                <apex:inputfield id="International_Trade_Term__c" required="true" value="{!cusAP.International_Trade_Term__c}">
+                </apex:inputfield>
+                <!--付款条件(供应商_公司)-->
+                <apex:inputfield id="Term_of_Payment_Corp__c" required="true" value="{!cusAP.Term_of_Payment_Corp__c}">
+                </apex:inputfield>
+                <!--国际条件说明-->
+                <apex:inputfield id="Term_of_Explain__c"  value="{!cusAP.Term_of_Explain__c}">
+                </apex:inputfield>
+                <!--付款方式-->
+                <apex:inputfield id="Payment_Methods__c" value="{!cusAP.Payment_Methods__c}">
+                </apex:inputfield>
+                <!--币种-->
+                <apex:inputfield id="Currency__c" required="true" value="{!cusAP.Currency__c}">
+                </apex:inputfield>
+                <!--最小订单量-->
+                <apex:inputfield id="Num_Min_Order__c" value="{!cusAP.Num_Min_Order__c}">
+                </apex:inputfield>
+                <!--公司注册日期-->
+                <apex:inputfield id="Corp_Registed_Date__c" value="{!cusAP.Corp_Registed_Date__c}">
+                </apex:inputfield>
+                <!--设备数量1-->
+                <apex:inputfield id="Num_Equipment1__c" value="{!cusAP.Num_Equipment1__c}">
+                </apex:inputfield>
+                <!--设备数量2-->
+                <apex:inputfield id="Num_Equipment2__c" value="{!cusAP.Num_Equipment2__c}">
+                </apex:inputfield>
+                <!--设备数量3-->
+                <apex:inputfield id="Num_Equipment3__c" value="{!cusAP.Num_Equipment3__c}">
+                </apex:inputfield>
+                <!--设备数量4-->
+                <apex:inputfield id="Num_Equipment4__c" value="{!cusAP.Num_Equipment4__c}">
+                </apex:inputfield>
+                <!--设备数量5-->
+                <apex:inputfield id="Num_Equipment5__c" value="{!cusAP.Num_Equipment5__c}">
+                </apex:inputfield>
+                <!--小类-->
+                <apex:inputfield id="Subdivision__c" value="{!cusAP.Subdivision__c}">
+                </apex:inputfield>
+                <!--主营项目-->
+                <apex:inputfield id="Project_of_Main__c" value="{!cusAP.Project_of_Main__c}">
+                </apex:inputfield>
+                <!--产房面积-->
+                <apex:inputfield id="Production_Area__c" value="{!cusAP.Production_Area__c}">
+                </apex:inputfield>
+                <!--年产能-->
+                <apex:inputfield id="Annual_Capacity__c" value="{!cusAP.Annual_Capacity__c}">
+                </apex:inputfield>
+                <!--注册资金-->
+                <apex:inputfield id="Registered_Capital__c" value="{!cusAP.Registered_Capital__c}">
+                </apex:inputfield>
+                <!--设备名称1-->
+                <apex:inputfield id="Name_Equipment1__c" value="{!cusAP.Name_Equipment1__c}">
+                </apex:inputfield>
+                <!--设备名称2-->
+                <apex:inputfield id="Name_Equipment2__c" value="{!cusAP.Name_Equipment2__c}">
+                </apex:inputfield>
+                <!--设备名称3-->
+                <apex:inputfield id="Name_Equipment3__c" value="{!cusAP.Name_Equipment3__c}">
+                </apex:inputfield>
+                <!--设备名称4-->
+                <apex:inputfield id="Name_Equipment4__c" value="{!cusAP.Name_Equipment4__c}">
+                </apex:inputfield>
+                <!--设备名称5-->
+                <apex:inputfield id="Name_Equipment5__c" value="{!cusAP.Name_Equipment5__c}">
+                </apex:inputfield>
+                <!--员工数-->
+                <apex:inputfield id="Num_Employee__c" value="{!cusAP.Num_Employee__c}">
+                </apex:inputfield>
+                <!--设备规格1-->
+                <apex:inputfield id="Spec_Equipment1__c" value="{!cusAP.Spec_Equipment1__c}">
+                </apex:inputfield>
+                <!--设备规格2-->
+                <apex:inputfield id="Spec_Equipment2__c" value="{!cusAP.Spec_Equipment2__c}">
+                </apex:inputfield>
+                <!--设备规格3-->
+                <apex:inputfield id="Spec_Equipment3__c" value="{!cusAP.Spec_Equipment3__c}">
+                </apex:inputfield>
+                <!--设备规格4-->
+                <apex:inputfield id="Spec_Equipment4__c" value="{!cusAP.Spec_Equipment4__c}">
+                </apex:inputfield>
+                <!--设备规格5-->
+                <apex:inputfield id="Spec_Equipment5__c" value="{!cusAP.Spec_Equipment5__c}">
+                </apex:inputfield>
+                <!--注释-->
+                <apex:inputfield id="Remark__c" value="{!cusAP.Remark__c}">
+                </apex:inputfield>
+            </apex:pageblocksection>
+            <apex:outputpanel id="outputs">
+                <div class="pbSubheader brandTertiaryBgr tertiaryPalette">
+                    <h3>
+                        银行细目
+                    </h3>
+                </div>
+                <apex:commandbutton action="{!addBankDetail}" immediate="true" rerender="output1" status="retrieveStatus" value="新增">
+                </apex:commandbutton>
+                <apex:outputpanel id="output1" layout="block" styleclass="scroll">
+                    <apex:actionstatus id="retrieveStatus" starttext="(waiting...)">
+                    </apex:actionstatus>
+                    <table border="0" cellpadding="0" cellspacing="0" class="list" id="tableBank">
+                        <thead>
+                            <th>
+                            </th>
+                            <th>
+                                行号
+                            </th>
+                            <th>
+                                {!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Country__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Bank_of_Code__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Account_of_Bank__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Account_Name__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Custom_Approval_Managed_Item__c.Fields.IBANValue__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Custom_Approval_Managed_Item__c.Fields.SWIFT_Code__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Validate_Date__c.Label}
+                            </th>
+                        </thead>
+                        <tbody>
+                            <apex:variable value="{!1}" var="listIndex">
+                            </apex:variable>
+                            <apex:repeat value="{!listBankDetail}" var="item">
+                                <tr>
+                                    <td>
+                                        <input class="btn" onclick="deleteItemBankDetail('{!listIndex}')" type="button" value="删除"/>
+                                    </td>
+                                    <td>
+                                        {!listIndex}
+                                    </td>
+                                    <td>
+                                        <apex:inputfield required="true" style="width: 40px" styleclass="text" value="{!item.Country__c}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield required="true" style="width:80px;" styleclass="text" value="{!item.Bank_of_Code__c}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield required="true" style="width:80px;" styleclass="text" value="{!item.Account_of_Bank__c}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield required="true" styleclass="text" value="{!item.Account_Name__c}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield style="width:80px;" styleclass="text" value="{!item.IBANValue__c}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield style="width:80px;" styleclass="text" value="{!item.SWIFT_Code__c}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield id="test" style="width:80px;" styleclass="text removeDate" value="{!item.Validate_Date__c}">
+                                        </apex:inputfield>
+                                    </td>
+                                </tr>
+                                <apex:variable value="{!listIndex+1}" var="listIndex">
+                                </apex:variable>
+                            </apex:repeat>
+                        </tbody>
+                    </table>
+                </apex:outputpanel>
+                <div class="pbSubheader brandTertiaryBgr tertiaryPalette">
+                    <h3>
+                        联系人
+                    </h3>
+                </div>
+                <apex:commandbutton action="{!addContact}" immediate="true" rerender="output2" status="retrieveStatus2" value="新增">
+                </apex:commandbutton>
+                <!--联系人子表-->
+                <apex:outputpanel id="output2" layout="block" styleclass="scroll">
+                    <apex:actionstatus id="retrieveStatus2" starttext="(waiting...)">
+                    </apex:actionstatus>
+                    <table border="0" cellpadding="0" cellspacing="0" class="list">
+                        <thead>
+                            <th>
+                            </th>
+                            <th>
+                                行号
+                            </th>
+                            <th>
+                                {!$ObjectType.Contact.Fields.Name.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Contact.Fields.Phone.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Contact.Fields.Extension_Number__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Contact.Fields.Department__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Contact.Fields.Functionally__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Contact.Fields.MobilePhone.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Contact.Fields.Fax.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Contact.Fields.Extension_Number_Fax__c.Label}
+                            </th>
+                            <th>
+                                {!$ObjectType.Contact.Fields.Email.Label}
+                            </th>
+                        </thead>
+                        <tbody>
+                            <apex:variable value="{!1}" var="listIndex2">
+                            </apex:variable>
+                            <apex:repeat value="{!listContact}" var="item">
+                                <tr>
+                                    <td>
+                                        <input class="btn" onclick="deleteItemContact('{!listIndex2}')" type="button" value="删除"/>
+                                    </td>
+                                    <td>
+                                        {!listIndex2}
+                                    </td>
+                                    <td>
+                                        <apex:inputfield required="true" styleclass="text" value="{!item.LastName}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield styleclass="text" value="{!item.Phone}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield styleclass="text" value="{!item.Extension_Number__c}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield styleclass="text" value="{!item.Department__c}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield styleclass="text" value="{!item.Functionally__c}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield styleclass="text" value="{!item.MobilePhone}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield styleclass="text" value="{!item.Fax}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield styleclass="text" value="{!item.Extension_Number_Fax__c}">
+                                        </apex:inputfield>
+                                    </td>
+                                    <td>
+                                        <apex:inputfield styleclass="text" value="{!item.Email}">
+                                        </apex:inputfield>
+                                    </td>
+                                </tr>
+                                <apex:variable value="{!listIndex2+1}" var="listIndex2">
+                                </apex:variable>
+                            </apex:repeat>
+                        </tbody>
+                    </table>
+                </apex:outputpanel>
+                <div id="Partner">
+                    <div class="pbSubheader brandTertiaryBgr tertiaryPalette" >
+                        <h3>
+                            合伙人功能
+                        </h3>
+                    </div>
+                    <apex:commandbutton action="{!addPF}" immediate="true" rerender="output3" status="retrieveStatus3" value="新增">
+                    </apex:commandbutton>
+                    <!--合伙人功能子表-->
+                    <apex:outputpanel id="output3" layout="block" styleclass="scroll">
+                        <apex:actionstatus id="retrieveStatus3" starttext="(waiting...)">
+                        </apex:actionstatus>
+                        <table border="0" cellpadding="0" cellspacing="0" class="list">
+                            <thead>
+                                <th>
+                                </th>
+                                <th>
+                                    行号
+                                </th>
+                                <!--PF-->
+                                <th>
+                                    {!$ObjectType.Contact.Fields.PF__c.Label}
+                                </th>
+                                <!--编号-->
+                                <th>
+                                    {!$ObjectType.Contact.Fields.Number_Partner__c.Label}
+                                </th>
+                                <!--名称-->
+                                <th>
+                                    {!$ObjectType.Contact.Fields.Name.Label}
+                                </th>
+                                <!--合作伙伴描述-->
+                                <th>
+                                    {!$ObjectType.Contact.Fields.Description_of_Partner__c.Label}
+                                </th>
+                            </thead>
+                            <tbody>
+                                <apex:variable value="{!1}" var="listIndex4">
+                                </apex:variable>
+                                <apex:repeat value="{!listContactPF}" var="item">
+                                    <tr>
+                                        <td>
+                                            <input class="btn" onclick="deleteItemPF('{!listIndex4}')" type="button" value="删除"/>
+                                        </td>
+                                        <td>
+                                            {!listIndex4}
+                                        </td>
+                                        <td>
+                                            <apex:inputfield required="true" styleclass="text" value="{!item.PF__c}">
+                                            </apex:inputfield>
+                                        </td>
+                                        <td>
+                                            <apex:inputfield required="true" styleclass="text" value="{!item.Number_Partner__c}">
+                                            </apex:inputfield>
+                                        </td>
+                                        <td>
+                                            <apex:inputfield styleclass="text" value="{!item.LastName}">
+                                            </apex:inputfield>
+                                        </td>
+                                        <td>
+                                            <apex:inputfield styleclass="text" value="{!item.Description_of_Partner__c}">
+                                            </apex:inputfield>
+                                        </td>
+                                    </tr>
+                                    <apex:variable value="{!listIndex4+1}" var="listIndex4">
+                                    </apex:variable>
+                                </apex:repeat>
+                            </tbody>
+                        </table>
+                    </apex:outputpanel>
+                </div>
+            </apex:outputpanel>
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,152 @@
+<!--> 
+ 名    称：客户信用贷款主数据申请 
+ 目    的： 
+ 作    者：刘忠林 
+ 创建日期：2017-11-23 
+ 修 改 人： 
+ 修改日期：
+ 修改原因：
+ 备    注：
+ 
+<-->
+
+<apex:page standardController="Approval_Managed__c" extensions="AMCustomerCreditLoanExtension" >
+<!-- <head>
+    <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+    <script type="text/javascript" src="/jquery/jquery.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#select_btn").click(function () {
+                queryAccountInfo();
+            });
+        }) 
+    </script>
+</head> -->
+<html>
+<body>
+<apex:sectionHeader title="客户信用贷款主数据申请" subtitle="新建/客户信用贷款主数据申请"></apex:sectionHeader>
+    <apex:pageMessages escape="true" id="messgae"></apex:pageMessages>
+    <apex:form id="form">
+
+        <apex:actionFunction action="{!queryAccountInfo}" id="queryAccountInfo" name="queryAccountInfo" reRender="creditloan,messgae" immediate="true" status="loading">
+            <apex:param assignTo="{!am.Account__c}" name="Account" value="Account"></apex:param>
+        </apex:actionFunction>
+
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" collapsible="false">
+                <!-- 单据编号 -->
+                <apex:outputField value="{!am.Bill_number__c}"></apex:outputField>
+                <!-- 部门 -->
+                <apex:outputField value="{!am.Department__c}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                 <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Status__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+            </apex:pageBlockSection> 
+ 
+            <apex:pageBlockSection title="客户信用贷款主数据申请" collapsible="false" id="creditloan">
+                <!-- 信用控制范围 --> 
+                <apex:inputField value="{!am.CreditArea__c}" required="true"></apex:inputField>
+                <!-- 信用额度 -->
+                <apex:outputField value="{!am.credit_line__c}"></apex:outputField>
+                 <!-- 客户-->
+                <apex:inputField value="{!am.Account__c}" required="true" styleClass="text">
+                    <!-- <input type="button" id="select_btn" value="查询"/> -->
+                    <apex:commandButton value="查询" action="{!queryAccountInfo}"/>
+                </apex:inputField>
+                <!-- 币种-->
+                <apex:outputField value="{!am.Currency__c}"></apex:outputField>
+                <!-- 客户编号--> 
+                <apex:outputField value="{!am.Account_Number__c}"></apex:outputField>
+                <!-- 申请信用额度-->
+                <apex:inputField value="{!am.Application_credit_limit__c}" required="true"></apex:inputField>
+                <!-- 第三方征信额度-->
+                <apex:inputField value="{!am.Third_credit_line__c}"></apex:inputField>
+                <!-- 确认信用限额-->
+                <apex:inputField value="{!am.Confirmation_credit_limits__c}"></apex:inputField>
+
+                <!-- 应收金额-->
+                <apex:outputField value="{!am.Amount_receivable__c}"></apex:outputField>
+                <!-- 特别往来债务-->
+                <apex:outputField value="{!am.Special_current_debt__c}"></apex:outputField>
+                <!-- 付款条件-->
+                <apex:inputField value="{!am.Term_of_Payment__c}" required="true"></apex:inputField>
+                <!-- 付款条件描述-->
+                <!-- <apex:outputField value="{!am.payment_terms_describe__c}"></apex:outputField> -->
+                <!-- 信贷帐户号码-->
+                <apex:outputField value="{!am.Credit_account_numbe__c}"></apex:outputField>
+                <!-- 已使用信贷金额-->
+                <apex:outputField value="{!am.Used_Credit_amount__c}"></apex:outputField>
+                <!-- 销售值 -->
+                <apex:outputField value="{!am.Sales_value__c}"></apex:outputField>
+                <!-- 信用有效期 -->
+                <apex:inputField value="{!am.Credit_validity__c}" required="true"></apex:inputField>
+                <!-- 信用贷款风险总额 -->
+                <apex:outputField value="{!am.Total_credit_risk__c}"></apex:outputField>
+                <!-- 担保应收金额 -->
+                <apex:outputField value="{!am.Guarantee_amount_receivable__c}"></apex:outputField>
+                <!-- 风险类别 -->
+                <apex:outputField value="{!am.Risk_kind__c}"></apex:outputField>
+                <!-- 冻结确认-->
+                <apex:inputField value="{!am.Freeze_confirm__c}"></apex:inputField>
+                <!-- 创立时间 -->
+                <apex:outputField value="{!am.Founded_time__c}"></apex:outputField>
+                <!-- 负责人 -->
+                <apex:outputField value="{!am.responsible_person__c}"></apex:outputField>
+                <!-- 资本额 -->
+                <apex:outputField value="{!am.Capital_on_stock__c}"></apex:outputField>
+                <!-- 员工数量-->
+                <apex:outputField value="{!am.Employees_number__c}"></apex:outputField>
+                <!-- 年度销售金额-->
+                <apex:outputField value="{!am.Annual_sales_amount__c}"></apex:outputField>
+                <!-- 当地销售规模市场占有率-->
+                <apex:inputField value="{!am.Local_market_share__c}"></apex:inputField>
+                <!-- 主要负责人企业管理素质-->
+                <apex:inputField value="{!am.Responsible_person_Quality__c}"></apex:inputField>
+                <!-- 公司往来记录-->
+                <apex:inputField value="{!am.Company_record__c}"></apex:inputField>
+                <!-- 公司主要供应商-->
+                <apex:inputField value="{!am.Suppliers__c}"></apex:inputField>
+                <!-- 合作诚意-->
+                <apex:inputField value="{!am.Sincere_cooperation__c}"></apex:inputField>
+                <!-- 是否有诉讼官司--> 
+                <apex:inputField value="{!am.lawsuit__c}"></apex:inputField>
+                <!-- 平均交易年销售额--> 
+                <apex:inputField value="{!am.Average_sales__c}"></apex:inputField>
+                <!-- 上季是否有呆账/坏账记录-->
+                <apex:inputField value="{!am.Bad_debt_records__c}"></apex:inputField>
+                <!-- 客户类别-->
+                <apex:inputField value="{!am.Customer_kind__c}"></apex:inputField>
+                <!-- KL配合产品-->
+                <apex:inputField value="{!am.KLCooperate_product__c}"></apex:inputField>
+                <!-- 未交货金额-->
+                <apex:inputField value="{!am.No_delivery_amount__c}"></apex:inputField>
+                 <!-- 未收款金额-->
+                <apex:outputField value="{!am.Not_received_Amount__c}"></apex:outputField>
+                 <!-- 逾期账款总额-->
+                <apex:outputField value="{!am.Overdue_amount__c}"></apex:outputField>
+                 <!-- 异常处理-->
+                <apex:inputField value="{!am.Exception_handling__c}"></apex:inputField>
+                
+            </apex:pageBlockSection> 
+
+            <apex:pageBlockSection collapsible="false">
+                <!-- 补充-->
+                <apex:inputField value="{!am.supplement__c}" style="width: 900px" ></apex:inputField> 
+
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</body>
+</html>
+</apex:page>

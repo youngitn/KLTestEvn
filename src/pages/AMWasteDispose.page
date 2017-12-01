@@ -1,0 +1,101 @@
+<!--
+	目的：自定义流程管理的废料处理流程页面
+	作者：Lily
+	创建时间：2017-04-11
+-->
+<apex:page standardController="Custom_Approval_Managed__c" extensions="AMWasteDisposeExtension">
+	<head>
+		<style type="text/css">
+			input.text {
+                text-align: center;
+            }
+			textarea{
+                width: 75%
+            }
+		</style>
+		<script>
+            function deleteItemBankDetail(rowID){
+                deleteRow(rowID);
+            }
+        </script>
+	</head>
+	<apex:sectionHeader title="废料处理" subtitle="新建废料处理申请单"></apex:sectionHeader>
+    <!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+    	<apex:actionFunction action="{!deleteRow}" id="deleteRow" name="deleteRow" reRender="output1">
+            <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+    	<apex:pageBlock >
+	    	<apex:pageBlockSection title="基本信息">
+	    		<!-- 申请人部门 -->
+	    		<apex:outputField value="{!wasteHandle.Dept_Name__c}"></apex:outputField>
+	    		<!-- 流程名称 -->
+	    		<apex:outputField value="{!wasteHandle.Approval_Name__c}"></apex:outputField>
+	    		<!-- 申请人 -->
+	    		<apex:outputField value="{!wasteHandle.Applicant__c}"></apex:outputField>
+	    		<!-- 单据状态 -->
+	    		<apex:outputField value="{!wasteHandle.Status__c}"></apex:outputField>
+	    		<!-- 单据日期 -->
+	    		<apex:outputField value="{!wasteHandle.Bill_Date__c}"></apex:outputField>
+	    	</apex:pageBlockSection>
+	    	<apex:pageBlockSection title="头信息">
+	    		<!-- 废料类型 -->
+	    		<apex:inputField value="{!wasteHandle.Type_of_Scrap__c}"></apex:inputField>
+	    		<!-- 工厂 -->
+	    		<apex:inputField value="{!wasteHandle.Factory__c}"></apex:inputField>
+	    	</apex:pageBlockSection>
+	    	<apex:pageBlockSection title="采购" columns="2">
+                <!-- 日期 -->
+                <apex:inputField value="{!wasteHandle.Scrap_Date__c}"></apex:inputField>
+                <!-- 供应商名称 -->
+                <apex:inputField value="{!wasteHandle.Vendor__c}"></apex:inputField>
+	    	</apex:pageBlockSection>
+            <apex:pageBlockSection title="业务" columns="1">
+                <!-- 销售订单号 -->
+                <apex:inputField value="{!wasteHandle.Order_of_Sales__c}"></apex:inputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="财务" columns="2">
+                <!-- 收款金额 -->
+                <apex:inputField value="{!wasteHandle.Amount_Receipts__c}"></apex:inputField>
+                <!-- 发票号及备注 -->
+                <apex:inputField value="{!wasteHandle.Invoice_and_Remark__c}"></apex:inputField>
+            </apex:pageBlockSection>
+	    	<div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>内容</h3></div>
+            <apex:commandButton action="{!addBankDetail}" value="新增" reRender="output1" status="retrieveStatus"/>
+            <apex:outputPanel id="output1" layout="block" styleClass="scroll">
+            <apex:actionStatus startText="(waiting...)" id="retrieveStatus"/>
+                <table class="list" border="0" cellspacing="0" cellpadding="0"  id="tableBank" >
+                    <thead>
+                    <th></th>
+                    <th>行号</th>
+                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Material_Name__c.Label}</th>
+                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Qty__c.Label}</th>
+                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Weight_Actual__c.Label}</th>
+                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Price__c.Label}</th>
+                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Amount__c.Label}</th>
+                    </thead>
+                    <tbody>
+                    <apex:variable var="listIndex" value="{!1}"/>
+                    <apex:repeat value="{!listRowInfo}" var="item">
+                        <tr>
+                            <td><input type="button" onclick="deleteItemBankDetail('{!listIndex}')" value="删除" class="btn"/></td>
+                            <td>{!listIndex}</td>
+							<td><apex:inputField value="{!item.Material_Name__c}" style="width: 90%;" styleClass="text"></apex:inputField></td>
+                            <td><apex:inputField value="{!item.Qty__c}" styleClass="text"></apex:inputField></td>
+                            <td><apex:inputField value="{!item.Weight_Actual__c}" styleClass="text"></apex:inputField></td>
+                            <td><apex:inputField value="{!item.Price__c}" styleClass="text"></apex:inputField></td>
+                            <td><apex:outputField value="{!item.Amount__c}" styleClass="text"></apex:outputField></td>
+                        </tr>
+                         <apex:variable var="listIndex" value="{!listIndex+1}"/>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+            <apex:pageBlockButtons >
+            	<apex:commandButton value="保存" action="{!saveAction}"></apex:commandButton>
+            	<apex:commandButton value="取消" action="{!cancelAction}"></apex:commandButton>
+            </apex:pageBlockButtons>
+    	</apex:pageBlock>
+    </apex:form>
+</apex:page>

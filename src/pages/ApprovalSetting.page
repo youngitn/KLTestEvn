@@ -1,0 +1,100 @@
+<apex:page controller="ApprovalSettingController" tabStyle="Approval_Setting__tab">
+	<head>
+		<apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+		<style>
+            .delete{cursor: pointer;color:blue;}
+		</style>
+		<script>
+		   function UpRow(rowID) {
+		   		upFunction(rowID);
+		   }
+		   function DownRow(rowID){
+		   		downFunction(rowID);
+		   }
+		   function rerenderStates(approvalName){
+		   		selectChangeAction(approvalName);
+		   }
+		   function deleteRow(rowID){
+		   		actionDeleteItem(rowID);
+		   }
+		</script>
+	</head>
+    	<apex:form >
+		 <!-- 上移function -->
+        <apex:actionFunction action="{!upAction}" id="upFunction" name="upFunction" reRender="output1" status="retrieveStatus">
+            <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        <!-- 下移function -->
+        </apex:actionFunction>
+        <apex:actionFunction action="{!downAction}" id="downFunction" name="downFunction" reRender="output1" status="retrieveStatus">
+            <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+        <!-- 删除function -->
+        <apex:actionFunction action="{!actionDeleteItem}" id="actionDeleteItem" name="actionDeleteItem" reRender="output1" status="retrieveStatus">
+            <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+         <apex:actionFunction action="{!selectChangeAction}" id="changAction" name="selectChangeAction" reRender="output1,messages" status="retrieveStatus">
+        </apex:actionFunction>
+        <apex:pageBlock title="选择配置流程">
+            <div style="width:100%;float:left;padding:10px 0px; vertical-align: middle;">
+                <div style="float:left;">
+                    {!$Label.lbl_Model_Group}：　
+                    <apex:inputField id="cmbModelGroup" value="{!meta.Model_Group__c}" label=""></apex:inputField>
+                </div>
+                <div style="float:left;margin-left:10px;">
+                    {!$Label.lbl_Selected_Approval}：　
+                    <apex:inputField id="cmbApproval" value="{!meta.Approval_Name__c}" label="流程名字" onchange="rerenderStates('this.value')"></apex:inputField>
+                </div>
+            </div>
+            <apex:pageBlockSection id="lstApproval" title="流程结点审批人规则设置" columns="1">
+                <!-- 页面信息提示区 -->
+                <apex:pageMessages id="messages" escape="true"></apex:pageMessages>
+                <apex:outputPanel >
+        			<apex:commandButton action="{!actionAddItem}" value="新增步骤" reRender="output1,messages" status="retrieveStatus"/>
+        			<apex:commandButton action="{!saveAction}" value="保存" style="margin-left:10px;"></apex:commandButton>
+                </apex:outputPanel>
+                <apex:outputPanel id="output1" layout="block" styleClass="scroll" rendered="{!isRender}">
+                    <apex:actionStatus startText="(waiting...)" id="retrieveStatus"/>
+                    <table class="list" border="0" cellspacing="0" cellpadding="0"  id="tableBank" >
+                        <thead>
+                            <th></th>
+                            <th>步骤名称</th>
+                            <th>审批步骤</th>
+                            <th>审批人规则</th>
+                            <th>指定部门</th>
+                            <th>指定岗位</th>
+                            <th>指定人员</th>
+                            <th>指定字段</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                        <apex:variable var="listIndex" value="{!1}"/>
+                        <apex:repeat value="{!lstApprovalSettingWarpper}" var="item">
+                            <tr>
+                                <td style="width:80px; text-align: center;">
+                                    <span onclick="UpRow('{!listIndex}')" id="SUp">
+                                        <img src="/img/s.gif" alt="上移"  class="upArrowIcon" title="上移" />
+                                    </span>
+                                    <span onclick="DownRow('{!listIndex}')" id="Sdown">
+                                        <img src="/img/s.gif" alt="下移"  class="downArrowIcon" title="下移" />
+                                    </span>
+                                </td>
+                                <td><apex:inputField style="width:130px;" value="{!item.org.Approval_Step_Name__c}"/></td>
+                                <td><apex:inputField style="width:50px;text-align: center;" value="{!item.org.Approval_Step__c}"/></td>
+                                <td><apex:inputField style="width:150px;" value="{!item.org.Approval_Rule__c}"/></td>
+                                <td><apex:inputField style="width:100px;" value="{!item.org.Approval_Department__c}"/></td>
+                                <td><apex:inputField style="width:100px;" value="{!item.org.Approval_Post__c}"/></td>
+                                <td><apex:inputField style="width:100px;" value="{!item.org.Approval_Personnel__c}"/></td>
+                                <td><apex:inputField style="width:100px;" value="{!item.org.Approval_Special_Field__c}"/></td>
+                                <td style="width:60px; text-align: center;">
+                                    <span class="delete" onclick="deleteRow('{!listIndex}')">删除</span>
+                                </td>
+                            </tr>
+                             <apex:variable var="listIndex" value="{!listIndex+1}"/>
+                        </apex:repeat>
+                        </tbody>
+                    </table>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

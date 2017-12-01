@@ -1,0 +1,260 @@
+<!--
+    目的：用户登录界面
+    作者：luoxin
+    创建时间：2017-03-28 
+-->
+<apex:page showHeader="false" language="{!language}" controller="SiteSignInExtension">
+<!-- <apex:includeScript value="{!URLFOR($Resource.jquery, 'media/js/jquery.js')}"/> -->
+<apex:includeScript value="{!URLFOR($Resource.angularjs,'')}" />
+<apex:includeScript value="{!URLFOR($Resource.cookiejs,'')}" />
+<apex:includeScript value="{!URLFOR($Resource.md5js,'')}" />
+<apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+<head lang="en">
+<style type="text/css">
+* {
+    font-family: Arial Unicode MS;
+}
+#apDiv1 {
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:1;
+    top: 8px;
+    opacity: 0.8;
+    background-color: #FFF;
+}
+#apDiv2 {
+    width:100%;
+    height:89px;
+    z-index:3;
+    color: #000;
+    background-color: #fffefe;
+    left: 2px;
+    top: 0px;
+    -webkit-box-shadow: #e0e3e5 0px 0px 20px;
+    -moz-box-shadow: #666 0px 0px 20px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    border-top: 3px solid red;
+    background-image: url({!URLFOR($Resource.DivBackground)} );
+    background-size:100% 100%;
+}
+#apDiv3 {
+    position: fixed;
+    height: 35%;
+    opacity: 0.8;
+    border-radius: 8px;
+    z-index: 2;
+    left: 35%;
+    top: 40%;
+    background-color: #6d6868;
+    float: right;
+    width: 30%;
+    margin: 0 auto;
+    -webkit-box-shadow: #dadada 0px 0px 20px;
+    -moz-box-shadow: #666 0px 0px 20px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 0px;
+}
+.container input {
+    background-color: #fffff;
+    border-radius: 8px;
+    opacity: 0.8;
+    display: block;
+    border: 1;
+    outline: 0;
+    padding: 6px 10px;
+    line-height: 18px;
+    margin: 30px auto ;
+    -webkit-transition: all 0s ease-in 0.1ms;
+    -moz-transition: all 0s ease-in 0.1ms;
+    transition: all 0s ease-in 0.1ms;
+}
+.container input[type="text"] , .container input[type="password"]  {
+    font-size: 16px;
+    width: 75%;
+    color: #000000;
+}
+.container input[type='button'] {
+    height: 35px;
+    font-size: 22px;
+    width: 30% auto; 
+    color: #2d0606;
+    background-color: #dcdcdc;
+}
+.container input[type='button']:hover{
+    cursor: pointer;
+}
+#apDiv9 {
+    position: fixed;
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+    margin: 0 auto;
+    opacity: 0.8;
+    z-index: 2;
+    text-align: center;
+    left: 5px;
+    top: 82px;
+    height: 900px;
+    background-image: url({!URLFOR($Resource.LoginBackImg)} );
+    background-size:100%,100%;
+}
+#messageDiv {
+    left: 35%;
+    top: 40%;
+}
+select {
+    padding: 3px;
+    color: #000;
+}
+#select {
+    font-size: 19px;
+    float:right;
+    margin:20px 20px 0px 0px;
+}
+#selectType {
+    font-size: 19px;
+    float:right;
+    margin:20px 20px 0px 0px;
+}
+#errormessage{
+    color:red;
+}
+.message {
+    background-color: #ffc;
+    border-style: solid;
+    border-width: 1px;
+    color: #000;
+    padding: 8px 66px 9px 24px;
+    margin: 8% 36%;
+}
+.waitingDescription {
+    margin-left: 6px;
+    font-weight: bold;
+    color: #ffc5c5;
+}
+</style>
+
+</head>
+<body>
+    <div class="slds" ng-app='app' ng-controller='ctrl'>
+<base href="/" />
+        <div>
+            <div id="selectType">
+                {!$Label.Type}
+              <select id="typeCV" size="1" ng-options="itemType as itemType.label for itemType in typeCVs track by itemType.value" ng-model="typeCV" ng-change = "switchLan()"></select>
+            </div>
+            <div id="select">
+                {!$Label.ChooseLan}
+                <select id="lan" size="1" ng-options="item as item.label for item in languages track by item.value" ng-model="language" ng-change = "switchLan()"></select>
+            </div>
+        </div>
+        <title>新莱门户登陆界面</title>
+        <div id="apDiv2"></div>
+        <div id="apDiv9" >
+            <div id="apDiv3" class="container">
+                <div id="errormessage" escape="true" ></div>
+                <input type="text" id="user"    placeholder="    {!$Label.Username}" ng-model='username' />
+                <input type="password" id="pwd" placeholder="    {!$Label.Password}" ng-model='password' />
+                <input type="button" id="Login"  value="{!$Label.Login}" ng-click="signin()"  />
+            </div>
+        </div>
+
+        <div >
+            <div class="slds-spinner_container" ng-hide="!loading" id="loader">
+              <div class="slds-spinner slds-spinner--brand slds-spinner--large" aria-hidden="false" role="alert">
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+              </div>
+            </div>
+        </div>
+    </div>
+<script>
+// angular 
+var app = angular.module('app',[])
+.config(function ($locationProvider) {
+    $locationProvider.html5Mode({
+        enabled: true,
+        rewriteLinks: false
+    });
+});
+app.controller('ctrl',function($scope,$q,$location){
+
+    $scope.username= '';
+    $scope.password= '';
+    $scope.typeCV= '';
+    $scope.loading = false;
+    $scope.languages = [{
+        value: 'zh_CN',
+        label: '{!$Label.Chinese1}'
+    }, {
+        value: 'zh_TW',
+        label: '{!$Label.Chinese2}'
+    },{
+        value: 'en_US',
+        label: '{!$Label.English}'
+    }];
+     $scope.typeCVs = [{
+         value: 'customer',
+         label: '{!$Label.customer}'
+     }, {
+         value: 'vendor',
+         label: '{!$Label.vendor}'
+     }];
+    $scope.language = $scope.language||{value:'zh_CN',label:'{!$Label.Chinese1}'};
+    $scope.typeCV = $scope.typeCV||{value:'customer',label:'{!$Label.customer}'};
+    $scope.languages.forEach(function(item){
+        if(item.value == $location.search().language){
+            $scope.language =  item;
+        }
+    });
+    $scope.typeCVs.forEach(function(itemType){
+        if(itemType.value == $location.search().typeCV){
+            $scope.typeCV =  itemType;
+        }
+    }); 
+
+    $scope.signin = function(){
+        $scope.loading = true;
+        var promise = $q(function(resolve,reject){
+            SiteSignInExtension.signin($scope.username,$scope.password,$scope.typeCV.value,function(res,event){
+                if(res){
+                    resolve(res);
+                }else{
+                    reject(res);
+                }
+            });
+        });
+        promise.then(function(result){
+            Cookies.set('apex__un',$scope.username,{ expires: 1 });
+            Cookies.set('apex__pw',md5($scope.password),{ expires: 1 });
+            var url = "{!URL_Customer}/sitemain?language="+$scope.language.value+'&typeCV='+$scope.typeCV.value;
+            if($scope.typeCV.value == 'vendor'){
+                url = "{!URL_Customer}/SiteMainVendor?language="+$scope.language.value+'&typeCV='+$scope.typeCV.value;
+            }
+            window.location.href = url;
+            $scope.loading = false;
+        },function(reason){
+            document.getElementById('errormessage').innerHTML='{!$Label.ErrorMessage1}';
+            $scope.loading = false;
+        });
+    }
+    $scope.switchLan = function(){
+        var url = "{!URL_Customer}/sitesignin?language="+$scope.language.value+'&typeCV='+$scope.typeCV.value;
+        if($scope.typeCV.value == 'vendor'){
+            url = "{!URL_Customer}/sitesignin?language="+$scope.language.value+'&typeCV='+$scope.typeCV.value;
+        }
+        window.location.href=url;
+    }
+});
+
+</script>
+
+
+</body>
+
+</apex:page>

@@ -1,0 +1,412 @@
+<!--> 
+ 名    称：订餐&客户派车申请流程页面
+ 目    的：订餐&客户派车申请流程页面
+ 作    者：张旭
+ 创建日期：2017-07-18
+ 修 改 人：
+ 修改日期：
+ 修改原因：
+ 备    注：
+ 
+<-->
+<apex:page standardController="Approval_Managed1__c" extensions="AMBookDinner">
+<html>
+<head>
+    <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+    <script>
+        var j$ = jQuery.noConflict();
+        var EventUtil = {
+ preventDefault: function(event){
+  
+  if(event.preventDefault){
+   event.preventDefault();
+  } else {
+   event.returnValue = false;
+  }
+ }
+};
+
+        function execute(type)
+        {
+            var desc1 = j$("[id$='CreationDate']");//填单日期
+            var desc2 = j$("[id$='OrderingTime']"); //订餐时间
+            var desc3 = j$("[id$='EatNumber']"); //就餐总人数
+            var desc4 = j$("[id$='Customer']"); //客户名称
+            var desc5 = j$("[id$='ReservationType']"); //订餐类型
+            var desc6 = j$("[id$='Dinner']"); //陪餐人
+            var desc7 = j$("[id$='driver']"); //司机
+            var desc8 = j$("[id$='licenseNumber']"); //车牌号
+            var desc9 = j$("[id$='startTime1']"); //开始时间
+            var desc10 = j$("[id$='endTine1']"); //结束时间
+            var desc11 = j$("[id$='geographical']"); //外出地点
+            var desc12 = j$("[id$='cartype']"); //车辆类型
+            var desc13 = j$("[id$='Vehicle_Model']"); //车型
+            if(type=="1")
+            {
+                if(desc1.val()!=''|| desc2.val()!=''
+                || desc3.val()!=''|| desc4.val()!='请填写客户名称及就餐人数'
+                || desc5.val()!=''|| desc6.val()!='陪餐人员不宜太多!(请填写陪餐人员姓名及人数)'
+                )
+                {
+                    alert("订餐申请、客户派车申请二选一，请清空当前页面信息再更换流程类型");
+                    EventUtil.preventDefault(window.event);
+                }
+            }
+            else if(type=="2")
+            {
+                if(desc7.val()!='' ||desc8.val()!=''|| desc9.val()!=''
+                || desc10.val()!=''|| desc11.val()!=''
+                || desc12.val()!=''|| desc13.val()!='')
+                {
+                    alert("订餐申请、客户派车申请二选一，请清空当前页面信息再更换流程类型");
+                    EventUtil.preventDefault(window.event);
+                }
+            }
+
+        }
+
+        j$(document).ready(function(){
+            var cmb = j$("select[id$='ServiceCategory']");
+            var approvalValue = cmb.val();
+             // var approvalName = cmb.find("option:selected").text();
+            console.log('approvalValue: ' + approvalValue);
+            var desc = j$("[id$='CreationDate']");//填单日期
+            var desc1 = j$("[id$='Applicant']");//订餐人
+            var desc2 = j$("[id$='ServiceCategory']");//流程类型
+            var desc4 = j$("[id$='OrderingTime']"); //订餐时间
+            var desc5 = j$("[id$='EatNumber']"); //就餐总人数
+            var desc6 = j$("[id$='Customer']"); //客户名称
+            var desc7 = j$("[id$='ReservationType']"); //订餐类型
+            var desc8 = j$("[id$='Dinner']"); //陪餐人
+            var desc9 = j$("[id$='factory']"); //工厂
+            var desc10 = j$("[id$='driver']"); //司机
+            var desc11 = j$("[id$='licenseNumber']"); //车牌号
+            var desc12 = j$("[id$='startTime1']"); //开始时间
+            var desc13 = j$("[id$='endTine1']"); //结束时间
+            var desc14 = j$("[id$='geographical']"); //外出地点
+            var desc15 = j$("[id$='cartype']"); //车辆类型
+            var desc16 = j$("[id$='Vehicle_Model']"); //车型
+            var customer = j$("[id$='Customer']")
+            desc2.mousedown(function()
+                {
+                    execute(desc2.val());
+                });
+
+            customer.val("请填写客户名称及就餐人数");
+            customer.blur(function()
+                {
+                    if(customer.val() == '')
+                    {
+                        customer.val("请填写客户名称及就餐人数");
+                        customer.attr("style","color: gray;width: 75%");
+                    }
+                    else
+                    {
+                        customer.attr("style","color: default;width: 75%");
+                    }
+                });
+
+            customer.focus(function()
+                {
+                    customer.attr("style","color: default;width: 75%");
+                    if(customer.val() == '请填写客户名称及就餐人数')
+                    {
+                        customer.val("");
+                        customer.attr("style","color: gray;width: 75%");
+                    }
+                });
+
+            var dinner = j$("[id$='Dinner']")
+
+            dinner.val("陪餐人员不宜太多!(请填写陪餐人员姓名及人数)");
+            dinner.blur(function()
+                {
+                    if(dinner.val() == '')
+                    {
+                        dinner.val("陪餐人员不宜太多!(请填写陪餐人员姓名及人数)");
+                        dinner.attr("style","color: gray;width: 75%");
+                    }
+                    else
+                    {
+                        dinner.attr("style","color: default;width: 75%");
+                    }
+                });
+
+            dinner.focus(function()
+                {
+                    dinner.attr("style","color: default;width: 75%");
+                    if(dinner.val() == '陪餐人员不宜太多!(请填写陪餐人员姓名及人数)')
+                    {
+                        dinner.val("");
+                        dinner.attr("style","color: gray;width: 75%");
+                    }
+                });
+
+                desc.hide();
+                desc.next().hide();
+                desc.parent().parent().prev().children("label").hide();
+
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.show();
+                desc2.parent().prev().children("label").show();
+
+                desc4.hide();
+                desc4.next().hide();
+                desc4.parent().parent().prev().children("label").hide();
+
+                desc5.hide();
+                desc5.parent().prev().children("label").hide();
+
+                desc6.hide();
+                desc6.parent().prev().children("label").hide();
+
+                desc7.hide();
+                desc7.parent().prev().children("label").hide();
+
+                desc8.hide();
+                desc8.parent().prev().children("label").hide();
+
+                desc9.show();
+                desc9.parent().prev().children("label").show();
+
+                desc10.hide();
+                desc10.parent().prev().children("label").hide();
+
+                desc11.hide();
+                desc11.parent().prev().children("label").hide();
+
+                desc12.hide();
+                desc12.next().hide();
+                desc12.parent().parent().prev().children("label").hide();
+
+                desc13.hide();
+                desc13.next().hide();
+                desc13.parent().parent().prev().children("label").hide();
+
+                desc14.hide();
+                desc14.parent().prev().children("label").hide();
+
+                desc15.hide();
+                desc15.parent().prev().children("label").hide();
+
+                desc16.hide();
+                desc16.parent().prev().children("label").hide();
+       });
+
+        function toggleData(){
+            var cmb = j$("select[id$='ServiceCategory']");
+            var approvalValue = cmb.val();
+             // var approvalName = cmb.find("option:selected").text();
+            console.log('approvalValue: ' + approvalValue);
+            var desc = j$("[id$='CreationDate']");//填单日期
+
+            var desc1 = j$("[id$='Applicant']");//订餐人
+
+            var desc2 = j$("[id$='ServiceCategory']");//流程类型
+
+            var desc4 = j$("[id$='OrderingTime']"); //订餐时间
+
+            var desc5 = j$("[id$='EatNumber']"); //就餐总人数
+
+            var desc6 = j$("[id$='Customer']"); //客户名称
+
+            var desc7 = j$("[id$='ReservationType']"); //订餐类型
+
+            var desc8 = j$("[id$='Dinner']"); //陪餐人
+
+            var desc9 = j$("[id$='factory']"); //工厂
+
+            var desc15 = j$("[id$='cartype']"); //车辆类型
+            
+            var desc16 = j$("[id$='Vehicle_Model']"); //车型
+
+            var desc10 = j$("[id$='driver']"); //司机
+
+            var desc11 = j$("[id$='licenseNumber']"); //车牌号
+
+            var desc12 = j$("[id$='startTime1']"); //开始时间
+
+            var desc13 = j$("[id$='endTine1']"); //结束时间
+
+            var desc14 = j$("[id$='geographical']"); //外出地点
+            
+            if (approvalValue == "1" ) {
+                desc.show();
+                desc.next().show();
+                desc.parent().parent().prev().children("label").show();
+
+                desc1.show();
+                desc1.parent().prev().children("label").show();
+
+                desc2.show();
+                desc2.parent().prev().children("label").show();
+
+                desc4.show();
+                desc4.next().show();
+                desc4.parent().parent().prev().children("label").show();
+
+                desc5.show();
+                desc5.parent().prev().children("label").show();
+
+                desc6.show();
+                desc6.parent().prev().children("label").show();
+
+                desc7.show();
+                desc7.parent().prev().children("label").show();
+
+                desc8.show();
+                desc8.parent().prev().children("label").show();
+
+                desc9.show();
+                desc9.parent().prev().children("label").show();
+
+                desc10.hide();
+                desc10.parent().prev().children("label").hide();
+
+                desc11.hide();
+                desc11.parent().prev().children("label").hide();
+
+                desc12.hide();
+                desc12.next().hide();
+                desc12.parent().parent().prev().children("label").hide();
+
+                desc13.hide();
+                desc13.next().hide();
+                desc13.parent().parent().prev().children("label").hide();
+
+                desc14.hide();
+                desc14.parent().prev().children("label").hide();
+
+                desc15.hide();
+                desc15.parent().prev().children("label").hide();
+
+                desc16.hide();
+                desc16.parent().prev().children("label").hide();
+        }else if (approvalValue == "2") {
+                desc.hide();
+                desc.next().hide();
+                desc.parent().parent().prev().children("label").hide();
+
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.show();
+                desc2.parent().prev().children("label").show();
+
+                desc4.hide();
+                desc4.next().hide();
+                desc4.parent().parent().prev().children("label").hide();
+
+                desc5.hide();
+                desc5.parent().prev().children("label").hide();
+
+                desc6.hide();
+                desc6.parent().prev().children("label").hide();
+
+                desc7.hide();
+                desc7.parent().prev().children("label").hide();
+
+                desc8.hide();
+                desc8.parent().prev().children("label").hide();
+
+                desc9.show();
+                desc9.parent().prev().children("label").show();
+
+                desc10.show();
+                desc10.parent().prev().children("label").show();
+
+                desc11.show();
+                desc11.parent().prev().children("label").show();
+
+                desc12.show();
+                desc12.next().show();
+                desc12.parent().parent().prev().children("label").show();
+
+                desc13.show();
+                desc13.next().show();
+                desc13.parent().parent().prev().children("label").show();
+
+                desc14.show();
+                desc14.parent().prev().children("label").show();
+
+                desc15.show();
+                desc15.parent().prev().children("label").show();
+
+                desc16.show();
+                desc16.parent().prev().children("label").show();
+        }
+    }
+      
+    </script>
+</head>
+<body>
+<apex:sectionHeader title="订餐&客户派车申请流程" subtitle="新建/编辑订餐&客户派车申请流程"></apex:sectionHeader>
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="流程审批信息" collapsible="false">
+                 <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 审核状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+            </apex:pageBlockSection>
+             
+            <apex:pageBlockSection title="订餐&客户派车申请流程" >
+                <!-- 流程类型 -->
+                <apex:inputField id="ServiceCategory" value="{!am.process_type__c }" required="true" onchange="toggleData() "></apex:inputField>
+                <!-- 工厂 -->
+                <apex:inputField id="factory" value="{!am.Factory__c}" required="true"></apex:inputField>
+                <!-- 成本中心 -->
+                <apex:inputField id="Kostl" value="{!am.KOSTL__c}" required="true"></apex:inputField>
+                <!-- 订餐类型 -->
+                <apex:inputField id="ReservationType" value="{!am.Reservation_type__c}"></apex:inputField>
+                <!-- 填单日期 -->
+                <apex:inputField id="CreationDate" value="{!am.Creation_date__c}"></apex:inputField>
+                <!-- 订餐时间 -->
+                <apex:inputField id="OrderingTime" value="{!am.Ordering_time__c}"></apex:inputField>
+                <!-- 就餐总人数 -->
+                <apex:inputField id="EatNumber" value="{!am.Eat_number__c}"></apex:inputField>  
+                <!-- 司机 -->
+                <apex:inputField id="cartype" value="{!am.car_type__c}"></apex:inputField>
+                <!-- 车型 -->
+                <apex:inputField id="Vehicle_Model" value="{!am.Vehicle_Model__c}"></apex:inputField>
+                <!-- 司机 -->
+                <apex:inputField id="driver" value="{!am.driver__c}"></apex:inputField>
+                <!-- 车牌号 -->
+                <apex:inputField id="licenseNumber" value="{!am.license_number__c}"></apex:inputField>
+                <!-- 用车开始时间 -->
+                <apex:inputField id="startTime1" value="{!am.start_time1__c}"></apex:inputField>
+                <!-- 用车结束时间 -->
+                <apex:inputField id="endTine1" value="{!am.end_tine1__c}"></apex:inputField>
+                </apex:pageBlockSection>
+             <apex:pageBlockSection columns="1">
+                <!-- 客户名称 -->
+                <apex:inputField id="Customer" value="{!am.Customer_name1__c}" style="width: 75%;color: gray"></apex:inputField>
+                <!-- 陪餐人 -->
+                <apex:inputField id="Dinner" value="{!am.Dinner__c}" style="width: 75%;color: gray"></apex:inputField>
+                <!-- 外出地点、事由及人数 -->
+                <apex:inputField id="geographical" value="{!am.geographical__c}" style="width: 75%"></apex:inputField>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</body>
+</html>
+</apex:page>

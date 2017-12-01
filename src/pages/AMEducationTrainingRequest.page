@@ -1,0 +1,67 @@
+<apex:page standardController="Approval_Managed__c" extensions="AMEducationTrainingRequestExtension" >
+<!-- PM通知单 -->
+<html>
+<body>
+<apex:sectionHeader title="教育训练申请流程" subtitle="新建/教育训练申请流程"></apex:sectionHeader>
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" collapsible="false">
+                <!-- 单据编号 -->
+                <apex:outputField value="{!am.Bill_number__c}"></apex:outputField>
+                <!-- 部门 -->
+                <apex:outputField value="{!am.Department__c}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Status__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="PM通知单" collapsible="false">
+                <!-- 通知单号 --> 
+                <apex:inputField value="{!am.notice_number__c}"></apex:inputField>
+                <!-- 通知类型 -->
+                <apex:inputField value="{!am.notice_type__c}"></apex:inputField>
+                <!-- 类型描述 -->
+                <apex:inputField value="{!am.type_description__c}"></apex:inputField>
+                <apex:inputField value="{!am.notice_status__c}"></apex:inputField>
+                <apex:inputField value="{!am.short_text_description__c}"></apex:inputField>
+                <apex:inputField value="{!am.functional_position__c}"></apex:inputField>
+                <apex:inputField value="{!am.functional_position_desc__c}"></apex:inputField>
+                <apex:inputField value="{!am.device__c}"></apex:inputField>
+                <apex:inputField value="{!am.device_name__c}"></apex:inputField>
+                <apex:inputField value="{!am.assembling__c}"></apex:inputField>
+                <apex:inputField value="{!am.assembling_name__c}"></apex:inputField>
+                <apex:inputField value="{!am.Planning_staff_group__c}"></apex:inputField>
+                <apex:inputField value="{!am.Description__c}"></apex:inputField>
+                <apex:inputField value="{!am.responsible_department__c}"></apex:inputField>
+                <apex:inputField value="{!am.Dept_of_Duty__c}"></apex:inputField>
+                <apex:inputField value="{!am.fault_code__c}"></apex:inputField>
+                <apex:inputField value="{!am.fault_description__c}"></apex:inputField>
+                <apex:inputField value="{!am.fault_text__c}"></apex:inputField>
+                <apex:inputField value="{!am.reason_code__c}"></apex:inputField>
+                <apex:inputField value="{!am.reason_description__c}"></apex:inputField>
+                <apex:inputField value="{!am.reason_text__c}"></apex:inputField>
+                
+
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="BU主管判定" collapsible="false">
+                
+                <apex:inputField value="{!am.qualitative_analysis__c}" ></apex:inputField>
+                <apex:inputField value="{!am.Person_Liable__c}" ></apex:inputField>
+
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>>
+</body>
+</html>
+</apex:page>

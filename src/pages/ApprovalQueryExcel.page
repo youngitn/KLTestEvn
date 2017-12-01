@@ -1,0 +1,26 @@
+<apex:page controller="ApprovalQueryController" contentType="application/vnd.ms-excel#queryResult.xls" standardStylesheets="false">
+<!-- 	<apex:pageBlock>
+			<apex:pageBlockSection id="lstApproval" title="{!selectedApprovalName}查询结果列表" columns="1"> -->
+				<!-- 不选择审批流程时显示的Table -->
+				<apex:dataTable value="{!allApproval}" var="row">			
+					<!-- 所有流程公共显示字段 -->
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+						<apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+					</apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="原单号(SAP/HLY)" headerClass="dataTableTh" value="{!row.Original_Code}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh">
+						<apex:outputLink styleClass="btnLink" value="/{!(row.Applicant_Id)}">{!row.Applicant_Name}</apex:outputLink>
+					</apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="当前审批人" headerClass="dataTableTh">
+						<apex:outputLink styleClass="btnLink" value="/{!(row.ApproverId)}">{!row.Approver}</apex:outputLink>
+					</apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="审批状态" headerClass="dataTableTh" value="{!row.ApprovalStatus}"></apex:column>
+					<apex:column styleClass="rfc_info" headerValue="接口信息" headerClass="dataTableTh" value="{!row.Interface_Info}"></apex:column>
+				</apex:dataTable>
+<!-- 			</apex:pageBlockSection>
+	</apex:pageBlock>
+ -->
+</apex:page>

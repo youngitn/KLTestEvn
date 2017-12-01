@@ -1,0 +1,68 @@
+<apex:page standardController="Approval_Managed1__c" extensions="AMCreditLoanExtension">
+<!-- 客戶信貸款主數據申请  -->
+<html>
+<head>
+
+<apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+
+  <script>
+   function Savetrue(){
+                alert("保存成功");
+            }
+   function Saveflase(){
+                alert("保存失敗");
+            }
+  </script>
+</head>
+
+<body>
+<apex:sectionHeader title="客戶信貸款主數據申请" subtitle="新建/编輯"></apex:sectionHeader>
+    <!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+       
+            <apex:pageBlockButtons >
+            <a href="https://kinglai--test--c.cs5.visual.force.com/apex/ApprovalHome?sfdc.tabName=01rO0000000Dz6T" ><font  color="#888888">回到主頁</font></a>
+	 
+            
+                <apex:commandButton action="{!save}"  value="保存"/> <!--onclick="Savetrue(); return false -->
+                <apex:commandButton action="{!cancel}"  value="取消"/>
+            </apex:pageBlockButtons>
+           <apex:pageBlockSection title="基本信息">
+       		    <!-- 單據编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 申请部門 -->
+                <apex:outputField value="{!am.Applicant_Department__c}"></apex:outputField>
+ 				<!-- 流程名稱 -->
+                <apex:outputField value="{!am.Approval_Name__c}" Style="width:70%"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据狀態 -->
+                <apex:outputField value="{!am.Status__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人工号-->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+				<!--申请人代碼-->
+                <apex:outputField value="{!am.Applicant_Corp_Code__c}"></apex:outputField>
+			
+       </apex:pageBlockSection>
+            <apex:pageBlockSection title="主要信息" >
+                
+                
+             <apex:inputField value="{!am.Credit_range__c}" styleClass="text" required="true"/>
+<!-- 			 <apex:inputField value="{!am.Unlock_TECO__c}" styleClass="text" required="true"/>
+			 <apex:inputTextarea value="{!am.Form_content__c}" styleClass="text" required="true" cols="50" rows="10"/> -->
+                                         
+                                                                                           
+ </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+<script>
+
+</script>
+</body>
+</html>
+
+</apex:page>

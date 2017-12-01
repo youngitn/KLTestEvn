@@ -1,0 +1,263 @@
+<apex:page standardController="Custom_Approval_Managed__c" extensions="AMSaleOrderExtension">
+<!-- 销售订单审批流程 -->
+<head>
+</head>
+<body>
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" >
+
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Status__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据日期 -->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="头信息">
+                <!-- 订单类型 -->
+                <apex:inputField value="{!am.Kind_of_Order__c}"></apex:inputField>
+                <!-- 正式订单号 -->
+                <apex:inputField value="{!am.Bill_No__c}"></apex:inputField>
+                <!-- 供应商是否同意退款 -->
+                <apex:inputField value="{!am.Is_Agree_Refund2__c}"></apex:inputField>
+                <!-- 流程类型 -->
+                <apex:inputField value="{!am.Type_of_Approval__c}"></apex:inputField>
+                <!-- 售达方代码 -->
+                <apex:inputField value="{!am.Customer_Code__c}"></apex:inputField>
+                <!-- 售达方名称 -->
+                <apex:inputField value="{!am.Customer_Name__c}"></apex:inputField>
+                <!-- 送达方代码 -->
+                <apex:inputField value="{!am.Delivery_Party_Code__c}"></apex:inputField>
+                <!-- 送达方名称 -->
+                <apex:inputField value="{!am.Delivery_Party_Name__c}"></apex:inputField>
+                <!-- 订单原因 -->
+                <apex:inputField value="{!am.Reason_of_Order__c}"></apex:inputField>
+                <!-- 采购订单号 -->
+                <apex:inputField value="{!am.Purchase__c}"></apex:inputField>
+                <!-- 采购订单日期 -->
+                <apex:inputField value="{!am.Purchase_Order_Date__c}"></apex:inputField>
+                <!-- 请求交货日期 -->
+                <apex:inputField value="{!am.Purchase_Required_Date__c}"></apex:inputField>
+                <!-- 币种 -->
+                <apex:inputField value="{!am.Currency_Purchase__c}"></apex:inputField>
+                <!-- 付款条件 -->
+                <apex:inputField value="{!am.Term_of_Purchase_Payment__c}"></apex:inputField>
+                <!-- 国际贸易条件 -->
+                <apex:inputField value="{!am.Term_of_Purchase_Trade__c}"></apex:inputField>
+                <!-- 总重量(KG) -->
+                <apex:inputField value="{!am.Weight_Total__c}"></apex:inputField>
+                <!-- 商机编号 -->
+                <apex:inputField value="{!am.Opportunity_Code__c}"></apex:inputField>
+                <!-- 销售组织 -->
+                <apex:inputField value="{!am.Sales_Org__c}"></apex:inputField>
+                <!-- 分销渠道 -->
+                <apex:inputField value="{!am.Distribution_Channel__c}"></apex:inputField>
+                <!-- 产品组 -->
+                <apex:inputField value="{!am.Product_Group__c}"></apex:inputField>
+                <!-- 价格组 -->
+                <apex:inputField value="{!am.Price_Group__c}"></apex:inputField>
+                <!-- 客户组 -->
+                <apex:inputField value="{!am.Customer_Group__c}"></apex:inputField>
+                <!-- 销售地区 -->
+                <apex:inputField value="{!am.Sales_Area__c}"></apex:inputField>
+                <!-- 销售办公区 -->
+                <apex:inputField value="{!am.Sales_Office_Area__c}"></apex:inputField>
+                <!-- 销售小组 -->
+                <apex:inputField value="{!am.Sales_Group__c}"></apex:inputField>
+                <!-- 来源于报价单 -->
+                <apex:inputField value="{!am.Is_Based_Quotation__c}"></apex:inputField>
+                <!-- 参考号 -->
+                <apex:inputField value="{!am.Code_Reference__c}"></apex:inputField>
+                <!-- 参考币种 -->
+                <apex:inputField value="{!am.Currency_Reference__c}"></apex:inputField>
+                <!-- 参考金额 -->
+                <apex:inputField value="{!am.Amount_Reference__c}"></apex:inputField>
+                <!-- 折让信息 -->
+                <apex:inputField value="{!am.Info_of_Discount__c}"></apex:inputField>
+                <!-- 补充文本1 -->
+                <apex:inputField value="{!am.Text1_Additional__c}"></apex:inputField>
+                <!-- 合同附文 -->
+                <apex:inputField value="{!am.Term_of_Contract__c}"></apex:inputField>
+                <!-- 备注信息 -->
+                <apex:inputField value="{!am.Remark__c}"></apex:inputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="销售订单明细">
+                <apex:commandButton action="{!newlist1}" value="新增" reRender="list1" />
+                <apex:outputPanel id="list1" layout="block" >
+                <table  >
+                    <thead>
+                        <th></th>
+                        <th>序号</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Sales_Order__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Index_Item__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Material_Number__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Material_Name__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Material_Description__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Quantity__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Unit__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Status_Overview__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Material_of_Customer__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Schedule_Date__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Price_Net__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Currency__c.Label}</th>
+                    </thead>
+                    <tbody>
+                <apex:variable var="list1Index" value="{!0}"/>
+                <apex:repeat value="{!list1}" var="item">
+                    <tr>
+                        <td>
+                        <apex:commandButton action="{!deletelist1}" value="删除" reRender="list1" >
+                            <apex:param assignTo="{!list1Row}" name="list1Row" value="{!list1Index}"></apex:param>
+                        </apex:commandButton>
+                        </td>
+                        <td>{!list1Index+1}</td>
+                        <!-- 销售订单 -->
+                        <td><apex:inputField value="{!item.Sales_Order__c}"></apex:inputField></td>
+                        <!-- 项次 -->
+                        <td><apex:inputField value="{!item.Index_Item__c}"></apex:inputField></td>
+                        <!-- 物料号 -->
+                        <td><apex:inputField value="{!item.Material_Number__c}"></apex:inputField></td>
+                        <!-- 物料名称 -->
+                        <td><apex:inputField value="{!item.Material_Name__c}"></apex:inputField></td>
+                        <!-- 物料描述 -->
+                        <td><apex:inputField value="{!item.Material_Description__c}"></apex:inputField></td>
+                        <!-- 订单数量 -->
+                        <td><apex:inputField value="{!item.Quantity__c}"></apex:inputField></td>
+                        <!-- 单位 -->
+                        <td><apex:inputField value="{!item.Unit__c}"></apex:inputField></td>
+                        <!-- 总揽状态 -->
+                        <td><apex:inputField value="{!item.Status_Overview__c}"></apex:inputField></td>
+                        <!-- 客户物料编号 -->
+                        <td><apex:inputField value="{!item.Material_of_Customer__c}"></apex:inputField></td>
+                        <!-- 预交日期 -->
+                        <td><apex:inputField value="{!item.Schedule_Date__c}"></apex:inputField></td>
+                        <!-- 净价值 -->
+                        <td><apex:inputField value="{!item.Price_Net__c}"></apex:inputField></td>
+                        <!-- 币种 -->
+                        <td><apex:inputField value="{!item.Currency__c}"></apex:inputField></td>
+                    </tr>
+                    <apex:variable var="list1Index" value="{!list1Index+1}"/>
+                </apex:repeat>
+                    </tbody>
+                </table>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="销售订单头条件明细">
+                <apex:commandButton action="{!newlist2}" value="新增" reRender="list2" />
+                <apex:outputPanel id="list2" layout="block" >
+                <table  >
+                    <thead>
+                        <th></th>
+                        <th>序号</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Sales_Order_Header__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Type_of_Price__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Name_of_Price__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Amount__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Currency__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Quantity__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Uom__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Value_of_Price__c.Label}</th>
+                    </thead>
+                    <tbody>
+                <apex:variable var="list2Index" value="{!0}"/>
+                <apex:repeat value="{!list2}" var="item">
+                    <tr>
+                        <td>
+                        <apex:commandButton action="{!deletelist2}" value="删除" reRender="list2" >
+                            <apex:param assignTo="{!list2Row}" name="list2Row" value="{!list2Index}"></apex:param>
+                        </apex:commandButton>
+                        </td>
+                        <td>{!list2Index+1}</td>
+                        <!-- 销售订单 -->
+                        <td><apex:inputField value="{!item.Sales_Order_Header__c}"></apex:inputField></td>
+                        <!-- 类型 -->
+                        <td><apex:inputField value="{!item.Type_of_Price__c}"></apex:inputField></td>
+                        <!-- 名称 -->
+                        <td><apex:inputField value="{!item.Name_of_Price__c}"></apex:inputField></td>
+                        <!-- 金额 -->
+                        <td><apex:inputField value="{!item.Amount__c}"></apex:inputField></td>
+                        <!-- 币种 -->
+                        <td><apex:inputField value="{!item.Currency__c}"></apex:inputField></td>
+                        <!-- 数量 -->
+                        <td><apex:inputField value="{!item.Quantity__c}"></apex:inputField></td>
+                        <!-- Uom -->
+                        <td><apex:inputField value="{!item.Uom__c}"></apex:inputField></td>
+                        <!-- 定价值 -->
+                        <td><apex:inputField value="{!item.Value_of_Price__c}"></apex:inputField></td>
+                    </tr>
+                    <apex:variable var="list2Index" value="{!list2Index+1}"/>
+                </apex:repeat>
+                    </tbody>
+                </table>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="销售订单行条件明细">
+                <apex:commandButton action="{!newlist3}" value="新增" reRender="list3" />
+                <apex:outputPanel id="list3" layout="block" >
+                <table  >
+                    <thead>
+                        <th></th>
+                        <th>序号</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Sales_Order_Detail__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Type_of_Price__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Name_of_Price__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Amount__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Currency__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Quantity__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Uom__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Value_of_Price__c.Label}</th>
+                    </thead>
+                    <tbody>
+                <apex:variable var="list3Index" value="{!0}"/>
+                <apex:repeat value="{!list3}" var="item">
+                    <tr>
+                        <td>
+                        <apex:commandButton action="{!deletelist3}" value="删除" reRender="list3" >
+                            <apex:param assignTo="{!list3Row}" name="list3Row" value="{!list3Index}"></apex:param>
+                        </apex:commandButton>
+                        </td>
+                        <td>{!list3Index+1}</td>
+                        <!-- 销售订单 -->
+                        <td><apex:inputField value="{!item.Sales_Order_Detail__c}"></apex:inputField></td>
+                        <!-- 类型 -->
+                        <td><apex:inputField value="{!item.Type_of_Price__c}"></apex:inputField></td>
+                        <!-- 名称 -->
+                        <td><apex:inputField value="{!item.Name_of_Price__c}"></apex:inputField></td>
+                        <!-- 金额 -->
+                        <td><apex:inputField value="{!item.Amount__c}"></apex:inputField></td>
+                        <!-- 币种 -->
+                        <td><apex:inputField value="{!item.Currency__c}"></apex:inputField></td>
+                        <!-- 数量 -->
+                        <td><apex:inputField value="{!item.Quantity__c}"></apex:inputField></td>
+                        <!-- Uom -->
+                        <td><apex:inputField value="{!item.Uom__c}"></apex:inputField></td>
+                        <!-- 定价值 -->
+                        <td><apex:inputField value="{!item.Value_of_Price__c}"></apex:inputField></td>
+                    </tr>
+                    <apex:variable var="list3Index" value="{!list3Index+1}"/>
+                </apex:repeat>
+                    </tbody>
+                </table>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</body>
+</apex:page>

@@ -1,0 +1,121 @@
+<!--> 
+ 名    称：请假管理流程流程页面
+ 目    的：请假管理流程流程页面
+ 作    者：张旭
+ 创建日期：2017-08-09
+ 修 改 人：
+ 修改日期：
+ 修改原因：
+ 备    注：
+ 
+<-->
+<apex:page standardController="Approval_Managed__c" extensions="AMLeave">
+<!-- 请假管理流程 -->
+<html>
+    <head>
+    </head>
+<body>
+<apex:sectionHeader title="请假管理流程" subtitle="新建/编辑请假管理流程"></apex:sectionHeader>
+    <apex:form id="form">
+        <apex:actionFunction action="{!queryVacation}" id="queryVacation" name="queryVacation" reRender="vacationhead,message" immediate="true" status="loading">
+            <apex:param assignTo="{!am.Employee__c}" name="employee" value="employee"></apex:param>
+        </apex:actionFunction>
+        <apex:pageBlock id="block">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" >
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据日期 -->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(公司代码) -->
+                <apex:outputField value="{!am.Applicant_Corp_Code__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+            </apex:pageBlockSection>
+
+           <apex:pageBlockSection title="请假管理流程信息" id="vacationhead">
+                <!-- 员工 -->
+                <apex:inputField id="Employee" value="{!am.Employee__c}" required="true"></apex:inputField>
+                <apex:commandButton value="查询剩余假期" action="{!queryVacation}"/>
+                <apex:outputField value="{!am.Employee_Code__c}"></apex:outputField>
+                <!-- 申请人岗位 -->
+                <apex:outputField id="Applicant" value="{!am.Applicant_position__c}" ></apex:outputField>
+                <!-- 年休假可用时数 -->
+                <apex:outputField value="{!am.Annual_leave__c}"></apex:outputField>
+                <!-- 职等职级 -->
+                <apex:inputField id="professional" value="{!am.Job_Title_Level__c}"></apex:inputField>
+                <!-- 调休假可用时数 -->
+                <apex:outputField id="Adjustable" value="{!am.Adjustable_vacation__c }"></apex:outputField>
+                <!-- 薪资管理员 -->
+                <apex:inputField id="Salary" value="{!am.Salary_Manager__c}"></apex:inputField>
+                <!--请假总时数-->
+                <apex:outputField id="Sum_Vacation__c" value="{!am.Sum_Vacation__c}"></apex:outputField>
+
+            </apex:pageBlockSection>
+            <!-- 页面信息提示区 -->
+            <apex:pageMessages escape="true" id="message"></apex:pageMessages>
+            <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>行信息</h3></div>
+            <apex:commandButton action="{!newlist1}" value="新增" reRender="list1" status="retrieveStatus"  style="display:{!displayQueryResult};" immediate="true"/>
+            <apex:outputPanel id="list1" layout="block" styleClass="scroll" style="display:{!displayQueryResult};">
+                <apex:actionStatus startText="(waiting...)" id="retrieveStatus"/>
+                <table  class="list" border="0" cellspacing="0" cellpadding="0"  id="tableBank">
+                    <thead>
+                        <th></th>
+                        <th>序号</th>
+                        <th>假别</th>
+                        <th>请假事由</th>
+                        <th>请假开始日期</th>
+                        <th>请假开始时间</th>
+                        <th>请假结束日期</th>
+                        <th>请假结束时间</th>
+                        <th>请假时数</th>
+                    </thead>
+                    <tbody>
+                <apex:variable var="list1Index" value="{!0}"/>
+                <apex:repeat value="{!list1}" var="item">
+                    <tr>
+                        <td>
+                        <apex:commandButton action="{!deletelist1}" value="删除" reRender="list1" immediate="true">
+                            <apex:param assignTo="{!list1Row}" name="list1Row" value="{!list1Index}"></apex:param>
+                        </apex:commandButton>
+                        </td>
+                        <td>{!list1Index+1}</td>
+                        <!-- 假别 -->
+                        <td><apex:inputField value="{!item.Leave_type__c}"  required="true" style="width: 85px"></apex:inputField></td>
+                        <!-- 请假事由 -->
+                        <td><apex:inputField value="{!item.Leave_reason__c}"  required="true" style="width: 250px"></apex:inputField></td>
+                        <!-- 请假开始日期 -->
+                        <td><apex:inputField value="{!item.Start_date__c}"  required="true" style="width: 60px"></apex:inputField></td>
+                        <!-- 请假开始时间 -->
+                        <td><apex:inputField value="{!item.Start_Time__c}" required="true" style="width: 120px"></apex:inputField></td>
+
+                        <!-- 请假结束日期 -->
+                        <td><apex:inputField value="{!item.End_date__c}"  required="true" style="width: 60px"></apex:inputField></td>
+                        <!-- 请假结束时间 -->
+                        <td><apex:inputField value="{!item.End_Time__c}" required="true" style="width: 120px"></apex:inputField></td>
+
+                        <!-- 请假时数 -->
+                        <td><apex:inputField value="{!item.time_number__c}" required="true" style="width: 50px"></apex:inputField></td>
+                    </tr>
+                    <apex:variable var="list1Index" value="{!list1Index+1}"/>
+                </apex:repeat>
+                   </tbody>
+                </table>
+            </apex:outputPanel>
+
+        </apex:pageBlock>
+    </apex:form>
+</body>
+</html>
+</apex:page>

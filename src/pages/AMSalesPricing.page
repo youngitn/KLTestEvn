@@ -1,0 +1,317 @@
+<!--> 
+ 名    称：销售定价业务流程  
+ 目    的：
+ 作    者：刘忠林 
+ 创建日期：2017-11-7 
+ 修 改 人： 
+ 修改日期：
+ 修改原因：
+ 备    注：
+ 
+<-->
+
+
+<apex:page standardController="Approval_Managed__c" extensions="AMSalesPricingExtension" >
+    <head>
+        <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+        <script>
+        var j$ = jQuery.noConflict();
+ 
+        j$(document).ready(function(){
+            var cmb1 = j$("select[id$='ConditionType']");
+            var cmb2 = j$("select[id$='KeyCombination']");
+            var approvalValue1 = cmb1.val();
+            var approvalValue2 = cmb2.val();
+            console.log('approvalValue1: ' + approvalValue1);
+            console.log('approvalValue2: ' + approvalValue2);
+            
+            var desc1 = j$("[id$='Account']");
+            var desc2 = j$("[id$='Currency']");
+            var desc3 = j$("[id$='Price_Group']");
+        });
+        function toggleData(){
+            var cmb1 = j$("select[id$='ConditionType']");
+            var cmb2 = j$("select[id$='KeyCombination']");
+            var approvalValue1 = cmb1.val();
+            var approvalValue2 = cmb2.val();
+            console.log('approvalValue1: ' + approvalValue1);
+            console.log('approvalValue2: ' + approvalValue2);
+
+            var desc1 = j$("[id$='Account']");
+            var desc2 = j$("[id$='Currency']");
+            var desc3 = j$("[id$='Price_Group']");
+            
+            if (approvalValue1 == 'PR01' && approvalValue2 == 1) {
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.hide();
+                desc2.parent().prev().children("label").hide();
+
+                desc3.hide();
+                desc3.parent().prev().children("label").hide();
+
+            }else if (approvalValue1 == 'PR01' && approvalValue2 == 2) {
+
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.show();
+                desc2.parent().prev().children("label").show();
+
+                desc3.show();
+                desc3.parent().prev().children("label").show();
+            }
+        
+        }               
+    </script>
+    <style>
+            input.text {
+                text-align: center;
+            }
+            div.scroll{
+                width:1200px; 
+                height:200px; 
+                overflow:scroll;
+            }
+            textarea{
+                width: 75%
+            }
+            table.list th,table.list td{
+                text-align: center;
+            }
+           
+          </style>
+        <script>
+            function deleteItemDetail(rowID){
+                deleteDetail(rowID);
+            } 
+             function queryMaterial(rowID){
+                queryMaterial(rowID);
+            }
+             function deleteItemzi(rowID2){
+                deleteDetail(rowID2);
+            } 
+            
+        </script>
+       
+    </head>
+<html>  
+<body>
+<apex:sectionHeader title="销售定价业务流程"></apex:sectionHeader>
+
+<!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true" id="messgae"></apex:pageMessages>
+
+    <apex:form id="form">
+
+        <!-- 子表删除行数调用function -->
+        <apex:actionFunction action="{!deleteDetail}" name="deleteDetail" id="deleteDetail" reRender="list1">
+           <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+
+         <apex:actionFunction action="{!queryMaterial}" id="queryMaterial" name="queryMaterial" reRender="list2,messgae">
+            <apex:param assignTo="{!resultRowID}" name="rowID" value="rowID"></apex:param>
+        </apex:actionFunction>
+        
+        <apex:actionFunction action="{!addDetail}" name="addDetail" id="addDetail" reRender="list1">
+           <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+
+        <!-- 子表2删除行数调用function -->
+        <apex:actionFunction action="{!deleteItemzi}" name="deleteItemzi" id="deleteItemzi" reRender="listzi2">
+           <apex:param assignTo="{!rowID2}" name="rowID2" value=""></apex:param>
+        </apex:actionFunction>
+<!-- ................................................................................... -->
+
+        <apex:pageBlock title="销售定价业务" id="block"> 
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" collapsible="false">
+
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 审核状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="需求信息" collapsible="false">
+
+                <!-- 条件类型 -->
+                <apex:inputField id="ConditionType" value="{!am.ConditionType__c}" required="true"></apex:inputField>
+                 <!-- 关键字组合 -->
+                <apex:inputField id="KeyCombination" value="{!am.KeyCombination__c}" required="true" onchange="toggleData()"></apex:inputField>
+                 <!--工厂-->
+                <apex:inputField id="Factory" value="{!am.Factory__c}" required="true"></apex:inputField>
+                <!--销售组织-->
+                <apex:inputField id="Sales_Org" value="{!am.Sales_Org__c}" required="true"></apex:inputField>
+                 <!--销售管道 -->
+                <apex:inputField id="Sales_channels" value="{!am.Sales_channels__c}" required="true"></apex:inputField>
+                 <!--客户-->
+                <apex:inputField id="Account" value="{!am.Account__c}" ></apex:inputField>
+                 <!-- 币种-->
+                <apex:inputField id="Currency" value="{!am.Currency__c}"></apex:inputField>
+                 <!--价格组 -->
+                <apex:inputField id="Price_Group" value="{!am.Price_Group__c}"></apex:inputField>
+            </apex:pageBlockSection>
+
+<!-- .........................................................- -->
+            <apex:outputPanel title="查询结果" layout="block" styleClass="scroll" id="list2" style="display:{!IF(isDeletedStatus,'','none')};"> 
+                <div class="pbSubheader brandTertiaryBgr tertiaryPaleette" style="background-color: pink"><h3>查询结果</h3></div>
+                <table class="list" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <th>操作</th> 
+                        <th>{!$ObjectType.Approval_Managed__c.Fields.Material_Number__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed__c.Fields.Material_Description__c.Label}</th>
+                            
+                    </thead>
+                    <tbody>
+                    <apex:variable var="listIndex2" value="{!0}"/>
+                    <apex:repeat value="{!listson}" var="item">
+                    <tr>
+                        <td> 
+                        <apex:commandButton action="{!selectMaterial}" reRender="list2,list1" value="选中">
+                            <apex:param assignTo="{!selectRow}" name="selectRow" value="{!listIndex2}"></apex:param>
+                        </apex:commandButton>
+                        </td>
+                        <!-- 物料号码 --> 
+                        <td><apex:outputField value="{!item.Material_Number__c}"></apex:outputField></td>
+                         <!-- 物料描述 -->
+                        <td><apex:outputField value="{!item.Material_Description__c}"></apex:outputField></td>
+                       
+                    </tr>
+                    <apex:variable var="listIndex2" value="{!listIndex2+1}"/>
+                    </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+<!-- ......................................................................... -->
+            <apex:outputPanel title="子表" styleClass="scroll" id="list1"> 
+                <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>明细</h3></div>
+                <apex:commandButton action="{!addDetail}" value="新增" reRender="list1,messgae" immediate="true"/>
+
+                <table class="list" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <th></th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Row_Index__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Material_Number__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Material_Description__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Amount__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Currency__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Quantity__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.UOM__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.NumerationType__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.StartTime__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.EndTime__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Standard_parts__c.Label}</th>
+ 
+                    </thead> 
+                    <tbody>
+                    <apex:variable var="listIndex" value="{!1}"/>
+
+                    <apex:repeat value="{!listDetail}" var="item">
+                    <tr>
+                        <td>
+                            <input type="button" onclick="deleteItemDetail('{!listIndex}')" value="删除" class="btn" reRender="list1"/>
+                             <apex:param assignTo="{!rowID}" name="rowID" value="{!listIndex}"></apex:param>
+                        </td>
+                         <!-- 行号 --> 
+                        <td><apex:inputField value="{!item.Row_Index__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 物料号 --> 
+                        <td>
+                            <span class="lookupInput">
+                            <apex:inputField value="{!item.Material_Number__c}" required="true" styleClass="text"/>
+                            <img src="/img/s.gif" alt="物料号" class="lookupIcon" onblur="this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" title="查询物料信息" onclick="queryMaterial('{!listIndex}')" style="cursor: pointer;" required="list2" />
+                            </span>
+                        </td> 
+                        <!-- 物料描述 -->
+                        <td><apex:outputField value="{!item.Material_Description__c}" style="width: 70px"></apex:outputField></td>
+                        <!--金额-->
+                        <td><apex:inputField value="{!item.Amount__c}" style="width: 70px"></apex:inputField></td>
+                        <!--币种 -->
+                        <td><apex:inputField value="{!item.Currency__c}" style="width: 40px"></apex:inputField></td>
+                        <!--数量-->
+                        <td><apex:inputField value="{!item.Quantity__c}" style="width: 40px"></apex:inputField></td>
+                        <!--UOM-->
+                        <td><apex:outputField value="{!item.UOM__c }" style="width: 40px"></apex:outputField></td>
+                        <!--计算类型-->
+                        <td><apex:inputField value="{!item.NumerationType__c }" style="width: 40px"></apex:inputField></td>
+                        <!--有效时间（开始）-->
+                        <td><apex:inputField value="{!item.StartTime__c }" style="width: 40px"></apex:inputField></td>
+                        <!--有效时间（结束）-->
+                        <td><apex:inputField value="{!item.EndTime__c }" style="width: 40px"></apex:inputField></td>
+                        <!--标件-->
+                        <td><apex:inputField value="{!item.Standard_parts__c}"></apex:inputField></td>
+                       
+                    </tr>
+                    <apex:variable var="listIndex" value="{!listIndex+1}"/>
+                    </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+    <!-- ............................................................................. -->
+                <apex:outputPanel title="子表2" styleClass="scroll" id="listzi2"> 
+                <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>行等级明细</h3></div>
+                <apex:commandButton action="{!addItemzi}" value="新增" reRender="listzi2,messgae" immediate="true"/>
+
+                <table class="list" border="0" cellspacing="0" cellpadding="0">
+                   
+                    <tr>
+                        <th></th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Row_Index__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.LevelNumber__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.UOM__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Amount__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Currency__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Quantity__c.Label}</th>
+                     </tr>
+                   
+                   
+                    <apex:variable var="listIndexzi" value="{!1}"/>
+
+                    <apex:repeat value="{!listDetailzi}" var="item">
+                    <tr>
+                        <td>
+                            <input type="button" onclick="deleteItemzi('{!listIndexzi}')" value="删除" class="btn" reRender="listzi2"/>
+                             <apex:param assignTo="{!rowID2}" name="rowID2" value="{!listIndexzi}"></apex:param>
+                        </td>
+                         <!-- 行号 --> 
+                        <td><apex:inputField value="{!item.Row_Index__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 等级数量 --> 
+                        <td><apex:inputField value="{!item.LevelNumber__c}" required="true" style="width: 70px"></apex:inputField></td>
+                        <!-- UOM-->
+                        <td><apex:inputField value="{!item.UOM__c}" required="true" style="width: 100px"></apex:inputField></td>
+                        <!--金额-->
+                        <td><apex:inputField value="{!item.Amount__c}" style="width: 70px"></apex:inputField></td>
+                        <!--币种 -->
+                        <td><apex:inputField value="{!item.Currency__c}" style="width: 70px"></apex:inputField></td>
+                        <!--数量-->
+                        <td><apex:inputField value="{!item.Quantity__c}" style="width: 40px"></apex:inputField></td>
+                       
+                    </tr>
+                    <apex:variable var="listIndexzi" value="{!listIndexzi+1}"/>
+                    </apex:repeat>
+                  
+                </table>
+            </apex:outputPanel>
+            
+        </apex:pageBlock>
+    </apex:form>
+</body>
+</html>
+</apex:page>

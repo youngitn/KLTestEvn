@@ -1,0 +1,56 @@
+<apex:page standardController="Approval_Managed2__c" extensions="AMCancelTECOExtension">
+<!-- SAP生產工取消TECO申請單  -->
+<html>
+
+
+<body>
+<apex:sectionHeader title="SAP生產工單取消TECO申請單" subtitle="新建/编輯"></apex:sectionHeader>
+    <!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+       
+            <apex:pageBlockButtons >
+        
+     
+            
+                <apex:commandButton action="{!save}"  value="保存"/> <!--onclick="Savetrue(); return false -->
+                <apex:commandButton action="{!cancel}"  value="取消"/>
+            </apex:pageBlockButtons>
+           <apex:pageBlockSection title="基本信息">
+                <!-- 單據编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 申请部門 -->
+                <apex:outputField value="{!am.Applicant_Department__c}"></apex:outputField>
+                <!-- 流程名稱 -->
+                <apex:outputField value="{!am.Approval_Name__c}" Style="width:70%"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据狀態 -->
+                <apex:outputField value="{!am.Status__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人工号-->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!--申请人代碼-->
+                <apex:outputField value="{!am.Applicant_Corp_Code__c}"></apex:outputField>
+            
+       </apex:pageBlockSection>
+            <apex:pageBlockSection title="主要信息" >
+                
+                
+                <apex:inputField value="{!am.Applicationcode__c}" styleClass="text" required="true"/>
+                <apex:inputField value="{!am.Unlock_TECO__c}" styleClass="text" required="true"/>
+                <apex:inputTextarea value="{!am.Form_content__c}" styleClass="text" required="true" cols="50" rows="10"/>
+                                         
+                                                                                           
+ </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+<script>
+
+</script>
+</body>
+</html>
+
+</apex:page>

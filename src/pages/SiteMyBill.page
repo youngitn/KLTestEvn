@@ -1,0 +1,105 @@
+<!--
+    目的：我的账单信息界面
+    作者：luoxin
+    创建时间：2017-03-28
+-->
+<apex:page showHeader="false" controller="SiteMyOrderExtension">
+<head>
+    <apex:includeScript value="{!URLFOR($Resource.angularjs,'')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+</head>
+<body>
+<div ng-app="app" ng-controller="ctrl" class="slds">
+
+    <div class="slds-form-element">
+        <div class="slds-form-element__control">
+            <div class="slds-checkbox--button-group">
+              <span class="slds-button slds-checkbox--button">
+                <input type="checkbox" name="options" id="checkbox-1"  ng-model="hasBeenInvoiced"/>
+                <label class="slds-checkbox--button__label" for="checkbox-1">
+                  <span class="slds-checkbox--faux">已开票</span>
+                </label>
+              </span>
+              <span class="slds-button slds-checkbox--button">
+                <input type="checkbox" name="options" id="checkbox-2" ng-model="notInvoiced"/>
+                <label class="slds-checkbox--button__label" for="checkbox-2">
+                  <span class="slds-checkbox--faux">未开票</span>
+                </label>
+              </span>
+              <span class="slds-button slds-checkbox--button">
+                <input type="checkbox" name="options" id="checkbox-3" ng-model="prepayment"/>
+                <label class="slds-checkbox--button__label" for="checkbox-3">
+                  <span class="slds-checkbox--faux">预付款</span>
+                </label>
+              </span>
+            </div>
+        </div>
+        <div class="slds-form-element__control">
+          <button class="slds-button slds-button--brand" ng-click="query()" >{!$Label.Search}</button>
+        </div>
+    </div>
+
+
+    <table class="slds-table slds-table--bordered slds-table--cell-buffer ">
+        <thead>
+             <th class="slds-text-title--caps">序号</th>
+             <th class="slds-text-title--caps">{!$Label.BillNo}</th>
+             <th class="slds-text-title--caps">{!$Label.AmountAble}</th>
+             <th class="slds-text-title--caps">{!$Label.PayDate}</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in bills track by $index">
+                <td class="slds-truncate">{{$index}}</td>
+                <td class="slds-truncate">{{item.bill_code__c}}</td>
+                <td class="slds-truncate">{{item.payable_amount__c}}</td>
+                <td class="slds-truncate">{{item.payable_date__c}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="slds-spinner_container" ng-hide="!loading" id="loader">
+      <div class="slds-spinner slds-spinner--brand slds-spinner--large" aria-hidden="false" role="alert">
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+      </div>
+    </div>
+</div>
+<apex:includeScript value="{!URLFOR($Resource.angularjs,'')}" />
+
+<script>
+Visualforce.remoting.timeout = 120000;//这个接口访问时间比较长
+var app = angular.module('app', []);
+app.controller('ctrl',function($scope,$q){
+    $scope.bills = [];
+    $scope.complete = false;
+
+    $scope.hasBeenInvoiced=false;
+    $scope.notInvoiced=false;
+    $scope.prepayment=false;
+
+    $scope.loading = false;
+
+    $scope.query = function(){
+        $scope.loading = true;
+        var promise = $q(function(resolve, reject){
+            var customercode = '0002000037';
+            SiteMyOrderExtension.queryBill(customercode,$scope.hasBeenInvoiced,$scope.notInvoiced,$scope.prepayment,function(res,event){
+                if(res.status=='0'){
+                    alert(res.message);
+                }
+                console.log(res.bills);
+                resolve(res.bills);
+            });
+        });
+        promise.then(function(result){
+            $scope.bills = result;
+            $scope.loading = false;
+        });
+    };
+
+
+});
+</script>
+
+
+ </body>
+</apex:page>

@@ -1,0 +1,54 @@
+<apex:page standardController="Approval_Managed2__c" extensions="AMSEV2_VendorEvaluationExtension">
+<!-- SEV2供應商評鑑表 -->
+<head>
+<apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+ <style type="text/css">
+          .buttong2y:hover {
+   	          border-top-color: #fdc45b;
+              background: #fdc45b;
+              color: #cc0000;
+            }
+          .buttong2y:active {
+              border-top-color: #91af6a;
+              background: #91af6a;
+          }
+     </style>
+</head>
+<apex:sectionHeader title="SEV2供應商評鑑表" subtitle="新建/编輯 SEV2供應商評鑑表"></apex:sectionHeader>
+    <!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+        
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" styleClass="buttong2y" value="保存"/>
+                <apex:commandButton action="{!cancel}" styleClass="buttong2y" value="取消"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection title="基本資訊" collapsible="false">
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}" id="Name"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"  id="Approval_Name__c"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}" id="Applicant__c"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"  id="Dept_Name__c"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期 -->
+                <apex:outputField value="{!am.Bill_Date__c}" id="Bill_Date__c"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Status__c}" id="Status__c"></apex:outputField>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="SEV2供應商評鑑表" >
+                <apex:inputField value="{!am.Applicationcode__c}"  required="true"></apex:inputField>
+                <br/>
+                <apex:inputTextarea value="{!am.Form_content__c}"  cols="50" rows="10"  required="true"></apex:inputTextarea>                                                             
+          </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

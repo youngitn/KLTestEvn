@@ -1,0 +1,119 @@
+<apex:page standardController="Approval_Managed__c" extensions="AMMRDieRequestExtension" >
+<!-- MR模具申请流程 -->
+<html>
+<apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+<body>
+<script>
+var EventUtil = {
+ preventDefault: function(event){
+  
+  if(event.preventDefault){
+   event.preventDefault();
+  } else {
+   event.returnValue = false;
+  }
+ }
+};
+var j$ = jQuery.noConflict();
+function clear()
+{
+	j$("[id$='die_type']").val('');
+	j$("[id$='die_number']").val('');
+	j$("[id$='mr_number']").val('');
+	j$("[id$='production_number']").val('');
+}
+function poup()
+{
+	clear();
+	alert("禁止初始提交人编辑");
+}
+j$(document).ready(function()
+{
+	j$("[id$='die_type']").blur(function()
+		{
+			clear();
+		});
+	j$("[id$='die_number']").blur(function()
+		{
+			clear();
+		});
+	j$("[id$='mr_number']").blur(function()
+		{
+			clear();
+		});
+	j$("[id$='production_number']").blur(function()
+		{
+			clear();
+		});
+
+    var save=j$("[name$='j_id0:j_id31:j_id32:j_id33:bottom:j_id34']");
+    var save2=j$("[name$='j_id0:j_id31:j_id32:j_id33:j_id34']");
+    save.click(function()
+        {
+            alert("截取事件");
+            EventUtil.preventDefault(window.event);
+        });
+    save2.click(function()
+        {
+            alert("不截取事件，只提示");
+            //EventUtil.preventDefault(window.event);
+        });
+    
+
+});
+
+</script>
+<apex:sectionHeader title="MR模具申请流程" subtitle="新建/MR模具申请流程"></apex:sectionHeader>
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" collapsible="false">
+                <!-- 单据编号 -->
+                <apex:outputField value="{!am.Bill_number__c}"></apex:outputField>
+                <!-- 部门 -->
+                <apex:outputField value="{!am.Department__c}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Status__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="申请信息" collapsible="false">
+                <!-- 工厂 --> 
+                <apex:inputField value="{!am.Factory__c}" id="Factory" required="true"></apex:inputField>
+                <!-- 模具使用BU -->
+                <apex:inputField value="{!am.die_use_bu__c}" required="true"></apex:inputField>
+                <apex:inputField value="{!am.die_type__c}" id="die_type" onkeyUp="poup()" style="border-color: gray"></apex:inputField>
+                <apex:inputField value="{!am.die_number__c}" id="die_number" onkeyUp="poup()" style="border-color: gray"></apex:inputField>
+                <apex:inputField value="{!am.mr_number__c}" id="mr_number" onkeyUp="poup()"  style="border-color: gray"></apex:inputField>
+                <apex:inputField value="{!am.Asset_Code__c}"></apex:inputField>
+                <apex:inputField value="{!am.production_number__c}" id="production_number" onkeyUp="poup()"  style="border-color: gray"></apex:inputField>
+                <apex:inputField value="{!am.Material_Number__c}" required="true"></apex:inputField>
+                <apex:inputField value="{!am.Quantity__c}"></apex:inputField>
+                <apex:inputField value="{!am.Required_date__c}"></apex:inputField>
+                <apex:inputField value="{!am.estimated_working_hours__c}"></apex:inputField>
+                <apex:inputField value="{!am.estimated_working_hic__c}"></apex:inputField>
+                <apex:inputField value="{!am.actual_working_hours__c}"></apex:inputField>
+                <apex:inputField value="{!am.workpiece_value__c}"></apex:inputField>
+                <apex:inputField value="{!am.isOutsourcing__c}"></apex:inputField>
+                <apex:inputField value="{!am.Operator_Abnormal__c}"></apex:inputField>
+                <apex:inputField value="{!am.Dept_of_CostCenter__c}" required="true"></apex:inputField>
+                
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection collapsible="false">
+            	<apex:inputField value="{!am.Modify_description__c}" style="width: 425px;height: 60px" required="true"></apex:inputField>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>>
+</body>
+</html>
+</apex:page>

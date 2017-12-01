@@ -1,0 +1,83 @@
+<apex:page showHeader="false"  controller="TextPage01Extension"><head>
+<apex:includeScript value="{!URLFOR($Resource.angularjs,'')}" />
+<apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+</head>
+ <div ng-app="app" ng-controller="ctrl" class="slds">
+	<div class="slds-grid slds-grid_align-space">
+		<div class="slds-col">
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="text-input-id-1">工号</label>
+              <div class="slds-form-element__control">
+                <input type="text" id="text-input-id-1" class="slds-input" ng-model="pernr" style="width:300px;" />
+              </div>
+            </div>
+        </div>
+		<div class="slds-col" style="text-align: center;margin: auto;">
+            <button class="slds-button slds-button--brand" ng-click="query()" ng-disabled="loading">{!$Label.Search}</button>
+        </div>    
+	</div>
+	<table  class="slds-table slds-table--bordered slds-table--cell-buffer ">
+		<thead >
+            <th class="slds-text-title--caps">工号</th>
+            <th class="slds-text-title--caps">姓名</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in pa0001 track by $index">
+                <td class="slds-truncate">{{item.pernr}}</td>
+                <td class="slds-truncate">{{item.ename}}</td>                
+                <td class="slds-truncate">
+                    <!-- <a href='/apex/MaterialPDF?template={{item.template_name}}' target="_blank">点击</a> -->
+                    <button class="slds-button slds-button--brand" ng-click="download(item)">PDF显示
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+	</table>
+
+	<!--页面刷新  -->
+    <div class="slds-spinner_container" ng-hide="!loading" id="loader">
+        <div class="slds-spinner slds-spinner--brand slds-spinner--large" aria-hidden="false" role="alert">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+ </div>
+
+<script>
+var app = angular.module('app', []);
+app.controller('ctrl',function($scope,$q){
+	$scope.pernr = '';
+ 	$scope.pa0001 = [];
+    $scope.loading = false;
+
+	$scope.query = function(){
+        $scope.pa0001 = [];
+        $scope.loading= true;  //滚动条开始
+
+        var promise = $q(function(resolve,reject){
+            TextPage01Extension.queryPa0001($scope.pernr,function(res,event){
+            	//resolve(res.detail); 直接返回 result.detail
+                resolve(res);  //获取返回值
+            });
+        });
+        promise.then(function(result){
+        	//循环返回值中的RES下的detail
+            result.detail.forEach(function(item){               
+                    $scope.pa0001.push(item);
+            });
+            // $scope.materials=result;
+            $scope.loading=false;
+        });
+
+     }
+    
+    //PDF打印
+        $scope.download = function(item){
+        var jsonStr = JSON.stringify(item);
+        window.open('/apex/TestPage01Pdf?pernr='+item.pernr + '&ename='+item.ename);
+    }
+
+});
+
+</script>
+</apex:page>

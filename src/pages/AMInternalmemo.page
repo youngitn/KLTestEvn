@@ -1,0 +1,155 @@
+<apex:page standardController="Approval_Managed1__c" extensions="AMInternalmemoExtension">
+<html>
+<head>
+    <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+    <script>
+     var j$ = jQuery.noConflict();
+
+        j$(document).ready(function(){
+            var cmb = j$("select[id$='Fctory']");
+            var approvalValue = cmb.val();
+            console.log('approvalValue: ' + approvalValue);
+            
+            var desc1 = j$("[id$='Type']");
+
+            var desc2 = j$("[id$='Kostl']"); 
+
+            var desc3 = j$("[id$='Recipient_Unit']"); 
+
+            var desc4 = j$("[id$='Service_Desc']"); 
+
+            var desc5 = j$("[id$='Destination']"); 
+
+            var desc6 = j$("[id$='designee']");
+            
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.hide();
+                desc2.parent().prev().children("label").hide();
+
+                desc3.hide();
+                desc3.parent().prev().children("label").hide();
+
+                desc4.hide();
+                desc4.parent().prev().children("label").hide();
+
+                desc5.hide();
+                desc5.parent().prev().children("label").hide();
+
+                desc6.hide();
+                desc6.parent().prev().children("label").hide();
+            
+       });
+            function toggleData(){
+            var cmb = j$("select[id$='Fctory']");
+            var approvalValue = cmb.val();
+            console.log('approvalValue: ' + approvalValue);
+            
+            var desc1 = j$("[id$='Type']");
+
+            var desc2 = j$("[id$='Kostl']"); 
+
+            var desc3 = j$("[id$='Recipient_Unit']"); 
+
+            var desc4 = j$("[id$='Service_Desc']"); 
+
+            var desc5 = j$("[id$='Destination']"); 
+
+            var desc6 = j$("[id$='designee']");
+
+            if (approvalValue == "3000") {
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.hide();
+                desc2.parent().prev().children("label").hide();
+
+                desc3.show();
+                desc3.parent().prev().children("label").show();
+
+                desc4.show();
+                desc4.parent().prev().children("label").show();
+
+                desc5.hide();
+                desc5.parent().prev().children("label").hide();
+
+                desc6.hide();
+                desc6.parent().prev().children("label").hide();
+
+            }else{                
+                desc1.show();
+                desc1.parent().prev().children("label").show();
+
+                desc2.show();
+                desc2.parent().prev().children("label").show();
+
+                desc3.hide();
+                desc3.parent().prev().children("label").hide();
+
+                desc4.show();
+                desc4.parent().prev().children("label").show();
+
+                desc5.hide();
+                desc5.parent().prev().children("label").hide();
+
+                desc6.show();
+                desc6.parent().prev().children("label").show();
+
+            }
+}
+    </script>
+</head>
+<body>
+<apex:sectionHeader title="內部联络申请流程" subtitle="新建/编辑內部联络流程"></apex:sectionHeader>
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+               <apex:pageBlockSection title="流程审批信息" collapsible="false">
+                 <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 审批状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="内部联络申请流程信息"  >
+                <!-- 工厂 -->
+                <apex:inputField id="Fctory" value="{!am.Factory__c}" required="true" onchange="toggleData() "></apex:inputField>
+                <!-- 需求日期 -->
+                <apex:inputField id="Reqdt" value="{!am.REQDT__c}" ></apex:inputField>
+                <!-- 类型选择 -->
+                <apex:inputField id="Type" value="{!am.TYPE__c}" ></apex:inputField>
+                <!-- 成本中心 -->
+                <apex:inputField id="Kostl" value="{!am.KOSTL__c}" ></apex:inputField>
+                <!-- 指定作业人 -->
+              <!--  <apex:inputField id="designee" value="{!am.designee__c}" ></apex:inputField> -->
+                <!-- 通知部門 -- ><!--required="true"-->
+                <apex:inputField id="Recipient_Unit" value="{!am.Recipient_Unit__c}"/>
+                </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1">
+                <!-- 问题描述 -->
+                <apex:inputField id="Service_Desc" value="{!am.Service_Desc__c}" style="width: 80%"></apex:inputField>
+                 <!-- 主旨 --><!--required="true"-->
+                <apex:inputField id="Destination" value="{!am.Destination__c}" style="width: 80%"></apex:inputField>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>>
+</body>
+</html>
+</apex:page>

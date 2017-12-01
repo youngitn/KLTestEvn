@@ -1,0 +1,93 @@
+<apex:page standardController="Custom_Approval_Managed__c" extensions="ItemBankDetailExtension">
+    <head>
+     	<apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+     	<style>
+            table.gridtable {
+                font-family: verdana,arial,sans-serif;
+                font-size:11px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                margin: 5px 0;
+            }
+            table.gridtable th {
+                border-width: 1px;
+                padding: 1px;
+                text-align:center;
+                border-style: solid;
+                font-size:13px;
+                border-color: #F2F2F2;
+                background-color:rgb(D1,D1,D1);
+                width:10%;
+            }
+            table.gridtable td {
+                border-width: 1px;
+                padding: 1px;
+                text-align:center;
+                border-style: solid;
+                border-color: #F2F2F2;
+                background-color: #f6fafc;
+            }
+            table.gridtable img {
+                width: 16px;
+            }
+            input.text {
+                text-align: center;
+            }
+            div#table1  {
+                align-self: flex-end;
+            }
+        </style>
+    </head>
+    <apex:form id="form">
+        <!--银行细目子表-->
+        <div style="height:200px; overflow: scroll;">
+        <br/>
+        <br/>
+        <div><p id="p1"></p></div>
+        <div><apex:pageMessages escape="true"></apex:pageMessages></div>
+        <br/>
+        <apex:commandButton action="{!saveBankDetailRecord}" reRender="form" value="保存" rendered="{!isRedered}"/>
+        <table class="gridtable" style="width: 100%" id="table1">
+            <thead>
+                <th>行号</th>
+                <th>生效日期</th>
+                <th>国家</th>
+                <th>银行代码</th>
+                <th>银行账户</th>
+                <th>银行户主</th>
+                <th>银行名称</th>
+                <th>IBANValue</th>
+                <th>SWIFT码</th>
+            </thead>
+            <tbody>
+                <apex:variable var="listIndex" value="{!1}"/>
+                <apex:repeat value="{!listBankDetail}" var="item">
+                    <tr>
+                        <td>{!listIndex}</td>
+                        <td><apex:outputField value="{!item.Validate_Date__c}" styleClass="text removeDate"/></td>
+                        <td><apex:outputField value="{!item.Country__c}" styleClass="text" style="width: 40px"/></td>
+                        <td><apex:outputField value="{!item.Bank_of_Code__c}" styleClass="text"/></td>
+                        <td><apex:outputField value="{!item.Account_of_Bank__c}" styleClass="text"/></td>
+                        <td><apex:outputField value="{!item.Account_Name__c}"  styleClass="text"/></td>
+                        <td><apex:outputField value="{!item.Name_of_Bank__c}" styleClass="text"/></td>
+                        <td><apex:outputField value="{!item.IBANValue__c}" styleClass="text"/></td>
+                        <td><apex:outputField value="{!item.SWIFT_Code__c}" styleClass="text"/></td>
+                    </tr>
+                    <apex:inlineEditSupport event="onclick" rendered="{!isRedered}" showOnEdit="saveButton,cancelButton"	hideOnEdit="editButton"/>
+                    <apex:variable var="listIndex" value="{!listIndex + 1}"/>
+                </apex:repeat>
+            </tbody>
+ 		</table>
+        </div>
+    </apex:form>
+    <script>
+        j$ = jQuery.noConflict();
+        j$(document).ready(function(){
+             var iframe = j$('#066O0000000EEPn', window.parent.document);
+             iframe.css("height","300px");
+             j$("#p1").html("sssfd");
+            });
+    </script>
+</apex:page>

@@ -1,0 +1,66 @@
+<apex:page controller="MaterialKsklDownload">
+<apex:outputText rendered="{!langu='EL'||langu='ZH'}">
+    <div class="tabletitle">Mechanical Test Continuation 机械性能测试</div>
+    </apex:outputText>
+    <apex:outputText rendered="{!langu='EN'}">
+        <div class="tabletitle">Mechanical Test Continuation</div>
+    </apex:outputText>
+            <table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="100%"  >
+        <tbody>
+            <tr >
+                <td>
+                    <div>Heat Number</div>
+                    <apex:outputText rendered="{!langu='EL'||langu='ZH'}">
+                    <div>（炉号）</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Impact Test</div>
+                    <apex:outputText rendered="{!langu='EL'||langu='ZH'}">
+                        <div>冲击试验<br/>(20°C-J)</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Eddy Current Test</div>
+                    <apex:outputText rendered="{!langu='EL'||langu='ZH'}">
+                    <div>涡流探伤</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Flaring Test</div>
+                    <apex:outputText rendered="{!langu='EL'||langu='ZH'}">
+                    <div>扩口/卷边试验</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Flattening,Test</div>
+                    <apex:outputText rendered="{!langu='EL'||langu='ZH'}">
+                    <div>压扁试验</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Bend &amp; Reverse-Bend Test </div>
+                    <apex:outputText rendered="{!langu='EL'||langu='ZH'}">
+                    <div>弯曲和反向弯曲试</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Intergranular</div>
+                    <div>Corrosion Test per ASTM A262-E</div>
+                    <div>(ASMT A262-E)</div>
+                </td>
+            </tr>
+            <apex:repeat var="continuation" value="{!mc.continuations}">
+            <tr>
+                <td><div>{!continuation.Heat_Number}</div></td>
+                <td><div>{!continuation.Impact_Test}</div></td>
+                <td><div>{!continuation.Eddy_Current_Test}</div></td>
+                <td><div>{!continuation.Flaring_Flange_Test}</div></td>
+                <td><div>{!continuation.Flattening_Reverse_Flattening}</div></td>
+                <td><div>{!continuation.Bend_Reverse_Bend_Test}</div></td>
+                <td><div>{!continuation.Intergranular_Corrosion_Test}</div></td>
+            </tr>
+            </apex:repeat>
+        </tbody>
+    </table>
+</apex:page>

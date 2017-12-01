@@ -1,0 +1,150 @@
+<apex:page showheader="false" controller="SiteMyOrderExtension">
+<head>
+<apex:includeScript value="{!URLFOR($Resource.angularjs,'')}" />
+<apex:includeScript value="{!$Resource.cookiejs}" />
+<script type="text/javascript" src="/soap/ajax/13.0/connection.js"></script>
+<script type="text/javascript" src="/soap/ajax/24.0/apex.js"/>
+<apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+<style>
+</style>
+</head>
+
+<div ng-app="app" ng-controller="ctrl" class="slds">
+
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media--center slds-has-flexi-truncate">
+            <div class="slds-media__body">客户信息</div>
+            </header>
+        </div>
+        <div class="slds-media__body"></div>
+    </article>
+
+    <div class="slds-grid slds-wrap slds-grid--pull-padded">
+        <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-2">客户编号:{{res.main.customer_code}}</div>
+        <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-2">客户名称:{{res.main.customer_name}}</div>
+    </div>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media--center slds-has-flexi-truncate">
+            <div class="slds-media__body">材料子项</div>
+            </header>
+        </div>
+        <div class="slds-media__body"></div>
+    </article>
+<form name="form">
+    <div>
+        <div><button class="slds-button " ng-click="submitOrder()" style="margin-left:100px;">提交订单</button></div>
+        <div ng-show="showMessage" style="color: red;font-weight: bold;font-size: 13px;" >{{message}}</div>
+    </div>
+    <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+        <th scope="col" style="width:3.25rem;" class="slds-text-align--right">
+            <!-- <span class="slds-checkbox" for="selectAll"> -->
+                <input type="checkbox" ng-checked="selectAll" ng-click="toggleSelectAll()" id="selectAll"/>
+                <!-- <span class="slds-checkbox--faux"></span> -->
+                <!-- <span class="slds-form-element__label slds-assistive-text">Select All</span> -->
+            <!-- </span> -->
+        </th>
+        <th class="slds-text-title--caps">客户物料号</th>
+        <th class="slds-text-title--caps">新莱物料号</th>
+        <th class="slds-text-title--caps">物料名称</th>
+        <th class="slds-text-title--caps">单价</th>
+        <th class="slds-text-title--caps">下单数</th>
+        <tr ng-repeat= "item in res.details.materials track by $index">
+            <td class="slds-truncate" >
+                <!-- <span class="slds-checkbox" for="checked+$index"> -->
+                    <input type="checkbox" class="slds-checkbox" ng-model="item.checked" id="checked+$index" />
+                    <!-- <span class="slds-checkbox--faux"></span> -->
+                <!-- </span> -->
+            </td>
+            <td class="slds-truncate" >{{item.customer_material_code}}</td>
+            <td class="slds-truncate" >{{item.material_code}}</td>
+            <td class="slds-truncate" >{{item.material_name}}</td>
+            <td class="slds-truncate" >{{item.protocol_price}}</td>
+            <td class="slds-truncate" >
+                <input type="number" class="slds-input" ng-model="item.order_quantity" />
+            </td>
+        </tr>
+    </table>
+
+    <button class="slds-button " ng-click="submitOrder()" style="margin-left:100px;">提交订单</button>
+</form>
+    <div class="slds-spinner_container" ng-hide="!loading" id="loader">
+        <div class="slds-spinner slds-spinner--brand slds-spinner--large" aria-hidden="false" role="alert">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+</div>
+<script>
+var app = angular.module('app',[]);
+app.controller('ctrl',function($scope,$q){
+    $scope.OrderNo='';
+    $scope.CreateDate='';
+    $scope.OrderLeadTime='';
+    $scope.message = '';
+    $scope.showMessage = false;
+    $scope.res = {};
+
+
+    $scope.loading= true;
+    var promise = $q(function(resolve,reject){
+        var un = Cookies.get('apex__un');
+        SiteMyOrderExtension.querySelfOrder(un,function(res,event){
+            console.log(res);
+            resolve(res.content[0]);
+        });
+    });
+    promise.then(function(result){
+        $scope.res=result;
+        $scope.res.details.materials.forEach(function(item){
+            item.checked = false;
+        });
+        $scope.loading=false;
+    });
+
+    $scope.selectAll = false;
+    $scope.toggleSelectAll = function(){
+        $scope.selectAll = !$scope.selectAll;
+        $scope.res.details.materials.forEach(function(item){
+            item.checked = $scope.selectAll;
+        });
+    }
+    $scope.submitOrder = function(){
+        $scope.loading= true;
+        var promise = $q(function(resolve,reject){
+            console.log(JSON.stringify($scope.res));
+            var resObj = angular.copy($scope.res);
+            console.log(resObj);
+            resObj.details.materials = [];
+            var err = false;
+            $scope.res.details.materials.forEach(function (item) {
+                if (item.checked) {
+                    resObj.details.materials.push(item);
+                    if(!item.order_quantity){
+                        err = true;
+                    }
+                }
+            })
+            if(err){
+                alert('请填写下单数');
+                $scope.loading= false;
+                return;
+            }
+
+            SiteMyOrderExtension.submitOrder(JSON.stringify(resObj),"",function(res,event){
+            //SiteMyOrderExtension.submitOrder(JSON.stringify($scope.res.main),JSON.stringify($scope.res.details.materials),function(res,event){
+                resolve(res);
+            });
+        });
+        promise.then(function(result){
+            $scope.loading= false;
+            $scope.message= result;
+            $scope.showMessage = true;
+            // alert(result);
+        })
+    }
+
+});
+</script>
+</apex:page>

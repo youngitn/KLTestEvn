@@ -1,0 +1,357 @@
+<apex:page controller="ApprovalInterfaceLogController" docType="html-5.0" showHeader="true">
+	<head>
+		<apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+		<apex:stylesheet value="{!URLFOR($Resource.loading,'loading.gif')}" />
+		<style>
+			th.dataTableTh{
+				background: #f2f3f3;
+			    border-width: 1px 0 1px 1px;
+			    border-style: solid;
+			    border-color: #ccc;
+			    color: #000;
+			    font-weight: bold;
+			    padding: 5px 2px 4px 5px;
+			}
+			td.dataTableTd{
+				padding: 5px 3px;
+				text-align:left;
+				border-width: 1px 0px 1px 0px;
+				border-style: solid;
+				border-color: #ededed;
+    			color: #000;
+    			vertical-align:middle;
+			}
+			.colOper{
+				width:35px;
+				padding: 5px 0 5px 5px;
+				text-align: left;
+				border-width: 1px 0px 1px 0px;
+				border-style: solid;
+				border-color: #ededed;
+			}
+			.detailList tbody tr td table{
+				width:100%;
+				border-width: 1px;
+				border-style: solid;
+			    border-color: #ddd;
+			}
+			.detailList tbody tr td table tr{
+				background-color: #fff;
+			}
+			.detailList tbody tr td table tr:hover{
+				background-color: #eee;
+			}
+			.btnLink:link{
+				color: #015ba7 !important;
+			    text-decoration: none;
+			    font-weight: normal;
+			    cursor: pointer;
+			}
+			.btnLink:hover{
+				color: #f00;
+			    text-decoration: none;
+			    font-weight: normal;
+			    cursor: pointer;
+			}
+			.btnLink:visited{
+				color: #015ba7 !important;
+			    text-decoration: none;
+			    font-weight: normal;
+			    cursor: pointer;
+			}
+			.data2Col{padding-left:0px !important;padding-right:0px !important;}
+			.tertiaryPalette{background:#4c280f !important;border-color:#4c280f !important}
+		</style>
+		<script>
+			var j$ = jQuery.noConflict();
+
+			//从SAP手动同步部门
+			function reSyncDept(obj){
+				j$(obj).attr("disabled",true); 
+				var msg = j$("#divMsg");
+				msg.html("正在从SAP同步部门数据，请稍候......");
+				msg.show();
+				ApprovalInterfaceLogController.syncDeptFromSap(function(resp,event){
+					if(resp.status == '1'){
+						msg.html("部门同步成功");
+						j$(obj).next().attr("disabled",false); 
+					}else{
+						msg.html("部门同步失败");
+					}
+					j$(obj).attr("disabled",false); 
+				});
+				return false;
+			}
+			//从SAP手动同步岗位
+			function reSyncRole(obj){
+				j$(obj).attr("disabled",true); 
+				var msg = j$("#divMsg");
+				msg.html("正在从SAP同步岗位数据，请稍候......");
+				msg.show();
+				ApprovalInterfaceLogController.syncJobFromSap(function(resp,event){
+					if(resp.status == '1'){
+						msg.html("岗位同步成功");
+						j$(obj).next().attr("disabled",false); 
+					}else{
+						msg.html("岗位同步失败");
+					}
+					j$(obj).attr("disabled",false); 
+				});
+				return false;
+			}
+			//从SAP手动同步员工
+			function reSyncStaff(obj){
+				j$(obj).attr("disabled",true); 
+				var msg = j$("#divMsg");
+				msg.html("正在从SAP同步员工数据，请稍候......");
+				msg.show();
+				ApprovalInterfaceLogController.syncStaffFromSap(function(resp,event){
+					if(resp.status == '1'){
+						msg.html("员工同步成功");
+						j$(obj).next().attr("disabled",false); 
+					}else{
+						msg.html("员工同步失败");
+					}
+					j$(obj).attr("disabled",false); 
+				});
+				return false;
+			}
+			function reSyncUser(obj){
+				reSyncUserData();
+			}
+			function reSync(obj,mid,keyno,direction){
+				var img = j$("#img_" + mid);
+				var lnk = j$(obj);
+				lnk.hide();
+				img.show();
+				ApprovalInterfaceLogController.reSyncData(mid,keyno,direction,function (resp,event) {
+					img.hide();
+					if(resp.status == '1'){
+						lnk.parent().html("<div style='color:green;'>成功</div>");
+					}else{
+						lnk.parent().html("<div style='color:red;'>失败</div>");
+					}
+        		});
+        		return false;
+			}
+
+			function refreshApproval(){
+				var startDate = j$("#txtstartDate").val();
+				var endDate = j$("#txtendDate").val();
+				var pageSize = j$("#cmbPageSize").val();
+				var successed = j$("#cmbSuccess").val();
+				if(startDate !="" && !checkDate(startDate)){
+					alert("开始日期格式不正确！\n 正确格式：2017-01-01 12:30:25");
+					return false;
+				}
+				if(endDate !="" && !checkDate(endDate)){
+					alert("结束日期格式不正确！\n 正确格式：2017-01-01 12:30:25");
+					return false;
+				}
+				QueryInterface(startDate,endDate,successed,pageSize);
+			}
+			function getPrevPage(){
+				var startDate = j$("#txtstartDate").val();
+				var endDate = j$("#txtendDate").val();
+				var pageSize = j$("#cmbPageSize").val();
+				var successed = j$("#cmbSuccess").val();
+				if(startDate !="" && !checkDate(startDate)){
+					alert("开始日期格式不正确！\n 正确格式：2017-01-01 12:30:25");
+					return false;
+				}
+				if(endDate !="" && !checkDate(endDate)){
+					alert("结束日期格式不正确！\n 正确格式：2017-01-01 12:30:25");
+					return false;
+				}
+				PrevPage(startDate,endDate,successed,pageSize);
+			}
+			function getNextPage(){
+				var startDate = j$("#txtstartDate").val();
+				var endDate = j$("#txtendDate").val();
+				var pageSize = j$("#cmbPageSize").val();
+				var successed = j$("#cmbSuccess").val();
+				if(startDate !="" && !checkDate(startDate)){
+					alert("开始日期格式不正确！\n 正确格式：2017-01-01 12:30:25");
+					return false;
+				}
+				if(endDate !="" && !checkDate(endDate)){
+					alert("结束日期格式不正确！\n 正确格式：2017-01-01 12:30:25");
+					return false;
+				}
+				NextPage(startDate,endDate,successed,pageSize);
+			}
+			function getGotoPage(){
+				var startDate = j$("#txtstartDate").val();
+				var endDate = j$("#txtendDate").val();
+				var pageSize = j$("#cmbPageSize").val();
+				var successed = j$("#cmbSuccess").val();
+				if(startDate !="" && !checkDate(startDate)){
+					alert("开始日期格式不正确！\n 正确格式：2017-01-01 12:30:25");
+					return false;
+				}
+				if(endDate !="" && !checkDate(endDate)){
+					alert("结束日期格式不正确！\n 正确格式：2017-01-01 12:30:25");
+					return false;
+				}
+				var paging = j$.trim(j$("#txtPaging").val());
+
+				var re = /^[1-9]+[0-9]*]*$/ ;//判断正整数
+			　　if (!re.test(paging)) {
+			　　　　alert("请输入一个有效的整数!");
+			　　　　return false;
+			　　}
+
+				if(paging != ""){
+					GotoPage(startDate,endDate,successed,paging,pageSize);
+				}
+			}
+			function checkDate(strValue){
+				var regExp = /^(\d{4})\-(\d{2})\-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/;
+				return regExp.test(strValue);
+			}
+		</script>
+	</head>
+	<!-- 灰屏 -->
+    <apex:outputpanel id="aaa">
+        <apex:actionstatus id="retrieveStatus">
+            <apex:facet name="start" >
+                <div class="waitingSearchDiv" id="el_loading" style=" background-color: #fbfbfb ;
+                       height: 2000px;opacity :0.65;width:100%;" >
+                    <div class="waitingHolder" style="position: fixed;top : 30%; right:50%;width: 91px;" >
+                        <img class="waitingImage" src="/img/loading.gif" title="正在查询数据，请稍候 ......" />
+                        <span class="waitingDescription" >正在查询数据，请稍候 ......</span >
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionstatus>
+    </apex:outputpanel>
+	<apex:form >
+		<apex:messages id="messgae"></apex:messages>
+		 <!-- 刷新选择流程数据 -->
+        <apex:actionFunction action="{!QueryInterface}" id="QueryInterface" name="QueryInterface" reRender="lstApproval" status="retrieveStatus">
+            <apex:param assignTo="{!startDate}" name="startDate" value=""></apex:param>
+            <apex:param assignTo="{!endDate}" name="endDate" value=""></apex:param>
+            <apex:param assignTo="{!successed}" name="successed" value=""></apex:param>
+            <apex:param assignTo="{!pageSize}" name="pageSize" value=""></apex:param>
+        </apex:actionFunction>
+        <apex:actionFunction action="{!NextPage}" id="NextPage" name="NextPage" reRender="lstApproval" status="retrieveStatus">
+            <apex:param assignTo="{!startDate}" name="startDate" value=""></apex:param>
+            <apex:param assignTo="{!endDate}" name="endDate" value=""></apex:param>
+            <apex:param assignTo="{!successed}" name="successed" value=""></apex:param>
+            <apex:param assignTo="{!pageSize}" name="pageSize" value=""></apex:param>
+        </apex:actionFunction>
+        <apex:actionFunction action="{!PrevPage}" id="PrevPage" name="PrevPage" reRender="lstApproval" status="retrieveStatus">
+            <apex:param assignTo="{!startDate}" name="startDate" value=""></apex:param>
+            <apex:param assignTo="{!endDate}" name="endDate" value=""></apex:param>
+            <apex:param assignTo="{!successed}" name="successed" value=""></apex:param>
+            <apex:param assignTo="{!pageSize}" name="pageSize" value=""></apex:param>
+        </apex:actionFunction>
+        <apex:actionFunction action="{!GotoPage}" id="GotoPage" name="GotoPage" reRender="lstApproval" status="retrieveStatus">
+            <apex:param assignTo="{!startDate}" name="startDate" value=""></apex:param>
+            <apex:param assignTo="{!endDate}" name="endDate" value=""></apex:param>
+            <apex:param assignTo="{!successed}" name="successed" value=""></apex:param>
+            <apex:param assignTo="{!pageCurr}" name="paging" value=""></apex:param>
+            <apex:param assignTo="{!pageSize}" name="pageSize" value=""></apex:param>
+        </apex:actionFunction>
+         <apex:actionFunction action="{!reSyncUserData}" id="reSyncUserData" name="reSyncUserData" reRender="message" status="retrieveStatus">
+        </apex:actionFunction>
+		<apex:pageBlock title="接口日志查询">
+			<div style="width:100%;float:left;padding:0px 0px 8px 0px; border-bottom: solid 1px #ccc;">
+				<div style="float:left;">
+					<input type="button" value="从SAP同步部门" onclick="return reSyncDept(this)" style="padding:2px 10px;" class="btn" />
+					<input type="button" value="从SAP同步岗位" onclick="return reSyncRole(this)" style="padding:2px 10px;" disabled="true" class="btn" />
+					<input type="button" value="从SAP同步员工" onclick="return reSyncStaff(this)" style="padding:2px 10px;" disabled="true" class="btn" />
+					<input type="button" value="同步用户" onclick="reSyncUser(this)" style="padding:2px 10px;" class="btn" />
+				</div>
+				<div id="divMsg" style="float:left;color:red;margin-left:10px;padding-top:3px;display:none;">
+					正在同步数据，请稍候......
+				</div>
+			</div>
+			<div style="width:100%;float:left;padding:10px 0px; vertical-align: middle;">
+				<div style="float:left;">
+					{!$Label.lbl_Model_Group}：
+					<apex:inputField id="cmbModelGroup" value="{!meta.Model_Group__c}" label=""></apex:inputField>
+				</div>
+				<div style="float:left;margin-left:10px;">
+					{!$ObjectType.Metadata__c.fields.Approval_Name__c.label}：
+					<apex:inputField id="cmbApproval" value="{!meta.Approval_Name__c}" label=""></apex:inputField>
+				</div>
+				<div style="float:left;margin-left:10px;">
+					推送方向：
+					<apex:inputField id="cmbDirection" value="{!meta.Send_Direction__c}" label=""></apex:inputField>
+				</div>
+				<div style="float:left;margin-left:10px;">
+					{!$ObjectType.Metadata__c.fields.Is_Send_Succeed__c.label}：
+					<select id="cmbSuccess">
+						<option value=" " selected="true">--无--</option>
+						<option value="false">失败</option>	
+						<option value="true">成功</option>		
+					</select>
+				</div>
+				
+				<div style="float:left;margin-left:20px;">
+					<input type="button" value="{!$Label.Query}" onclick="refreshApproval()" style="padding:2px 10px;" class="btn" />
+				</div>
+				<div style="float:right;">
+					显示：
+					<select id="cmbPageSize" onchange="refreshApproval()">
+						<option value="20" selected="true">20</option>
+						<option value="50">50</option>	
+						<option value="100">100</option>	
+						<option value="200">200</option>		
+					</select> 条
+				</div>
+			</div>
+			<div style="width:100%;float:left;padding-bottom:10px; vertical-align: middle;">
+				<div style="float:left;">
+					SFID/Keyno：
+					<apex:inputField id="txtApprovalID__c" value="{!meta.ApprovalID__c}" label=""></apex:inputField>
+				</div>
+				<div style="float:left;margin-left:10px;">
+					时间从：
+					<input type="datetime" id="txtstartDate" value="{!startDate}" style="width:130px;"></input>
+					&nbsp; 到  &nbsp;
+					<input type="datetime" id="txtendDate" value="{!endDate}" style="width:130px;"></input>
+				</div>
+			</div>
+			<apex:pageBlockSection id="lstApproval" title="接口日志查询列表" columns="1">
+				<apex:pageMessages />
+				<!-- 接口执行日志 -->
+				<!-- Metadata__c -->
+				<apex:dataTable value="{!lstLog}" var="row">
+					<apex:column styleClass="colOper" style="width:65px;" headerClass="dataTableTh">
+						<img class="waitingImage" id="img_{!row.Id}" style="display:none;" src="/img/loading.gif" title="同步进行中,请稍候..." />
+						<apex:outputLink styleClass="btnLink" onclick="return reSync(this,'{!row.Id}','{!row.ApprovalID__c}','{!row.Send_Direction__c}');" rendered="{!!row.Is_Send_Succeed__c}">{!$Label.ReSync}</apex:outputLink>
+					</apex:column>
+					<apex:column styleClass="dataTableTd" style="width:110px;" headerValue="SFID/Keyno" headerClass="dataTableTh">
+						<apex:outputLink styleClass="btnLink" value="/{!row.ApprovalID__c}" rendered="{!row.Send_Direction__c=='SF_TO_SAP'}">{!row.ApprovalID__c}</apex:outputLink>
+						<apex:outputField value="{!row.ApprovalID__c}" rendered="{!row.Send_Direction__c=='SAP_TO_SF'}"></apex:outputField>
+					</apex:column>
+					<apex:column styleClass="dataTableTd" style="width:170px;" headerValue="{!$ObjectType.Metadata__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name__c}" ></apex:column>
+					<apex:column styleClass="dataTableTd" style="width:65px;text-align:center;" headerValue="{!$ObjectType.Metadata__c.fields.Is_Send_Succeed__c.label}" headerClass="dataTableTh" value="{!row.Is_Send_Succeed__c}" ></apex:column>
+					<apex:column styleClass="dataTableTd" style="width:60px;text-align:center;" headerValue="{!$ObjectType.Metadata__c.fields.Send_Count__c.label}" headerClass="dataTableTh" value="{!row.Send_Count__c}" ></apex:column>
+					<apex:column styleClass="dataTableTd" style="width:80px;" headerValue="{!$ObjectType.Metadata__c.fields.Send_Direction__c.label}" headerClass="dataTableTh" value="{!row.Send_Direction__c}" ></apex:column>
+					<apex:column styleClass="dataTableTd" style="width:150px;" headerValue="{!$ObjectType.Metadata__c.fields.Send_DateTime__c.label}" headerClass="dataTableTh" value="{!row.Send_DateTime__c}" ></apex:column>
+					<apex:column styleClass="dataTableTd" id="tdErrMessage" headerValue="{!$ObjectType.Metadata__c.fields.Send_Error_Message__c.label}" headerClass="dataTableTh" value="{!row.Send_Error_Message__c}" ></apex:column>
+				</apex:dataTable>
+
+				<!--分页导航区-->
+				<apex:outputPanel rendered ="{! pageCount > 1}" style="width: 100%;text-align: center;margin-top:10px;">
+					<apex:outputPanel style="margin-right:20px;float:left;font-weight: bold;padding:3px 5px;">
+						当前页: <b style="color:red;">{! pageCurr} </b>/ {! pageCount}
+					</apex:outputPanel>
+					<apex:outputPanel rendered ="{! pageCurr > 1}">
+						<a onclick="getPrevPage()" class="btnLink" style="margin-right:5px;border:solid 1px #ccc;padding:3px 5px;">&lt; Prev</a>
+					</apex:outputPanel>
+					<apex:outputPanel rendered="{! pageCurr < pageCount}">
+						<a onclick="getNextPage()" class="btnLink" style="margin-right:5px;border:solid 1px #ccc;padding:3px 5px;">Next &gt;</a>
+					</apex:outputPanel>
+					<apex:outputPanel rendered="true">
+						<input type="text" id="txtPaging" style="width:40px;margin:0px 5px;text-align: center;height: 17px;"/>
+						<input type="button" onclick="getGotoPage()" style="cursor: pointer;" value="Goto"/>
+					</apex:outputPanel>
+				</apex:outputPanel>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

@@ -1,0 +1,124 @@
+<apex:page showHeader="false">
+<apex:includeScript value="{!URLFOR($Resource.angularjs,'')}" />
+<head>
+  <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+  <style>
+    div.slds-col{
+        margin:15px;
+    }
+    .warning{
+        color:red;
+    }
+    .normal{
+        color:green;
+    }
+
+  </style>
+</head>
+<body>
+    <div ng-app="app" ng-controller="ctrl" class="slds" name="form" >
+        <div class="slds-grid slds-grid_align-space">
+            <div class="slds-col">
+                <div class="slds-form-element">
+                  <label class="slds-form-element__label" for="text-input-id-1">采购单号</label>
+                  <div class="slds-form-element__control">
+                    <input type="text" id="text-input-id-1" name="OrderNo" class="slds-input" ng-model="OrderNo" placeholder="2100057336"  />
+             
+                     <!-- <p>{{ OrderNo | number}}</p>  --> 
+                  </div>
+                </div>
+            </div>
+            <div class="slds-col">
+                <div class="slds-form-element">
+                  <label class="slds-form-element__label" for="text-input-id-2">创建日期</label>
+                  <div class="slds-form-element__control">
+                    <input type="text" id="text-input-id-2" class="slds-input" ng-model="CreateDate" />
+                  </div>
+                </div>
+            </div>
+   
+            <div class="slds-col" style="text-align: center;margin: auto;">
+                <button class="slds-button slds-button--brand" ng-click="query()" ng-disabled="loading">{!$Label.Search}</button>
+            </div>
+        </div>
+      <!--   <table  class="slds-table slds-table--bordered slds-table--cell-buffer ">
+            <thead >
+                <th class="slds-text-title--caps">{!$Label.OrderNo}</th>
+                <th class="slds-text-title--caps">{!$Label.OrderStage}</th>
+                <th class="slds-text-title--caps">{!$Label.CreateDate}</th>
+                <th class="slds-text-title--caps">{!$Label.OrderLeadTime}</th>
+                <th class="slds-text-title--caps">{!$Label.Amount}</th>  
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in orders track by $index">
+                    <td class="slds-truncate">
+                    <a href='{!url_Customer}/SiteMyOrderDetail?id={{item.order_code__c}}'>{{item.order_code__c}}</a>
+                    </td>
+                    <td class="slds-truncate">
+                        <div ng-class="statusColor(item.order_status__c)">{{item.order_status__c}}</div>
+                    </td>
+                    <td class="slds-truncate">{{item.order_date__c}}</td>
+                    <td class="slds-truncate">{{item.predelivery_date__c}}</td>
+                    <td class="slds-truncate">{{item.total_amount__c}}</td>
+                </tr>
+            </tbody>
+        </table> -->
+     <!--    <div class="slds-spinner_container" ng-hide="!loading" id="loader">
+          <div class="slds-spinner slds-spinner--brand slds-spinner--large" aria-hidden="false" role="alert">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+          </div>
+        </div> -->
+    </div>
+
+
+
+
+
+<script>
+
+
+
+
+  var app = angular.module('app', []);
+  app.controller('ctrl',function($scope,$q){
+
+    // $scope.user = '2100000000';
+//     $scope.OrderNo='';
+//     $scope.CreateDate='';
+//     $scope.OrderLeadTime='';
+
+//     $scope.orders = [];
+  
+   $scope.loading = false;
+//     $scope.query = function(){
+//         $scope.loading= true;
+//         var promise = $q(function(resolve,reject){
+//             SiteMyOrderExtension.queryCustomerOrder('','',$scope.OrderNo,$scope.CreateDate,$scope.OrderLeadTime,function(res,event){
+//                 if(res.status=='1'){
+//                     resolve(res.orders);
+//                 }else{
+//                     reject('error...');
+//                 }
+//             });
+//         });
+//         promise.then(function(result){
+//             $scope.orders=result;
+//             $scope.loading=false;
+//         },function(reason){
+//             alert(reason);
+//             $scope.loading=false;
+//         });
+//     }
+
+//     $scope.statusColor = function(status){
+//         if(status='进行中'){
+//             return 'normal';
+//         }else{
+//             return 'warning';
+//         }
+//     }
+  });
+</script>
+</body>
+</apex:page>

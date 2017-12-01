@@ -1,0 +1,28 @@
+<apex:page showHeader="fales"   controller="MyCangTestPageExtensionNew" tabStyle="Opportunity">
+
+{!test1}
+ 
+ <head>
+ <apex:includeScript value="{!URLFOR($Resource.angularjs,'')}" />
+ <div>
+ <apex:form id="LoginSubmit">
+  		<input type="text" id="test2"  ng-model="test2" ng-disabled="loading"/>
+  		<!-- <div class="slds-col" style="text-align: center;margin: auto;">
+            <button class="slds-button slds-button--brand" ng-click="query()" ng-disabled="loading">{!$Label.Search}</button>
+        </div>   -->
+ </apex:form>
+
+ <!--页面刷新  -->
+    <div class="slds-spinner_container" ng-hide="!loading" id="loader">
+        <div class="slds-spinner slds-spinner--brand slds-spinner--large" aria-hidden="false" role="alert">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+</div>
+</div>
+</head>
+
+<script>
+
+ </script>
+</apex:page>

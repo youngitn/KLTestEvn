@@ -1,0 +1,286 @@
+<apex:page controller="MaterialDownload">
+    <br/>
+    <apex:outputText rendered="{!language='EL'||language='CN'}"><div>Raw Material Heat Analyze and Specification (weight%)（原材料成分，重量%）：</div></apex:outputText>
+    <apex:outputText rendered="{!language='EN'}"><div>Raw Material Heat Analyze and Specification (weight%):</div></apex:outputText>
+    <table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="100%">
+        <tbody>
+            <tr >
+                <td>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div>Heat Number 炉号</div>
+                    </apex:outputText>
+                    <apex:outputText rendered="{!language='EN'}">
+                        <div>Heat Number</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div width="50">C</div>
+                </td>
+                <td>
+                    <div width="50">Si</div>
+                </td>
+                <td>
+                    <div width="50">Mn</div>
+                </td>
+                <td>
+                    <div width="50">P</div>
+                </td>
+                <td>
+                    <div width="50">S</div>
+                </td>
+                <td>
+                    <div width="50">Ni</div>
+                </td>
+                <td>
+                    <div width="50">Cr</div>
+                </td>
+                <td>
+                    <div width="50">N</div>
+                </td>
+                <td>
+                    <div width="50">Mo</div>
+                </td>
+                <td>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div>Material Standard 材料标准</div>
+                    </apex:outputText>
+                    <apex:outputText rendered="{!language='EN'}">
+                        <div>Material Standard</div>
+                    </apex:outputText>
+                </td>
+            </tr>
+            <apex:repeat var="heat" value="{!mc.heats}">
+            <tr >
+                <td><div>{!heat.Heat_Number}</div></td>
+                <td><div>{!heat.C}</div></td>
+                <td><div>{!heat.Si}</div></td>
+                <td><div>{!heat.Mn}</div></td>
+                <td><div>{!heat.P}</div></td>
+                <td><div>{!heat.S}</div></td>
+                <td><div>{!heat.Ni}</div></td>
+                <td><div>{!heat.Cr}</div></td>
+                <td><div>{!heat.N}</div></td>
+                <td><div>{!heat.Mo}</div></td>
+                <td><div>{!heat.Material_Standard}</div></td>
+            </tr>
+            </apex:repeat>
+        </tbody>
+    </table>
+    <br/>
+    <apex:outputText rendered="{!language='EL'||language='CN'}">
+        <div>Mechanical Test 机械性能测试</div>
+    </apex:outputText>
+    <apex:outputText rendered="{!language='EN'}">
+        <div>Mechanical Test</div>
+    </apex:outputText>
+    <table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="100%">
+        <tbody>
+            <tr >
+                <td rowspan="2">
+                    <div>Heat Number</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div>（炉号）</div>
+                    </apex:outputText>
+                </td>
+                <td colspan="2">
+                    <div>Yield&nbsp;&nbsp;&nbsp;Rp 0.2</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div> 屈服&nbsp;&nbsp;&nbsp;强度</div>
+                    </apex:outputText>
+                </td>
+                <td colspan="2">
+                    <div>Yield&nbsp;&nbsp;&nbsp;Rp 1.0</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div> 屈服&nbsp;&nbsp;&nbsp;强度</div>
+                    </apex:outputText>
+                </td>
+                <td colspan="2">
+                    <div>Tenile&nbsp;&nbsp;&nbsp;Strength</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div>抗拉&nbsp;&nbsp;&nbsp;强度</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Width of Gage length</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div>标距宽度</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Hardness</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div>硬度</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Reduction of Area</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div>断面收缩率</div>
+                    </apex:outputText>
+                </td>
+                <td >
+                    <div>Elongation (I)</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div>纵向延伸率</div>
+                    </apex:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>MPa</div>
+                    <div>(N/mm2)</div>
+                </td>
+                <td>
+                    <div>KSI</div>
+                </td>
+                <td>
+                    <div>MPa</div>
+                    <div>(N/mm2)</div>
+                </td>
+                <td>
+                    <div>KSI</div>
+                </td>
+                <td>
+                    <div>MPa</div>
+                    <div>(N/mm2)</div>
+                </td>
+                <td >
+                    <div>KSI</div>
+                </td>
+                <td >
+                    <div>mm</div>
+                </td>
+                <td >
+                    <div>HB/HRB/HV</div>
+                </td>
+                <td >
+                    <div>%</div>
+                </td>
+                <td >
+                    <div>%</div>
+                </td>
+            </tr>
+            <apex:repeat var="mechanical" value="{!mc.mechanicals}">
+            <tr>
+                <td> <div>{!mechanical.Heat_Number}</div> </td>
+                <td> <div>{!mechanical.Yield02}</div> </td>
+                <td> <div>{!mechanical.Rp02}</div> </td>
+                <td> <div>{!mechanical.Yield10}</div> </td>
+                <td> <div>{!mechanical.Rp10}</div> </td>
+                <td> <div>{!mechanical.Tensile}</div> </td>
+                <td> <div>{!mechanical.Strength}</div> </td>
+                <td> <div>{!mechanical.Width_of_Gage_Length}</div> </td>
+                <td> <div>{!mechanical.Hardness}</div> </td>
+                <td> <div>{!mechanical.Reduction_of_Area}</div> </td>
+                <td> <div>{!mechanical.Elongation}</div> </td>
+            </tr>
+            </apex:repeat>
+        </tbody>
+    </table>
+    <br/>
+    <apex:outputText rendered="{!language='EL'||language='CN'}">
+        <div>Mechanical Test Continuation 机械性能测试</div>
+    </apex:outputText>
+    <apex:outputText rendered="{!language='EN'}">
+        <div>Mechanical Test Continuation</div>
+    </apex:outputText>
+    <table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="100%"  >
+        <tbody style="background: url({!URLFOR($Resource.stamp)}) right no-repeat ; background-size: 50%">
+            <tr >
+                <td>
+                    <div>Heat Number</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                    <div>（炉号）</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Impact Test</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div>冲击试验<br/>(20°C-J)</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Eddy Current Test</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                    <div>涡流探伤</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Flaring Test</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                    <div>扩口/卷边试验</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Flattening,Test</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                    <div>压扁试验</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Bend &amp; Reverse-Bend Test </div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                    <div>弯曲和反向弯曲试</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Intergranular</div>
+                    <div>Corrosion Test per ASTM A262-E</div>
+                    <div>(ASMT A262-E)</div>
+                </td>
+            </tr>
+            <apex:repeat var="continuation" value="{!mc.continuations}">
+            <tr>
+                <td><div>{!continuation.Heat_Number}</div></td>
+                <td><div>{!continuation.Impact_Test}</div></td>
+                <td><div>{!continuation.Eddy_Current_Test}</div></td>
+                <td><div>{!continuation.Flaring_Flange_Test}</div></td>
+                <td><div>{!continuation.Flattening_Reverse_Flattening}</div></td>
+                <td><div>{!continuation.Bend_Reverse_Bend_Test}</div></td>
+                <td><div>{!continuation.Intergranular_Corrosion_Test}</div></td>
+            </tr>
+            </apex:repeat>
+        </tbody>
+    </table>
+    <br/>
+    <apex:outputText rendered="{!language='EL'||language='CN'}">
+        <div>Other Analysis And Inspection 其他分析和检查</div>
+    </apex:outputText>
+    <apex:outputText rendered="{!language='EN'}">
+        <div>Other Analysis And Inspection</div>
+    </apex:outputText>
+    <table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="100%">
+        <tbody>
+            <tr>
+                <td>
+                    <div>Visual &amp; Dimensional Test</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div>目检和尺寸检验</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Material</div>
+                    <div>Identification Test</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div>材质分析试验</div>
+                    </apex:outputText>
+                </td>
+                <td>
+                    <div>Ra Max Value</div>
+                    <div>(ID/OD µm)</div>
+                    <apex:outputText rendered="{!language='EL'||language='CN'}">
+                        <div>内外表面粗糙度值</div>
+                    </apex:outputText>
+                </td>
+            </tr>
+            <apex:repeat var="other" value="{!mc.others}">
+            <tr>
+                <td><div>{!other.Visual_Dimensional_Test}</div></td>
+                <td><div>{!other.Material_Identification}</div></td>
+                <td><div>{!other.Ra_Max_Value}</div></td>
+            </tr>
+            </apex:repeat>
+        </tbody>
+    </table>
+    <br/>
+</apex:page>

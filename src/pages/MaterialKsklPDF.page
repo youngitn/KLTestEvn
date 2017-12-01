@@ -1,0 +1,72 @@
+<apex:page controller="MaterialKsklDownload" renderAs="pdf" applyBodyTag="false">
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<style type="text/css">
+    @page {
+        size: a4 {!CASE(direction,'H','','V','landscape','')};
+        margin-top: 40px;
+        margin-bottom: 80px;
+        @bottom-center { /* Page footer */
+            content: element(footer);
+        }
+        @PageBreak{ page-break:always; page-break-inside:avoid; } 
+    }
+
+    div.footer {
+        display: block;
+        padding: 5px;
+        position: running(footer);
+    }
+
+    body {
+        font-family: Arial Unicode MS;
+        font-size:12px; 
+    }
+    p{
+        line-height: 2px;
+    }
+    p,.pagebreak,table,.picture{
+        page-break:always;
+        page-break-inside: avoid; 
+        page-break-after: auto;
+    }
+    .title{
+        text-align: center;
+    }
+    td div{
+        margin-top: 1px;
+        margin-bottom: 1px;
+        text-align: center;
+    }
+    .stamp{
+
+    }
+    td.blod{
+        font-size:15px; 
+        font-weight:bold;
+    }
+
+    div.tabletitle{
+
+        font-size:15px; 
+        font-weight:bold;
+    }
+    div.xbold{
+        font-size:14px; 
+        font-weight:bold;
+        
+    }
+</style>
+
+</head> 
+
+<!-- 要将FOOTER提到顶，否则会有异常 -->
+<apex:include pageName="MaterialKsklFooter"/>
+
+<apex:include pageName="MaterialKsklTitle"/>
+<apex:include pageName="MaterialKsklHeader"/>
+<apex:include pageName="MaterialKsklTable"/>
+<apex:include pageName="MaterialKsklStatement"/>
+<apex:include pageName="MaterialKsklCertification"/>
+
+</apex:page>

@@ -1,0 +1,178 @@
+<apex:page showheader="false" controller="SiteMaterialExtension">
+    <head>
+        <apex:includeScript value="{!URLFOR($Resource.angularjs,'')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    </head>
+
+    <div ng-app="app" ng-controller="ctrl" class="slds">
+        <!-- 表头：将来用LOGO替换-->
+        <div class="slds-col" style="text-align: center;margin: auto;">
+            <label class="slds-form-element__label" for="text-input-id-1">
+                <font size="6" >
+                    <b>Kinglai Hygienic Materials Co.,Ltd</b>
+                </font>
+            </label>
+        </div> 
+
+
+        <!-- 搜索条件-->
+        <div class="slds-grid slds-grid_align-space">
+            <div class="slds-col">
+                <div class="slds-form-element">
+                  <label class="slds-form-element__label" for="text-input-id-1">
+                    <font size="3" >材证编号</font>
+                  </label>
+                  <div class="slds-form-element__control">
+                  <font size="3" >
+                    <input type="text" id="text-input-id-1" class="slds-input" ng-model="materialCertificateCode" />
+                  </font>
+                  </div>
+                </div>
+            </div>
+            <div class="slds-col">
+                <div class="slds-form-element">
+                  <label class="slds-form-element__label" for="text-input-id-2">
+                    <font size="3" >料号</font>
+                  </label>
+                  <div class="slds-form-element__control">
+                  <font size="3" >
+                    <input type="text" id="text-input-id-2" class="slds-input" ng-model="materialNumber" />
+                  </font>
+                  </div>
+                </div>
+            </div>
+            <div class="slds-col">
+                <div class="slds-form-element">
+                  <label class="slds-form-element__label" for="text-input-id-3">
+                      <font size="3" >备货单号</font>
+                  </label>
+                  <div class="slds-form-element__control">
+                  <font size="3" >
+                    <input type="text" id="text-input-id-3" class="slds-input" ng-model="stockingNO" />
+                  </font>
+                  </div>
+                </div>
+            </div>
+            <div class="slds-col">
+                <div class="slds-form-element">
+                  <label class="slds-form-element__label" for="text-input-id-4">
+                    <font size="3" >合同号</font>
+                  </label>
+                  <div class="slds-form-element__control">
+                  <font size="3" >
+                    <input type="text" id="text-input-id-4" class="slds-input" ng-model="contractNO" />
+                  </font>
+                  </div>
+                </div>
+            </div>
+            <div class="slds-col">
+                <div class="slds-form-element">
+                  <label class="slds-form-element__label" for="text-input-id-5">
+                    <font size="3" >批次</font>
+                  </label>
+                  <div class="slds-form-element__control">
+                  <font size="3" >
+                    <input type="text" id="text-input-id-5" class="slds-input" ng-model="batchNO" />
+                  </font>
+                  </div>
+                </div>
+            </div>    
+        </div>
+     
+     
+        <!-- 搜索按钮-->
+        <div class="slds-col" style="text-align: left;margin: auto;">
+            <button class="slds-button slds-button--brand" ng-click="query()" ng-disabled="loading">
+                <font size="3" >{!$Label.Search}</font>            
+            </button>
+        </div> 
+        
+        <br/>  
+        <!-- 搜索结果--> 
+        <table  class="slds-table slds-table--bordered slds-table--cell-buffer ">
+            <thead >            
+                <th class="slds-text-title--caps"><font size="3" >PDF显示</font> </th>   
+                <th class="slds-text-title--caps"><font size="3" >材证编号</font> </th>
+                <th class="slds-text-title--caps"><font size="3" >新莱料号</font> </th>
+                <th class="slds-text-title--caps"><font size="3" >客户料号</font> </th>
+                <th class="slds-text-title--caps"><font size="3" >批次号</font> </th>                
+                <th class="slds-text-title--caps"><font size="3" >来源</font> </th>     
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in materials track by $index">
+                    <td class="slds-truncate">
+                        <!-- <a href='/apex/MaterialPDF?template={{item.template_name}}' target="_blank">点击</a> -->
+                        <button class="slds-button slds-button--brand" ng-click="download(item)">
+                        <font size="3" >打开</font></button>
+                    </td>
+                    <td class="slds-truncate"><font size="3" >{{item.certificate_no}}</font></td>
+                    <td class="slds-truncate"><font size="3" >{{item.kl_material_no}}</font></td>
+                    <td class="slds-truncate"><font size="3" >{{item.customer_material_no}}</font></td>
+                    <td class="slds-truncate"><font size="3" >{{item.batch_no}}</font></td>
+                    <td class="slds-truncate"><font size="3" >{{item.source}}</font></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- 用于搜索按钮后的滚动界面显示-->
+        <div class="slds-spinner_container" ng-hide="!loading" id="loader">
+            <div class="slds-spinner slds-spinner--brand slds-spinner--large" aria-hidden="false" role="alert">
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+        var app = angular.module('app', []);
+        app.controller('ctrl',function($scope,$q){
+            $scope.materialCertificateCode = '';
+            $scope.materialNumber = '';
+            $scope.stockingNO = '';
+            $scope.contractNO = '';
+            $scope.batchNO = '';
+
+            $scope.materials = [];
+            $scope.loading = false;
+
+            $scope.query = function(){
+                $scope.materials = [];
+                $scope.loading= true;
+                var promise = $q(function(resolve,reject){
+                    SiteMaterialExtension.queryMaterial($scope.materialCertificateCode,$scope.materialNumber,$scope.stockingNO,$scope.contractNO,$scope.batchNO,function(res,event){
+                        resolve(res);
+                    });
+                });
+                promise.then(function(result){
+                    if(!!result.message){
+                        alert(result.message);
+                    }else{
+                        result.content.forEach(function(item){
+                            if(!!item.template_name){
+                                $scope.materials.push(item);
+                            }
+                        });
+                    }
+                    $scope.loading=false;
+                });
+            }
+            $scope.download = function(item){
+                 <!-- 这个用来干嘛？-->
+                 var jsonStr = JSON.stringify(item);
+
+
+                 if (item.source == 'KSKL') {    
+                  <!-- 这个是KL的PDF打印地址？-->     
+                    window.open('{!url_Customer}/MaterialKsklPDF?certificate_no='+item.certificate_no);
+                 }else{     
+                  <!-- 这个是TW的PDF打印地址？-->                 
+                    window.open('{!url_Customer}/MaterialPDF?certificate_no='+item.certificate_no);
+                 }    
+               
+            }
+        });
+
+    </script>
+</apex:page>

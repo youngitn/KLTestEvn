@@ -1,0 +1,96 @@
+<apex:page controller="MaterialDownload">
+<apex:outputPanel rendered="{!header='1'}">
+
+    <table border="0">
+        <tr>
+            <td width="25%">KL Part NO. 新莱料号</td>
+            <td width="25%" class="barcode">*{!mc.KL_Material_NO}*</td>
+            <td width="25%" rowspan="2" colspan="2">Quick Scan Verification (QSV)</td>
+            <td width="25%"></td>
+        </tr>
+        <tr>
+            <td width="25%">Part Description. 物料描述：</td>
+            <td width="75%" colspan="3" >{!mc.Material_Description}</td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+        </tr>
+        <tr>
+            <td width="25%"></td>
+            <td width="75%" colspan="3">{!mc.Material_Description_EN}</td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+        </tr>
+        <tr>
+            <td width="25%">Material. 材质：</td>
+            <td width="25%">{!mc.Material_Type}</td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+        </tr>
+        <tr>
+            <td width="25%">Quantity. 数量：</td>
+            <td width="25%">{!mc.Quantity}{!mc.Quantity_Unit}</td>
+            <td width="25%" rowspan="2">Lot No.: </td>
+            <td width="25%" rowspan="2"></td>
+        </tr>
+        <tr>
+            <td width="25%">Job No.工单号：</td>
+            <td width="25%">{!mc.Job_NO}</td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+        </tr>
+        <tr>
+            <td width="25%">Lot No. 批次：</td>
+            <td width="25%">{!mc.Job_NO}</td>
+            <td width="35%">Date of Certificate. 出货日期：</td>
+            <td width="15%">{!mc.Date_of_Certificate}</td>
+        </tr>
+    </table>
+
+</apex:outputPanel>
+<apex:outputPanel rendered="{!header='2'}">
+    <table border="0">
+        <tr>
+            <td width="25%">KL Part NO. 新莱料号</td>
+            <td width="25%">{!mc.KL_Material_NO}</td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+        </tr>
+        <tr>
+            <td width="25%">Part Description. 物料描述：</td>
+            <td width="75%" colspan="3">{!mc.Material_Description}</td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+        </tr>
+        <tr>
+            <td width="25%"></td>
+            <td width="75%" colspan="3">{!mc.Material_Description_EN}</td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+        </tr>
+        <tr>
+            <td width="25%">Material. 材质：</td>
+            <td width="25%">{!mc.Material_Type}</td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+        </tr>
+        <tr>
+            <td width="25%">Quantity. 数量：</td>
+            <td width="25%">{!mc.Quantity}{!mc.Quantity_Unit}</td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+        </tr>
+        <tr>
+            <td width="25%">Job No.工单号：</td>
+            <td width="25%">{!mc.Job_NO}</td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+        </tr>
+        <tr>
+            <td width="25%">Lot No. 批次：</td>
+            <td width="25%">{!mc.Job_NO}</td>
+            <td width="35%">Date of Certificate. 出货日期：</td>
+            <td width="15%">{!mc.Date_of_Certificate}</td>
+        </tr>
+    </table>
+</apex:outputPanel>
+</apex:page>

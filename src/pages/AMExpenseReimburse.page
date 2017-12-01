@@ -1,0 +1,310 @@
+<apex:page standardController="Approval_Managed__c" extensions="AMExpenseReimburseExtension">
+<!-- 费用报销流程 -->
+<html>
+<head>
+    <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+    <script>
+        var j$ = jQuery.noConflict();
+
+        j$(document).ready(function(){
+
+            var cmb = j$("select[id$='Expense_Type_Cost__c']");
+            var type = cmb.val();
+            console.log('Type: ' + type);
+            var desc1 = j$("[id$='Employee__c']");
+            var desc2 = j$("[id$='Employee_Code__c']");
+            var desc3 = j$("[id$='Supplier__c']"); 
+            var desc4 = j$("[id$='Supplier_Number__c']"); 
+            var desc5 = j$("[id$='Supplier_Name__c']"); 
+            if (type == "01") {
+                desc1.show();
+                //desc1.parent().prev().children("label").show();
+                desc2.show();
+                desc3.hide();
+                desc4.hide();
+                desc5.hide();
+            }else if(type == "02"){
+                desc1.hide();
+                desc2.hide();
+                desc3.show();
+                desc4.show();
+                desc5.show();
+            }else{
+                desc1.hide();
+                desc2.hide();
+                desc3.hide();
+                desc4.hide();
+                desc5.hide();
+            }
+
+       });
+
+        function toggleData(){
+            var cmb = j$("select[id$='Expense_Type_Cost__c']");
+            var type = cmb.val();
+            console.log('Type: ' + type);
+            var desc1 = j$("[id$='Employee__c']");
+            var desc2 = j$("[id$='Employee_Code__c']");
+            var desc3 = j$("[id$='Supplier__c']"); 
+            var desc4 = j$("[id$='Supplier_Number__c']"); 
+            var desc5 = j$("[id$='Supplier_Name__c']"); 
+
+        var cmb = j$("select[id$='Expense_Type_Cost__c']");
+        var type = cmb.val();
+            if (type == "01") {
+                desc1.show();
+                //desc1.parent().prev().children("label").show();
+                desc2.show();
+                desc3.hide();
+                desc4.hide();
+                desc5.hide();
+            }else if(type == "02"){
+                desc1.hide();
+                desc2.hide();
+                desc3.show();
+                desc4.show();
+                desc5.show();
+            }else{
+                desc1.hide();
+                desc2.hide();
+                desc3.hide();
+                desc4.hide();
+                desc5.hide();
+            }
+        }
+      
+    </script>
+</head>
+<body>
+<apex:sectionHeader title="费用报销流程" subtitle="新建/编辑费用报销流程"></apex:sectionHeader>
+    <!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" >
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据日期 -->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(公司代码) -->
+                <apex:outputField value="{!am.Applicant_Corp_Code__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="费用报销头信息" >
+                <!-- 报销类型 -->
+                <!--label="{!$Label.Expense_Type_Cost}"  -->
+                <apex:inputField value="{!am.Expense_Type_Cost__c}" id="Expense_Type_Cost__c" required="true" onchange="toggleData()"></apex:inputField>
+                <!-- 过账单位 -->
+                <apex:inputField value="{!am.Posting_of_Company__c}" required="true"></apex:inputField>
+                <!-- 员工 -->
+                <apex:inputField value="{!am.Employee__c }" id="Employee__c"></apex:inputField>
+                <!-- 厂商 -->
+                <apex:inputField value="{!am.Supplier__c}" id="Supplier__c"></apex:inputField>
+                <!-- 员工(工号) -->
+                <apex:outputField value="{!am.Employee_Code__c}" id="Employee_Code__c"></apex:outputField>
+                <!-- 厂商编号 -->
+                <apex:inputField value="{!am.Supplier_Number__c}" id="Supplier_Number__c"></apex:inputField>
+                <!-- 公司 -->
+                <apex:inputField value="{!am.Corporation__c}"  required="true"></apex:inputField>
+                <!-- 厂商名称 -->
+                <apex:inputField value="{!am.Supplier_Name__c}" id="Supplier_Name__c"></apex:inputField>
+                <!-- 成本中心 -->
+                <apex:inputField value="{!am.Dept_of_CostCenter__c}"  required="true"></apex:inputField>
+                <!-- 是否打印 -->
+                <!-- <apex:outputField value="{!am.Is_Print__c}"></apex:outputField> -->
+                <!-- 金额汇总 -->
+                <apex:outputField value="{!am.Amount_of_Total__c}"></apex:outputField>
+                <!-- 是否开发票 -->
+                <apex:inputField value="{!am.Is_Invoice__c}"></apex:inputField>
+                <!-- 发票金额汇总 -->
+                <apex:outputField value="{!am.Invoice_Amount_Total__c}"></apex:outputField>
+                <!-- 汇联易开票是否成功 -->
+                <apex:outputField value="{!am.Is_Invoice_Success__c}"></apex:outputField>
+                <!-- 币种 -->
+                <apex:inputField value="{!am.Currency__c}" required="true"></apex:inputField>
+                <!-- 冲账金额 -->
+                <apex:inputField value="{!am.Amount_of_General__c}"></apex:inputField>    
+                <!-- 说明 -->
+                <apex:inputField value="{!am.Remark_of_Explain__c}"  required="true"></apex:inputField>            
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="出差申请信息" >
+                <!-- 出差申请单号 -->
+                <apex:inputField value="{!am.Approval_Travel__c}"></apex:inputField>
+                <!-- 出差申请单号(汇联易) -->
+                <apex:outputField value="{!am.Approval_Travel_Code__c}"></apex:outputField>
+                <!-- 出差申请人 -->
+                <apex:outputField value="{!am.Applicant_Travel__c}"></apex:outputField>
+                <!-- 交通工具 -->
+                <apex:inputField value="{!am.Vehicle_of_Travel__c}"></apex:inputField>
+                <!-- 出差对象 -->
+                <apex:outputField value="{!am.Target_of_Travel__c}"></apex:outputField>
+                <!-- 借支金额 -->
+                <apex:inputField value="{!am.Amount_of_Borrow__c}"></apex:inputField>
+                <!-- 出差类型 -->
+                <apex:outputField value="{!am.Type_of_Travel__c}"></apex:outputField>
+                <!-- 币种 -->
+                <apex:inputField value="{!am.Currency_of_Budget__c}"></apex:inputField>
+                <!-- 费用预算 -->
+                <apex:inputField value="{!am.Cost_Budget__c}"></apex:inputField>
+                <!-- 出发时间 -->
+                <apex:inputField value="{!am.Start_Travel_Datetime__c}"></apex:inputField>
+                <!-- 币种 -->
+                <apex:inputField value="{!am.Currency_of_Borrow__c}"></apex:inputField>
+                <!-- 返回时间 -->
+                <apex:inputField value="{!am.End_Travel_Datetime__c}"></apex:inputField>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="交际应酬费信息" >
+                <!-- 交际应酬费申请 -->
+                <apex:inputField value="{!am.Approval_Entertained__c}"></apex:inputField>
+                <!-- 交际应酬费申请 -->
+                <apex:outputField value="{!am.Approval_Entertained_Code__c}"></apex:outputField>
+                <!-- 发生时间 -->   
+                <apex:outputField value="{!am.Occur_Datetime__c}"></apex:outputField>
+                <!-- 费用类型 -->
+                <apex:outputField value="{!am.Kind_of_Cost__c}"></apex:outputField>
+                <!-- 地点 -->
+                <apex:outputField value="{!am.Place__c}"></apex:outputField>
+                <!-- 费用预估(RMB) -->
+                <apex:outputField value="{!am.Estimate_Cost__c}"></apex:outputField>
+                <!-- 行程 -->
+                <apex:outputField value="{!am.Description_of_Travel__c}"></apex:outputField>
+                <!-- 双方人员 -->
+                <apex:outputField value="{!am.Staff_of_Both__c}"></apex:outputField>
+            </apex:pageBlockSection>
+
+            <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>行信息</h3></div>
+            <apex:commandButton action="{!newlist1}" value="新增" reRender="list1" status="retrieveStatus" immediate="true"/>
+            <apex:outputPanel id="list1" layout="block" styleClass="scroll">
+                <apex:actionStatus startText="(waiting...)" id="retrieveStatus"/>
+                <table  class="list" border="0" cellspacing="0" cellpadding="0"  id="tableBank">
+                    <thead>
+                        <th></th>
+                        <th>序号</th>
+                        <th>总账科目</th>
+                        <th>数量</th>
+                        <th>单价</th>
+                        <th>金额</th>
+                        <th>成本中心</th>
+                        <th>备注</th>
+                        <th>活动任务ID</th>
+                    </thead>
+                    <tbody>
+                <apex:variable var="list1Index" value="{!0}"/>
+                <apex:repeat value="{!list1}" var="item">
+                    <tr>
+                        <td>
+                        <apex:commandButton action="{!deletelist1}" value="删除" reRender="list1,list2" immediate="true">
+                            <apex:param assignTo="{!list1Row}" name="list1Row" value="{!list1Index}"></apex:param>
+                        </apex:commandButton>
+                        </td>
+                        <td>{!list1Index+1}</td>
+                        <!-- 总账科目 -->
+                        <td><apex:inputField value="{!item.Ledger_Account__c}"  required="true" style="width: 100px"></apex:inputField></td>
+                        <!-- 数量 -->
+                        <td><apex:inputField value="{!item.Quantity__c}"  required="flase" style="width: 50px"></apex:inputField></td>
+                        <!-- 单价 -->
+                        <td><apex:inputField value="{!item.Price__c}"  required="true" style="width: 80px"></apex:inputField></td>
+                        <!-- 金额 -->
+                        <td><apex:outputField value="{!item.Amount__c}" style="width: 150px"></apex:outputField></td>
+                        <!-- 成本中心 -->
+                        <td><apex:inputField value="{!item.Dept_of_CostCenter__c}"  required="true" style="width: 85px"></apex:inputField></td>
+                        <!-- 备注 -->
+                        <td><apex:inputField value="{!item.Remark__c}"  required="true" style="width: 250px"></apex:inputField></td>
+                        <!-- 活动任务ID -->
+                        <td><apex:inputField value="{!item.TaskID__c}" style="width: 120px"></apex:inputField></td>
+                    </tr>
+                    <apex:variable var="list1Index" value="{!list1Index+1}"/>
+                </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+            <apex:pageBlockSection title="凭证头信息(财务输入)">
+                <!-- 凭证编号 -->
+                <apex:inputField value="{!am.Voucher_Code__c}"></apex:inputField>
+                <!-- 参照 -->
+                <apex:inputField value="{!am.Same_Sample__c}"></apex:inputField>
+                <!-- 凭证类型 -->
+                <apex:inputField value="{!am.Voucher_Type__c}"></apex:inputField>
+                <!-- 凭证抬头文本 -->
+                <apex:inputField value="{!am.Voucher_HeaderText__c}"></apex:inputField>
+                <!-- 凭证日期 -->
+                <apex:inputField value="{!am.Voucher_Date__c}"></apex:inputField>
+                <!-- 清帐说明 -->
+                <apex:inputField value="{!am.Clearing_Description__c}"></apex:inputField>
+                <!-- 过账日期 -->
+                <apex:inputField value="{!am.Posting_Date__c}"></apex:inputField>
+            </apex:pageBlockSection>
+            
+            <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>凭证行信息(财务输入)</h3></div>
+                <apex:commandButton action="{!newlist2}" value="新增" reRender="list2" status="retrieveStatus2" immediate="true"/>
+                <apex:actionStatus startText="(waiting...)" id="retrieveStatus2"/>
+                <apex:outputPanel id="list2" layout="block" >
+                <table  class="list" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <th></th>
+                        <th>序号</th>
+                        <th>记账码</th>
+                        <th>科目</th>
+                        <th>金额</th>
+                        <th>成本中心</th>
+                        <th>分配</th>
+                        <th>文本</th>
+                        <th>原因代码</th>
+                        <th>SGL标识</th>
+                        <th>事务类型</th>
+                    </thead>
+                    <tbody>
+                <apex:variable var="list2Index" value="{!0}"/>
+                <apex:repeat value="{!list2}" var="item">
+                    <tr>
+                        <td>
+                        <apex:commandButton action="{!deletelist2}" value="删除" reRender="list2" immediate="true">
+                            <apex:param assignTo="{!list2Row}" name="list2Row" value="{!list2Index}"></apex:param>
+                        </apex:commandButton>
+                        </td>
+                        <td>{!list2Index+1}</td>
+                        <!-- 记账码 -->
+                        <td><apex:inputField value="{!item.Accounting_Code__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 科目 -->
+                        <td><apex:inputField value="{!item.Subject__c}" style="width: 100px"></apex:inputField></td>
+                        <!-- 金额 -->
+                        <td><apex:inputField value="{!item.Amount__c}" style="width: 100px"></apex:inputField></td>
+                        <!-- 成本中心 -->
+                        <td><apex:inputField value="{!item.Dept_of_CostCenter__c}" style="width: 85px"></apex:inputField></td>
+                        <!-- 分配 -->
+                        <td><apex:inputField value="{!item.Allocation__c}" style="width: 60px"></apex:inputField></td>
+                        <!-- 文本 -->
+                        <td><apex:inputField value="{!item.Text__c}" style="width: 250px"></apex:inputField></td>
+                        <!-- 原因代码 -->
+                        <td><apex:inputField value="{!item.Reason_Code__c}" style="width: 60px"></apex:inputField></td>
+                        <!-- SGL标识 -->
+                        <td><apex:inputField value="{!item.SGL__c}" style="width: 60px"></apex:inputField></td>
+                        <!-- 事务类型 -->
+                        <td><apex:inputField value="{!item.Type_of_Affair__c}" style="width: 60px"></apex:inputField></td>
+                    </tr>
+                    <apex:variable var="list2Index" value="{!list2Index+1}"/>
+                </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+        </apex:pageBlock>
+    </apex:form>
+</body>
+</html>
+</apex:page>

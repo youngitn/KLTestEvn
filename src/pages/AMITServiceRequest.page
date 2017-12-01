@@ -1,0 +1,373 @@
+<!--> 
+ 名    称：IT服务申请流程页面
+ 目    的：设置IT服务申请流程页面
+ 作    者：张旭
+ 创建日期：2017-07-10
+ 修 改 人：
+ 修改日期：
+ 修改原因：
+ 备    注：
+ 
+<-->
+<apex:page standardController="Approval_Managed1__c" extensions="AMITServiceRequestExtension">
+<html>
+<head>
+    <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+    <script>
+    var isCan=0;
+    var EventUtil = {
+ preventDefault: function(event){
+  
+  if(event.preventDefault){
+   event.preventDefault();
+  } else {
+   event.returnValue = false;
+  }
+ }
+};
+
+    function getData()
+    {
+        var text1=j$("[id$='j_id0:j_id31:j_id32:j_id45:Account_selected']").html();
+                        if(text1.indexOf('AD账号')!=-1)
+                        {
+                            j$("[id$='Account_type']").val('a');
+                        }
+                        else
+                        {
+                            j$("[id$='Account_type']").val('0');
+                        }
+                        if(text1.indexOf('PLM账号')!=-1)
+                        {
+                            j$("[id$='Account_type']").val(j$("[id$='Account_type']").val()+'p');
+                        }
+                        else
+                        {
+                            j$("[id$='Account_type']").val(j$("[id$='Account_type']").val()+'0');
+                        }
+                        if(text1.indexOf('SAP账号')!=-1)
+                        {
+                            j$("[id$='Account_type']").val(j$("[id$='Account_type']").val()+'s');
+                        }
+                        else
+                        {
+                            j$("[id$='Account_type']").val(j$("[id$='Account_type']").val()+'0');
+                        }
+                        if(text1.indexOf('CRM账号')!=-1)
+                        {
+                            j$("[id$='Account_type']").val(j$("[id$='Account_type']").val()+'c');
+                        }
+                        else
+                        {
+                            j$("[id$='Account_type']").val(j$("[id$='Account_type']").val()+'0');
+                        }
+                        if(text1.indexOf('Salesforce账号')!=-1)
+                        {
+                            j$("[id$='Account_type']").val(j$("[id$='Account_type']").val()+'f');
+                        }
+                        else
+                        {
+                            j$("[id$='Account_type']").val(j$("[id$='Account_type']").val()+'0');
+                        }
+                        if(j$("[id$='Account_type']").val()=='00000')
+                        {
+                            isCan=0;
+                        }
+                        else
+                        {
+                            isCan=1;
+                        }
+    }
+
+        var j$ = jQuery.noConflict();
+
+        j$(document).ready(function(){
+            var cmb = j$("select[id$='ServiceCategory']");
+            var cmb1 = j$("select[id$='factory']");
+            var approvalValue = cmb.val();
+            var factoryValue = cmb1.val();
+             // var approvalName = cmb.find("option:selected").text();
+            console.log('approvalValue: ' + approvalValue);
+            console.log('factoryValue: ' + factoryValue);
+            var desc = j$("[id$='ModuleName']");
+
+            var desc1 = j$("[id$='EquipmentOrder']");
+
+            var desc2 = j$("[id$='OrderNumber']"); 
+
+            var desc3 = j$("[id$='ProfitCenter']");
+
+            var desc4 = j$("[id$='department']");
+
+            var desc5 = j$("[id$='extendnumber']");
+
+            var desc6 = j$("[id$='ServiceCategory']");
+
+            var desc7 = j$("[id$='Account']");
+
+            var desc8 = j$("[id$='Account_type']");
+
+                desc.hide();
+                desc.parent().prev().children("label").hide();
+
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.hide();
+                desc2.parent().prev().children("label").hide();
+
+                desc3.hide();
+                desc3.parent().prev().children("label").hide();
+
+                desc7.parent().hide();
+                desc7.parent().prev().children("label").hide();
+
+                desc8.hide();
+                desc8.parent().prev().children("label").hide();
+
+                j$("[id$='Account_type']").val('00000');
+
+                /*j$("[id$='j_id0:j_id31:j_id32:j_id45:Account_selected']").blur(function()
+                    {
+                         getData();
+                    });
+
+                j$("[id$='j_id0:j_id31:j_id32:j_id45:Account_unselected']").blur(function()
+                    {
+                         getData();
+                    });
+                
+               j$("[id$='j_id0:j_id31:j_id32:j_id45:Account_right_arrow']").click(function()
+                    {
+                        j$("[id$='j_id0:j_id31:j_id32:j_id45:Account_selected']").focus();
+
+                    });
+                j$("[id$='j_id0:j_id31:j_id32:j_id45:Account_left_arrow']").click(function()
+                    {
+                        
+                        j$("[id$='j_id0:j_id31:j_id32:j_id45:Account_unselected']").focus();
+
+                    });*/
+
+                j$("[name$='j_id0:j_id31:j_id32:j_id33:bottom:j_id34']").click(function()
+                    {
+                        getData();
+                        if(isCan==0 && j$("[id$='Account']").parent().is(':visible')==true && j$("[id$='Account_type']").val()=='00000')
+                        {
+                            alert("请选择账号类型！");
+                            EventUtil.preventDefault(window.event);
+                        }
+                    });
+                 j$("[name$='j_id0:j_id31:j_id32:j_id33:j_id34']").click(function()
+                    {
+                        getData();
+                        if(isCan==0 && j$("[id$='Account']").parent().is(':visible')==true && j$("[id$='Account_type']").val()=='00000')
+                        {
+                            alert("请选择账号类型！");
+                            EventUtil.preventDefault(window.event);
+                        }
+                    });
+
+    //加代码
+       });
+
+        function toggleData(){
+            
+            var cmb = j$("select[id$='ServiceCategory']");
+            var cmb1 = j$("select[id$='factory']");
+            var approvalValue = cmb.val();
+            var factoryValue = cmb1.val();
+
+            console.log('approvalValue: ' + approvalValue);
+            console.log('factoryValue: ' + factoryValue);
+            
+            var desc = j$("[id$='ModuleName']");
+
+            var desc1 = j$("[id$='EquipmentOrder']");
+
+            var desc2 = j$("[id$='OrderNumber']"); 
+
+            var desc3 = j$("[id$='ProfitCenter']"); 
+
+            var desc7 = j$("[id$='Account']");
+
+             if (approvalValue == "120" || approvalValue == "130" ||approvalValue == "190"
+                ||approvalValue == "200" || approvalValue == "210" || approvalValue == "150") {
+                desc.show();
+                desc.parent().prev().children("label").show();
+
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.hide();
+                desc2.parent().prev().children("label").hide();
+
+                desc3.hide();
+                desc3.parent().prev().children("label").hide();
+
+                desc7.parent().hide();
+                desc7.parent().prev().children("label").hide();
+
+            }else if(approvalValue == "140"){
+                desc.show();
+                desc.parent().prev().children("label").show();
+
+                desc1.show();
+                desc1.parent().prev().children("label").show();
+
+                desc2.show();
+                desc2.parent().prev().children("label").show();
+
+                desc3.hide();
+                desc3.parent().prev().children("label").hide();
+
+                desc7.parent().hide();
+                desc7.parent().prev().children("label").hide();
+
+            }else if (approvalValue == "220"){
+                desc3.show();
+                desc3.parent().prev().children("label").show();
+
+                desc.hide();
+                desc.parent().prev().children("label").hide();
+
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.hide();
+                desc2.parent().prev().children("label").hide();
+
+                desc7.parent().hide();
+                desc7.parent().prev().children("label").hide();
+
+            }else if (approvalValue == "110"){
+                desc3.hide();
+                desc3.parent().prev().children("label").hide();
+
+                desc.hide();
+                desc.parent().prev().children("label").hide();
+
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.hide();
+                desc2.parent().prev().children("label").hide();
+
+                desc7.parent().show();
+                desc7.parent().prev().children("label").show();
+
+            }else{
+                desc.hide();
+                desc.parent().prev().children("label").hide();
+
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.hide();
+                desc2.parent().prev().children("label").hide();
+
+                desc3.hide();
+                desc3.parent().prev().children("label").hide();
+
+                desc7.parent().hide();
+                desc7.parent().prev().children("label").hide();
+            }
+        }
+
+        function toggleData1(){
+            var cmb = j$("select[id$='ServiceCategory']");
+            var cmb1 = j$("select[id$='factory']");
+            var factoryValue = cmb1.val();
+
+            console.log('factoryValue: ' + factoryValue);
+        
+            var desc4 = j$("[id$='department']");
+            
+            var desc5 = j$("[id$='extendnumber']");
+
+            var desc6 = j$("[id$='ServiceCategory']");
+
+              if(factoryValue == "3000"){
+                desc5.show();
+                desc5.parent().prev().children("label").show();
+
+                desc6.show();
+                desc6.parent().prev().children("label").show();
+
+                desc4.hide();
+                desc4.parent().prev().children("label").hide();
+
+            }
+            else if(factoryValue != "3000"){
+                desc5.show();
+                desc5.parent().prev().children("label").show();
+
+                desc6.show();
+                desc6.parent().prev().children("label").show();
+
+                desc4.show();
+                desc4.parent().prev().children("label").show();
+
+            }
+      }
+    </script>
+</head>
+<body>
+<apex:sectionHeader title="IT服务申请流程" subtitle="新建/编辑IT服务申请流程"></apex:sectionHeader>
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="流程审批信息" collapsible="false">
+                 <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 审核状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+            </apex:pageBlockSection>
+             
+            <apex:pageBlockSection title="IT服务申请流程信息" >
+                <!-- 工厂 -->
+                <apex:inputField id="factory" value="{!am.Factory__c}" required="true" onchange="toggleData1() " ></apex:inputField>
+                <!-- 申请单位 -->
+                <apex:inputField id="department" value="{!am.KOSTL__c}"  ></apex:inputField>
+                <!-- 分机号码 -->
+                <apex:inputField id="extendnumber"  value="{!am.Extend_No__c}"></apex:inputField>
+                <!-- 服务类型 -->
+                <apex:inputField id="ServiceCategory" value="{!am.ServiceCategory__c }" required="true" onchange="toggleData() "></apex:inputField>
+                <!-- 模块名称 -->
+                <apex:inputField id="ModuleName" value="{!am.ModuleName__c}"></apex:inputField>
+                 <!-- 是否设备订单 -->
+                <apex:inputField id="EquipmentOrder" value="{!am.Equipment_Order__c}"></apex:inputField>
+                <!-- 订单编号 -->
+                <apex:inputField id="OrderNumber" value="{!am.OrderNumber__c}"></apex:inputField>
+                <!-- 新利润中心 -->
+                <apex:inputField id="ProfitCenter" value="{!am.Profit_Center__c}"></apex:inputField>
+                <!-- 账号申请 -->
+                <apex:inputField id="Account" value="{!am.Account_application__c}"></apex:inputField>
+                </apex:pageBlockSection>
+             <apex:pageBlockSection columns="1">
+                <!-- 问题描述 -->
+                <apex:inputField id="Service_Desc" value="{!am.Service_Desc__c}" style="width: 75%"></apex:inputField>
+                <!-- 账号类型 -->
+                <apex:inputField id="Account_type" value="{!am.Account_type__c}" style="width: 75%"></apex:inputField>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>>
+</body>
+</html>
+</apex:page>

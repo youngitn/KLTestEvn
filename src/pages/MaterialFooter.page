@@ -1,0 +1,15 @@
+<apex:page controller="MaterialDownload">
+
+<div class="footer">
+    <apex:image url="{!URLFOR($Resource.material, 'KL_footer.png')}" rendered="{!company='KL'}"/> 
+    <apex:image url="{!URLFOR($Resource.material, 'FF_footer.png')}" rendered="{!company='FF'}"/> 
+    <!-- <apex:image url="{!URLFOR($Resource.Material, 'PL_footer.png')}" rendered = "{!company='PL'}"/>  -->
+    <apex:outputText rendered="{!company='PL'}">
+-----------------------------------------------------<br/>
+POLARIS STAINLESS STEEL TECHNOLOGY (KUNSHAN) CO., LTD<br/>
+Address：WEST SIDE OF SONG JIA GANG ROAD, ZHOUSHI ZHENG, KUNSHAN CITY ,JIANGSU PROVINCE, P.R. CHINA<br/>
+TEL: +86 (0)512 5512 8188                  FAX: +86 (0)512 5512 8199<br/>
+    </apex:outputText>
+</div>
+
+</apex:page>

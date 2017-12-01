@@ -1,0 +1,17 @@
+<apex:page controller="MaterialKsklDownload">
+
+<div class="footer"> 
+	<apex:image url="{!URLFOR($Resource.MaterialFooter, 'Footer/img_footer_kl_enzh.png')}"  
+		rendered="{!logo='KL'&&langu='ZH'}"/>
+
+	<apex:image url="{!URLFOR($Resource.MaterialFooter, 'Footer/img_footer_kl.png')}"  
+		rendered="{!logo='KL'&&langu!='ZH'}"/>
+
+	<apex:image url="{!URLFOR($Resource.MaterialFooter, 'Footer/img_footer_kl.png')}" rendered="{!logo='LH'}"/>
+	<apex:image url="{!URLFOR($Resource.MaterialFooter, 'Footer/img_footer_kl.png')}" rendered="{!logo='SS'}"/>
+
+	<apex:image url="{!URLFOR($Resource.MaterialFooter, 'Footer/img_footer_ff.png')}" rendered="{!logo='FF'}"/> 
+	<apex:image url="{!URLFOR($Resource.MaterialFooter, 'Footer/img_footer_pl.png')}" rendered="{!logo='PL'}"/> 
+</div>
+
+</apex:page>

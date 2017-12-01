@@ -1,0 +1,141 @@
+<!--
+    目的：订单详情界面
+    作者：luoxin
+    创建时间：2017-03-28
+-->
+<apex:page showheader="false" sidebar="false" standardStylesheets="false" controller="SiteMyOrderExtension">
+ <head>
+<apex:includeScript value="{!URLFOR($Resource.angularjs,'')}" />
+<apex:includeScript value="{!URLFOR($Resource.angularpopup,'')}" />
+
+  <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+<style>
+</style>
+
+</head>
+<body>
+<base href="/" />
+<div ng-app = "app" ng-controller = "ctrl" class="slds">
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media--center slds-has-flexi-truncate">
+            <div class="slds-media__body">订单信息</div>
+            </header>
+        </div>
+        <div class="slds-media__body"></div>
+    </article>
+
+    <div class="slds-grid slds-wrap slds-grid--pull-padded">
+  <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-2">客户合同号:{{order.customer_contract_no__c}}</div>
+  <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-2">订单编号:{{order.order_code__c}}</div>
+  <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-2">下单日期:{{order.order_date__c}}</div>
+  <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-2">订单状态:{{order.order_status__c}}</div>
+  <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-2">总金额:{{order.total_amount__c}}</div>
+  <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-2">交货地址:{{order.delivery_address__c}}</div>
+  <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-2">预交日期:{{order.currency__c}}</div>
+  <div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-1 slds-large-size--1-of-2">项目名称:{{order.order_code__c}}</div>
+</div>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media--center slds-has-flexi-truncate">
+            <div class="slds-media__body">订单子项</div>
+            </header>
+        </div>
+                <div class="slds-media__body"></div>
+
+    </article>
+    <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+        <tr>
+            <th class="slds-text-title--caps">操作:</th>
+            <th class="slds-text-title--caps">项号:</th>
+            <th class="slds-text-title--caps">料号:</th>
+            <th class="slds-text-title--caps">客户料号:</th>
+            <th class="slds-text-title--caps">描述:</th>
+            <th class="slds-text-title--caps">订单数:</th>
+            <th class="slds-text-title--caps">已交数:</th>
+            <th class="slds-text-title--caps">未交数</th>
+            <th class="slds-text-title--caps">库存数</th>
+        </tr>
+        <tr ng-repeat= "item in order.orderitem track by $index">
+            <td>
+                <button id="btn{{$index}}" class="slds-button" ng-click="bubble.open = true">显示物流信息</button>
+                <bubble ng-if="bubble.open" for="btn{{$index}}" close="bubble.open=false">
+                    <table bgcolor="white" class="slds-table slds-table--bordered slds-table--cell-buffer">
+                        <tr>
+                            <th class="slds-text-title--caps">送货时间</th>
+                            <th class="slds-text-title--caps">快递公司</th>
+                            <th class="slds-text-title--caps">订单号</th>
+                            <th class="slds-text-title--caps">收货地址</th>
+                        </tr>
+                        <tr ng-repeat="logistic in item.logistics track by $index">
+                            <td class="slds-truncate">{{logistic.delivery_date__c}}</td>
+                            <td class="slds-truncate">{{logistic.logistic_company__c}}</td>
+                            <td class="slds-truncate">{{logistic.order_item_no__c}}</td>
+                            <td class="slds-truncate">{{logistic.receive_address__c}}</td>
+                        </tr>
+                    </table>
+                </bubble>
+            </td>
+            <td class="slds-truncate" >{{item.order_item_no__c}}</td>
+            <td class="slds-truncate" >{{item.material_number__c}}</td>
+            <td class="slds-truncate" ></td>
+            <td class="slds-truncate" >{{item.description__c}}</td>
+            <td class="slds-truncate" >{{item.ordercount__c}}</td>
+            <td class="slds-truncate" >{{item.has_delivery_quantity__c}}</td>
+            <td class="slds-truncate" >{{item.not_delivery_quantity__c}}</td>
+            <td class="slds-truncate" >{{item.stock_quantity__c}}</td>
+        </tr>
+    </table>
+        <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media--center slds-has-flexi-truncate">
+            <div class="slds-media__body">发票信息</div>
+            </header>
+        </div>
+                <div class="slds-media__body"></div>
+
+    </article>
+    <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+        <th class="slds-text-title--caps">发票号:</th>
+        <th class="slds-text-title--caps">总金额:</th>
+        <th class="slds-text-title--caps">开票时间:</th>
+        <tr ng-repeat= "item in order.invoiceinfo track by $index">
+            <td class="slds-truncate" >{{item.invoice_no__c}}</td>
+            <td class="slds-truncate" >{{item.total_amount__c}}</td>
+            <td class="slds-truncate" >{{item.invoice_date__c}}</td>
+        </tr>
+    </table>
+    <div class="slds-spinner_container" ng-hide="complete" id="loader">
+      <div class="slds-spinner slds-spinner--brand slds-spinner--large" aria-hidden="false" role="alert">
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+      </div>
+    </div>
+</div>
+
+<script> 
+var app = angular.module('app',['angular-popups']).config(function($locationProvider) {
+    $locationProvider.html5Mode(true); 
+  });
+app.controller('ctrl',function($scope,$q,$location){
+    $scope.order = {};
+    $scope.complete = false;
+    var id = $location.search().id;
+    var promise = $q(function(resolve, reject){
+        SiteMyOrderExtension.queryOderDetail(id,function (res,event) {
+            console.log(res);
+            resolve(res.orders[0]);
+        });
+    });
+    promise.then(function(result) {
+        $scope.order = result;
+        $scope.complete = true;
+    },function(){});
+    
+});
+</script>
+</body>
+
+
+</apex:page>

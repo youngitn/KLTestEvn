@@ -1,0 +1,193 @@
+<!--
+	目的：自定义流程管理的出差管理流程页面
+	作者：李忠辉
+	创建时间：2017-05-03
+-->
+<apex:page standardController="Custom_Approval_Managed__c" extensions="AMBusinessTravelExtension">
+	<head>
+	<apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+		<style>
+			input.text {
+				text-align: center;
+			}
+			div.scroll{
+                width:1000px; 
+                height:200px; 
+                overflow:scroll;
+            }
+		</style>
+		<script>
+			var J$ = jQuery.noConflict();
+			J$(function(){
+				// 对Date的扩展，将 Date 转化为指定格式的String
+				// 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符， 
+				// 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字) 
+				// 例子： 
+				// (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423 
+				// (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18 
+				Date.prototype.Format = function (fmt) { //author: meizz 
+					var o = {
+				        "M+": this.getMonth() + 1, //月份 
+				        "d+": this.getDate(), //日 
+				        "h+": this.getHours(), //小时 
+				        "m+": this.getMinutes(), //分 
+				        "s+": this.getSeconds(), //秒 
+				        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+				        "S": this.getMilliseconds() //毫秒 
+				    };
+				    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+				    for (var k in o)
+				    	if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+				    return fmt;
+				}
+				var startTime = new Date(Date.parse("{!travelManage.Start_Travel_Datetime__c}"));
+				var szStartTime = startTime.Format("yyyy-MM-dd hh:mm:ss");
+				szStartTime = szStartTime.replace(/(\d*-\d+-\d*)\s/,"$1T");
+				J$("#startTime").val(szStartTime);
+				var endTime = new Date(Date.parse("{!travelManage.End_Travel_Datetime__c}"));
+				var szEndTime = endTime.Format("yyyy-MM-dd hh:mm:ss");
+				szEndTime = szEndTime.replace(/(\d*-\d+-\d*)\s/,"$1T");
+				J$("#endTime").val(szEndTime);
+				console.log(szStartTime+szEndTime);
+			})
+			function deleteItem(rowID){
+				deleteDetail(rowID);
+			}
+
+			function JSsaveAction(){
+				var szStartTime = J$("#startTime").val();
+				console.log("时间："+ szStartTime+"类型："+ typeof(szStartTime));
+				var szEndTime = J$("#endTime").val();
+				if (!szStartTime || !szEndTime) {
+					window.alert('请检查时间填写是否为空');
+					return;
+				}
+				saveBusinessTravel(szStartTime,szEndTime);
+			}
+		</script>
+	</head>
+	<apex:sectionHeader title="出差管理" subtitle="新建/编辑出差申请单"></apex:sectionHeader>
+    <!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+    	<!-- 各子表删除行数调用function -->
+        <apex:actionFunction action="{!deleteDetail}" id="deleteDetail" name="deleteDetail" reRender="output1">
+            <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+        <apex:actionFunction action="{!saveBusinessTravel}" id="saveBusinessTravel" name="saveBusinessTravel" reRender="output1">
+        	<apex:param assignTo="{!szStartTime}" name="szStartTime" value=""></apex:param>
+            <apex:param assignTo="{!szEndTime}" name="szEndTime" value=""></apex:param>
+     	</apex:actionFunction>
+    	<apex:pageBlock >
+	    	<apex:pageBlockSection title="基本信息">
+	    		<!-- 流程编号 -->
+	    		<apex:outputField value="{!travelManage.Name}"></apex:outputField>
+	    		<!-- 申请人部门 -->
+	    		<apex:outputField value="{!travelManage.Dept_Name__c}"></apex:outputField>
+	    		<!-- 流程名称 -->
+	    		<apex:outputField value="{!travelManage.Approval_Name__c}"></apex:outputField>
+	    		<!-- 申请人 -->
+	    		<apex:outputField value="{!travelManage.Applicant__c}"></apex:outputField>
+	    		<!-- 单据状态 -->
+	    		<apex:outputField value="{!travelManage.Status__c}"></apex:outputField>
+	    		<!-- 单据日期 -->
+	    		<apex:outputField value="{!travelManage.Bill_Date__c}"></apex:outputField>
+	    	</apex:pageBlockSection>
+	    	<apex:pageBlockSection title="主数据">
+	    		<!-- 单号 -->
+	    		<apex:inputField value="{!travelManage.Bill_No__c}"></apex:inputField>
+	    		<!-- 员工 -->
+	    		<apex:inputField value="{!travelManage.Employee__c}"></apex:inputField>
+	    		<!-- 出差对象 -->
+	    		<apex:inputField value="{!travelManage.Target_of_Travel__c}"></apex:inputField>
+	    		<!-- 出差类型 -->
+	    		<apex:inputField value="{!travelManage.Type_of_Travel__c}"></apex:inputField>
+	    		<!-- 申请部门 -->
+	    		<apex:inputField value="{!travelManage.Department_of_Approval__c}"></apex:inputField>
+	    		<!-- 地域 -->
+	    		<apex:inputField value="{!travelManage.Area_of_Travel__c}"></apex:inputField>
+	    		<!-- 交通工具 -->
+	    		<apex:inputField value="{!travelManage.Vehicle_of_Travel__c}"></apex:inputField>
+	    		<!-- 费用预算 -->
+	    		<apex:inputField value="{!travelManage.Cost_Budget__c}"></apex:inputField>
+	    		<!-- 币种(预算) -->
+	    		<apex:inputField value="{!travelManage.Currency_of_Budget__c}"></apex:inputField>
+	    		<!-- 是否借支 -->
+	    		<apex:inputField value="{!travelManage.Is_Borrow__c}"></apex:inputField>
+	    		<!-- 借支金额 -->
+	    		<apex:inputField value="{!travelManage.Amount_of_Borrow__c}"></apex:inputField>
+	    		<!-- 币种(借支) -->
+	    		<apex:inputField value="{!travelManage.Currency_of_Borrow__c}"></apex:inputField>
+	    		<!-- 前一天 -->
+	    		<apex:inputField value="{!travelManage.Is_Before_Day__c}"></apex:inputField>
+	    		<!-- 是否销售人员 -->
+	    		<apex:inputField value="{!travelManage.Is_Salesperson__c}"></apex:inputField>
+	    		<!-- 是否培训 -->
+	    		<apex:inputField value="{!travelManage.Is_Training__c}"></apex:inputField>
+	    		<!-- 是否派车 -->
+	    		<apex:inputField value="{!travelManage.Is_Send_a_Car__c}"></apex:inputField>
+	    		<!-- 司机名 -->
+	    		<apex:inputField value="{!travelManage.Driver__c}"></apex:inputField>
+	    		<!-- 车牌号 -->
+	    		<apex:inputField value="{!travelManage.Plate_Number__c}"></apex:inputField>
+	    		<!-- 行程 -->
+	    		<apex:inputField value="{!travelManage.Description_of_Travel__c}"></apex:inputField>
+	    		<tr>
+	    		<!-- 出差开始日期  -->
+	    				<th class="labelCol vfLabelColTextWrap  last " scope="row">
+	    					<label for="startTime">出差开始日期</label>
+	    				</th>
+	    				<td class="dataCol  last ">
+	    					<input id="startTime" maxlength="255" name="开始时间" size="20" type="datetime-local" step="1800" onkeydown="return false" />
+	    				</td>
+	    		<!-- 出差结束日期  -->
+	    				<th class="labelCol vfLabelColTextWrap  last " scope="row">
+	    					<label for="endTime">出差结束日期</label>
+	    				</th>
+	    				<td class="dataCol  last ">
+	    					<input id="endTime" maxlength="255" name="结束时间" size="20" type="datetime-local" step="1800" onkeydown="return false" />
+	    				</td>
+	    		</tr>
+	    	</apex:pageBlockSection>
+	    	 <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>内容</h3></div>
+            <apex:commandButton action="{!addDetail}" value="新增" reRender="output1" status="retrieveStatus"/>
+            <apex:outputPanel id="output1" layout="block" styleClass="scroll">
+            <apex:actionStatus startText="(waiting...)" id="retrieveStatus"/>
+                <table class="list" border="0" cellspacing="0" cellpadding="0"  id="tableBank" >
+                    <thead>
+                    <th></th>
+                    <th>行号</th>
+                    <th>访问日期</th>
+                    <th>公司名称</th>
+                    <th>地点</th>
+                    <th>原因</th>
+                    <th>受访者</th>
+                    <th>受访者电话</th>
+                    <th>活动-预约ID</th>
+                    </thead>
+                    <tbody>
+                    <apex:variable var="listIndex" value="{!1}"/>
+                    <apex:repeat value="{!travelManageItemList}" var="item">
+                        <tr>
+                            <td><input type="button" onclick="deleteItem('{!listIndex}')" value="删除" style="cursor: pointer" /></td>
+                            <td>{!listIndex}</td>
+                            <td><apex:inputField value="{!item.Visit_Date__c}" styleClass="text removeDate"/></td>
+                            <td><apex:inputField value="{!item.Corportion_Name__c}" styleClass="text"/></td>
+                            <td><apex:inputField value="{!item.Address__c}" styleClass="text"/></td>
+                            <td><apex:inputField value="{!item.Reason__c}" styleClass="text"/></td>
+                            <td><apex:inputField value="{!item.Interviewee__c}" styleClass="text"/></td>
+                            <td><apex:inputField value="{!item.Phone_of_Interviewee__c}" styleClass="text"/></td>
+                            <td><apex:inputField value="{!item.Campaign__c}" styleClass="text"/></td>
+                        </tr>
+                         <apex:variable var="listIndex" value="{!listIndex+1}"/>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+            <apex:pageBlockButtons >
+                <input type="button" onclick="JSsaveAction()" value="保存" class="btn" />
+            	<apex:commandButton value="取消" action="{!cancelAction}"></apex:commandButton>
+            </apex:pageBlockButtons>
+    	</apex:pageBlock>
+    </apex:form>
+</apex:page>

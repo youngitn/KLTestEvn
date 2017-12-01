@@ -1,0 +1,81 @@
+<apex:page showHeader="false"  controller="MyCangExtension">
+<head>
+<apex:includeScript value="{!URLFOR($Resource.angularjs,'')}" />
+<apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+</head>
+ <div ng-app="app" ng-controller="ctrl" class="slds">
+	<div class="slds-grid slds-grid_align-space">
+		<div class="slds-col">
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="text-input-id-1">客户号</label>
+              <div class="slds-form-element__control">
+                <input type="text" id="text-input-id-1" class="slds-input" ng-model="customerCode" style="width:300px;" />
+              </div>
+            </div>
+        </div>
+		<div class="slds-col" style="text-align: center;margin: auto;">
+            <button class="slds-button slds-button--brand" ng-click="query()" ng-disabled="loading">{!$Label.Search}</button>
+        </div>    
+	</div>
+	<table  class="slds-table slds-table--bordered slds-table--cell-buffer ">
+		<thead >
+            <th class="slds-text-title--caps">客户号</th>
+            <th class="slds-text-title--caps">客户名称</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in cang track by $index">
+                <td class="slds-truncate">{{item.account_number__c}}</td>
+                <td class="slds-truncate">{{item.account_name__c}}</td>
+                <td class="slds-truncate">
+                    <!-- <a href='/apex/MaterialPDF?template={{item.template_name}}' target="_blank">点击</a> -->
+                    <button class="slds-button slds-button--brand" ng-click="download(item)">进入下载页</button>
+                </td>
+            </tr>
+        </tbody>
+	</table>
+
+	<!--页面刷新  -->
+    <div class="slds-spinner_container" ng-hide="!loading" id="loader">
+        <div class="slds-spinner slds-spinner--brand slds-spinner--large" aria-hidden="false" role="alert">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+ </div>
+
+<script>
+var app = angular.module('app', []);
+app.controller('ctrl',function($scope,$q){
+	$scope.customerCode = '';
+ 	$scope.cang = [];
+    $scope.loading = false;
+
+	$scope.query = function(){
+        $scope.cang = [];
+        $scope.loading= true;
+
+        var promise = $q(function(resolve,reject){
+            MyCangExtension.queryCustomer($scope.customerCode,function(res,event){
+                resolve(res.content);
+            });
+        });
+        promise.then(function(result){
+            result.forEach(function(item){
+                if(!!item.main){
+                    $scope.cang.push(item.main);
+                }
+            });
+            // $scope.materials=result;
+            $scope.loading=false;
+        });
+    }
+
+    $scope.download = function(item){
+        var jsonStr = JSON.stringify(item);
+        window.open('/apex/MyCangPDF');
+    }
+
+});
+
+</script>
+</apex:page>

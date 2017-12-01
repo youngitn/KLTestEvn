@@ -1,0 +1,165 @@
+<apex:page standardController="Custom_Approval_Managed__c" extensions="AMCostCenterSendExtension">
+    <!-- 成本中心发料作业流程 -->
+    <head>
+        <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+        <style>
+            input.text {
+                text-align: center;
+            }
+            div.scroll{
+                width:1200px; 
+                height:200px; 
+                overflow:scroll;
+            }
+            textarea{
+                width: 75%
+            }
+            table.list th,table.list td{
+                text-align: center;
+            }
+          </style>
+        <script>
+            function deleteItemBankDetail(rowID){
+                deleteBankDetail(rowID);
+            }
+            function JSqueryMaterial(rowID){
+                queryMaterial(rowID);
+            }
+        </script>
+    </head>
+    <apex:sectionHeader title="成本中心发料作业" subtitle="新建/编辑发料作业"></apex:sectionHeader>
+    <apex:form >
+        <!-- 各子表删除行数调用function -->
+        <apex:actionFunction action="{!deleteBankDetail}" id="deleteBankDetail" name="deleteBankDetail" reRender="output1">
+            <apex:param assignTo="{!rowID}" name="rowID" value="rowID"></apex:param>
+        </apex:actionFunction>
+        <apex:actionFunction action="{!queryMaterial}" id="queryMaterial" name="queryMaterial" reRender="queryResult,messgae">
+            <apex:param assignTo="{!resultRowID}" name="rowID" value="rowID"></apex:param>
+        </apex:actionFunction>
+        <apex:pageBlock title="发料作业" id="block">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!saveAction}" value="保存"/>
+                <apex:commandButton action="{!cancelAction}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="流程审批信息" collapsible="false">
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!cusAP.Name}" id="Name"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!cusAP.Approval_Name__c}"  id="Approval_Name__c"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!cusAP.Applicant__c}" id="Applicant__c"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!cusAP.Dept_Name__c}"  id="Dept_Name__c"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!cusAP.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期 -->
+                <apex:outputField value="{!cusAP.Bill_Date__c}" id="Bill_Date__c"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!cusAP.Applicant_Name__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!cusAP.Status__c}" id="Status__c"></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="成本中心发料作业信息">
+                <!-- 操作选项 -->
+                <apex:inputField value="{!cusAP.Option_of_Operate__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Option_of_Operate__c'))}" required="true" ></apex:inputField>
+                <apex:outputField value="{!cusAP.Option_of_Operate__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Option_of_Operate__c'))}"></apex:outputField>
+                <!-- 存在报废 -->
+                <apex:inputField value="{!cusAP.Is_Exist_Scrap__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Is_Exist_Scrap__c'))}"></apex:inputField>
+                <apex:outputField value="{!cusAP.Is_Exist_Scrap__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Is_Exist_Scrap__c'))}"></apex:outputField>
+                <!-- 物料凭证号 -->
+                <apex:outputField value="{!cusAP.Material_Voucherno__c}"></apex:outputField>
+                <!-- 凭证日期 -->
+                <apex:inputField value="{!cusAP.Voucher_Date__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Voucher_Date__c'))}" required="true"></apex:inputField>
+                <apex:outputField value="{!cusAP.Voucher_Date__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Voucher_Date__c'))}"></apex:outputField>
+                <!-- 工厂-->
+                <apex:inputField value="{!cusAP.Factory__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Factory__c'))}" required="true" style="width:173px;"></apex:inputField>
+                <apex:outputField value="{!cusAP.Factory__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Factory__c'))}"  style="width:173px;"></apex:outputField>
+                <!-- 凭证抬头文本 -->
+                <apex:inputField value="{!cusAP.Voucher_HeaderText__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Voucher_HeaderText__c'))}" required="true" ></apex:inputField>
+                <apex:outputField value="{!cusAP.Voucher_HeaderText__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Voucher_HeaderText__c'))}"></apex:outputField>
+                <!-- 库存地点 -->
+                <apex:inputField value="{!cusAP.Address_of_Stock__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Address_of_Stock__c'))}" required="true" ></apex:inputField>
+                <apex:outputField value="{!cusAP.Address_of_Stock__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Address_of_Stock__c'))}"></apex:outputField>
+                 <!-- 成本中心 -->
+                <apex:inputField value="{!cusAP.Dept_of_CostCenter__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Dept_of_CostCenter__c'))}" style="width:173px;" ></apex:inputField>
+                <apex:outputField value="{!cusAP.Dept_of_CostCenter__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Dept_of_CostCenter__c'))}" style="width:173px;"></apex:outputField>
+                <!-- 生产工单 -->
+                <apex:inputField value="{!cusAP.Order_of_Production__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Order_of_Production__c'))}" ></apex:inputField>
+                <apex:outputField value="{!cusAP.Order_of_Production__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Order_of_Production__c'))}" ></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1">
+                <!-- 需求原因 -->
+                <apex:inputField value="{!cusAP.Reason_of_Required__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Reason_of_Required__c'))}"  required="true" style="width: 50%"></apex:inputField>
+                <apex:outputField value="{!cusAP.Reason_of_Required__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Reason_of_Required__c'))}" style="width: 50%"></apex:outputField>
+            </apex:pageBlockSection>
+            <!-- 页面信息提示区 -->
+            <apex:pageMessages escape="true" id="messgae"></apex:pageMessages>
+            <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>行信息</h3></div>
+            <apex:outputPanel layout="block" styleClass="scroll" id="queryResult" style="display:{!IF(isQuery,'','none')};">
+            <div class="pbSubheader brandTertiaryBgr tertiaryPalette">查询结果</div>
+                    <table class="list" border="0" cellspacing="0" cellpadding="0" title="查询结果">
+                        <thead>
+                            <th>操作</th>
+                            <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.material_number__c.Label}</th>
+                            <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.material_name__c.Label}</th>
+                            <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.material_description__c.Label}</th>
+                            <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Qty_Stock__c.Label}</th>
+                            <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Batch__c.Label}</th>
+                        </thead>
+                        <apex:variable var="customerIndex" value="{!0}"/>
+                        <apex:repeat value="{!listQueryResult}" var="item">
+                            <tr>
+                                <td><apex:commandButton action="{!selectMaterial}" reRender="output1,queryResult" value="选中">
+                                    <apex:param assignTo="{!selectRow}" name="selectRow" value="{!customerIndex}"></apex:param>
+                                </apex:commandButton></td>
+                                <td><apex:outputField value="{!item.Material_Number__c}"></apex:outputField></td>
+                                <td><apex:outputField value="{!item.Material_Name__c}"></apex:outputField></td>
+                                <td><apex:outputField value="{!item.Material_Description__c}"></apex:outputField></td>
+                                <td><apex:outputField value="{!item.Qty_Stock__c}"></apex:outputField></td>
+                                <td><apex:outputField value="{!item.Batch__c}"></apex:outputField></td>
+                            </tr>
+                            <apex:variable var="customerIndex" value="{!customerIndex+1}"/>
+                            </apex:repeat>
+                    </table>
+            </apex:outputPanel>
+            <apex:commandButton action="{!addBankDetail}" value="新增" reRender="output1,messgae" status="retrieveStatus"/>
+            <apex:outputPanel id="output1" layout="block" styleClass="scroll">
+                <apex:actionStatus startText="(waiting...)" id="retrieveStatus"/>
+                <table class="list" border="0" cellspacing="0" cellpadding="0"  id="tableBank" >
+                    <thead>
+                        <th></th>
+                        <th>行号</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Material_Number__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Material_Description__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Factory__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Location_of_Storage__c.Label}</th>
+                        <th>需求数量</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Batch__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Qty_Stock__c.Label}</th>
+                        <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Qty_Send__c.Label}</th>
+                    </thead>
+                    <tbody>
+                        <apex:variable var="listIndex" value="{!1}"/>
+                        <apex:repeat value="{!listRowInfo}" var="item">
+                        <tr>
+                            <td><input type="button" onclick="deleteItemBankDetail('{!listIndex}')" value="删除" style="cursor: pointer;" /></td>
+                            <td>{!listIndex}</td>
+                            <td><span class="lookupInput"><apex:inputField value="{!item.Material_Number__c}" styleClass="text"/>
+<img src="/img/s.gif" alt="物料号" class="lookupIcon" onblur="this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" title="查询物料信息" onclick="queryMaterial('{!listIndex}')" style="cursor: pointer;" /></span></td>
+                            <!--物料描述-->
+                            <td><apex:outputField value="{!item.Material_Description__c}" styleClass="text"/></td>
+                            <td><apex:outputField value="{!item.Factory__c}" styleClass="text" style="width: 150px"/></td>
+                            <td><apex:outputField value="{!item.Location_of_Storage__c}" styleClass="text"/></td>
+                            <td><apex:inputField value="{!item.Qty__c}" styleClass="text" style="width: 50px"/></td>
+                            <td><apex:outputField value="{!item.Batch__c}" styleClass="text"/></td>
+                            <td><apex:outputField value="{!item.Qty_Stock__c}" styleClass="text"/></td>
+                            <td><apex:inputField value="{!item.Qty_Send__c}" styleClass="text"/></td>
+                        </tr>
+                        <apex:variable var="listIndex" value="{!listIndex+1}"/>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

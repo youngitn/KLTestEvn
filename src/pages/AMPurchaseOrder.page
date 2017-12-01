@@ -1,0 +1,3 @@
+<apex:page standardController="Approval_Managed__c" extensions="AMPurchaseOrderExtension">
+<!-- 标准采购订单作业流程 -->
+</apex:page>

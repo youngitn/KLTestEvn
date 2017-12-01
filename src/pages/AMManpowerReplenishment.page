@@ -1,0 +1,166 @@
+<!--> 
+ 名    称：HR人力补充申请流程
+ 目    的：
+ 作    者：刘忠林
+ 创建日期：2017-10-13
+ 修 改 人：
+ 修改日期：
+ 修改原因：
+ 备    注：
+ 
+<-->
+
+<apex:page standardController="Approval_Managed__c" extensions="AMManpowerReplenishmentExtension" >
+ <!-- 成本中心发料作业流程 -->
+    <head>
+        <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+        <style>
+            input.text {
+                text-align: center;
+            }
+            div.scroll{
+                width:600px; 
+                height:200px; 
+                overflow:scroll;
+            }
+            textarea{
+                width: 75%
+            }
+            table.list th,table.list td{
+                text-align: center;
+            }
+          </style>
+        <script>
+            function deleteItemDetail(rowID){
+                deleteDetail(rowID);
+            }
+        </script>
+    </head>
+<html>
+<body>
+<apex:sectionHeader title="HR人力补充申请流程"></apex:sectionHeader>
+
+<!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true" id="messgae"></apex:pageMessages>
+
+    <apex:form id="form">
+
+        <!-- 子表删除行数调用function -->
+        <apex:actionFunction action="{!deleteDetail}" name="deleteDetail" id="deleteDetail" reRender="list1">
+           <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+
+        <apex:actionFunction action="{!addDetail}" name="addDetail" id="addDetail" reRender="list1">
+           <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+
+
+        <apex:pageBlock title="HR人力补充" id="block"> 
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" collapsible="false">
+
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 审核状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="需求信息" collapsible="false">
+
+               <!-- 变更描述 -->
+                <apex:inputField value="{!am.Modify_description__c}" style="width: 100%"></apex:inputField>
+                <!-- 工厂 -->
+                <apex:inputField value="{!am.Factory__c}"></apex:inputField>
+                <!-- 招聘进度 -->
+                <apex:inputField value="{!am.Hiring_schedule__c}"></apex:inputField>
+                <!-- 人力增补原因类别描述 -->
+                <apex:inputField value="{!am.Manpower_supplement_description__c}"></apex:inputField>
+                <!-- 需求人力类别 -->
+                <apex:inputField value="{!am.Manpower_type__c}"></apex:inputField>
+                <!-- 成本中心 -->
+                <apex:inputField value="{!am.Dept_of_CostCenter__c}"></apex:inputField>
+                <!-- 需求职位名称 -->
+                <apex:inputField value="{!am.Require_Job_Name__c}"></apex:inputField>
+                <!-- 职等 -->
+                <apex:inputField value="{!am.Position_Level__c}"></apex:inputField>
+                <!-- 性别要求 -->
+                <apex:inputField value="{!am.Sex_Preference__c}"></apex:inputField>
+                 <!-- 学历 -->
+                <apex:inputField value="{!am.Education__c}"></apex:inputField>
+                 <!-- 部门编制(人) -->
+                <apex:inputField value="{!am.Department_staffing__c}"></apex:inputField>
+                 <!-- 现有人力(人) -->
+                <apex:inputField value="{!am.Existing_man_power__c}"></apex:inputField>
+                 <!-- 差异人力(人) -->
+                <apex:inputField value="{!am.Lack_man_power__c}"></apex:inputField>
+                 <!-- 需求人数(人) -->
+                <apex:inputField value="{!am.Requirements_number__c}"></apex:inputField>
+                 <!-- 薪资范围 -->
+                <apex:inputField value="{!am.Pay_scope__c}"></apex:inputField>
+                 <!-- 到岗日期 -->
+                <apex:inputField value="{!am.Arrival_Date__c}"></apex:inputField>
+                 <!-- 专业 -->
+                <apex:inputField value="{!am.Major__c}"></apex:inputField>
+                 <!-- 年龄 -->
+                <apex:inputField value="{!am.Age__c}"></apex:inputField>
+                 <!-- 职位描述/资历要求 -->
+                <apex:inputField value="{!am.Qualification_Requirements__c}" style="width: 100%"></apex:inputField>
+
+            </apex:pageBlockSection>
+    
+
+            <apex:outputPanel title="面试主管" styleClass="scroll" id="list1"> 
+                <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>面试主管</h3></div>
+                <apex:commandButton action="{!addDetail}" value="新增" reRender="list1" immediate="true"/>
+
+                <table class="list" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <th></th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Row_Index__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Header__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Header_Code__c.Label}</th>
+                       
+                    </thead>
+                    <tbody>
+                    <apex:variable var="listIndex" value="{!1}"/>
+                    <apex:repeat value="{!listDetail}" var="item">
+                    <tr>
+                        <td>
+                            <input type="button" onclick="deleteItemDetail('{!listIndex}')" value="删除" class="btn" reRender="list1"/>
+                             <apex:param assignTo="{!rowID}" name="rowID" value="{!listIndex}"></apex:param>
+                        </td>
+                        <!-- 行号 -->
+                        <td><apex:inputField value="{!item.Row_Index__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 负责人 -->
+                        <td><apex:inputField value="{!item.Header__c}" style="width: 70px"></apex:inputField></td>
+                        <!-- 负责人工号 -->
+                        <td><apex:outputField value="{!item.Header_Code__c}" style="width: 70px"></apex:outputField></td>
+                       
+                    </tr>
+                    <apex:variable var="listIndex" value="{!listIndex+1}"/>
+                    </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+
+        </apex:pageBlock>
+    </apex:form>
+</body>
+</html>
+</apex:page>
