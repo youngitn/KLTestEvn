@@ -57,11 +57,25 @@ private class AMCustomerCreditLoanTest {
         amc.No_delivery_amount__c = 2345345;
         amc.Sincere_cooperation__c = '1';
         
-
         INSERT amc;
+
+        amc.credit_line__c = 300000;
+        amc.Currency__c = 'CNY';
+        amc.Amount_receivable__c = 0002004433;
+        amc.Special_current_debt__c = 'asdfasdfa';
+        amc.Credit_account_numbe__c = 2004433;
+        amc.Used_Credit_amount__c = 0.00;
+        amc.Sales_value__c = 243243;
+        amc.Total_credit_risk__c = 324535;
+        amc.Guarantee_amount_receivable__c = 34255;
+        amc.Risk_kind__c = '001';
+
+        UPDATE amc; 
+
+        
         AMCustomerCreditLoanExtension amIt = new AMCustomerCreditLoanExtension(new ApexPages.StandardController(amc));
         WebServiceMockImpl wbi = new WebServiceMockImpl();
-        wbi.returnJson = '{"status": "1", message": "信息获取成功", "approval": "CUSTOMERCREDITLOAN", "content": [{"main": {"Amount_receivable__c": "24324", "Special_current_debt__c": "24.5", "Credit_account_numbe__c": "26526523245, "Used_Credit_amount__c": "45353", "Sales_value__c": "6345", "Credit_validity__c": "", "Total_credit_risk__c": "3453", "Guarantee_amount_receivable__c": "5343", "Risk_kind__c": "sgfds"}, "details": ""}]}';
+        wbi.returnJson = '{"status": "1", message": "信息获取成功", "approval": "CUSTOMERCREDITLOAN", "content":[{"credit_line__c":"300000", "currency__c":"CNY", "amount_receivable__c":"415336", "credit_account_numbe__c":"2004433", "used_credit_amount__c":"000000",  "total_credit_risk__c":"000000", "guarantee_amount_receivable__c":"000000", "risk_kind__c":"001"}, "details": ""]}';
         Test.setMock(WebServiceMock.class, wbi);
 
         amIt.save();

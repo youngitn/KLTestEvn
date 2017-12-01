@@ -72,7 +72,16 @@ public without sharing class AMCustomerExtension {
        
     }
     public PageReference saveAction(){
+        System.debug(LoggingLevel.INFO, '*** 进入saveAction: ');
 		try {
+            System.debug(LoggingLevel.INFO, '*** cusAP.Subject_Group__c: ' + cusAP.Subject_Group__c);
+            System.debug(LoggingLevel.INFO, '*** : cusAp.Term_of_Payment__c' + cusAp.Term_of_Payment__c);
+            if ( cusAP.Subject_Group__c == 'Z001' && ( cusAp.Term_of_Payment__c <> 'YZ00' || cusAp.Term_of_Payment1__c <> 'YZ00')){
+                ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.ERROR,'准客户付款条件必须为YZ00 预付100%'));    
+                return null;
+            }
+            System.debug(LoggingLevel.INFO, '*** Test: ');
+            cusap.SAPID__c = cusAP.Account_Number__c;
 		    upsert cusAP;
 		}
 		catch (Exception e) {
@@ -162,6 +171,7 @@ public without sharing class AMCustomerExtension {
             return null;
             }
         }
+        System.debug(LoggingLevel.INFO, '*** :isDeletedStatus ' + isDeletedStatus);
         //当编辑删除子表时，删除对应的记录
         if (isDeletedStatus) {
             if (delListContactPF.size()>0) {

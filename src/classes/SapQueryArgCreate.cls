@@ -874,23 +874,11 @@ public with sharing class SapQueryArgCreate {
     }
 
 //客户信用贷款主数据申请
-    // public static String createSapCreditLoanQueryDesc(String Account,String CreditArea){
-    //     List<Map<String,String>> lstCon = new List<Map<String,String>>();
-    //     Integer index = 1;
-    //     if(!String.isBlank(Account)){
-    //         lstCon.add(createCondition(index,'Account_Number__c','String','=',Account));
-    //         index = index + 1;
-    //     }
-    //     System.debug(LoggingLevel.INFO, '*** lstCon[0]: ' + lstCon[0]);
-    //     return JSON.serialize(createQueryArg('CustomerCreditLoan',lstCon));
-    // }
-
-
      public static String createSapCreditLoanQueryDesc(String Account,String CreditArea){
-        return createSapCreditLoanQueryDesc(Account,CreditArea,'','','','','','','','','','');
+        return createSapCreditLoanQueryDesc(Account,CreditArea,'','','','','','','','','','','');
     }
 
-    public static String createSapCreditLoanQueryDesc(String Account,String CreditArea,
+    public static String createSapCreditLoanQueryDesc(String Account,String CreditArea,String Currency2,
     String credit_line,String Amount_receivable, String Special_current_debt,
     String Credit_account_numbe,String Used_Credit_amount,String Sales_value,
     String Credit_validity,String Total_credit_risk,String Guarantee_amount_receivable,
@@ -914,10 +902,10 @@ public with sharing class SapQueryArgCreate {
             index = index + 1;
         }
         //币种
-        // if (!String.isBlank(Currency)) {
-        //     lstCon.add(createCondition(index,'Currency__c','String','LIKE',Currency__c));
-        //     index = index + 1;
-        // }
+        if (!String.isBlank(Currency2)) {
+            lstCon.add(createCondition(index,'Currency__c','String','LIKE',Currency2));
+            index = index + 1;
+        }
          //应收金额
         if (!String.isBlank(Amount_receivable)) {
             lstCon.add(createCondition(index,'Amount_receivable__c','String','LIKE',Amount_receivable));

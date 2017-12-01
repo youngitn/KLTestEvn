@@ -11,17 +11,7 @@
 <-->
 
 <apex:page standardController="Approval_Managed__c" extensions="AMCustomerCreditLoanExtension" >
-<!-- <head>
-    <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
-    <script type="text/javascript" src="/jquery/jquery.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $("#select_btn").click(function () {
-                queryAccountInfo();
-            });
-        }) 
-    </script>
-</head> -->
+
 <html>
 <body>
 <apex:sectionHeader title="客户信用贷款主数据申请" subtitle="新建/客户信用贷款主数据申请"></apex:sectionHeader>

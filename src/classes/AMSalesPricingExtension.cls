@@ -124,6 +124,7 @@ public with sharing class AMSalesPricingExtension {
             String str2 = Utils.postToSAP(str1);
             System.debug(str2);
             SapWebServiceReturnArgs args = (SapWebServiceReturnArgs)JSON.deserialize(str2, SapWebServiceReturnArgs.class);
+            System.debug(args);
             System.debug(LoggingLevel.INFO, '*** listDetail: ' + listDetail);
             if (args.status != '1') {
                 ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '查询出错:'+args.message));
@@ -205,7 +206,7 @@ public with sharing class AMSalesPricingExtension {
 
     }
 
-
+// 在Salesforce主动推送数据到SAP后，接收从SAP返回的调用结果
     public without sharing class SapWebServiceReturnArgs {
         //调用成功标记：1 - 表示成功，0 - 表示失败
         public String status {GET;SET;}

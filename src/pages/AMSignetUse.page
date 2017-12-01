@@ -105,8 +105,8 @@
             var desc22 = j$("[id$='Contract_number']"); 
 
             if (approvalValue == "01") {
-                desc1.hide();
-                desc1.parent().prev().children("label").hide();
+                desc1.show();
+                desc1.parent().prev().children("label").show();
 
                 desc2.show();
                 desc2.parent().prev().children("label").show();
@@ -184,8 +184,8 @@
                 desc4.show();
                 desc4.parent().prev().children("label").show();
 
-                desc5.hide();
-                desc5.parent().prev().children("label").hide();
+                desc5.show();
+                desc5.parent().prev().children("label").show();
 
                 desc6.show();
                 desc6.parent().prev().children("label").show();
@@ -193,8 +193,8 @@
                 desc7.show();
                 desc7.parent().prev().children("label").show();
 
-                desc8.hide();
-                desc8.parent().prev().children("label").hide();
+                desc8.show();
+                desc8.parent().prev().children("label").show();
 
                 desc9.hide();
                 desc9.parent().prev().children("label").hide();
@@ -239,7 +239,7 @@
                 desc22.parent().prev().children("label").hide();
 
             }else if (approvalValue == "03") {
-                  desc1.show();
+                desc1.show();
                 desc1.parent().prev().children("label").show();
 
                 desc2.hide();
@@ -251,8 +251,8 @@
                 desc4.show();
                 desc4.parent().prev().children("label").show();
 
-                desc5.hide();
-                desc5.parent().prev().children("label").hide();
+                desc5.show();
+                desc5.parent().prev().children("label").show();
 
                 desc6.show();
                 desc6.parent().prev().children("label").show();
@@ -260,8 +260,8 @@
                 desc7.show();
                 desc7.parent().prev().children("label").show();
 
-                desc8.hide();
-                desc8.parent().prev().children("label").hide();
+                desc8.show();
+                desc8.parent().prev().children("label").show();
 
                 desc9.hide();
                 desc9.parent().prev().children("label").hide();
@@ -318,8 +318,8 @@
                 desc4.show();
                 desc4.parent().prev().children("label").show();
 
-                desc5.hide();
-                desc5.parent().prev().children("label").hide();
+                desc5.show();
+                desc5.parent().prev().children("label").show();
 
                 desc6.show();
                 desc6.parent().prev().children("label").show();
@@ -327,8 +327,8 @@
                 desc7.hide();
                 desc7.parent().prev().children("label").hide();
 
-                desc8.hide();
-                desc8.parent().prev().children("label").hide();
+                desc8.show();
+                desc8.parent().prev().children("label").show();
 
                 desc9.hide();
                 desc9.parent().prev().children("label").hide();
@@ -416,20 +416,19 @@
             	<apex:inputField id="file_type" value="{!am.file_type__c}" required="true" onchange="toggleData()"></apex:inputField>
             	<!-- 文件名称 -->
             	<apex:inputField id="FileName" value="{!am.FileName__c}" required="true"></apex:inputField>
-            	
-            	<!-- 数量 -->
-            	<apex:inputField id="Quantity" value="{!am.Quantity__c}" required="true"></apex:inputField>
             	<!-- 内容概述 -->
-            	<apex:inputField id="Summary_content" value="{!am.Summary_content__c}" required="true" style="width: 80%"></apex:inputField>
-            	<!-- 公司代码 -->
-            	<apex:inputField id="company_number" value="{!am.company_number__c}"></apex:inputField>
+                <apex:inputField id="Summary_content" value="{!am.Summary_content__c}" required="true" style="width: 80%"></apex:inputField>
             	
+            	<!-- 公司代码 -->
+            	<apex:inputField id="company_number" value="{!am.company_number__c}" required="true"></apex:inputField>
+            	<!-- 数量 -->
+                <apex:inputField id="Quantity" value="{!am.Quantity__c}" required="true"></apex:inputField>
                  <!-- 客户 -->
                 <apex:inputField id="Account" value="{!am.Account__c}" ></apex:inputField>
                 <!-- 客户编号 -->
                 <apex:outputField id="Account_Number" value="{!am.Account_Number__c}"></apex:outputField> 
             	<!-- 付款条件 -->
-            	<apex:inputField id="Term_of_Payment" value="{!am.Term_of_Payment__c}"></apex:inputField>
+            	<apex:inputField id="Term_of_Payment" value="{!am.Term_of_Payment__c}" required="true"></apex:inputField>
             	<!-- 付款条件描述 -->
             	<!-- <apex:inputField id="payment_terms_describe" value="{!am.payment_terms_describe__c}" style="width: 80%"></apex:inputField> -->
             	<!-- 中信保单号 -->

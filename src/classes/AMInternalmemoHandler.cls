@@ -114,7 +114,7 @@ public without sharing class AMInternalmemoHandler implements Triggers.Handler {
     }else if (cam.Factory__c != '3000' && cam.TYPE__c == '07'){
         lstID.add(utils.getUserByEmployeeCode('10219008')); //伍建辉
 
-    }else if (cam.Factory__c != '3000' && (cam.TYPE__c == '08' || cam.TYPE__c == '10' || cam.TYPE__c == '13')) {
+    }else if (cam.Factory__c != '3000' && (cam.TYPE__c == '08' || cam.TYPE__c == '10')) {
         lstID.add(utils.getUserByEmployeeCode('10210156')); //李燕
         
     }else if (cam.Factory__c != '3000' && cam.TYPE__c == '19') {
@@ -123,8 +123,14 @@ public without sharing class AMInternalmemoHandler implements Triggers.Handler {
     }else if (cam.Factory__c != '3000' && cam.TYPE__c == '12') {
         lstID.add(utils.getUserByEmployeeCode('10210225')); //徐井西
 
-    }else if (cam.Factory__c != '3000' && cam.TYPE__c == '13') {
-        lstID.add(utils.getUserByEmployeeCode('10210403')); //赵敏
+    }else if (cam.Factory__c == '1000' && cam.TYPE__c == '13') {
+        lstID.add(utils.getUserByEmployeeCode('10210018')); //崔雪莉
+
+    }else if (cam.Factory__c == '6000' && cam.TYPE__c == '13') {
+        lstID.add(utils.getUserByEmployeeCode('60210029')); //刘帅
+
+    }else if (cam.Factory__c == '2000' && cam.TYPE__c == '13') {
+        lstID.add(utils.getUserByEmployeeCode('10211072')); //康翠丽
         
     }else if (cam.Factory__c != '3000' && cam.TYPE__c == '20') {
         lstID.add(utils.getUserByEmployeeCode('10212239')); //由张大华变更为彦斌

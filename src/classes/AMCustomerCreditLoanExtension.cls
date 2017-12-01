@@ -1,4 +1,4 @@
-public class AMCustomerCreditLoanExtension {   
+public class AMCustomerCreditLoanExtension {    
  
     public Approval_Managed__c am {get;set;} 
     public List<Approval_Managed__c> listam{get;set;} 
@@ -62,18 +62,20 @@ public class AMCustomerCreditLoanExtension {
             ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING,'请输入客户名称'));    
             return null;
         }
-        // AND RecordType.DeveloperName = 'Staff'LIMIT 1
         Account con = [SELECT Name, AccountNumber FROM Account WHERE Id = :am.Account__c ];
         try{
             String str1 = SapQueryArgCreate.createSapCreditLoanQueryDesc(con.AccountNumber,am.CreditArea__c);
             
-            System.debug(str1); 
+            System.debug(str1);  
             String str2 = Utils.postToSAP(str1);
+            System.debug(str2); 
             SapWebServiceReturnArgs args = (SapWebServiceReturnArgs)JSON.deserialize(str2, SapWebServiceReturnArgs.class);
-            System.debug(LoggingLevel.INFO, '*** args: ' + args);
-            Approval_Managed__c amget = (Approval_Managed__c)JSON.deserialize(JSON.serialize(args.content[0].main), Approval_Managed__c.class);
+            System.debug(LoggingLevel.INFO, '*** 输出反馈args: ' + args);
+            Approval_Managed__c amget = (Approval_Managed__c)JSON.deserialize(JSON.serialize(args.content[0]), Approval_Managed__c.class);
+            System.debug(amget); 
+            am.Account_Number__c = con.AccountNumber;
             am.credit_line__c = amget.credit_line__c;
-            // am.Currency__c = amget.Currency__c;
+            am.Currency__c = amget.Currency__c;
             am.Amount_receivable__c = amget.Amount_receivable__c;
             am.Special_current_debt__c = amget.Special_current_debt__c;
             am.Credit_account_numbe__c = amget.Credit_account_numbe__c;
@@ -84,7 +86,7 @@ public class AMCustomerCreditLoanExtension {
             am.Guarantee_amount_receivable__c = amget.Guarantee_amount_receivable__c;
             am.Risk_kind__c = amget.Risk_kind__c;
            
-        }catch(Exception ex){ 
+        }catch(Exception ex){  
             ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.ERROR,ex.getMessage() + '\n' + ex.getStackTraceString()));    
         }
        
@@ -92,6 +94,13 @@ public class AMCustomerCreditLoanExtension {
     }
 
 
-
+     public without sharing class SapWebServiceReturnArgs {
+        //调用成功标记：1 - 表示成功，0 - 表示失败
+        public String status {GET;SET;}
+        //调用描述：成功为空或相关信息，失败时为失败原因信息
+        public String message {GET;SET;}
+        //调用返回结果
+        public List<Approval_Managed__c> content{GET;SET;}
+    }
 
 }
