@@ -106,7 +106,9 @@ public without sharing class ApprovalPermissionHandler implements Triggers.Handl
                             //比较值是否发生变动
                             if(newValue == null){
                                 System.debug('*** 必输字段:' +field );
-                                obj.addError('字段:' +field+' 必输');
+                                //20171201取得欄位字段標籤
+                                Map<String, Schema.SObjectField> myFields = obj.getSObjectType().getDescribe().fields.getMap();
+                                obj.addError('字段:' +myFields.get(field).getDescribe().getLabel() +' 必输');
                                 break;
                             }
                         }
