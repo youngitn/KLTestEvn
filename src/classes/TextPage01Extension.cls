@@ -1,9 +1,11 @@
 global with sharing class TextPage01Extension
 {
-    public String v_bind_title {Set;get;}  
+    public String v_bind_title {Set;get;} 
+    public String objList {get;set;} 
     public TextPage01Extension()
     {
         v_bind_title = 'v-bind:';
+        objList = JSON.serialize([SELECT Number__c,Name FROM Contact WHERE Human_Range__c = '3000']);
     }
     // 将 queryPa0001暴露到页面中，必须用GLOBAL，否则页面无法调用
     @RemoteAction

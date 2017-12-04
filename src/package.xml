@@ -13,7 +13,7 @@
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>TryVuejs</members>
+        <members>JSbundle</members>
         <name>StaticResource</name>
     </types>
     <version>41.0</version>

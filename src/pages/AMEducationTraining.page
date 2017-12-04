@@ -2,119 +2,12 @@
     <!-- 教育訓練申請單 -->
     <html>
         <head>
-            <script src="/jslibrary/1510689194000/sfdc/Activity.js"></script>
+            
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-            <script>
-                var j$ = jQuery.noConflict();
-
-    //2017/10/19
-    j$(function() {
-        // Handler for .ready() called.
-        var participants = j$("div[id$='participants']");
-        var ExTraining = j$("div[id$='ExternalTraining']");
-        var InTraining = j$("div[id$='InternalTraining']");
-        participants.hide();
-
-        j$("select[id$='pl_EducationTrainingType']").change(
-
-            function() {
-                if (j$(this).val() == 'InternalTraining') {
-                    participants.show();
-                    ExTraining.hide();
-                    InTraining.show();
-                } else if (j$(this).val() == 'ExternalTraining') {
-                    participants.hide();
-                    ExTraining.show();
-                    InTraining.hide();
-                    j$("input[id$='EducationTrainingExternalLecturerName']").removeAttr('disabled');
-                } else {
-                    participants.hide();
-
-                }
-            });
-
-        j$("select[id$='pl_EducationTrainingLocationSelect']").change(
-
-            function() {
-                //alert(j$(this).val());
-                if (j$(this).val() =='' && j$("select[id$='pl_EducationTrainingType']").val() == 'InternalTraining') {
-                   alert('請填寫訓練地點欄位');
-                   j$("input[id$='EducationTrainingLocation']").removeAttr('disabled');
-                }else{
-                    j$("input[id$='EducationTrainingLocation']").attr('disabled','disabled');
-                } 
-            });
-
-        j$("input[id$='EducationTrainingTransferDateTime']").attr('disabled','disabled');
-        j$("select[id$='pl_EducationTrainingExamination']").change(
-
-            function() {
-                //alert(j$(this).val());
-                if (j$(this).val() == 'trainingTransfer') {
-                   alert('請填寫轉訓時間');
-                   j$("input[id$='EducationTrainingTransferDateTime']").removeAttr('disabled');
-                }else{
-                	j$("input[id$='EducationTrainingTransferDateTime']").attr('disabled','disabled');
-                }
-            });
-		
-		j$("input[id$='EducationTrainingExternalLecturerName']").attr('disabled','disabled');        
-         j$("select[id$='pl_EducationTrainingInHouseLecturerHiring']").change(
-
-            function() {
-                //alert(j$(this).val());
-                if (j$(this).val() == 'Internal') {
-                   j$("input[id$='EducationTrainingExternalLecturerName']").attr('disabled','disabled');
-                   j$("input[id$='EducationTrainingInHouseLecturerName']").removeAttr('disabled','disabled');
-                   alert('請填寫內訓內聘講師姓名!');
-                }else if(j$(this).val() == 'External'){
-                    j$("input[id$='EducationTrainingExternalLecturerName']").removeAttr('disabled');
-                    j$("input[id$='EducationTrainingInHouseLecturerName']").attr('disabled','disabled');
-                    alert('請填寫內訓外聘/外訓 講師名稱!');
-                } 
-            });
-        
-
-        j$("input[id$='doSave']").click(
-
-            function() {
-                //alert('123');
-                if (j$("select[id$='pl_EducationTrainingLocationSelect']").val() == '' && j$("input[id$='EducationTrainingLocation']").val()=='' && j$("select[id$='pl_EducationTrainingType']").val() == 'InternalTraining') {
-                   alert('請填寫訓練地點欄位!');
-                   return false;
-                } 
-            });
-
-        j$("input[id$='BegingTime__c']").on('focus',function(){
+            <script src="/jslibrary/1510689194000/sfdc/Activity.js"></script>
+            <script src="{!URLFOR($Resource.JSbundle, '/libs/vue.js')}"></script>
+            <script src="{!URLFOR($Resource.JSbundle, '/app/AMEducationTrainingJS.js')}"></script>
             
-            ActivityFunction.showTimePicker(j$(this).attr('id'));
-
-        });
-        j$("input[id$='EndTime__c']").on('focus',function(){
-            
-            ActivityFunction.showTimePicker(j$(this).attr('id'));
-
-        });
-        //onfocus="ActivityFunction.saveStartTime('StartDateTime','StartDateTime_time');ActivityFunction.showTimePicker('StartDateTime_time')"
-
-    });
-    function deleteItemBankDetail(rowID) {
-        deleteRow(rowID);
-    }
-    function myJavascriptFunc() {
-        alert('Entered Javascript');
-        aaa();
-    }
-    function setNameValue(val,idx){
-        alert(val+'-'+idx);
-        //j$("input[id$='nameValue']").val(val);
-    }
-
-    function onCompleteJSFunc(){
-        //alert('OK');
-        j$('#participantsTable').find('input[name^="j_id0"]');
-    }
-            </script>
         </head>
         <body>
             <apex:sectionheader subtitle="新建/编輯" title="教育訓練申請單">
@@ -170,16 +63,16 @@
                         </apex:outputfield>
                         <!--apex:inputField value="{!am.Approval_Name__c}"></apex:inputField-->
                     </apex:pageblocksection>
-                    <apex:pageblocksection title="申請資訊">
+                    <apex:pageblocksection title="申請資訊" id="app-5">
                         <!--apex:outputField value="{!am.Dept_Name__c}"></apex:outputField-->
                         <!-- 申請人 -->
-                        <apex:inputfield onchange="getContactEmpidByNameJSFunc(this.value)"  value="{!am.Applicant__c}">
+                        <apex:inputfield id="Applicant__c" value="{!am.Applicant__c}">
                         </apex:inputfield>
                         <apex:outputpanel id="ApplicantEmpid">
                             <apex:pageblocksectionitem >
                                 <apex:outputlabel for="EmpidNextApplicant" value="員工編號:">
                                 </apex:outputlabel>
-                                <input id="EmpidNextApplicant" label="員工編號" type="text" value="{!ApplicantEmpid}"/>
+                                <input id="EmpidNextApplicant" label="員工編號" type="text" v-model="empid"/>
                             </apex:pageblocksectionitem>
                         </apex:outputpanel>
                         <!-- 教育訓練類別* -->

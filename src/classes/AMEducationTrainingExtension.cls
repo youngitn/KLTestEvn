@@ -5,7 +5,7 @@ public class AMEducationTrainingExtension
     public Contact contact {get; set;}
     public String ApplicantEmpid  {get; set;}
     public Event EventX  {get; set;}
-
+    public String objList {get;set;} 
     //public List<Contact > contactList {get; set;}
     //public String  contactName{Get; Set;}
     //參訓人員
@@ -28,6 +28,7 @@ public class AMEducationTrainingExtension
         participants = new List<participant>();
         contact = new Contact();
         EventX = new Event();
+        objList = JSON.serialize([SELECT Number__c,Name FROM Contact WHERE Human_Range__c = '3000']);
 
     }
 
