@@ -41,10 +41,10 @@ public without sharing class AMPurchaseOrderHandler implements Triggers.Handler 
 		cam.Approval_User1__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(1),null),0);
 		//节点二 采购课长DM采购组--岗位
 		cam.Approval_User2__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2),null),0);
-		//节点三 采购课长IM采购组-岗位
+		//节点三 
 		cam.Approval_User3__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3),null),0);
 		//节点四 采购经理-岗位
-		cam.Approval_User4__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4),null),0);
+		cam.Approval_User4__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4),cam.Applicant__c),0);
 		//节点五 管理层_3000-指定人员
 		cam.Approval_User5__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(5),null),0);
 		//节点六 管理层_1000-指定人员

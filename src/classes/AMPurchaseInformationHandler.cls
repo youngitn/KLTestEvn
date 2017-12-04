@@ -46,7 +46,7 @@
 		//节点二：
 			cam.Approval_User2__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2),null),0);
 		//节点三：
-			cam.Approval_User3__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3),null),0);
+			cam.Approval_User3__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3),cam.Applicant__c),0);
 		//节点四：
 			cam.Approval_User4__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4),null),0);
 		//节点五： 特殊计算
@@ -72,7 +72,7 @@
 	 	//张 伟-10210919
 		 }else if(cam.Applicant_Corp_Code__c != '3000'  && 
 	 		cam.Kind_of_Material__c == 'A'        &&
-	 		cam.Applicant_Code__c == '10210940'){
+	 		cam.Applicant_Code__c != '10210940'){
 	 		return utils.getUserByEmployeeCode('10210919');
 	 	//王 丽珍-10210727
 		 }else if(cam.Applicant_Corp_Code__c != '3000'  && 

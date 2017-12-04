@@ -261,11 +261,14 @@ public without sharing class AMInformationServiceHandler implements Triggers.Han
           lstID.add(utils.getUserByEmployeeCode('10210454')); //贡呈慧
         }
           if (cam.Factory__c != '3000' && cam.ServiceCategory__c == '230') {
-           List<Organizational__c> lstOrg = [SELECT Id FROM Organizational__c 
-                                              WHERE RecordType.DeveloperName = 'Job_Title' AND Post_Number__c = '30000535'];
-            if (lstOrg.size()>0) {
-              lstID = utils.approvalSearchUserByJob(lstOrg[0].Id);
-            }
+           // List<Organizational__c> lstOrg = [SELECT Id FROM Organizational__c 
+           //                                    WHERE RecordType.DeveloperName = 'Job_Title' AND Post_Number__c = '30000535'];
+           //  if (lstOrg.size()>0) {
+           //    lstID = utils.approvalSearchUserByJob(lstOrg[0].Id);
+           //  }
+            lstID.add(utils.getUserByEmployeeCode('10212364')); //王金苹
+
+
         }
 
         //TW 
