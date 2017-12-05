@@ -3,21 +3,29 @@
     <html>
         <head>
             
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            <script src="{!URLFOR($Resource.JSbundle, '/libs/jquery-1.12.0.js')}"></script>
             <script src="/jslibrary/1510689194000/sfdc/Activity.js"></script>
             <script src="{!URLFOR($Resource.JSbundle, '/libs/vue.js')}"></script>
+            <script src="{!URLFOR($Resource.JSbundle, '/app/vueComponents.js')}"></script>
+            <script src="{!URLFOR($Resource.JSbundle, '/app/JValidator.js')}"></script>
             <script src="{!URLFOR($Resource.JSbundle, '/app/AMEducationTrainingJS.js')}"></script>
+
             <script>
+                //需要controller的變數資料 必須寫在VF編譯
+               
                 var contactjson = JSON.parse('{!JSENCODE(objList)}');
+                
+                
             </script>
         </head>
         <body>
+
             <apex:sectionheader subtitle="新建/编輯" title="教育訓練申請單">
             </apex:sectionheader>
             <!-- 页面信息提示区 -->
             <apex:pagemessages escape="true">
             </apex:pagemessages>
-            <apex:form id="edform">
+            <apex:form id="edform_validateForm">
                 <apex:actionfunction action="{!getContactEmpidByName}" name="getContactEmpidByNameJSFunc" rerender="ApplicantEmpid">
                     <apex:param name="name" value="">
                     </apex:param>
@@ -32,7 +40,7 @@
                 </apex:actionfunction> -->
                 <apex:pageblock >
                     <apex:pageblockbuttons >
-                        <apex:commandbutton action="{!save}" id="doSave" value="保存">
+                        <apex:commandbutton action="{!save}" id="jq_vsubmit_doSave" value="保存" >
                         </apex:commandbutton>
                         <apex:commandbutton action="{!Cancel}" value="取消">
                         </apex:commandbutton>
@@ -66,9 +74,11 @@
                         <!--apex:inputField value="{!am.Approval_Name__c}"></apex:inputField-->
                     </apex:pageblocksection>
                     <apex:pageblocksection title="申請資訊" id="app-5">
+                         <test-ccomponent v-bind="{contact:contactMap}"></test-ccomponent>
+                        
                         <!--apex:outputField value="{!am.Dept_Name__c}"></apex:outputField-->
                         <!-- 申請人 -->
-                        <apex:inputfield id="Applicant__c" value="{!am.Applicant__c}">
+                        <apex:inputfield id="jq_validate_Applicant__c" value="{!am.Applicant__c}">
                         </apex:inputfield>
                         <apex:outputpanel id="ApplicantEmpid">
                             <apex:pageblocksectionitem >
