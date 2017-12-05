@@ -7,7 +7,9 @@
             <script src="/jslibrary/1510689194000/sfdc/Activity.js"></script>
             <script src="{!URLFOR($Resource.JSbundle, '/libs/vue.js')}"></script>
             <script src="{!URLFOR($Resource.JSbundle, '/app/AMEducationTrainingJS.js')}"></script>
-            
+            <script>
+                var contactjson = JSON.parse('{!JSENCODE(objList)}');
+            </script>
         </head>
         <body>
             <apex:sectionheader subtitle="新建/编輯" title="教育訓練申請單">
@@ -72,7 +74,7 @@
                             <apex:pageblocksectionitem >
                                 <apex:outputlabel for="EmpidNextApplicant" value="員工編號:">
                                 </apex:outputlabel>
-                                <input id="EmpidNextApplicant" label="員工編號" type="text" v-model="empid"/>
+                                <input id="EmpidNextApplicant" label="員工編號" type="text" v-model="empid"></input>
                             </apex:pageblocksectionitem>
                         </apex:outputpanel>
                         <!-- 教育訓練類別* -->

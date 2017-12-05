@@ -243,9 +243,47 @@
 			"file": "src/pages/AMEducationTraining.page",
 			"settings":
 			{
-				"buffer_size": 19480,
+				"buffer_size": 14262,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/staticresources/JSbundle.resource-meta.xml",
+			"settings":
+			{
+				"buffer_size": 249,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "resource-bundles/TryVuejs.resource/app/AMEducationTrainingJS.js",
+			"settings":
+			{
+				"buffer_size": 6919,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "                var j$ = jQuery.noConflict();\n                //2017/10/19\n                j$(function() {\n                    alert('1425');\n                    vueJs();\n                    // Handler for .ready() called.\n                    var participants = j$(\"div[id$='participants']\");\n                    var ExTraining = j$(\"div[id$='ExternalTraining']\");\n                    var InTraining = j$(\"div[id$='InternalTraining']\");\n                    participants.hide();\n                    j$(\"select[id$='pl_EducationTrainingType']\").change(function() {\n                        if (j$(this).val() == 'InternalTraining') {\n                            participants.show();\n                            ExTraining.hide();\n                            InTraining.show();\n                        } else if (j$(this).val() == 'ExternalTraining') {\n                            participants.hide();\n                            ExTraining.show();\n                            InTraining.hide();\n                            j$(\"input[id$='EducationTrainingExternalLecturerName']\").removeAttr('disabled');\n                        } else {\n                            participants.hide();\n                        }\n                    });\n                    j$(\"select[id$='pl_EducationTrainingLocationSelect']\").change(function() {\n                        //alert(j$(this).val());\n                        if (j$(this).val() == '' && j$(\"select[id$='pl_EducationTrainingType']\").val() == 'InternalTraining') {\n                            alert('請填寫訓練地點欄位');\n                            j$(\"input[id$='EducationTrainingLocation']\").removeAttr('disabled');\n                        } else {\n                            j$(\"input[id$='EducationTrainingLocation']\").attr('disabled', 'disabled');\n                        }\n                        return false;\n                    });\n                    j$(\"input[id$='EducationTrainingTransferDateTime']\").attr('disabled', 'disabled');\n                    j$(\"select[id$='pl_EducationTrainingExamination']\").change(function() {\n                        //alert(j$(this).val());\n                        if (j$(this).val() == 'trainingTransfer') {\n                            alert('請填寫轉訓時間');\n                            j$(\"input[id$='EducationTrainingTransferDateTime']\").removeAttr('disabled');\n                        } else {\n                            j$(\"input[id$='EducationTrainingTransferDateTime']\").attr('disabled', 'disabled');\n                        }\n                        return false;\n                    });\n                    j$(\"input[id$='EducationTrainingExternalLecturerName']\").attr('disabled', 'disabled');\n                    j$(\"select[id$='pl_EducationTrainingInHouseLecturerHiring']\").change(function() {\n                        //alert(j$(this).val());\n                        if (j$(this).val() == 'Internal') {\n                            j$(\"input[id$='EducationTrainingExternalLecturerName']\").attr('disabled', 'disabled');\n                            j$(\"input[id$='EducationTrainingInHouseLecturerName']\").removeAttr('disabled', 'disabled');\n                            alert('請填寫內訓內聘講師姓名!');\n                        } else if (j$(this).val() == 'External') {\n                            j$(\"input[id$='EducationTrainingExternalLecturerName']\").removeAttr('disabled');\n                            j$(\"input[id$='EducationTrainingInHouseLecturerName']\").attr('disabled', 'disabled');\n                            alert('請填寫內訓外聘/外訓 講師名稱!');\n                        }\n                        return false;\n                    });\n                    j$(\"input[id$='doSave']\").click(function() {\n                        //alert('123');\n                        if (j$(\"select[id$='pl_EducationTrainingLocationSelect']\").val() == '' && j$(\"input[id$='EducationTrainingLocation']\").val() == '' && j$(\"select[id$='pl_EducationTrainingType']\").val() == 'InternalTraining') {\n                            alert('請填寫訓練地點欄位!');\n                            return false;\n                        }\n                    });\n                    j$(\"input[id$='BegingTime__c']\").on('focus', function() {\n                        ActivityFunction.showTimePicker(j$(this).attr('id'));\n                    });\n                    j$(\"input[id$='EndTime__c']\").on('focus', function() {\n                        ActivityFunction.showTimePicker(j$(this).attr('id'));\n                    });\n                    //onfocus=\"ActivityFunction.saveStartTime('StartDateTime','StartDateTime_time');ActivityFunction.showTimePicker('StartDateTime_time')\"\n                });\n\n                function deleteItemBankDetail(rowID) {\n                    deleteRow(rowID);\n                }\n\n                function myJavascriptFunc() {\n                    alert('Entered Javascript');\n                    aaa();\n                }\n\n                function setNameValue(val, idx) {\n                    alert(val + '-' + idx);\n                    //j$(\"input[id$='nameValue']\").val(val);\n                }\n\n                function onCompleteJSFunc() {\n                    //alert('OK');\n                    j$('#participantsTable').find('input[name^=\"j_id0\"]');\n                }\n\n                function vueJs() {\n                    //取dom 並給屬性\n                    j$(\"input[id$='Applicant__c']\").attr(\"v-model.lazy\", \"name\");\n                    //定義vue\n                    var app5 = new Vue({\n                        el: j$(\"div[id$='app-5']\").get(0),\n                        data: {\n                            items: '',\n                            name: '',\n                            contactMap: new Map()\n                        },\n                        created: function() {\n                            this.fetchData();\n                        },\n                        computed: {\n                            empid: function() {\n                                return this.contactMap.get(this.name);\n                            }\n                        },\n                        methods: {\n                            fetchData: function() {\n                                var self = this;\n                                self.items = JSON.parse('{!JSENCODE(objList)}');\n                                var mapObj = new Map();\n                                var a = 0;\n                                for (var i = self.items.length - 1; i >= 0; i--) {\n                                    mapObj.set(self.items[i].Name, self.items[i].Number__c);\n                                    //console.log(self.items[i].Id);\n                                }\n                                //console.log('!!!!!!'+self.items[205].Id);\n                                self.contactMap = mapObj;\n                                //console.log(self.contactMap);\n                                //alert(mapObj);\n                            }\n                        }\n                    });\n                }",
+			"file": "resource-bundles/JSbundle.resource/app/AMEducationTrainingJS.js",
+			"file_size": 7182,
+			"file_write_time": 131568528932977854,
+			"settings":
+			{
+				"buffer_size": 6954,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "resource-bundles/JSbundle.resource/libs/vue.js",
+			"settings":
+			{
+				"buffer_size": 284067,
+				"line_ending": "Windows"
 			}
 		},
 		{
@@ -287,7 +325,7 @@
 			"file": "src/pages/VueTest.page",
 			"settings":
 			{
-				"buffer_size": 2506,
+				"buffer_size": 2505,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -307,6 +345,10 @@
 			[
 				"mavensmate:d",
 				"MavensMate: Deploy Resource Bundle..."
+			],
+			[
+				"mavensmate:c",
+				"MavensMate: Create Resource Bundle..."
 			],
 			[
 				"mavensmate:crea",
@@ -349,9 +391,11 @@
 	[
 		"/D/mmworkspace/TestEvn",
 		"/D/mmworkspace/TestEvn/resource-bundles",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/libs",
 		"/D/mmworkspace/TestEvn/resource-bundles/TryVuejs.resource",
 		"/D/mmworkspace/TestEvn/resource-bundles/TryVuejs.resource/app",
-		"/D/mmworkspace/TestEvn/resource-bundles/TryVuejs.resource/libs",
 		"/D/mmworkspace/TestEvn/src"
 	],
 	"file_history":
@@ -487,7 +531,7 @@
 	],
 	"find":
 	{
-		"height": 40.0
+		"height": 27.0
 	},
 	"find_in_files":
 	{
@@ -537,7 +581,7 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 8,
 			"sheets":
 			[
 				{
@@ -567,7 +611,7 @@
 						"translation.y": 114.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
@@ -594,7 +638,7 @@
 						"translation.y": 228.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 14,
 					"type": "text"
 				},
 				{
@@ -653,7 +697,7 @@
 						"translation.y": 855.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -683,7 +727,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
@@ -692,15 +736,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 19480,
+						"buffer_size": 14262,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6168,
-								6168
+								497,
+								518
 							]
 						],
 						"settings":
@@ -711,14 +755,132 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2782.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/staticresources/JSbundle.resource-meta.xml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 249,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								249,
+								249
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/XML/XML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "resource-bundles/TryVuejs.resource/app/AMEducationTrainingJS.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6919,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								6919
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "resource-bundles/JSbundle.resource/app/AMEducationTrainingJS.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6954,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								141,
+								127
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 9,
+					"file": "resource-bundles/JSbundle.resource/libs/vue.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 284067,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								136,
+								136
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
 					"semi_transient": false,
 					"settings":
 					{
@@ -741,11 +903,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 11,
 					"file": "src/classes/AMVendorHandler.cls",
 					"semi_transient": false,
 					"settings":
@@ -769,11 +931,11 @@
 						"translation.y": 171.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 12,
 					"file": "src/pages/TestPage01.page",
 					"semi_transient": false,
 					"settings":
@@ -785,8 +947,8 @@
 						"selection":
 						[
 							[
-								31,
-								63
+								310,
+								310
 							]
 						],
 						"settings":
@@ -799,11 +961,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 13,
 					"file": "src/classes/TextPage01Extension.cls",
 					"semi_transient": false,
 					"settings":
@@ -829,16 +991,16 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 14,
 					"file": "src/pages/VueTest.page",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2506,
+						"buffer_size": 2505,
 						"regions":
 						{
 						},
@@ -856,10 +1018,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 798.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 9,
 					"type": "text"
 				}
 			]

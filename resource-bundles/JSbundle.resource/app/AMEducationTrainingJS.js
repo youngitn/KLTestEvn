@@ -114,7 +114,7 @@
                         methods: {
                             fetchData: function() {
                                 var self = this;
-                                self.items = JSON.parse('{!JSENCODE(objList)}');
+                                self.items = contactjson;
                                 var mapObj = new Map();
                                 var a = 0;
                                 for (var i = self.items.length - 1; i >= 0; i--) {
