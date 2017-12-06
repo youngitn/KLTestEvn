@@ -1,7 +1,7 @@
 /**********************************************************************
  名    称：SF同步数据到SAP
  目    的：把SF放在同步队列中的数据同步到SAP
- 作    者：刘文俊(liuwenjun@bluelinksys.com)
+ 作    者：刘文俊(liuwenjun@bluelinksys.com) 
  创建日期：2017-05-12
  修 改 人：
  修改日期：
@@ -255,6 +255,7 @@ global class SyncFromSfToSapSchedule implements Schedulable {
                 s.SAPID__c = sapID;
             }
             Update s;
+            System.debug(LoggingLevel.INFO, '*** s: ' + s);
             return;
         }
         for (Custom_Approval_Managed__c am : [SELECT Id,Interface_Info__c,SAPID__c FROM Custom_Approval_Managed__c WHERE Id = :targetId]) {

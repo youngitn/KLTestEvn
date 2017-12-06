@@ -2237,8 +2237,8 @@ public without sharing class SapInputArgCreate {
         return strArgs; 
     }
 
-//客户信贷主数据申请
-   //创建传送给SAP Web Service的请PM通知单参数STEP1
+//客户信贷主数据申请 
+   //创建传送给SAP Web Service的客户信贷主数据申请参数STEP1
     public static String createSapCustomerCreditLoanInputArgs(String CustomerCreditLoanID){
         String sql = Utils.getApprovalSQL(SapApprovalEnum.CUSTOMERCREDITLOAN,true);
         sql = sql + ' WHERE Id = \'' + CustomerCreditLoanID + '\'';
@@ -2255,10 +2255,10 @@ public without sharing class SapInputArgCreate {
         List<Approval_Managed_Item__c> items = new List<Approval_Managed_Item__c>();
         
             System.debug('*** xxxxxxxxxxx：' + amCustomerCreditLoan.Id);
-            System.debug(LoggingLevel.INFO, '*** items: ' + items);
+            System.debug(LoggingLevel.INFO, '*** items: ' + items); 
         return createSapCustomerCreditLoanInputArgs(amCustomerCreditLoan,items);
     }
-    //创建传送给SAP Web Service的请假参数STEP3
+    //创建传送给SAP Web Service的请假参数STEP3 
     public static String createSapCustomerCreditLoanInputArgs(Approval_Managed__c amCustomerCreditLoan,List<Approval_Managed_Item__c> items){
         String strArgs = '';
         try{

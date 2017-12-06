@@ -524,8 +524,9 @@
                 <apex:inputfield id="Spec_Equipment5__c" value="{!cusAP.Spec_Equipment5__c}">
                 </apex:inputfield>
                 <!--注释-->
-                <apex:inputfield id="Remark__c" value="{!cusAP.Remark__c}">
-                </apex:inputfield>
+                <apex:inputfield id="Remark__c" value="{!cusAP.Remark__c}" />
+                <!--原因备注-->
+                <apex:inputfield id="Remark_reason__c" value="{!cusAP.Remark_reason__c}" required="true" />
             </apex:pageblocksection>
             <apex:outputpanel id="outputs">
                 <div class="pbSubheader brandTertiaryBgr tertiaryPalette">

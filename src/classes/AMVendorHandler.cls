@@ -53,7 +53,7 @@ public without sharing class AMVendorHandler implements Triggers.Handler {
 		//节点八 相关部门一阶主管_管理部 指定人员
 		cam.Approval_User8__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8),null),0);
 		//节点九 采购经理_主管 指定岗位
-		cam.Approval_User9__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(9),null),0);
+		cam.Approval_User9__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(9),cam.Applicant__c),0);
 		//节点十 采购经理_台湾主管 指定人员
 		cam.Approval_User10__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(10),null),0);
 		//节点十一 财务人员_台湾 指定人员

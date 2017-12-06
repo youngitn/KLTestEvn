@@ -285,6 +285,8 @@
                 <apex:inputField value="{!cusAP.Sales_Remark__c}"/>
                 <!-- 文本（财政注释） -->
                 <apex:inputField value="{!cusAP.Finance_Remark__c}"/>
+                <!-- 原因备注 -->
+                <apex:inputField value="{!cusAP.Remark_reason__c}"/>
                 </apex:pageBlockSection>
             <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>银行细目</h3></div>
             <apex:commandButton action="{!addBankDetail}" value="新增" reRender="output1" status="retrieveStatus" immediate="true"/>
