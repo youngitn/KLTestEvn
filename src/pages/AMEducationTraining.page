@@ -73,8 +73,9 @@
                         </apex:outputfield>
                         <!--apex:inputField value="{!am.Approval_Name__c}"></apex:inputField-->
                     </apex:pageblocksection>
-                    <apex:pageblocksection title="申請資訊" id="app-5">
-                         <test-ccomponent v-bind="{contact:contactMap}"></test-ccomponent>
+                    <apex:pageblocksection title="申請資訊" id="appGetNumberByName">
+                         <!-- vue組件測試 -->
+                         <!-- <test-ccomponent v-bind="{contact:contactMap}"></test-ccomponent> -->
                         
                         <!--apex:outputField value="{!am.Dept_Name__c}"></apex:outputField-->
                         <!-- 申請人 -->
