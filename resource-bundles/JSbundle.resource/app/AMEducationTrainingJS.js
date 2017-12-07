@@ -70,6 +70,8 @@
                      //onfocus="ActivityFunction.saveStartTime('StartDateTime','StartDateTime_time');ActivityFunction.showTimePicker('StartDateTime_time')"
                      //目前只提供判斷空值功能
                      j$('form[id*=validateForm]').formValidator();
+                     
+
                  });
 
                  function deleteItemBankDetail(rowID) {
@@ -95,8 +97,8 @@
                      //取dom 並給屬性
                      j$("input[id$='Applicant__c']").attr("v-model.lazy", "name");
                      //定義vue
-                     var app5 = new Vue({
-                         el: j$("div[id$='app-5']").get(0),
+                     var appGetNumberByName = new Vue({
+                         el: j$("div[id$='appGetNumberByName']").get(0),
                          //components:{'test-ccomponent','test-ccomponent2'},
                          data: {
                              items: '',
