@@ -93,8 +93,8 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
                         empidList.add(p.substringAfter('-'));
 
                     }
-                    for(User ps :[SELECT Id, Email FROM User WHERE Number__c IN : empidList]){
-                        sendMailToParticipants(ps.email, cam);
+                    for(User ps :[SELECT Id, Email, Name FROM User WHERE Number__c IN : empidList]){
+                        sendMailToParticipants(ps.Name, ps.email, cam);
                     }
                     
                     
@@ -130,39 +130,29 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         //Id myid = Id.valueOf('00528000006o8EJAAY');
         // cam.Approval_User1__c     = myid;
         //人力資源課承辦人
-        cam.Approval_User2__c     = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2), null), 0);
+        cam.Approval_User2__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2), null), 0);
 
         //人力資源課
-        cam.Approval_User3__c     = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3), null), 0);
+        cam.Approval_User3__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3), null), 0);
 
         //管理部
-        cam.Approval_User4__c     = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4), null), 0);
+        cam.Approval_User4__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4), null), 0);
 
         //總經理核示
-        cam.Approval_User5__c     = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(5), null), 0);
-        System.debug(cam.Approval_User1__c + ' ' + cam.Approval_User2__c + ' ' + cam.Approval_User3__c + ' ' + cam.Approval_User4__c + ' ' + cam.Approval_User5__c);
-        //cam.Applicant__c 为与SALESFORCE帐号相关的申请人
-        //cam.Employee__c  为界面上新增的员工字段，与SALESFORCE账号无关
-        //指定申请人部门主管，一阶主管，上级主管
-        //cam.Approval_User2__c     = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2),cam.指定申请人字段),0);
-
-        //指定作业人
-        //cam.Approval_User2__c     = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2),cam.指定作业人字段),0);
-
-        //其他审批人规则
-        //cam.Approval_User4__c     = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4),null),0);
+        cam.Approval_User5__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(5), null), 0);       
+   
 
         //6-13节点审批人设置
-        cam.Approval_User6__c     = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(6), cam.Applicant__c), 0);
-        cam.Approval_User7__c     = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(7), cam.Applicant__c), 0);
-        cam.Approval_User8__c  = utils.getUserByEmployeeCode('10210853');
-        cam.Approval_User9__c  = utils.getUserByEmployeeCode('10210016');//郭 红飞-10210016
-        cam.Approval_User10__c  = utils.getUserByEmployeeCode('10212239');//颜 斌-10212239
-        cam.Approval_User11__c = utils.getUserByEmployeeCode(cam.Applicant__c);
-        cam.Approval_User12__c     = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(12), cam.Applicant__c), 0);
-        cam.Approval_User13__c  = utils.getUserByEmployeeCode('10212239');//颜 斌-10212239
+        cam.Approval_User6__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(6), cam.Applicant__c), 0);
+        cam.Approval_User7__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(7), cam.Applicant__c), 0);
+        cam.Approval_User8__c       = utils.getUserByEmployeeCode('10210853');
+        cam.Approval_User9__c       = utils.getUserByEmployeeCode('10210016');//郭 红飞-10210016
+        cam.Approval_User10__c      = utils.getUserByEmployeeCode('10212239');//颜 斌-10212239
+        cam.Approval_User11__c      = utils.getUserByEmployeeCode(cam.Applicant__c);
+        cam.Approval_User12__c      = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(12), cam.Applicant__c), 0);
+        cam.Approval_User13__c      = utils.getUserByEmployeeCode('10212239');//颜 斌-10212239
     }
-    public void sendMailToParticipants(String email , Approval_Managed1__c am)
+    public void sendMailToParticipants(String name, String email , Approval_Managed1__c am)
     {
 
         Messaging.reserveSingleEmailCapacity(2);
@@ -194,7 +184,7 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         mail.setSenderDisplayName('Salesforce');
 
         // Specify the subject line for your email address.
-        mail.setSubject('Salesforce 教育訓練申請單 審核批准通知');
+        mail.setSubject('Salesforce 教育訓練申請單 參訓人:' + name + ' 審核批准通知');
 
         // Set to True if you want to BCC yourself on the email.
         mail.setBccSender(false);
@@ -204,9 +194,9 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         mail.setUseSignature(false);
 
         // Specify the text content of the email.
-        mail.setPlainTextBody('教育訓練申請單: 單號:' + am.Name + ' 申請人:' + am.Applicant__c  );
+        mail.setPlainTextBody('Hi,'+name+',您所參與的教育訓練申請流程 單號:' + am.Name + ' 申請人:' + am.Applicant__c + ',已通過審批.'  );
 
-        mail.setHtmlBody('詳情請至連結檢視:' + URL.getSalesforceBaseUrl() + '/' + am.Id );
+        mail.setHtmlBody('表單詳情請至連結檢視:' + URL.getSalesforceBaseUrl() + '/' + am.Id );
 
         // Send the email you have created.
         Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
