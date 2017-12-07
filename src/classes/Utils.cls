@@ -1006,7 +1006,7 @@ public without sharing class Utils {
                     dfields = dfields.replace('，',',');
                     dfields = dfields.removeEnd(',');
                     dfields = dfields.removeStart(',');
-                    System.debug(dfields);
+                    
                     List<String> flist = dfields.split(';');
                     for(String field : flist){
                         List<String> fieldList = field.split('@');
