@@ -2,9 +2,9 @@
     目    的：工具类
     作    者：刘文俊(liuwenjun@bluelinksys.com)
     创建日期：2017-03-29
-    修 改 人：
-    修改日期：
-    修改原因：
+    修 改 人：Young
+    修改日期：20171206
+    修改原因：增加子項必填資訊回傳方法:getDetailRequireFields
     备    注：所有公共方法都放在此类中，公共方法都为: public static
 */
 public without sharing class Utils {
@@ -872,7 +872,7 @@ public without sharing class Utils {
         Set<String> mainUpdateFields = new Set<String>();
         Set<String> detailUpdateFields = new Set<String>();
         Set<String> mainRequireFields = new Set<String>();
-        
+       
         //在审批中不做权限拦截的字段
         System_Setting__c ssc = System_Setting__c.getValues('Setting');
         String setFields = ssc.No_Permission_Fields__c;
@@ -903,7 +903,7 @@ public without sharing class Utils {
                 }
             }
             List<Organizational__c> setlist = [
-                        SELECT Id,Node_Edit_Fields__c,Node_DetailEdit_Fields__c,
+                        SELECT Id,Node_Edit_Fields__c,Node_DetailEdit_Fields__c,Node_DetailRequire_Fields__c,//20171206增加子項必填
                         Node_Require_Fields__c
                         FROM Organizational__c 
                         WHERE RecordType.DeveloperName = 'Node_Edit_Field' 
@@ -951,12 +951,83 @@ public without sharing class Utils {
                         }
                     }
                 }
+
+                
             }
         }
         Map<String,Set<String>> result = new Map<String,Set<String>>();
         result.put('main', mainUpdateFields);
         result.put('detail', detailUpdateFields);
-        result.put('mainrequire', mainRequireFields);       
+        result.put('mainrequire', mainRequireFields);
+        return result;
+    }
+    /*
+        2017-12-06建置
+        目 的：得到指定记录ID当前审批节点Detail必输字段集合
+        参数1：targetId - 记录ID
+        返回值：Map<String,Map<String,Set<String>>> 
+
+        須於審批節點編輯字段設置中,於項次必輸欄位輸入格式= 子項API名稱@字段1,字段2;子項API名稱2@字段1,字段2;
+    */
+    public static Map<String,Map<String,Set<String>>> getDetailRequireFields(String targetId,String recID){
+        
+        //20171206增加子項必填
+        Map<String,Set<String>> detailRequireFields  = new Map<String,Set<String>>();
+        //在审批中不做权限拦截的字段
+        
+        List<ProcessInstanceNode> nodes = 
+               [SELECT Id,ProcessNodeId,ProcessNode.DeveloperName,ProcessInstance.ProcessDefinition.DeveloperName 
+                FROM ProcessInstanceNode 
+                WHERE ProcessInstance.TargetObjectId = :targetId 
+                ORDER BY CreatedDate DESC
+                LIMIT 1];
+        if(nodes.size() > 0){
+            String nodeAPI = nodes[0].ProcessNode.DeveloperName;
+            String approvalName = '';
+            if (String.isBlank(recID)) {
+             approvalName = nodes[0].ProcessInstance.ProcessDefinition.DeveloperName;
+            }else{
+                List<RecordType> lstR = [SELECT DeveloperName FROM RecordType WHERE Id = :recID OR DeveloperName = :recID];
+                if (lstR.size()>0) {
+                    approvalName = lstR[0].DeveloperName;
+                }
+            }
+            List<Organizational__c> setlist = [
+                        SELECT Id,Node_DetailRequire_Fields__c//20171206增加子項必填
+                        FROM Organizational__c 
+                        WHERE RecordType.DeveloperName = 'Node_Edit_Field' 
+                        AND Node_API__c =: nodeAPI 
+                        AND Approval_Name__c =: approvalName];
+            if(setlist.size() > 0){
+               
+                //項次必输字段 //20171206增加子項必填
+                String dfields = setlist[0].Node_DetailRequire_Fields__c;
+                if(!String.isBlank(dfields)){
+                    dfields = dfields.replace('，',',');
+                    dfields = dfields.removeEnd(',');
+                    dfields = dfields.removeStart(',');
+                    System.debug(dfields);
+                    List<String> flist = dfields.split(';');
+                    for(String field : flist){
+                        List<String> fieldList = field.split('@');
+                        List<String> inflist = fieldList.get(1).split(',');
+                        Set<String> st = new Set<String>();
+                        for (String infield :inflist){
+                            if(!st.contains(infield)){
+                                st.add(infield);
+                            }
+                        }
+                        
+                        detailRequireFields.put(fieldList.get(0),st);
+                        
+                    }
+                }
+            }
+        }
+        Map<String,Map<String,Set<String>>> result = new Map<String,Map<String,Set<String>>>();
+        
+        //20171206增加子項必填
+        result.put('detailrequire', detailRequireFields);        
         return result;
     }
     /*
