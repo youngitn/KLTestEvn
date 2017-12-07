@@ -52,7 +52,9 @@ public without sharing class AMInternalmemoHandler implements Triggers.Handler {
         cam.Approval_User11__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(6),null),0);
         //节点七 HR经理
         cam.Approval_User5__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(7),null),0);
-        //节点八 收件人作业 特殊计算
+        //节点八 莱恒总经理
+        cam.Approval_User12__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8),null),0);
+        //节点九 收件人作业 特殊计算
         List<Id> lstID = specialCal2(cam);
         if (lstID!=null && lstID.size()>=2) {
             cam.Approval_User6__c  = lstID[0];
@@ -62,7 +64,7 @@ public without sharing class AMInternalmemoHandler implements Triggers.Handler {
             cam.Approval_User6__c  = lstID[0];
             cam.Approval_User8__c = lstID[0];
         }
-        //节点九 申请人确认
+        //节点十 申请人确认
         cam.Approval_User9__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(9),cam.Applicant__c),0);
     }
     public Id specialCal1(Approval_Managed1__c cam){

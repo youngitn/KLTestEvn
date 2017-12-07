@@ -2,7 +2,7 @@
  名    称：销售定价业务流程  
  目    的：
  作    者：刘忠林 
- 创建日期：2017-11-7 
+ 创建日期：2017-11-7  
  修 改 人： 
  修改日期：
  修改原因：
@@ -29,6 +29,7 @@
             var desc2 = j$("[id$='Currency']");
             var desc3 = j$("[id$='Price_Group']");
         });
+
         function toggleData(){
             var cmb1 = j$("select[id$='ConditionType']");
             var cmb2 = j$("select[id$='KeyCombination']");
@@ -41,20 +42,30 @@
             var desc2 = j$("[id$='Currency']");
             var desc3 = j$("[id$='Price_Group']");
             
-            if (approvalValue1 == 'PR01' && approvalValue2 == 1) {
+            if (approvalValue1 == 'PR01' && approvalValue2 == 304) {
                 desc1.hide();
                 desc1.parent().prev().children("label").hide();
 
-                desc2.hide();
-                desc2.parent().prev().children("label").hide();
+                desc2.show();
+                desc2.parent().prev().children("label").show();
 
                 desc3.hide();
                 desc3.parent().prev().children("label").hide();
 
-            }else if (approvalValue1 == 'PR01' && approvalValue2 == 2) {
+            }else if (approvalValue1 == 'PR01' && approvalValue2 == 510) {
 
                 desc1.hide();
                 desc1.parent().prev().children("label").hide();
+
+                desc2.show();
+                desc2.parent().prev().children("label").show();
+
+                desc3.show();
+                desc3.parent().prev().children("label").show();
+
+            }else{
+                desc1.show();
+                desc1.parent().prev().children("label").show();
 
                 desc2.show();
                 desc2.parent().prev().children("label").show();
@@ -165,7 +176,7 @@
                  <!--客户-->
                 <apex:inputField id="Account" value="{!am.Account__c}" ></apex:inputField>
                  <!-- 币种-->
-                <apex:inputField id="Currency" value="{!am.Currency__c}"></apex:inputField>
+                <apex:inputField id="Currency" value="{!am.Currency__c}" required="true"></apex:inputField>
                  <!--价格组 -->
                 <apex:inputField id="Price_Group" value="{!am.Price_Group__c}"></apex:inputField>
             </apex:pageBlockSection>

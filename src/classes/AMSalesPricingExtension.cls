@@ -152,15 +152,22 @@ public with sharing class AMSalesPricingExtension {
     }
   
 
-
   public PageReference save(){ 
+    if (am.ConditionType__c == 'PR01' && am.KeyCombination__c == '510') {
+        if (String.isBlank(am.Price_Group__c)) {
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '价格组不能为空'));
+            return null;
+        }
+    }
+    
   //当物料号为空时不允许保存
     for (Approval_Managed_Item__c amic : listDetail) {
         if (String.isBlank(amic.Material_Description__c)) { 
             ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '请先查询物料号，带出物料描述'));
             return null;
         }      
-    }           
+    } 
+
      try {
             upsert am;
 

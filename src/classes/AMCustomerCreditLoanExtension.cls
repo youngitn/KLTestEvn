@@ -4,14 +4,12 @@ public class AMCustomerCreditLoanExtension {
     public List<Approval_Managed__c> listam{get;set;} 
     public Id amId {get; set;}
     public Boolean isDeletedStatus{get;set;}
-    public Boolean N {get;set;}
-    public Boolean X {get;set;}
+
     public AMCustomerCreditLoanExtension(ApexPages.StandardController con) {
       am = new Approval_Managed__c();
       listam = new List<Approval_Managed__c>();
       isDeletedStatus = true;
-      N = false;
-      X = true;
+    
       // if(con.getId() == null){
       //     am = new Approval_Managed__c();  
       //     am.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName('CustomerCreditLoan','Approval_Managed__c');
@@ -34,12 +32,6 @@ public class AMCustomerCreditLoanExtension {
     }    
 
      public PageReference save() {
-
-      if (am.Freeze_confirm__c == false) {
-          am.Freeze_confirm__c = N;
-      }else{
-        am.Freeze_confirm__c = X;
-      }
         
       if (String.isNotBlank(am.Account__c)) {
             list<Account> con = [SELECT AccountNumber, Name FROM Account WHERE Id = :am.Account__c];
