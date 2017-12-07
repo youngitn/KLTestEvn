@@ -374,6 +374,7 @@ global without sharing class HLYSyncExpenseReimburse {
 
             reArg.success = 'true';
             if(existLockeds.size() > 0){
+                reArg.success = 'false';
                 reArg.err_msg = '正在审批或已通过审批，不能再次提交的单号 :' + String.join(new List<String>(existLockeds), ',') + '; ';
             }
             if (existUpdates.size() > 0) {

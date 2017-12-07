@@ -11,7 +11,23 @@
 <-->
 
 <apex:page standardController="Approval_Managed__c" extensions="AMCustomerCreditLoanExtension" >
+<!-- <head>
+    <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("input[name='chk']").click(function () {
+                if($(this).attr("checked")){
+                    
+                    $(this).val() == 'false'? $(this).val()='N':$(this).val()='X';
+                    alert($(this).val());
+                    
+                }
+            }); 
+        }); 
+    </script>
+</head> -->
 <html>
 <body>
 <apex:sectionHeader title="客户信用贷款主数据申请" subtitle="新建/客户信用贷款主数据申请"></apex:sectionHeader>
@@ -88,7 +104,11 @@
                 <!-- 风险类别 -->
                 <apex:outputField value="{!am.Risk_kind__c}"></apex:outputField>
                 <!-- 冻结确认-->
-                <apex:inputField value="{!am.Freeze_confirm__c}"></apex:inputField>
+                <apex:inputField value="{!am.Freeze_confirm__c}" id="Freeze_confirm"></apex:inputField>
+                   
+                <!-- <input type="checkbox" id="Freeze_confirm" value="{!am.Freeze_confirm__c}" name="chk" class="check"/>
+                <label for="Freeze_confirm">冻结确认</label> -->
+
                 <!-- 创立时间 -->
                 <apex:outputField value="{!am.Founded_time__c}"></apex:outputField>
                 <!-- 负责人 -->
