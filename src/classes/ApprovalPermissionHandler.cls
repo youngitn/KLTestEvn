@@ -3,9 +3,9 @@
  目    的：在审批过程中，判断用户是否有权限修改记录
  作    者：刘文俊(liuwenjun@bluelinksys.com)
  创建日期：2017-06-19
- 修 改 人：
- 修改日期：
- 修改原因：
+ 修 改 人：Young
+ 修改日期：20171201
+ 修改原因：必輸訊息欄位顯示標簽名稱
  备    注：
 *************************************************************************/
 public without sharing class ApprovalPermissionHandler implements Triggers.Handler {

@@ -1,0 +1,142 @@
+<apex:page applyhtmltag="true" doctype="html-5.0" extensions="AMVendorClaimExtension" lightningstylesheets="true" standardcontroller="Custom_Approval_Managed__c">
+    <apex:slds>
+    </apex:slds>
+    <body class="slds-scope">
+        <apex:pagemessages escape="true">
+        </apex:pagemessages>
+        <apex:pageblock>
+            <apex:sectionheader title="{!cam.Approval_Name__c}">
+            </apex:sectionheader>
+            <apex:form>
+                
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size--1-of-1 slds-small-size--1-of-2 slds-medium-size--1-of-4" style="width:90%;">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-01">
+                                申請人
+                            </label>
+                            <div class="slds-form-element__control">
+                                <apex:inputfield styleclass="slds-input" value="{!cam.Applicant__c}">
+                                </apex:inputfield>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-01">
+                                不良品工單單號
+                            </label>
+                            <div class="slds-form-element__control">
+                                <apex:inputfield styleclass="slds-input" value="{!cam.Bill_No__c }">
+                                </apex:inputfield>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-01">
+                                不良品數量
+                            </label>
+                            <div class="slds-form-element__control">
+                                <apex:inputfield styleclass="slds-input" value="{!cam.Quantity__c }">
+                                </apex:inputfield>
+                            </div>
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-01">
+                                生產總量
+                            </label>
+                            <div class="slds-form-element__control">
+                                <apex:inputfield styleclass="slds-input" value="{!cam.TotalQuantity__c }">
+                                </apex:inputfield>
+                            </div>
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-01">
+                                費用明細
+                            </label>
+                            <div class="slds-form-element__control">
+                                <apex:inputfield styleclass="slds-input" value="{!cam.ClaimCostsDetails__c }">
+                                </apex:inputfield>
+                            </div>
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-01">
+                                供應商名稱
+                            </label>
+                            <div class="slds-form-element__control">
+                                <apex:inputfield styleclass="slds-input" value="{!cam.Vendor_Name__c }">
+                                </apex:inputfield>
+                            </div>
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-01">
+                                開立折讓單號
+                            </label>
+                            <div class="slds-form-element__control">
+                                <apex:inputfield styleclass="slds-input" value="{!cam.DiscountOrderNumber__c }">
+                                </apex:inputfield>
+                            </div>
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="text-input-01">
+                                備註說明
+                            </label>
+                            <div class="slds-form-element__control">
+                                <apex:inputfield styleclass="slds-input" value="{!cam.Remark_reason__c }">
+                                </apex:inputfield>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col" style="width:90%;"></div>
+
+                </div>
+                <apex:pageblocksection rendered="false" title="基本信息">
+                    <!-- 审批流程编号 -->
+                    <apex:outputfield rendered="{! $User.UIThemeDisplayed == 'Theme3' }" value="{!cam.Name}">
+                    </apex:outputfield>
+                    <!-- 流程名称 -->
+                    <apex:outputfield value="{!cam.Approval_Name__c}">
+                    </apex:outputfield>
+                    <!-- 申请人 -->
+                    <apex:outputfield value="{!cam.Applicant__c}">
+                    </apex:outputfield>
+                    <!-- 申请部門 -->
+                    <apex:outputfield value="{!cam.Dept_Name__c}">
+                    </apex:outputfield>
+                    <!-- 申请人(工号) -->
+                    <apex:outputfield value="{!cam.Applicant_Code__c}">
+                    </apex:outputfield>
+                    <!-- 单据日期-->
+                    <apex:outputfield value="{!cam.Bill_Date__c}">
+                    </apex:outputfield>
+                    <!-- 申请人(姓名) -->
+                    <apex:outputfield value="{!cam.Applicant_Name__c}">
+                    </apex:outputfield>
+                    <!-- 单据状态 -->
+                    <apex:outputfield value="{!cam.Approval_Status__c}">
+                    </apex:outputfield>
+                    <!--apex:inputField value="{!am.Approval_Name__c}"></apex:inputField-->
+                </apex:pageblocksection>
+                <apex:pageblocksection>
+                </apex:pageblocksection>
+                <apex:pageblocksection title="不良工單資訊">
+                    <apex:inputfield required="true" value="{!cam.Applicant__c}">
+                    </apex:inputfield>
+                    <apex:inputfield html-placeholder="不良工單號碼" required="true" value="{!cam.Bill_No__c }">
+                    </apex:inputfield>
+                    <apex:inputfield html-placeholder="不良品數量" required="true" value="{!cam.Quantity__c }">
+                    </apex:inputfield>
+                    <apex:inputfield html-placeholder="總生產數量" required="true" value="{!cam.TotalQuantity__c }">
+                    </apex:inputfield>
+                    <apex:inputfield required="true" value="{!cam.ClaimCostsDetails__c }">
+                    </apex:inputfield>
+                    <apex:inputfield html-placeholder="索賠供應商名稱" required="true" value="{!cam.Vendor_Name__c }">
+                    </apex:inputfield>
+                    <apex:inputfield required="true" value="{!cam.DiscountOrderNumber__c }">
+                    </apex:inputfield>
+                    <apex:inputfield required="true" value="{!cam.Remark_reason__c }">
+                    </apex:inputfield>
+                </apex:pageblocksection>
+            </apex:form>
+        </apex:pageblock>
+    </body>
+</apex:page>

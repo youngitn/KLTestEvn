@@ -76,7 +76,7 @@ public with sharing class ApprovalHomeController
         canCreateApproval.add(SapApprovalEnum.MRDIEREQUEST);//MR模具申请流程
         canCreateApproval.add(SapApprovalEnum.EDUCATIONTRAININGREQUEST);//教育訓練申請流程
         canCreateApproval.add(SapApprovalEnum.CUSTOMERCREDITLOAN);//客户信用贷款主数据申请
-
+        canCreateApproval.add(SapApprovalEnum.VENDORCLAIM);//供應商索賠流程
 
 
         //Object = Custom_Approval_Managed__c, approval counts = 16
@@ -396,6 +396,12 @@ public with sharing class ApprovalHomeController
                 //教育訓練申請單
 
                 pageName = '/apex/AMEducationTraining';
+
+            }else if(selectedApprovalValue == SapApprovalEnum.VENDORCLAIM)
+            {
+                //供應商索賠
+
+                pageName = '/apex/AMVendorClaim';
 
             }
             else

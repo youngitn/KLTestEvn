@@ -4,12 +4,36 @@
 		"selected_items":
 		[
 			[
-				"n",
-				"name"
+				"S",
+				"SObject\t[Standard Apex Class]"
+			],
+			[
+				"h",
+				"applyHtmlTag\tBoolean"
+			],
+			[
+				"f",
+				"form\tapex"
+			],
+			[
+				"ap",
+				"apex:attribute\tvisualforce"
 			],
 			[
 				"in",
-				"input\tTag"
+				"inputField\tapex"
+			],
+			[
+				"v",
+				"valueOf(Date d)\tString"
+			],
+			[
+				"d",
+				"debug(ANY o)\tvoid"
+			],
+			[
+				"n",
+				"name"
 			],
 			[
 				"Pu",
@@ -160,10 +184,6 @@
 				"Contact\tSobject"
 			],
 			[
-				"v",
-				"valueOf(Object o)\tString"
-			],
-			[
 				"x",
 				"xxx"
 			],
@@ -196,29 +216,11 @@
 	"buffers":
 	[
 		{
-			"file": "src/classes/AMEducationTrainingHandler.cls",
+			"contents": "//介面 采购申请作业流程 模擬 for(SObject obj : Trigger.new)\nSObject obj  = Database.query('SELECT ' + getAllFields('Approval_Managed__c').get('Approval_Managed__c') + ' FROM Approval_Managed__c WHERE Name = ' + '\\'AN-170824-00001564\\'').get(0);\n\n// 取得各detail 必輸資訊\nMap<String, Map<String, Set<String>>> req = Utils.getDetailRequireFields(String.valueOf(obj.get('Id')), String.valueOf(obj.get('RecordTypeId')));\n\n// 取得master 必輸資訊\nMap<String, Set<String>> masterReq = Utils.getNodeEditFields(String.valueOf(obj.get('Id')), String.valueOf(obj.get('RecordTypeId')));\n\nSystem.debug(req);\nMap<String, Set<String>> subItem = req.get('detailrequire');\n//System.debug();\nMap<String, Schema.SObjectField> mmyFields = obj.getSObjectType().getDescribe().fields.getMap();\n\nString errMsg = '';\n\nfor(String ms : masterReq.get('mainrequire'))\n{\n\n    System.debug(obj.get('Approval_Name__c') + '主表必輸欄位 標籤:' + mmyFields.get(ms).getDescribe().getLabel() + ' API name:' + ms + ' 值:' + obj.get(ms));\n    errMsg += obj.get('Approval_Name__c') + '主表必輸欄位 標籤:' + mmyFields.get(ms).getDescribe().getLabel() + ' API name:' + ms + ' 值:' + obj.get(ms)+'\\\\n';\n}\n\n\nfor(String s : subItem.keySet())\n{\n    System.debug(s);\n    Set<String> subFieldSet = subItem.get(s);\n    //如果同一個父物件下兩個不同種明細但都是同一子物件 則將不會查詢到\n    //即使關聯欄位統一\n    List<SObject> objDetail = Database.query('SELECT ' + getAllFields(s).get(s) + ' FROM ' + s + ' WHERE Purchasing_Request__c =\\'' + obj.get('Id') + '\\'');\n    \n    for(SObject o : objDetail)\n    {\t\n    \tMap<String, Schema.SObjectField> myFields = o.getSObjectType().getDescribe().fields.getMap();\n        for(String fieldApiName : subFieldSet)\n        {\n\n            System.debug(obj.get('Approval_Name__c') + '子項必輸欄位 標籤:' + myFields.get(fieldApiName).getDescribe().getLabel() + ' API name:' + fieldApiName + ' 值:' + o.get(fieldApiName));\n        \terrMsg += obj.get('Approval_Name__c') + '子項必輸欄位 標籤:' + myFields.get(fieldApiName).getDescribe().getLabel() + ' API name:' + fieldApiName + ' 值:' + o.get(fieldApiName)+'\\\\n';\n        }\n\n    }\n\n}\n\n//System.debug(errMsg);\n// 物件取得所有欄位\npublic static Map<String, String> getAllFields(String sobjectname)\n{\n    if(!Schema.getGlobalDescribe().containsKey(sobjectname)) return new Map<String, String> {'Exception' => 'Invalid object name'};\n    Map<String, Schema.SObjectField> fields = Schema.getGlobalDescribe().get(sobjectname).getDescribe().SObjectType.getDescribe().fields.getMap();\n\n    List<String> accessiblefields = new List<String>();\n\n    for(Schema.SObjectField field : fields.values())\n    {\n        if(field.getDescribe().isAccessible())\n            accessiblefields.add(field.getDescribe().getName());\n    }\n\n    String allfields = '';\n\n    for(String fieldname : accessiblefields)\n        allfields += fieldname + ',';\n\n    allfields = allfields.subString(0, allfields.length() - 1);\n\n    return new Map<String, String> {sobjectname => allfields};\n}\n\n\n\n\n",
 			"settings":
 			{
-				"buffer_size": 9784,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "\n\nString a = 'aaa-30210003,bbb-30210011,ccc-30210122';\n\nList<String> pList = a.split(',');\nList<String> empidList = new List<String>();\nfor (String b:pList){\n\t//b.substringAfter('-');\n\tempidList.add(b.substringAfter('-'));\n\t\n}\n\n\nSystem.debug(empidList);\n\nfor(User ps :[SELECT Id, Email FROM User WHERE Number__c IN : empidList]){\n                        //sendMailToParticipants(ps.get(0).email, cam);\n                        System.debug('----->'+ps.email);\n                    }\n\nSystem.debug([SELECT Id, InstanceName, IsSandbox, Name, OrganizationType FROM Organization].IsSandbox);\n\n\n\n\nDate myDate = Date.newInstance(2011, 11, 18);\nTime myTime = Time.newInstance(3, 3, 3, 0);\nTime myTime2 = Time.newInstance(4, 3, 3, 0);\nDateTime dt = DateTime.newInstance(myDate, myTime);\nDateTime t1 = DateTime.newInstance(2011, 11, 18, 3, 3, 3);\nDateTime t2 = DateTime.newInstance(2011, 11, 18, 4, 3, 3);\nSystem.debug('WWWW='+(myTime.getTime()));\nSystem.debug('WWWW='+(myTime2.getTime()-myTime.getTime())/60000);\n",
-			"settings":
-			{
-				"buffer_size": 1003,
+				"buffer_size": 2888,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/pages/ApprovalContact.page",
-			"settings":
-			{
-				"buffer_size": 10240,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
 			}
 		},
 		{
@@ -226,6 +228,24 @@
 			"settings":
 			{
 				"buffer_size": 4397,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/RequiredFieldsCheck.cls",
+			"settings":
+			{
+				"buffer_size": 3914,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/ApprovalManualShareHandler.cls",
+			"settings":
+			{
+				"buffer_size": 6373,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -243,102 +263,78 @@
 			"file": "src/pages/AMEducationTraining.page",
 			"settings":
 			{
-				"buffer_size": 14788,
+				"buffer_size": 15221,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "resource-bundles/JSbundle.resource/libs/jquery-1.12.0.js",
+			"file": "src/pages/AMVendorClaim.page",
 			"settings":
 			{
-				"buffer_size": 97361,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "resource-bundles/JSbundle.resource/app/JValidator.js",
-			"settings":
-			{
-				"buffer_size": 3460,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"settings":
-			{
-				"buffer_size": 0,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "resource-bundles/JSbundle.resource/app/AMEducationTrainingJS.js",
-			"settings":
-			{
-				"buffer_size": 7122,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "resource-bundles/JSbundle.resource/app/vueComponents.js",
-			"settings":
-			{
-				"buffer_size": 550,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/pages/AMVendor.page",
-			"settings":
-			{
-				"buffer_size": 40949,
+				"buffer_size": 7670,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "<input autocomplete=\"off\" id=\"StartDateTime_time\" name=\"StartDateTime_time\" onchange=\"ActivityFunction.updateEndTime('StartDateTime','StartDateTime_time', 'EndDateTime', 'EndDateTime_time');ActivityFunction.checkDuration('IsRecurrence','evt15','StartDateTime','StartDateTime_time','EndDateTime','EndDateTime_time');\" onfocus=\"ActivityFunction.saveStartTime('StartDateTime','StartDateTime_time');ActivityFunction.showTimePicker('StartDateTime_time')\" size=\"8\" tabindex=\"5\" type=\"text\" value=\"4:00 下午\">",
-			"settings":
-			{
-				"buffer_size": 500,
-				"line_ending": "Windows"
 			}
 		},
 		{
 			"file": "src/classes/AMVendorHandler.cls",
 			"settings":
 			{
-				"buffer_size": 3570,
+				"buffer_size": 3582,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/pages/TestPage01.page",
+			"file": "src/pages/AMVendor.page",
 			"settings":
 			{
-				"buffer_size": 3091,
+				"buffer_size": 41052,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/classes/TextPage01Extension.cls",
+			"file": "src/classes/ApprovalPermissionItemHandler.cls",
 			"settings":
 			{
-				"buffer_size": 1016,
+				"buffer_size": 11261,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/pages/VueTest.page",
+			"file": "src/classes/ApprovalPermissionHandler.cls",
 			"settings":
 			{
-				"buffer_size": 2505,
+				"buffer_size": 5700,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/triggers/ApprovalManage1Trigger.trigger",
+			"settings":
+			{
+				"buffer_size": 1996,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<apex:page standardController=\"Account\"  sidebar=\"false\" standardStylesheets=\"false\" showHeader=\"false\" applyHtmlTag=”false” >\n\t<html xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" lang=\"en\">\n\t\t<head>\n\t\t\t<meta charset=\"utf-8\" />\n\t\t\t<meta http-equiv=\"x-ua-compatible\" content=\"ie=edge\" />\n\t\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n\t\t\t<apex:stylesheet value=\"{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}\" />\n\t\t\t<script src=\"https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js\">script>\n\t\t\t\t<script src='js/jquery-sortable.js'>script>\n\t\t\t\t<apex:includeScript value=\"https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js\"/>\n\t\t\t\t<apex:includeScript value=\"https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js\"/>\n\t\t\t\t\n\t\t\t\t<link href=\"https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.css\" rel=\"stylesheet\"/>\n\t\t\t\t<link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css\"/>\n\t\t\t\t<link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css\"/>\n\t\t\t\t<script src=\"//code.jquery.com/jquery-1.10.2.js\">script>\n\t\t\t\t<script src=\"//code.jquery.com/ui/1.11.4/jquery-ui.js\">script>\n\t\t\t\t\n\t\t\t\t</head>\n\t\t\t\t<!-- jquery Date Picker --->\n\t\t\t\t<script type=\"text/javascript\">\n\t\t\t\t$(function(){\n\t\t\t\t\n\t\t\t\tvar date = new Date();\n\t\t\t\tvar currentMonth = date.getMonth();\n\t\t\t\tvar currentDate = date.getDate();\n\t\t\t\tvar currentYear = date.getFullYear();\n\t\t\t\t\n\t\t\t\t$('[id$=myPicker]').datepicker({\n\t\t\t\tminDate: new Date(currentYear, currentMonth, currentDate),\n\t\t\t\tdateFormat: 'dd/mm/yy'\n\t\t\t\t});\n\t\t\t\t});\n\t\t\t\t\n\t\t\t\t\n\t\t\t</script>\n\t\t\t<!---- End Of Date Picker --->\n\t\t<body class=\"container\">\n\t\t\t<apex:form >\n\t\t\t\t<apex:pageBlock >\n\t\t\t\t\t<!-- REQUIRED SLDS WRAPPER -->\n\t\t\t\t\t<div class=\"slds\">\n\t\t\t\t\t\t<!----------------Header----------------->\n\t\t\t\t\t\t<center>\n\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t<div class=\"slds-p-horizontal--small slds-size--1-of-1\" style=\"font-size:24px;\">\n\t\t\t\t\t\t\t\tCreate Account\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</center>\n\t\t\t\t\t\t<hr/>\n\t\t\t\t\t\t<!-------------End------------------>\n\t\t\t\t\t\t<!-------ACCOUNT FEILDS------------>\n\t\t\t\t\t\t<div class=\"slds-box slds-box--small slds-theme--shade slds-text-align--left\">Account Information</div>\n\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t<div class=\"slds-grid\">\n\t\t\t\t\t\t\t<div class=\"slds-col\" style=\"width:90%;\">\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Account Owner</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t{!$User.FirstName} {!$User.LastName}\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t&nbsp;\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Account Name</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.Name}\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Parent Account</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.Parent}\" id=\"hiddId\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Account Number</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.AccountNumber}\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Account Site</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.Site}\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Type</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.Type}\" styleClass=\"slds-select\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Industry</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.Industry}\" styleClass=\"slds-select\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Annual Revenue</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.AnnualRevenue}\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Source</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.AccountSource}\" styleClass=\"slds-select\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Amount</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.Amount__c}\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<br/><br/>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\t\t\t\t\t\t\t<div class=\"slds-col\" style=\"width:90%;\">\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Rating</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.rating}\" styleClass=\"slds-select\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Phone</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.phone}\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Fax</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.fax}\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Website</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.website}\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Ticker Symbol</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.TickerSymbol}\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Ownership</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.Ownership}\" styleClass=\"slds-select\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Employees</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.NumberOfEmployees}\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">SIC Code</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.Sic}\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Customer Priority</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.CustomerPriority__c}\" styleClass=\"slds-select\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\" id=\"myPickerWrapper\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">SLA Expiration Date</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"slds-input-has-icon slds-input-has-icon--right\">\n\t\t\t\t\t\t\t\t\t\t\t<a id=\"myPickerToday\" href=\"#\">\n\t\t\t\t\t\t\t\t\t\t\t\t<svg aria-hidden=\"true\" class=\"slds-input__icon input-text-default\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<use xlink:href=\"{!URLFOR($Resource.SLDS103, 'assets/icons/utility-sprite/svg/symbols.svg#event')}\"></use>\n\t\t\t\t\t\t\t\t\t\t\t\t</svg>\n\t\t\t\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.SLAExpirationDate__c}\" showDatePicker=\"false\" styleClass=\"slds-input\" id=\"myPicker\"/>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Active</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.Active__c}\" styleClass=\"slds-select\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"slds-box slds-box--small slds-theme--shade slds-text-align--left\">Address Information</div>\n\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t<div class=\"slds-grid\">\n\t\t\t\t\t\t\t<div class=\"slds-col\" style=\"width:90%;\">\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Shipping Street</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.ShippingStreet}\" id=\"shippingStreet\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Shipping City</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.ShippingCity}\" id=\"shippingCity\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Shipping State/Province</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.ShippingState}\" id=\"shippingState\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Shipping Zip/Postal Code</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.ShippingPostalCode}\" id=\"shippingPostalCode\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Shipping Country</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.ShippingCountry}\" id=\"shippingCountry\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\t\t\t\t\t\t\t<div class=\"slds-col\" style=\"width:90%;\">\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Billing Street</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.BillingStreet}\" id=\"billingStreet\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Billing City</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.BillingCity}\" id=\"billingCity\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Billing State/Province</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.BillingState}\" id=\"billingState\"  styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Billing Zip/Postal Code</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.BillingPostalCode}\" id=\"billingPostalCode\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\t\t<div class=\"slds-form-element\">\n\t\t\t\t\t\t\t\t\t<label class=\"slds-form-element__label\" for=\"text-input-01\">Billing Country</label>\n\t\t\t\t\t\t\t\t\t<div class=\"slds-form-element__control\">\n\t\t\t\t\t\t\t\t\t\t<apex:inputField value=\"{!account.BillingCountry}\" id=\"billingCountry\" styleClass=\"slds-input\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<!----------------End------------>\n\t\t\t\t\t\t<!------------Footer----------><br/>\n\t\t\t\t\t\t<div class=\"slds-modal__footer\">\n\t\t\t\t\t\t\t<apex:commandButton value=\"Cancel\" styleClass=\"slds-button slds-button--neutral\"/>\n\t\t\t\t\t\t\t<apex:commandButton value=\"Save & New\" styleClass=\"slds-button slds-button--neutral\" />\n\t\t\t\t\t\t\t<apex:commandButton value=\"Save\" action=\"{!Save}\"  styleClass=\"slds-button slds-button--neutral\"/>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<!--------------End----------->\n\t\t\t\t\t</div>\n\t\t\t\t</apex:pageBlock>\n\t\t\t</apex:form>\n\t\t</body>\n\t</html>\n</apex:page>",
+			"settings":
+			{
+				"buffer_size": 13588,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/classes/AMVendorClaimExtension.cls",
+			"settings":
+			{
+				"buffer_size": 1395,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -407,10 +403,41 @@
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/libs",
-		"/D/mmworkspace/TestEvn/src"
+		"/D/mmworkspace/TestEvn/src",
+		"/D/mmworkspace/TestEvn/src/pages",
+		"/D/mmworkspace/TestEvn/src/triggers"
 	],
 	"file_history":
 	[
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/toolingapi.sublime-settings",
+		"/D/mmworkspace/TestEvn/src/classes/Utils.cls",
+		"/D/mmworkspace/TestEvn/src/classes/ApprovalHomeController.cls",
+		"/D/mmworkspace/TestEvn/src/pages/ApprovalHome.page",
+		"/D/mmworkspace/TestEvn/src/classes/SapApprovalEnum.cls",
+		"/D/mmworkspace/TestEvn/src/pages/AMSupplierClaim.page",
+		"/D/mmworkspace/TestEvn/src/classes/AMSupplierClaimExtension.cls",
+		"/D/mmworkspace/TestEvn/src/classes/HarryUtils.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandler.cls",
+		"/D/mmworkspace/TestEvn/src/pages/AMBusinessTravel.page",
+		"/D/mmworkspace/TestEvn/src/classes/AMBusinessTravelExtension.cls",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/JValidator.js",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/vueComponents.js",
+		"/D/mmworkspace/TestEvn/src/classes/AMVendorHandler.cls",
+		"/D/mmworkspace/TestEvn/src/pages/AMVendor.page",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMEducationTrainingJS.js",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/haoide/config/settings/toolingapi.sublime-settings",
+		"/D/mmworkspace/TestEvn/src/classes/ApprovalPermissionItemHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/RequiredFieldsCheck.cls",
+		"/D/mmworkspace/TestEvn/src/triggers/RequiredfieldsCheck.trigger",
+		"/D/mmworkspace/TestEvn/src/pages/VueTest.page",
+		"/D/mmworkspace/TestEvn/src/classes/TextPage01Extension.cls",
+		"/D/mmworkspace/TestEvn/src/pages/TestPage01.page",
+		"/D/mmworkspace/TestEvn/src/classes/AMSEV2_VendorEvaluationHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMSEV2_VendorEvaluationExtension.cls",
+		"/D/mmworkspace/TestEvn/src/pages/ApprovalContact.page",
+		"/D/mmworkspace/TestEvn/src/classes/ApprovalContactExtension.cls",
+		"/D/mmworkspace/TestEvn/src/classes/MyRestResource.cls",
+		"/D/mmworkspace/TestEvn/src/classes/MyRestResource .cls",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/libs/httpVueLoader-1.3.4.js",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/msg.vue",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/libs/jquery-1.12.0.js",
@@ -419,16 +446,12 @@
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/validatorJS",
 		"/D/mmworkspace/TestEvn/resource-bundles/TryVuejs.resource/app/AMEducationTrainingJS.js",
 		"/D/mmworkspace/TestEvn/src/staticresources/JSbundle.resource-meta.xml",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMEducationTrainingJS.js",
 		"/D/mmworkspace/TestEvn/resource-bundles/TryVuejs.resource/app/app.js",
-		"/D/mmworkspace/TestEvn/src/classes/ApprovalPermissionItemHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ApprovalPermissionHandler.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/CheckChatter.trigger",
 		"/D/mmworkspace/TestEvn/src/classes/CheckChatterTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandlerTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtensionTest.cls",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/toolingapi.sublime-settings",
-		"/D/mmworkspace/TestEvn/src/pages/AMVendor.page",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMBusinessTravelExtensionTest.cls",
 		"/D/mmworkspace/TestEvn/resource-bundles/TryVuejs.resource/libs/vue.js",
@@ -439,9 +462,7 @@
 		"/D/mmworkspace/TestEvn/src/pages/TestMaterial.page",
 		"/D/mmworkspace/TestEvn/src/classes/AMAbnormalQualityExtensionTest.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMEducationTraining.page",
-		"/D/mmworkspace/TestEvn/src/pages/ApprovalContact.page",
 		"/D/mmworkspace/TestEvn/src/classes/PushApprovalDataToSapHandler.cls",
-		"/D/mmworkspace/TestEvn/src/classes/Utils.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SapInputArgCreate.cls",
 		"/D/mmworkspace/TestEvn/src/workflows/User.workflow",
 		"/d/young_cheng/young/KL-TEST-20171121/src/pages/AMInventoryProcess.page",
@@ -485,7 +506,6 @@
 		"/d/young_cheng/young/KL-TEST-20171114/src/classes/SynchronousOrganization.cls",
 		"/D/mmworkspace/SB_Cheng/src/classes/AMExpenseReimburseHandler.cls",
 		"/D/mmworkspace/SB_Cheng/src/classes/ApprovalManualShareHandler.cls",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/haoide/config/settings/toolingapi.sublime-settings",
 		"/C/ProgramData/Microsoft/Windows/Start Menu/Programs/Sublime Text 3.lnk",
 		"/D/mmworkspace/SB_Cheng/src/classes/EmailUtils .cls",
 		"/D/mmworkspace/SB_Cheng/src/classes/AMEducationTrainingExtensionTest.cls",
@@ -516,29 +536,7 @@
 		"/C/Users/young_cheng/Desktop/網購平台JS_配置_Join2Menu.js",
 		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/CodeFormatter/CodeFormatter.sublime-settings",
 		"/D/mmworkspace/SB_Cheng/src/classes/AccountRemoter.cls",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/CodeFormatter/Default (Windows).sublime-keymap",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/Package Control/Package Control.sublime-settings",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/SublimeAStyleFormatter/SublimeAStyleFormatter.sublime-settings",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/SublimeAStyleFormatter/Default (Windows).sublime-keymap",
-		"/D/mmworkspace/SB_Cheng/src/classes/ApexParam1Controller.cls",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/DocBlockr/Base File.sublime-settings",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/Base File.sublime-settings",
-		"/D/mmworkspace/SB_Cheng/src/classes/HarryUtils.cls",
-		"/D/mmworkspace/SB_Cheng/src/pages/ApexParam.page",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/mavensmate.sublime-settings",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/MavensMate/mavensmate.sublime-settings",
-		"/d/young_cheng/young/KL_CHENG-20171017/src/pages/EducationTrainingVF.page",
-		"/d/young_cheng/young/KL_CHENG-20171017/src/classes/AMEducationTrainingController.cls",
-		"/d/young_cheng/young/KL_CHENG-20171017/src/classes/EducationTrainingController.cls",
-		"/d/young_cheng/young/KL_CHENG-20171025/src/classes/AMEducationTrainingHandler.cls",
-		"/d/young_cheng/young/KL_CHENG-20171002/src/classes/Utils.cls",
-		"/d/young_cheng/young/KL_CHENG-20171002/src/classes/AMVisitorHostsHandler.cls",
-		"/d/young_cheng/young/KL_CHENG-20171002/src/classes/AMBookDinnerHander.cls",
-		"/d/young_cheng/young/KL_CHENG-20171011/src/classes/AMBookDinnerHandlerTest.cls",
-		"/d/young_cheng/young/KL_CHENG-20171025/src/classes/AMAbnormalQualityExtensionTest.cls",
-		"/d/young_cheng/young/KL_CHENG-20171025/src/classes/AM123.cls",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/haoide/config/keymap/Default (Windows).sublime-keymap"
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/CodeFormatter/Default (Windows).sublime-keymap"
 	],
 	"find":
 	{
@@ -557,6 +555,19 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"contact",
+			"term",
+			"none",
+			"Term_of_Payment_Corp__c",
+			"API",
+			"供应商",
+			"Custom_Approval_Managed__c",
+			"供应商",
+			"field",
+			"debug",
+			"2017",
+			"getNodeEditFields",
+			"DeveloperName",
 			"false",
 			"return false;",
 			"lable",
@@ -597,53 +608,23 @@
 	"groups":
 	[
 		{
-			"selected": 10,
+			"selected": 12,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/classes/AMEducationTrainingHandler.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9784,
+						"buffer_size": 2888,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1381,
-								1381
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 114.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 15,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1003,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								931,
-								931
+								1000,
+								1000
 							]
 						],
 						"settings":
@@ -651,43 +632,14 @@
 							"syntax": "Packages/Java/Java.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 228.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 16,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "src/pages/ApprovalContact.page",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 10240,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2349,
-								2430
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1254.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
+					"buffer": 1,
 					"file": "src/classes/ApprovalContactExtension.cls",
 					"semi_transient": false,
 					"settings":
@@ -699,8 +651,8 @@
 						"selection":
 						[
 							[
-								2334,
-								2351
+								2017,
+								2022
 							]
 						],
 						"settings":
@@ -710,10 +662,70 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 855.0,
+						"translation.y": 1026.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/classes/RequiredFieldsCheck.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3914,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1438,
+								1438
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 399.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/classes/ApprovalManualShareHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6373,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								307,
+								307
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
@@ -729,8 +741,8 @@
 						"selection":
 						[
 							[
-								1073,
-								1073
+								504,
+								859
 							]
 						],
 						"settings":
@@ -743,7 +755,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
@@ -752,15 +764,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 14788,
+						"buffer_size": 15221,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3949,
-								3949
+								94,
+								111
 							]
 						],
 						"settings":
@@ -771,32 +783,32 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1007.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
 					"buffer": 6,
-					"file": "resource-bundles/JSbundle.resource/libs/jquery-1.12.0.js",
-					"semi_transient": true,
+					"file": "src/pages/AMVendorClaim.page",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 97361,
+						"buffer_size": 7670,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								619,
+								619
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -807,134 +819,47 @@
 				},
 				{
 					"buffer": 7,
-					"file": "resource-bundles/JSbundle.resource/app/JValidator.js",
+					"file": "src/classes/AMVendorHandler.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3460,
+						"buffer_size": 3582,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3180,
-								3180
+								1434,
+								1444
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 912.0,
+						"translation.y": 456.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
 					"buffer": 8,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 0,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"default_dir": "D:\\mmworkspace\\TestEvn\\resource-bundles\\JSbundle.resource\\libs",
-							"syntax": "Packages/Java/Java.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "resource-bundles/JSbundle.resource/app/AMEducationTrainingJS.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7122,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6102,
-								6112
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1617.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "resource-bundles/JSbundle.resource/app/vueComponents.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 550,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								550,
-								550
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
 					"file": "src/pages/AMVendor.page",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 40949,
+						"buffer_size": 41052,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								179,
-								199
+								8059,
+								8066
 							]
 						],
 						"settings":
@@ -944,10 +869,100 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 228.0,
+						"translation.y": 3282.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "src/classes/ApprovalPermissionItemHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11261,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9008,
+								9023
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3819.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "src/classes/ApprovalPermissionHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5700,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								229,
+								229
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "src/triggers/ApprovalManage1Trigger.trigger",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 1996,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1879,
+								1905
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -955,76 +970,49 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 500,
+						"buffer_size": 13588,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								317,
-								449
+								471,
+								494
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
+							"syntax": "Packages/Visualforce/Visualforce.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
 					"buffer": 13,
-					"file": "src/classes/AMVendorHandler.cls",
+					"file": "src/classes/AMVendorClaimExtension.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3570,
+						"buffer_size": 1395,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1681,
-								1681
+								786,
+								786
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 171.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 14,
-					"file": "src/pages/TestPage01.page",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3091,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								310,
-								310
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
@@ -1032,67 +1020,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 15,
-					"file": "src/classes/TextPage01Extension.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1016,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								210,
-								303
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 13,
-					"type": "text"
-				},
-				{
-					"buffer": 16,
-					"file": "src/pages/VueTest.page",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2505,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1734,
-								1734
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
+					"stack_index": 7,
 					"type": "text"
 				}
 			]
@@ -1131,11 +1059,11 @@
 	"menu_visible": true,
 	"output.MavensMate-OutputPanel":
 	{
-		"height": 126.0
+		"height": 163.0
 	},
 	"output.error":
 	{
-		"height": 120.0
+		"height": 31.0
 	},
 	"output.find_results":
 	{
@@ -1155,12 +1083,76 @@
 		"selected_items":
 		[
 			[
-				"amvendor",
+				"perm",
+				"src\\classes\\ApprovalPermissionHandler.cls"
+			],
+			[
+				"amven",
 				"src\\pages\\AMVendor.page"
 			],
 			[
+				"uti",
+				"src\\classes\\Utils.cls"
+			],
+			[
+				"approvalhome",
+				"src\\pages\\ApprovalHome.page"
+			],
+			[
+				"approvalhomecontroller",
+				"src\\classes\\ApprovalHomeController.cls"
+			],
+			[
+				"sa",
+				"src\\classes\\SapApprovalEnum.cls"
+			],
+			[
 				"",
-				"src\\classes\\AMVendorExtension.cls"
+				"src\\classes\\AMVendorClaimExtension.cls"
+			],
+			[
+				"amvendorc",
+				"src\\pages\\AMVendorClaim.page"
+			],
+			[
+				"sapapprovalenum",
+				"src\\classes\\SapApprovalEnum.cls"
+			],
+			[
+				"ambu",
+				"src\\pages\\AMBusinessTravel.page"
+			],
+			[
+				"appper",
+				"src\\classes\\ApprovalPermissionItemHandler.cls"
+			],
+			[
+				"approvalc",
+				"src\\classes\\ApprovalContactExtension.cls"
+			],
+			[
+				"re",
+				"src\\classes\\RequiredFieldsCheck.cls"
+			],
+			[
+				"approvalmanualsharehandler",
+				"src\\classes\\ApprovalManualShareHandler.cls"
+			],
+			[
+				"amsev2_vendorevaluation",
+				"src\\classes\\AMSEV2_VendorEvaluationHandler.cls"
+			],
+			[
+				"amsev2_vendorevaluationextension",
+				"src\\classes\\AMSEV2_VendorEvaluationExtension.cls"
+			],
+			[
+				"myres",
+				"src\\classes\\MyRestResource.cls"
+			],
+			[
+				"amvendor",
+				"src\\pages\\AMVendor.page"
 			],
 			[
 				"testm",
@@ -1183,20 +1175,12 @@
 				"src\\classes\\ApprovalContactExtension.cls"
 			],
 			[
-				"approvalc",
-				"src\\pages\\ApprovalContact.page"
-			],
-			[
 				"amv",
 				"src\\pages\\AMVendor.page"
 			],
 			[
 				"pushtosap",
 				"src\\classes\\PushApprovalDataToSapHandler.cls"
-			],
-			[
-				"amven",
-				"src\\classes\\AMVendorHandler.cls"
 			],
 			[
 				"u",
@@ -1249,10 +1233,6 @@
 			[
 				"vf",
 				"src\\pages\\EducationTrainingVF.page"
-			],
-			[
-				"approvalmanualsharehandler",
-				"src\\classes\\ApprovalManualShareHandler.cls"
 			],
 			[
 				"utils",
@@ -1335,7 +1315,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 555.0,
+	"side_bar_width": 518.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
