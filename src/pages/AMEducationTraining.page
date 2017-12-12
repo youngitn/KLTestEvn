@@ -1,8 +1,7 @@
-<apex:page  applyHtmlTag="true" doctype="html-5.0"  lightningStylesheets="true" extensions="AMEducationTrainingExtension" standardcontroller="Approval_Managed1__c">
+<apex:page applyHtmlTag="true" doctype="html-5.0"  lightningStylesheets="true" extensions="AMEducationTrainingExtension" standardcontroller="Approval_Managed1__c">
     <!-- 教育訓練申請單 -->
     <html>
         <head>
-            <apex:stylesheet value="{!URLFOR($Resource.SLDS, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
             <script src="{!URLFOR($Resource.JSbundle, '/libs/jquery-3.2.1.js')}" crossorigin="anonymous"></script>
             <script src="/jslibrary/1510689194000/sfdc/Activity.js" crossorigin="anonymous"></script>
             <script src="{!URLFOR($Resource.JSbundle, '/libs/vue.js')}" crossorigin="anonymous"></script>
@@ -40,7 +39,7 @@
                 </apex:actionfunction> -->
                 <apex:pageblock >
                     <apex:pageblockbuttons >
-                        <apex:commandbutton  action="{!save}" id="jq_vsubmit_doSave" value="保存" >
+                        <apex:commandbutton action="{!save}" id="jq_vsubmit_doSave" value="保存" >
                         </apex:commandbutton>
                         <apex:commandbutton action="{!Cancel}" value="取消">
                         </apex:commandbutton>

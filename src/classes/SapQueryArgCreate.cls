@@ -270,6 +270,36 @@ public with sharing class SapQueryArgCreate {
     }
     
 
+//销售定价
+        public static String createSapSalesPriceQueryDesc(String Factory,String Material_Number){
+        return createSapSalesPriceQueryDesc(Factory,Material_Number,'');
+    }
+
+    public static String createSapSalesPriceQueryDesc(String Factory,String Material_Number,String Material_Description){
+        List<Map<String,String>> lstCon = new List<Map<String,String>>();
+        Integer index = 1;
+        Map<String,String> con1 = new Map<String,String>();
+        //工厂
+        if (!String.isBlank(Factory)) {
+            lstCon.add(createCondition(index,'Factory__c','String','=',Factory));
+        index = index + 1;
+        }
+        //物料号
+        if (!String.isBlank(Material_Number)) {
+            lstCon.add(createCondition(index,'Material_Number__c','String','=',Material_Number));
+        index = index + 1;
+        }
+        //物料描述
+        if(!String.isBlank(Material_Description)){
+            lstCon.add(createCondition(index,'Material_Description__c','String','LIKE',Material_Description));
+            index = index + 1;
+        }
+       
+        return JSON.serialize(createQueryArg('SALESPRICEQUERY',lstCon));    
+    }
+
+
+
 
         public static String createSapClientQueryArgs(String salesName){
         return createSapClientQueryArgs(salesName,'','','','','','','','','','','','','');

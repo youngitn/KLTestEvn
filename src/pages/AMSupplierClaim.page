@@ -1,33 +1,13 @@
-<apex:page applyhtmltag="true" doctype="html-5.0" extensions="AMSupplierClaimExtension" lightningstylesheets="true" standardcontroller="Custom_Approval_Managed__c">
+<apex:page applyHtmlTag="true" doctype="html-5.0"  lightningStylesheets="true" standardController="Custom_Approval_Managed__c" extensions="AMSupplierClaimExtension">
     <apex:pagemessages escape="true">
-    </apex:pagemessages>
+            </apex:pagemessages>
     <apex:pageblocksection title="基本信息">
-        <apex:form>
-            <apex:pageblocksection id="appGetNumberByName" title="申請資訊">
-                
-                <apex:inputfield  required="true" value="{!cam.Applicant__c}">
-                </apex:inputfield>
-               
-                
-                <apex:inputfield  required="true" value="{!cam.Quantity__c }">
-                </apex:inputfield>
+    <apex:form > 
+     
+    	  
 
-                <apex:inputfield  required="true" value="{!cam.TotalQuantity__c }">
-                </apex:inputfield>
-
-                <apex:inputfield  required="true" value="{!cam.ClaimCostsDetails__c }">
-                </apex:inputfield>
-
-                <apex:inputfield  required="true" value="{!cam.Vendor_Name__c }">
-                </apex:inputfield>
-
-                <apex:inputfield  required="true" value="{!cam.DiscountOrderNumber__c }">
-                </apex:inputfield>
-
-                <apex:inputfield  required="true" value="{!cam.Remark_reason__c }"> 
-                </apex:inputfield>
-                
-            </apex:pageblocksection>
-        </apex:form>
-    </apex:pageblocksection>
+    
+    
+</apex:form> 
+</apex:pageblocksection>
 </apex:page>

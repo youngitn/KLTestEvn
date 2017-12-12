@@ -424,7 +424,7 @@
             	<!-- 数量 -->
                 <apex:inputField id="Quantity" value="{!am.Quantity__c}" required="true"></apex:inputField>
                  <!-- 客户 -->
-                <apex:inputField id="Account" value="{!am.Account__c}" ></apex:inputField>
+                <apex:inputField id="Account" value="{!am.Account__c}" required="true"></apex:inputField>
                 <!-- 客户编号 -->
                 <apex:outputField id="Account_Number" value="{!am.Account_Number__c}"></apex:outputField> 
             	<!-- 付款条件 -->

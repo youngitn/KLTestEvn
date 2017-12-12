@@ -48,7 +48,7 @@
                 || desc5.val()!=''|| desc6.val()!='陪餐人员不宜太多!(请填写陪餐人员姓名及人数)'
                 )
                 {
-                    alert("订餐申请、客户派车申请二选一，请清空当前页面信息再更换流程类型");
+                    alert("订餐申请、客户派车、空运申请三选一，请清空当前页面信息再更换流程类型");
                     EventUtil.preventDefault(window.event);
                 }
             }
@@ -58,10 +58,20 @@
                 || desc10.val()!=''|| desc11.val()!=''
                 || desc12.val()!=''|| desc13.val()!='')
                 {
-                    alert("订餐申请、客户派车申请二选一，请清空当前页面信息再更换流程类型");
+                    alert("订餐申请、客户派车、空运申请三选一，请清空当前页面信息再更换流程类型");
                     EventUtil.preventDefault(window.event);
                 }
             }
+            else if(type=="3")
+            {
+                if(desc9.val()!=''
+                || desc10.val()!=''|| desc11.val()!='')
+                {
+                    alert("订餐申请、客户派车、空运申请三选一，请清空当前页面信息再更换流程类型");
+                    EventUtil.preventDefault(window.event);
+                }
+            }
+
 
         }
 
@@ -284,7 +294,7 @@
 
                 desc16.hide();
                 desc16.parent().prev().children("label").hide();
-        }else if (approvalValue == "2") {
+        }else if (approvalValue == "2" || approvalValue == "3") {
                 desc.hide();
                 desc.next().hide();
                 desc.parent().parent().prev().children("label").hide();
@@ -331,11 +341,63 @@
                 desc14.show();
                 desc14.parent().prev().children("label").show();
 
-                desc15.show();
-                desc15.parent().prev().children("label").show();
+                desc15.hide();
+                desc15.parent().prev().children("label").hide();
 
                 desc16.show();
                 desc16.parent().prev().children("label").show();
+        }else if (approvalValue == "3") {
+                desc.hide();
+                desc.next().hide();
+                desc.parent().parent().prev().children("label").hide();
+
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.show();
+                desc2.parent().prev().children("label").show();
+
+                desc4.hide();
+                desc4.next().hide();
+                desc4.parent().parent().prev().children("label").hide();
+
+                desc5.hide();
+                desc5.parent().prev().children("label").hide();
+
+                desc6.hide();
+                desc6.parent().prev().children("label").hide();
+
+                desc7.hide();
+                desc7.parent().prev().children("label").hide();
+
+                desc8.hide();
+                desc8.parent().prev().children("label").hide();
+
+                desc9.hide();
+                desc9.parent().prev().children("label").hide();
+
+                desc10.hide();
+                desc10.parent().prev().children("label").hide();
+
+                desc11.hide();
+                desc11.parent().prev().children("label").hide();
+
+                desc12.hide();
+                desc12.next().hide();
+                desc12.parent().parent().prev().children("label").hide();
+
+                desc13.hide();
+                desc13.next().hide();
+                desc13.parent().parent().prev().children("label").hide();
+
+                desc14.hide();
+                desc14.parent().prev().children("label").hide();
+
+                desc15.hide();
+                desc15.parent().prev().children("label").hide();
+
+                desc16.hide();
+                desc16.parent().prev().children("label").hide();
         }
     }
       
