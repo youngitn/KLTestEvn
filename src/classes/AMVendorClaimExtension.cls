@@ -1,4 +1,5 @@
-public with sharing class AMVendorClaimExtension {
+public with sharing class AMVendorClaimExtension
+{
 
     public Custom_Approval_Managed__c cam  {Get; Set;}
     public List<Contact> c  {Get; Set;}
@@ -6,8 +7,9 @@ public with sharing class AMVendorClaimExtension {
     // The extension constructor initializes the private member
     // variable mysObject by using the getRecord method from the standard
     // controller.
-    public AMVendorClaimExtension(ApexPages.StandardController con) {
-       cam = new Custom_Approval_Managed__c();
+    public AMVendorClaimExtension(ApexPages.StandardController con)
+    {
+        cam = new Custom_Approval_Managed__c();
 
         cam.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.VENDORCLAIM, 'Custom_Approval_Managed__c');
 
@@ -17,20 +19,20 @@ public with sharing class AMVendorClaimExtension {
         {
             cam = (Custom_Approval_Managed__c)con.getRecord();
         }
-        c =  [SELECT Id,Name FROM Contact LIMIT 100];
+        c =  [SELECT Id, Name FROM Contact LIMIT 100];
+        
     }
 
-    public String getRecordName() {
-        return 'Hello ' + (String)cam.get('name') + ' (' + (Id)cam.get('Id') + ')';
+    public PageReference saveAction()
+    {
+        upsert cam;
+        return new PageReference('/' + cam.Id);
     }
-     public Component.Apex.Detail getDynamicfDetail() {
-        Component.Apex.Detail detail = new Component.Apex.Detail();
-        detail.expressions.subject = '{!acct.Id}';
-        detail.relatedList = false;
-        detail.title = false;
-        return detail;
+
+    public PageReference cancelAction()
+    {
+        return new PageReference('/apex/ApprovalHome?sfdc.tabName=01rO0000000Dz6T');
     }
-    public Approval_Managed1__c acct {
-        get { return [SELECT Id FROM Approval_Managed1__c WHERE Approval_Name__c = 'EducationTraining' LIMIT 1]; }
-    }
+
+
 }

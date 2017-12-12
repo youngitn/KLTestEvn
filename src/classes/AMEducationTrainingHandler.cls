@@ -29,6 +29,18 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
     {
 
         //获取教育訓練申請流程各节点配置
+        Map<String, Contact> KlAllContactMap = new Map<String, Contact>();
+        Map<String, Contact> KlAllContactMapByNum = new Map<String, Contact>();
+        Map<String, User> KlAllUserMap = new Map<String, User>();
+        for(Contact c : [SELECT Id, Email, Number__c, Name, SF_User__c FROM Contact])
+        {
+            KlallContactMap.put(c.Id, c);
+            KlAllContactMapByNum.put(c.Number__c, c);
+        }
+        for(User u : [SELECT Id, Email, Number__c, Name FROM User])
+        {
+            KlAllUserMap.put(u.Number__c, u);
+        }
         System.debug('!!!!!inAMEducationTrainingHandler');
         Map<Decimal, Organizational__c>  mapSpecify = null;
         Id rtId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.EDUCATIONTRAININGREQUEST, 'Approval_Managed1__c');
@@ -58,15 +70,18 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
                     for(String p : pList)
                     {
                         empidList.add(p.substringAfter('-'));
-                        List<User> i = [SELECT Id, Email FROM User WHERE Number__c = : p.substringAfter('-')];
 
-                        userIds.add(i.get(0).Id);
+                    }
+                    //for(User ps :[SELECT Id, Email, Name FROM User WHERE Number__c IN : empidList]){
+                    //    userIds.add(ps.Id);
+                    //}
+                    for(String num : empidList)
+                    {
+                        userIds.add(KlAllUserMap.get(num).id);
                     }
 
 
                 }
-                //申請人讀取權限
-                userIds.add( Utils.getUserIdByContactID(cam.Applicant__c));
                 //申請人讀取權限
                 userIds.add( Utils.getUserIdByContactID(cam.Applicant__c));
 
@@ -93,13 +108,24 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
                         empidList.add(p.substringAfter('-'));
 
                     }
-                    for(User ps :[SELECT Id, Email, Name FROM User WHERE Number__c IN : empidList]){
-                        sendMailToParticipants(ps.Name, ps.email, cam);
+                    //for(User ps :[SELECT Id, Email, Name FROM User WHERE Number__c IN : empidList]){
+                    //    sendMailToParticipants(ps.Name, ps.email, cam);
+                    //}
+                    for(String num : empidList)
+                    {
+
+                        //取得主管email
+                        Organizational__c o = new Organizational__c();
+                        o.Approval_Rule__c  = '指定人部门主管';
+                        Contact toCon = KlAllContactMapByNum.get(num);
+                        Id bossId           = Utils.approvalSearchApprrovalerByRule(o, toCon.Id).get(0);
+                        String bossEmail    = KlAllContactMap.get(bossId).email;
+                        String toEmail      = toCon.email;
+                        sendMailToParticipants(toCon.Name , toEmail , bossEmail , cam);
                     }
-                    
-                    
-                    
-                    
+
+
+
                 }
 
                 if (cam.RecordTypeId == rtId && cam.Is_Reset_Approvaler__c)
@@ -139,8 +165,8 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         cam.Approval_User4__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4), null), 0);
 
         //總經理核示
-        cam.Approval_User5__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(5), null), 0);       
-   
+        cam.Approval_User5__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(5), null), 0);
+
 
         //6-13节点审批人设置
         cam.Approval_User6__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(6), cam.Applicant__c), 0);
@@ -152,7 +178,7 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         cam.Approval_User12__c      = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(12), cam.Applicant__c), 0);
         cam.Approval_User13__c      = utils.getUserByEmployeeCode('10212239');//颜 斌-10212239
     }
-    public void sendMailToParticipants(String name, String email , Approval_Managed1__c am)
+    public void sendMailToParticipants(String name, String email , String bossEmail, Approval_Managed1__c am )
     {
 
         Messaging.reserveSingleEmailCapacity(2);
@@ -163,16 +189,10 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         // Strings to hold the email addresses to which you are sending the email.
         String[] toAddresses = new String[] {email};
 
-        //找參訓人主管並寄信 SOQL limit會破表 有需求再說
-        // Organizational__c o = new Organizational__c();
-        // o.Approval_Rule__c = '指定人部门主管';
-        // List<Contact> c = [SELECT id FROM Contact WHERE email = :email];
-        // if (c.size() > 0)
-        // {
-        //     String[] ccAddresses = new String[] {[SELECT Id, email FROM USER WHERE ID = : Utils.approvalSearchApprrovalerByRule(o, c.get(0).Id)].get(0).email };
-        //     System.debug('-------------------->' + ccAddresses);
-        //     mail.setCcAddresses(ccAddresses);
-        // }
+        String[] ccAddresses = new String[] {bossEmail};
+        System.debug('-------------------->' + ccAddresses);
+        mail.setCcAddresses(ccAddresses);
+
 
         // Assign the addresses for the To and CC lists to the mail object.
         mail.setToAddresses(toAddresses);
@@ -184,7 +204,7 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         mail.setSenderDisplayName('Salesforce');
 
         // Specify the subject line for your email address.
-        mail.setSubject('Salesforce 教育訓練申請單 參訓人:' + name + ' 審核批准通知');
+        mail.setSubject('Salesforce 教育訓練申請單 員工:' + name + ' 所參與之教育訓練已批准');
 
         // Set to True if you want to BCC yourself on the email.
         mail.setBccSender(false);
@@ -194,9 +214,9 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         mail.setUseSignature(false);
 
         // Specify the text content of the email.
-        mail.setPlainTextBody('Hi,'+name+',您所參與的教育訓練申請流程 單號:' + am.Name + ' 申請人:' + am.Applicant__c + ',已通過審批.'  );
+        
 
-        mail.setHtmlBody('表單詳情請至連結檢視:' + URL.getSalesforceBaseUrl() + '/' + am.Id );
+        mail.setHtmlBody('name + '+' 您所參與的教育訓練申請流程 已批准. <br> 單號:' + am.Name + '<br> 申請人:' + am.Applicant__c  +'<br>表單詳情請至連結檢視:' + URL.getSalesforceBaseUrl() + '/' + am.Id );
 
         // Send the email you have created.
         Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });

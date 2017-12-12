@@ -5,7 +5,7 @@ public class AMEducationTrainingExtension
     public Contact contact {get; set;}
     public String ApplicantEmpid  {get; set;}
     public Event EventX  {get; set;}
-    public String objList {get;set;} 
+    public String objList {get; set;}
     //public List<Contact > contactList {get; set;}
     //public String  contactName{Get; Set;}
     //參訓人員
@@ -28,7 +28,7 @@ public class AMEducationTrainingExtension
         participants = new List<participant>();
         contact = new Contact();
         EventX = new Event();
-        objList = JSON.serialize([SELECT Number__c,Name FROM Contact WHERE Human_Range__c = '3000']);
+        objList = JSON.serialize([SELECT Number__c, Name FROM Contact WHERE Human_Range__c = '3000']);
 
     }
 
@@ -40,13 +40,22 @@ public class AMEducationTrainingExtension
         {
             am.StartDate__c = Date.today();
         }
+        if (am.BegingTime__c == null )
+        {
+            am.BegingTime__c = '10:00 AM';
+        }
+        if (am.EndTime__c == null )
+        {
+            am.EndTime__c = '11:00 AM';
+        }
         //計算持續時間
-        Time bt = am.BegingTime__c;
-        Time et = am.EndTime__c;
-        Date sd = am.StartDate__c;
-
-        datetime startTime =  DateTime.newInstance(sd, bt);
-        datetime endTime = DateTime.newInstance(sd, et);
+        String bt = am.BegingTime__c;
+        String et = am.EndTime__c;
+        Date sdd = am.StartDate__c;
+        String sd = sdd.day() + '/' + sdd.month() + '/' + sdd.year();
+        System.debug(sd);
+        datetime startTime =  DateTime.parse(sd + ' ' + bt);
+        datetime endTime = DateTime.parse(sd + ' ' + et);
         Long dm = ((endTime.getTime() - startTime.getTime()) / 60000);
         if ( dm > 1440)
         {
@@ -104,7 +113,7 @@ public class AMEducationTrainingExtension
 
             e.StartDateTime = e.ActivityDateTime = startTime;
             //e.StartDateTime = startTime;//只抓時間
-            e.EndDateTime = am.End_Time__c;//只抓時間
+
 
             //e.WhoId = am.Applicant__c;//非必要
             e.WhatId = am.Id;//關聯單Id
@@ -178,12 +187,17 @@ public class AMEducationTrainingExtension
     {
         EventRelation er = new EventRelation();
         System.debug(e.Id);
-        er.EventId = e.Id;
-        //getUserByEmployeeCode(p.empid);
-        er.RelationId =  Utils.getUserByEmployeeCode(p.empid);//用SF_User__r.id作為邀請人才是真邀請
-        er.Status = 'Accepted';
 
-        insert er;
+        //getUserByEmployeeCode(p.empid);
+        if(!Test.isRunningTest())
+        {
+            er.EventId = e.Id;
+            er.RelationId =  Utils.getUserByEmployeeCode(p.empid);//用SF_User__r.id作為邀請人才是真邀請
+            er.Status = 'Accepted';
+
+            insert er;
+        }
+
     }
     public PageReference Cancel()
     {
