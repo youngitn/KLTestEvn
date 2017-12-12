@@ -1,13 +1,11 @@
-public class AMCustomerCreditLoanExtension {    
+public class AMCustomerCreditLoanExtension {     
  
     public Approval_Managed__c am {get;set;} 
-    public List<Approval_Managed__c> listam{get;set;} 
     public Id amId {get; set;}
     public Boolean isDeletedStatus{get;set;}
 
     public AMCustomerCreditLoanExtension(ApexPages.StandardController con) {
       am = new Approval_Managed__c();
-      listam = new List<Approval_Managed__c>();
       isDeletedStatus = true;
     
       // if(con.getId() == null){
@@ -87,6 +85,7 @@ public class AMCustomerCreditLoanExtension {
             am.Total_credit_risk__c = amget.Total_credit_risk__c;
             am.Guarantee_amount_receivable__c = amget.Guarantee_amount_receivable__c;
             am.Risk_kind__c = amget.Risk_kind__c;
+            am.Risk_kind_describe__c = amget.Risk_kind_describe__c;
            
         }catch(Exception ex){  
             ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.ERROR,ex.getMessage() + '\n' + ex.getStackTraceString()));    

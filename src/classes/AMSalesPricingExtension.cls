@@ -119,21 +119,23 @@ public with sharing class AMSalesPricingExtension {
             return null;
         } 
         try{
-            String str1 = SapQueryArgCreate.createSapInventoryQueryDesc(am.Factory__c,amic.Material_Number__c);
+            String str1 = SapQueryArgCreate.createSapSalesPriceQueryDesc(am.Factory__c,amic.Material_Number__c);
             System.debug(str1);
             String str2 = Utils.postToSAP(str1);
             System.debug(str2);
             SapWebServiceReturnArgs args = (SapWebServiceReturnArgs)JSON.deserialize(str2, SapWebServiceReturnArgs.class);
             System.debug(args);
-            System.debug(LoggingLevel.INFO, '*** listDetail: ' + listDetail);
+         
             if (args.status != '1') {
                 ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '查询出错:'+args.message));
-                isDeletedStatus= false;
-                System.debug(LoggingLevel.INFO, '*** listDetail: ' + listDetail);
                 return null;
+            }else{
+                Approval_Managed__c amget = (Approval_Managed__c)JSON.deserialize(JSON.serialize(args.materialdata[0]), Approval_Managed__c.class);
+                am.Material_Number__c = amget.Material_Number__c;
+                am.Material_Description__c = amget.Material_Description__c;
             }
-            listson = args.materialdata;
-            System.debug(LoggingLevel.INFO, '*** listDetail: ' + listDetail);
+            
+
         } 
         catch(Exception e){
             ApexPages.addMessages(e);
