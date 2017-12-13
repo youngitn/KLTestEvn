@@ -32,7 +32,7 @@
                                 <label class="slds-form-element__label" for="Applicant">
                                     申請人
                                 </label>
-                                <apex:inputfield  id="Applicant" value="{!cam.Applicant__c}">
+                                <apex:inputfield id="Applicant" value="{!cam.Applicant__c}">
                                 </apex:inputfield>
                             </div>
                             <apex:pageBlockSection title="不良品工單資訊" ></apex:pageBlockSection>
@@ -40,7 +40,7 @@
                                 <label class="slds-form-element__label" for="text-input-01">
                                     不良品工單單號
                                 </label>
-                                <apex:inputfield  value="{!cam.Bill_No__c }">
+                                <apex:inputfield value="{!cam.Bill_No__c }">
                                 </apex:inputfield>
                             </div>
                             <div class="pure-control-group pure-input-1-3">
