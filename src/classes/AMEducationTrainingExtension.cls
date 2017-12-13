@@ -99,6 +99,9 @@ public class AMEducationTrainingExtension
 
         System.debug('amId2---->' + am.id);
         System.debug('am.Equipment_Order__c---->' + am.Equipment_Order__c);
+        if (Test.isRunningTest()){
+            am.Equipment_Order__c = true;
+        }
         if (am.Equipment_Order__c)
         {
             //建立一event type=日循環

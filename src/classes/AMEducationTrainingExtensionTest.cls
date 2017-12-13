@@ -58,9 +58,12 @@ private class AMEducationTrainingExtensionTest
             am.EducationTrainingHours__c = 8;
             am.EducationTrainingInHouseLecturerName__c = p1.get(0).id;
             am.MeetingRooms__c = con3.id;
-            AMEducationTrainingExtension extension = new AMEducationTrainingExtension(new ApexPages.StandardController(am));
-            System.debug('am.Days__c-----' + am.Days__c);
+            am.Equipment_Order__c = true;
+            am.EducationTrainingInHouseLecturerName__c = usr.id;
 
+            AMEducationTrainingExtension extension = new AMEducationTrainingExtension(new ApexPages.StandardController(am));
+            System.debug('am.Days__c-----' + extension.am.Days__c);
+            extension.am.Days__c = 1;
             //click add Participant
             extension.addParticipant();
             extension.ApplicantEmpid = '30210378';
