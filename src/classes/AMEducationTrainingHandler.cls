@@ -8,20 +8,22 @@
  修改原因：增加6—13节点审批人
  备    注：
 
-            节点1   申請人單位主管              Related User: *审批用户1：Approval_User1__c
-            节点2   人力資源課承辦人（梁惠雯）  Related User: *审批用户2：Approval_User2__c
-            节点3   人力資源課（高慧珠）        Related User: *审批用户3：Approval_User3__c
-            节点4   管理部（高慧珠）            Related User: *审批用户4：Approval_User4__c
-            节点5   總經理核示（李柏樺）        Related User: *审批用户5：Approval_User5__c
-    新增节点:
-            节点6   主管审批                Related User: *审批用户6： Approval_User6__c
-            节点7   一阶主管审批            Related User: *审批用户7： Approval_User7__c
-            节点8   管理部经理(陈瑞峰)      Related User: *审批用户8： Approval_User8__c
-            节点9   总经理室(郭红飞)        Related User: *审批用户9： Approval_User9__c
-            节点10  培训专员报名(颜斌)      Related User: *审批用户10：Approval_User10__c
-            节点11  提交培训报告            Related User: *审批用户11：Approval_User11__c
-            节点12  一阶主管确认报告        Related User: *审批用户12：Approval_User12__c
-            节点13  培训专员确认(颜斌)      Related User: *审批用户13：Approval_User13__c
+            节点1     申請人單位主管              Related User: *审批用户1：Approval_User1__c
+            节点2     人力資源課承辦人（梁惠雯）  Related User: *审批用户2：Approval_User2__c
+            节点3     人力資源課（高慧珠）        Related User: *审批用户3：Approval_User3__c
+            节点4     管理部（高慧珠）            Related User: *审批用户4：Approval_User4__c
+            节点5     財務主管                    Related User: *审批用户13：Approval_User14__c                    
+            节点6     財務人員                    Related User: *审批用户13：Approval_User15__c
+            节点7     總經理核示（李柏樺）        Related User: *审批用户5：Approval_User5__c
+    崑山节点:
+            节点8     主管审批                    Related User: *审批用户6： Approval_User6__c
+            节点9     一阶主管审批                Related User: *审批用户7： Approval_User7__c
+            节点10    管理部经理(陈瑞峰)          Related User: *审批用户8： Approval_User8__c
+            节点11    总经理室(郭红飞)            Related User: *审批用户9： Approval_User9__c
+            节点12    培训专员报名(颜斌)          Related User: *审批用户10：Approval_User10__c
+            节点13    提交培训报告                Related User: *审批用户11：Approval_User11__c
+            节点14    一阶主管确认报告            Related User: *审批用户12：Approval_User12__c
+            节点15    培训专员确认(颜斌)          Related User: *审批用户13：Approval_User13__c
  **********************************************************************/
 public without sharing class AMEducationTrainingHandler implements Triggers.Handler
 {
@@ -32,14 +34,17 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         Map<String, Contact> KlAllContactMap = new Map<String, Contact>();
         Map<String, Contact> KlAllContactMapByNum = new Map<String, Contact>();
         Map<String, User> KlAllUserMap = new Map<String, User>();
-        for(Contact c : [SELECT Id, Email, Number__c, Name, SF_User__c FROM Contact])
+        Map<String, User> KlAllUserMapByNum = new Map<String, User>();
+        
+        for(Contact c : [SELECT Id, Email, Number__c, Name, SF_User__c ,SF_User__r.Is_First_Manager__c ,SF_User__r.Is_Manager__c  FROM Contact])
         {
             KlallContactMap.put(c.Id, c);
             KlAllContactMapByNum.put(c.Number__c, c);
         }
         for(User u : [SELECT Id, Email, Number__c, Name FROM User])
         {
-            KlAllUserMap.put(u.Number__c, u);
+            KlAllUserMapByNum.put(u.Number__c, u);
+            KlAllUserMap.put(u.Id, u);
         }
         System.debug('!!!!!inAMEducationTrainingHandler');
         Map<Decimal, Organizational__c>  mapSpecify = null;
@@ -98,7 +103,8 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
             for (Approval_Managed1__c cam : (List<Approval_Managed1__c>)Trigger.new)
             {
 
-                // 如果是最後批准且已通过 寄出通知
+                // 如果是最後已批准 寄出通知
+                // 審批狀態應該會更新進而觸發此程式
                 if (cam.Approval_Status__c == 'A' && cam.InternalEducationParticipants__c != null)
                 {
                     List<String> pList = cam.InternalEducationParticipants__c.split(',');
@@ -111,15 +117,16 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
                     //for(User ps :[SELECT Id, Email, Name FROM User WHERE Number__c IN : empidList]){
                     //    sendMailToParticipants(ps.Name, ps.email, cam);
                     //}
+                    Organizational__c o = new Organizational__c();
+                    o.Approval_Rule__c  = '指定人部门主管';
+                    Contact toCon = new Contact();
+                    Id bossId = null;
                     for(String num : empidList)
                     {
-
                         //取得主管email
-                        Organizational__c o = new Organizational__c();
-                        o.Approval_Rule__c  = '指定人部门主管';
-                        Contact toCon = KlAllContactMapByNum.get(num);
-                        Id bossId           = Utils.approvalSearchApprrovalerByRule(o, toCon.Id).get(0);
-                        String bossEmail    = KlAllContactMap.get(bossId).email;
+                        toCon               = KlAllContactMapByNum.get(num);
+                        bossId              = Utils.approvalSearchApprrovalerByRule(o, toCon.Id).get(0);
+                        String bossEmail    = KlAllUserMap.get(bossId).email;
                         String toEmail      = toCon.email;
                         sendMailToParticipants(toCon.Name , toEmail , bossEmail , cam);
                     }
@@ -164,20 +171,33 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         //管理部
         cam.Approval_User4__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4), null), 0);
 
+        //財務主管
+        cam.Approval_User14__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(5), null), 0);
+
+        //財務人員
+        cam.Approval_User15__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(6), null), 0);
+
         //總經理核示
-        cam.Approval_User5__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(5), null), 0);
+        cam.Approval_User5__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(7), null), 0);
 
 
         //6-13节点审批人设置
-        cam.Approval_User6__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(6), cam.Applicant__c), 0);
-        cam.Approval_User7__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(7), cam.Applicant__c), 0);
+        cam.Approval_User6__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8), cam.Applicant__c), 0);
+        cam.Approval_User7__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(9), cam.Applicant__c), 0);
         cam.Approval_User8__c       = utils.getUserByEmployeeCode('10210853');
         cam.Approval_User9__c       = utils.getUserByEmployeeCode('10210016');//郭 红飞-10210016
         cam.Approval_User10__c      = utils.getUserByEmployeeCode('10212239');//颜 斌-10212239
         cam.Approval_User11__c      = utils.getUserByEmployeeCode(cam.Applicant__c);
-        cam.Approval_User12__c      = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(12), cam.Applicant__c), 0);
+        cam.Approval_User12__c      = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(14), cam.Applicant__c), 0);
         cam.Approval_User13__c      = utils.getUserByEmployeeCode('10212239');//颜 斌-10212239
     }
+    /**
+     * [寄送EMAIL]
+     * @param name      [參訓人姓名]
+     * @param email     [參訓人郵件位址]
+     * @param bossEmail [參訓人部門主管郵件位址]
+     * @param am        [表單物件]
+     */
     public void sendMailToParticipants(String name, String email , String bossEmail, Approval_Managed1__c am )
     {
 
@@ -214,9 +234,9 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         mail.setUseSignature(false);
 
         // Specify the text content of the email.
-        
 
-        mail.setHtmlBody('name + '+' 您所參與的教育訓練申請流程 已批准. <br> 單號:' + am.Name + '<br> 申請人:' + am.Applicant__c  +'<br>表單詳情請至連結檢視:' + URL.getSalesforceBaseUrl() + '/' + am.Id );
+
+        mail.setHtmlBody('name + ' + ' 您所參與的教育訓練申請流程 已批准. <br> 單號:' + am.Name + '<br> 申請人:' + am.Applicant__c  + '<br>表單詳情請至連結檢視:' + URL.getSalesforceBaseUrl() + '/' + am.Id );
 
         // Send the email you have created.
         Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
