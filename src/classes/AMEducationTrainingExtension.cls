@@ -52,7 +52,8 @@ public class AMEducationTrainingExtension
         String bt = am.BegingTime__c;
         String et = am.EndTime__c;
         Date sdd = am.StartDate__c;
-        String sd = sdd.day() + '/' + sdd.month() + '/' + sdd.year();
+        //String sd = sdd.day() + '/' + sdd.month() + '/' + sdd.year();
+        String sd = sdd.format();
         System.debug(sd);
         datetime startTime =  DateTime.parse(sd + ' ' + bt);
         datetime endTime = DateTime.parse(sd + ' ' + et);
@@ -99,7 +100,8 @@ public class AMEducationTrainingExtension
 
         System.debug('amId2---->' + am.id);
         System.debug('am.Equipment_Order__c---->' + am.Equipment_Order__c);
-        if (Test.isRunningTest()){
+        if (Test.isRunningTest())
+        {
             am.Equipment_Order__c = true;
         }
         if (am.Equipment_Order__c)
@@ -278,6 +280,5 @@ public class AMEducationTrainingExtension
 
 
     }
-
 
 }

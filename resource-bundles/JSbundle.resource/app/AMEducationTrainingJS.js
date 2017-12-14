@@ -70,8 +70,17 @@
                      //onfocus="ActivityFunction.saveStartTime('StartDateTime','StartDateTime_time');ActivityFunction.showTimePicker('StartDateTime_time')"
                      //目前只提供判斷空值功能
                      j$('form[id*=validateForm]').formValidator();
-                     
-
+                     // j$('input[id$=BegingTime__c],input[id$=EndTime__c]').timepicker({
+                     //     timeFormat: 'HH:mm ',
+                     //     interval: 30,
+                     //     minTime: '0',
+                     //     maxTime: '23',
+                     //     defaultTime: '1',
+                     //     startTime: '01:00',
+                     //     dynamic: false,
+                     //     dropdown: true,
+                     //     scrollbar: true
+                     // });
                  });
 
                  function deleteItemBankDetail(rowID) {

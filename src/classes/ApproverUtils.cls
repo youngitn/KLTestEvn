@@ -55,7 +55,7 @@ public without sharing class ApproverUtils
             }
             else
             {
-                setSFID.add(Utils.approvalSearchManagerByApplication(contactID, false));
+                setSFID.add(ApproverUtils.approvalSearchManagerByApplicationWithOutSOQL(contactID, false));
             }
         }
         else if(org.Approval_Rule__c == '指定人部门主管')
@@ -69,22 +69,22 @@ public without sharing class ApproverUtils
             //如果申请人为一阶主管，他的部门主管为上级主管
             else if (con != null && con.SF_User__r.Is_First_Manager__c)
             {
-                setSFID.add(Utils.approvalSearchManagerByApplication(contactID, false));
+                setSFID.add(ApproverUtils.approvalSearchManagerByApplicationWithOutSOQL(contactID, false));
             }
             //如果申请人为部门(二阶)主管，他的部门主管为一阶主管
             else if (con != null && con.SF_User__r.Is_Manager__c)
             {
-                setSFID.add(Utils.approvalSearchSpecificManagerByApplication(contactID, 3, false));
+                setSFID.add(ApproverUtils.approvalSearchSpecificManagerByApplicationWithOutSOQL(contactID, 3, false));
             }
             //其他情况为固定的一阶，二阶主管
             else
             {
-                Id idUser =  Utils.approvalSearchSpecificManagerByApplication(contactID, 4, false);
+                Id idUser =  ApproverUtils.approvalSearchSpecificManagerByApplicationWithOutSOQL(contactID, 4, false);
                 //如果没有部门主管则一阶主管审批
                 if (String.isBlank(idUser))
                 {
                     System.debug(LoggingLevel.INFO, '*** 指定人部门主管为空，找一阶主管: ');
-                    idUser = Utils.approvalSearchSpecificManagerByApplication(contactID, 3, false);
+                    idUser = ApproverUtils.approvalSearchSpecificManagerByApplicationWithOutSOQL(contactID, 3, false);
                 }
                 setSFID.add(idUser);
             }
@@ -101,12 +101,12 @@ public without sharing class ApproverUtils
             //如果申请人为一阶主管，他的一阶主管为上级主管
             else if (con != null && con.SF_User__r.Is_First_Manager__c)
             {
-                setSFID.add(Utils.approvalSearchManagerByApplication(contactID, false));
+                setSFID.add(ApproverUtils.approvalSearchManagerByApplicationWithOutSOQL(contactID, false));
             }
             else
             {
                 System.debug('*** con: ' + con + '');
-                setSFID.add(Utils.approvalSearchSpecificManagerByApplication(contactID, 3, false));
+                setSFID.add(ApproverUtils.approvalSearchSpecificManagerByApplicationWithOutSOQL(contactID, 3, false));
             }
 
         }
@@ -121,7 +121,9 @@ public without sharing class ApproverUtils
     public static Id checkSubCorpManagerWithOutSOQL(String code)
     {
         System_Setting__c ssc = System_Setting__c.getValues('Setting');
+        
         String   szSpecialEmployee   =  ssc.Specify_Approval__c;
+
         String   szApprover   =  ssc.Specify_Approal_Employee__c;
         if (szSpecialEmployee.contains(code))
         {
@@ -158,5 +160,25 @@ public without sharing class ApproverUtils
         {
             return Utils.approvalSearchUserByDept(con.Dept_Number__r.Parent_Number__c);
         }
+    }
+
+    /*
+        目 的：审批节点设置中，通过申请人找到申请人部门或一阶主管
+        参数1：applicationID - 申请人ID
+        参数2：isUserId - ture:用户ID，false:联系人id
+        返回值：返回相关部门主管用户Id：
+
+    */
+    public static Id approvalSearchSpecificManagerByApplicationWithOutSOQL(Id applicationID, Integer deptLevel, Boolean isUserId)
+    {
+        System.debug('*** applicationID: ' + applicationID + '');
+        if (String.isBlank(applicationID))
+        {
+            return null;
+        }
+        Peoples.getInstance().KlAllUserMapGetById.get(applicationID);
+        Id IdContact = isUserId ?Peoples.getInstance().KlAllContactMapGetByNum.get(Peoples.getInstance().KlAllUserMapGetById.get(applicationID).Number__c).Id : applicationID;
+        Contact con = Peoples.getInstance().KlAllContactMapGetById.get(IdContact);
+        return Utils.approvalSearchUserByDept(con.Dept_Number__c, deptLevel);
     }
 }

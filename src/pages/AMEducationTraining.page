@@ -2,13 +2,14 @@
     <!-- 教育訓練申請單 -->
     <html>
         <head>
+
             <script src="{!URLFOR($Resource.JSbundle, '/libs/jquery-3.2.1.js')}" crossorigin="anonymous"></script>
             <script src="/jslibrary/1510689194000/sfdc/Activity.js" crossorigin="anonymous"></script>
             <script src="{!URLFOR($Resource.JSbundle, '/libs/vue.js')}" crossorigin="anonymous"></script>
             <script src="{!URLFOR($Resource.JSbundle, '/app/vueComponents.js')}" crossorigin="anonymous"></script>
             <script src="{!URLFOR($Resource.JSbundle, '/app/JValidator.js')}" crossorigin="anonymous"></script>
             <script src="{!URLFOR($Resource.JSbundle, '/app/AMEducationTrainingJS.js')}" crossorigin="anonymous"></script>
-            
+
             <script>
                 //需要controller的變數資料 必須寫在VF編譯
                

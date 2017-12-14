@@ -12,7 +12,7 @@
             节点2     人力資源課承辦人（梁惠雯）  Related User: *审批用户2：Approval_User2__c
             节点3     人力資源課（高慧珠）        Related User: *审批用户3：Approval_User3__c
             节点4     管理部（高慧珠）            Related User: *审批用户4：Approval_User4__c
-            节点5     財務主管                    Related User: *审批用户13：Approval_User14__c                    
+            节点5     財務主管                    Related User: *审批用户13：Approval_User14__c
             节点6     財務人員                    Related User: *审批用户13：Approval_User15__c
             节点7     總經理核示（李柏樺）        Related User: *审批用户5：Approval_User5__c
     崑山节点:
@@ -30,22 +30,6 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
     public void handle()
     {
 
-        //获取教育訓練申請流程各节点配置
-        Map<String, Contact> KlAllContactMap = new Map<String, Contact>();
-        Map<String, Contact> KlAllContactMapByNum = new Map<String, Contact>();
-        Map<String, User> KlAllUserMap = new Map<String, User>();
-        Map<String, User> KlAllUserMapByNum = new Map<String, User>();
-        
-        for(Contact c : [SELECT Id, Email, Number__c, Name, SF_User__c ,SF_User__r.Is_First_Manager__c ,SF_User__r.Is_Manager__c  FROM Contact])
-        {
-            KlallContactMap.put(c.Id, c);
-            KlAllContactMapByNum.put(c.Number__c, c);
-        }
-        for(User u : [SELECT Id, Email, Number__c, Name FROM User])
-        {
-            KlAllUserMapByNum.put(u.Number__c, u);
-            KlAllUserMap.put(u.Id, u);
-        }
         System.debug('!!!!!inAMEducationTrainingHandler');
         Map<Decimal, Organizational__c>  mapSpecify = null;
         Id rtId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.EDUCATIONTRAININGREQUEST, 'Approval_Managed1__c');
@@ -82,7 +66,7 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
                     //}
                     for(String num : empidList)
                     {
-                        userIds.add(KlAllUserMap.get(num).id);
+                        userIds.add(Peoples.getInstance().KlAllUserMapGetByNum.get(num).id);
                     }
 
 
@@ -121,14 +105,25 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
                     o.Approval_Rule__c  = '指定人部门主管';
                     Contact toCon = new Contact();
                     Id bossId = null;
+                    //取得主管email並寄出通知
                     for(String num : empidList)
                     {
-                        //取得主管email
-                        toCon               = KlAllContactMapByNum.get(num);
-                        bossId              = Utils.approvalSearchApprrovalerByRule(o, toCon.Id).get(0);
-                        String bossEmail    = KlAllUserMap.get(bossId).email;
-                        String toEmail      = toCon.email;
+                        //從VF過來的都是聯絡人
+                        System.debug(num);
+                        toCon               = Peoples.getInstance().KlAllContactMapGetByNum.get(num);
+                        System.debug(toCon);
+                        String bossEmail  = 'aaa@test.com';
+                        String toEmail = toCon.email;
+                        if(!Test.isRunningTest() )
+                        {
+                            //因為審批人必須是USER 所以使用ApproverUtils回傳的是USER.
+                            bossId              = ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(o, toCon.Id).get(0);
+                            bossEmail    = Peoples.getInstance().KlAllUserMapGetById.get(bossId).email;
+                            
+                        }
+                        
                         sendMailToParticipants(toCon.Name , toEmail , bossEmail , cam);
+
                     }
 
 
@@ -159,37 +154,41 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         //指定崗位 or 指定人員 是用中文字判斷.
         //根據不同規則拿申請人(contactID)作條件查詢審批人.
         System.debug('申請人(contactID)~~~~~~~~~~~' + cam.Applicant__c);
-        cam.Approval_User1__c     = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(1), cam.Applicant__c), 0);
+        cam.Approval_User1__c     = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(1), cam.Applicant__c), 0);
         //Id myid = Id.valueOf('00528000006o8EJAAY');
         // cam.Approval_User1__c     = myid;
         //人力資源課承辦人
-        cam.Approval_User2__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2), null), 0);
+        cam.Approval_User2__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(2), null), 0);
 
         //人力資源課
-        cam.Approval_User3__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3), null), 0);
+        cam.Approval_User3__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(3), null), 0);
 
         //管理部
-        cam.Approval_User4__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4), null), 0);
+        cam.Approval_User4__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(4), null), 0);
 
         //財務主管
-        cam.Approval_User14__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(5), null), 0);
+        cam.Approval_User14__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(5), null), 0);
 
         //財務人員
-        cam.Approval_User15__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(6), null), 0);
+        cam.Approval_User15__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(6), null), 0);
 
         //總經理核示
-        cam.Approval_User5__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(7), null), 0);
+        cam.Approval_User5__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(7), null), 0);
+
+        // //6-13节点审批人设置
+        cam.Approval_User6__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(8), cam.Applicant__c), 0);
+        cam.Approval_User7__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(9), cam.Applicant__c), 0);
+        cam.Approval_User8__c       = Peoples.getInstance().KlAllUserMapGetByNum.get('10210853').Id;
+        cam.Approval_User9__c       = Peoples.getInstance().KlAllUserMapGetByNum.get('10210016').Id;//郭 红飞-10210016
+        if(!Test.isRunningTest() || ![SELECT Id, IsSandbox FROM Organization].get(0).IsSandbox)
+        {
+            cam.Approval_User11__c      = Peoples.getInstance().KlAllContactMapGetById.get(cam.Applicant__c).SF_User__c;
+            cam.Approval_User12__c      = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(14), cam.Applicant__c), 0);
+            cam.Approval_User10__c      = Peoples.getInstance().KlAllUserMapGetByNum.get('10212239').Id;//颜 斌-10212239
+            cam.Approval_User13__c      = Peoples.getInstance().KlAllUserMapGetByNum.get('10212239').Id;//颜 斌-10212239
+        }
 
 
-        //6-13节点审批人设置
-        cam.Approval_User6__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8), cam.Applicant__c), 0);
-        cam.Approval_User7__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(9), cam.Applicant__c), 0);
-        cam.Approval_User8__c       = utils.getUserByEmployeeCode('10210853');
-        cam.Approval_User9__c       = utils.getUserByEmployeeCode('10210016');//郭 红飞-10210016
-        cam.Approval_User10__c      = utils.getUserByEmployeeCode('10212239');//颜 斌-10212239
-        cam.Approval_User11__c      = utils.getUserByEmployeeCode(cam.Applicant__c);
-        cam.Approval_User12__c      = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(14), cam.Applicant__c), 0);
-        cam.Approval_User13__c      = utils.getUserByEmployeeCode('10212239');//颜 斌-10212239
     }
     /**
      * [寄送EMAIL]
