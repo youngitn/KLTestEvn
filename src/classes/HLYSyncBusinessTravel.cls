@@ -150,6 +150,14 @@ global without sharing class HLYSyncBusinessTravel {
                     am.Approval_Status__c = 'D';//草稿
                     am.Applicant_Code__c = row.employee_code;//申请人编号
                     am.Applicant_Name__c = mapContact.containsKey(row.employee_code)?mapContact.get(row.employee_code).LastName:'';
+                    /*
+                    Decimal count_tgfx = mapContact.containsKey(row.employee_code)?mapContact.get(row.employee_code).count_tgfx__c:0;
+                    if (count_tgfx == 0 && am.Type_of_Travel__c == 'G01' ) {
+                        reArg.err_msg = '剩余台干返乡次数为0';
+                        reArg.success = 'false';
+                        return reArg;
+                    }
+                    */
                     am.Employee__c = am.Applicant__c;
                     am.Employee_Code__c = row.employee_code; //员工编号
                     am.Employee_Name__c = am.Applicant_Name__c; //员工名称

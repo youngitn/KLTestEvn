@@ -100,6 +100,10 @@ public without sharing class AMCostCenterSendExtension {
     }
 
     public PageReference addBankDetail(){
+        if (listRowInfo.size() >= 50) {
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '项次限制仅允许输入50行'));
+            return null;
+        }
         Custom_Approval_Managed_Item__c addItem = new Custom_Approval_Managed_Item__c();
         if (String.isNotBlank(cusAP.Factory__c) && String.isNotBlank(cusAP.Address_of_Stock__c)) {
             addItem.Factory__c = cusAP.Factory__c;
