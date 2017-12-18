@@ -95,11 +95,12 @@
 
                 //當公司別異動為台灣新萊 存檔時必填欄位檢查
                 j$("input[id$='save']").click(function (){
-                    var msg = '';
-                    if(Corporation.val() == eq3000){
 
-                        var  lan = j$("select[id$='Language__c']");
-                        var tna = j$("input[id$='Tax_Number_Additional__c']");
+                    let msg = '';
+                    if(Corporation.val() == eq3000){
+                        let cmg =  j$("select[id$='Cash_Manage_Group__c']");
+                        let  lan = j$("select[id$='Language__c']");
+                        let tna = j$("input[id$='Tax_Number_Additional__c']");
                         if(lan.val() == null || lan.val() == ''){
                             msg += ' 語言 ';
                         }
@@ -107,7 +108,7 @@
                             msg += ' 現金管理群組 ';
                         }
                         //台灣國貿條件沒輸入的話
-                        var itt = j$("select[id$='International_Trade_Term__c']");
+                        let itt = j$("select[id$='International_Trade_Term__c']");
                         if (itt.val() == null || itt.val() == ''){
                             itt.val('注');
                         }
@@ -121,8 +122,6 @@
                         return false;
                     }
                 });
-
-              
 
              });
 
@@ -275,7 +274,7 @@
                 <!--检索项2-->
                 <apex:inputfield id="Retrieve_Item2__c" value="{!cusAP.Retrieve_Item2__c}">
                 </apex:inputfield>
-                <apex:commandbutton onclick=" return JSqueryVendor();" value="查询供应商">
+                <apex:commandbutton id="vendorQueryFromSap" onclick=" return JSqueryVendor();" value="查询供应商">
                 </apex:commandbutton>
             </apex:pageblocksection>
             <apex:pageblocksection columns="1">
