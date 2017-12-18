@@ -1,3 +1,15 @@
+<!--> 
+ 名    称：用印流程流程
+ 目    的：用印流程流程页面
+ 作    者：刘忠林
+ 创建日期：2017-9-29
+ 修 改 人：
+ 修改日期：
+ 修改原因：
+ 备    注：
+ 
+<-->
+
 <apex:page standardController="Approval_Managed__c" extensions="AMSignetUseExtension" >
 <html>
 <head>

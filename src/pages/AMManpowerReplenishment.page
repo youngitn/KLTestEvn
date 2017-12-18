@@ -11,7 +11,7 @@
 <-->
 
 <apex:page standardController="Approval_Managed__c" extensions="AMManpowerReplenishmentExtension" >
- <!-- 成本中心发料作业流程 -->
+ 
     <head>
         <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
         <style>

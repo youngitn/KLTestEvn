@@ -100,7 +100,7 @@ public without sharing class AMCostCenterSendExtension {
     }
 
     public PageReference addBankDetail(){
-        if (listRowInfo.size() >= 50) {
+        if (listRowInfo.size() >= 30) {
             ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '项次限制仅允许输入50行'));
             return null;
         }

@@ -8,23 +8,57 @@
  修改原因：
  备    注：
  
-<-->
+<--> 
 
 <apex:page standardController="Approval_Managed__c" extensions="AMCustomerCreditLoanExtension" >
+<head>
+    <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+    <script>
+    //阻止事件继续进行
+    var EventUtil = {
+        preventDefault: function(event){
+            if(event.preventDefault){
+                event.preventDefault();
+            } else {
+                event.returnValue = false;
+            }
+        }
+    };
 
+    var j$ = jQuery.noConflict();
+
+    j$(document).ready(function(){
+        j$("[name$='j_id0:form:j_id6:j_id7:save']").mousedown(function (){
+            var rvc = j$("[id$='Credit_validity']");
+                if(rvc.val() == ''){
+                    alert("信用有效期 不能为空！");
+                    EventUtil.preventDefault(window.event);
+                }
+            });
+
+        j$("[name$='j_id0:form:j_id6:j_id7:bottom:save']").mousedown(function (){
+            var rvc = j$("[id$='Credit_validity']");
+                if(rvc.val() == ''){
+                    alert("信用有效期 不能为空！");
+                    EventUtil.preventDefault(window.event);
+                }
+        });
+    });
+
+    </script>
+</head>
 <html>
 <body>
 <apex:sectionHeader title="客户信用贷款主数据申请" subtitle="新建/客户信用贷款主数据申请"></apex:sectionHeader>
-    <apex:pageMessages escape="true" id="messgae"></apex:pageMessages>
     <apex:form id="form">
 
-        <apex:actionFunction action="{!queryAccountInfo}" id="queryAccountInfo" name="queryAccountInfo" reRender="creditloan,messgae" immediate="true" status="loading">
+        <apex:actionFunction action="{!queryAccountInfo}" id="queryAccountInfo" name="queryAccountInfo" reRender="creditloan" immediate="true" status="loading">
             <apex:param assignTo="{!am.Account__c}" name="Account" value="Account"></apex:param>
         </apex:actionFunction>
 
         <apex:pageBlock >
             <apex:pageBlockButtons >
-                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton id="save" action="{!save}" value="保存"/>
                 <apex:commandButton action="{!cancel}" value="取消"/>
             </apex:pageBlockButtons>
             <apex:pageBlockSection title="基本信息" collapsible="false">
@@ -47,40 +81,43 @@
             <apex:pageBlockSection title="客户信用贷款主数据申请" collapsible="false" id="creditloan">
                 <!-- 信用控制范围 --> 
                 <apex:inputField value="{!am.CreditArea__c}" required="true"></apex:inputField>
-                <!-- 信用额度 -->
-                <apex:outputField value="{!am.credit_line__c}"></apex:outputField>
                  <!-- 客户-->
                 <apex:inputField value="{!am.Account__c}" required="true" styleClass="text">
-                    <!-- <input type="button" id="select_btn" value="查询"/> -->
-                    <apex:commandButton value="查询" action="{!queryAccountInfo}"/>
                 </apex:inputField>
-                <!-- 币种-->
-                <apex:outputField value="{!am.Currency__c}"></apex:outputField>
-                <!-- 客户编号--> 
-                <apex:outputField value="{!am.Account_Number__c}"></apex:outputField>
                 <!-- 申请信用额度-->
                 <apex:inputField value="{!am.Application_credit_limit__c}" required="true"></apex:inputField>
+                <!-- 付款条件-->
+                <!-- <apex:outputField value="{!am.Term_of_Payment__c}" required="true"></apex:outputField> -->
+                <!-- 付款条件描述-->
+                <apex:outputField value="{!am.payment_terms_describe__c}"></apex:outputField>
+                <apex:pageBlockSection >
+                    <apex:commandButton value="客户查询" action="{!queryAccountInfo}"/>
+                </apex:pageBlockSection>
+                
+                <!-- 信用有效期 -->
+                <apex:inputField id="Credit_validity" value="{!am.Credit_validity__c}" ></apex:inputField>
+                <!-- 信用额度 -->
+                <apex:outputField value="{!am.credit_line__c}"></apex:outputField>
+                <!-- 客户编号--> 
+                <apex:outputField value="{!am.Account_Number__c}"></apex:outputField>
+                 <!-- 确认信用限额-->
+                <apex:inputField value="{!am.Confirmation_credit_limits__c}"></apex:inputField>
                 <!-- 第三方征信额度-->
                 <apex:inputField value="{!am.Third_credit_line__c}"></apex:inputField>
-                <!-- 确认信用限额-->
-                <apex:inputField value="{!am.Confirmation_credit_limits__c}"></apex:inputField>
-
+                 <!-- 币种-->
+                <apex:outputField value="{!am.Currency__c}"></apex:outputField>
                 <!-- 应收金额-->
                 <apex:outputField value="{!am.Amount_receivable__c}"></apex:outputField>
                 <!-- 特别往来债务-->
                 <apex:outputField value="{!am.Special_current_debt__c}"></apex:outputField>
-                <!-- 付款条件-->
-                <apex:inputField value="{!am.Term_of_Payment__c}" required="true"></apex:inputField>
-                <!-- 付款条件描述-->
-                <!-- <apex:outputField value="{!am.payment_terms_describe__c}"></apex:outputField> -->
+                
                 <!-- 信贷帐户号码-->
                 <apex:outputField value="{!am.Credit_account_numbe__c}"></apex:outputField>
                 <!-- 已使用信贷金额-->
                 <apex:outputField value="{!am.Used_Credit_amount__c}"></apex:outputField>
                 <!-- 销售值 -->
                 <apex:outputField value="{!am.Sales_value__c}"></apex:outputField>
-                <!-- 信用有效期 -->
-                <apex:inputField value="{!am.Credit_validity__c}" required="true"></apex:inputField>
+                
                 <!-- 信用贷款风险总额 -->
                 <apex:outputField value="{!am.Total_credit_risk__c}"></apex:outputField>
                 <!-- 担保应收金额 -->

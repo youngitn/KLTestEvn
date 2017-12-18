@@ -905,14 +905,14 @@ public with sharing class SapQueryArgCreate {
 
 //客户信用贷款主数据申请
      public static String createSapCreditLoanQueryDesc(String Account,String CreditArea){
-        return createSapCreditLoanQueryDesc(Account,CreditArea,'','','','','','','','','','','');
+        return createSapCreditLoanQueryDesc(Account,CreditArea,'','','','','','','','','','','','','');
     }
 
     public static String createSapCreditLoanQueryDesc(String Account,String CreditArea,String Currency2,
     String credit_line,String Amount_receivable, String Special_current_debt,
     String Credit_account_numbe,String Used_Credit_amount,String Sales_value,
-    String Credit_validity,String Total_credit_risk,String Guarantee_amount_receivable,
-    String Risk_kind){
+    String Total_credit_risk,String Guarantee_amount_receivable,
+    String Risk_kind,String Risk_kind_describe,String Not_received_Amount,String Overdue_amount){
         List<Map<String,String>> lstCon = new List<Map<String,String>>();
         Integer index = 1;
         Map<String,String> con1 = new Map<String,String>();
@@ -949,7 +949,7 @@ public with sharing class SapQueryArgCreate {
          //信贷帐户号码--
         if (!String.isBlank(Credit_account_numbe)) {
             lstCon.add(createCondition(index,'Credit_account_numbe__c','String','LIKE',Credit_account_numbe));
-            index = index + 1;
+            index = index + 1; 
         }
          //已使用信贷金额
         if (!String.isBlank(Used_Credit_amount)) {
@@ -959,11 +959,6 @@ public with sharing class SapQueryArgCreate {
          //销售值
         if (!String.isBlank(Sales_value)) {
             lstCon.add(createCondition(index,'Sales_value__c','String','LIKE',Sales_value));
-            index = index + 1;
-        }
-         //信用有效期
-        if (!String.isBlank(Credit_validity)) {
-            lstCon.add(createCondition(index,'Credit_validity__c','String','LIKE',Credit_validity));
             index = index + 1;
         }
          //信用贷款风险总额
@@ -979,6 +974,21 @@ public with sharing class SapQueryArgCreate {
          //风险类别
         if (!String.isBlank(Risk_kind)) {
             lstCon.add(createCondition(index,'Risk_kind__c','String','LIKE',Risk_kind));
+            index = index + 1;
+        }
+         //风险类别描述
+        if (!String.isBlank(Risk_kind_describe)) {
+            lstCon.add(createCondition(index,'Risk_kind_describe__c','String','LIKE',Risk_kind_describe));
+            index = index + 1;
+        }
+         //未收款金额
+        if (!String.isBlank(Not_received_Amount)) {
+            lstCon.add(createCondition(index,'Not_received_Amount__c','String','LIKE',Not_received_Amount));
+            index = index + 1;
+        }
+         //逾期未还金额
+        if (!String.isBlank(Overdue_amount)) {
+            lstCon.add(createCondition(index,'Overdue_amount__c','String','LIKE',Overdue_amount));
             index = index + 1;
         }
         return JSON.serialize(createQueryArg('CustomerCreditLoanQuery',lstCon));    

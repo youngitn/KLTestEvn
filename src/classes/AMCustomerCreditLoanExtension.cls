@@ -6,14 +6,7 @@ public class AMCustomerCreditLoanExtension {
 
     public AMCustomerCreditLoanExtension(ApexPages.StandardController con) {
       am = new Approval_Managed__c();
-      isDeletedStatus = true;
-    
-      // if(con.getId() == null){
-      //     am = new Approval_Managed__c();  
-      //     am.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName('CustomerCreditLoan','Approval_Managed__c');
-      // }else{
-      //     am = (Approval_Managed__c)con.getRecord();
-      // } 
+      isDeletedStatus = true; 
       Id recType = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.CUSTOMERCREDITLOAN, 'Approval_Managed__c');
       amId = con.getId();
       if (amId != null) {
@@ -28,9 +21,9 @@ public class AMCustomerCreditLoanExtension {
       }
 
     }    
-
+ 
      public PageReference save() {
-        
+
       if (String.isNotBlank(am.Account__c)) {
             list<Account> con = [SELECT AccountNumber, Name FROM Account WHERE Id = :am.Account__c];
             if (con.size() > 0) {
@@ -55,13 +48,12 @@ public class AMCustomerCreditLoanExtension {
     }
 
 
-
     public PageReference queryAccountInfo() { 
         System.debug(LoggingLevel.INFO, '*** 进入查询: '+am); 
         if (String.isBlank(am.Account__c)) {
             ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING,'请输入客户名称'));    
             return null;
-        }
+        } 
         Account con = [SELECT Name, AccountNumber FROM Account WHERE Id = :am.Account__c ];
         try{
             String str1 = SapQueryArgCreate.createSapCreditLoanQueryDesc(con.AccountNumber,am.CreditArea__c);
@@ -81,12 +73,15 @@ public class AMCustomerCreditLoanExtension {
             am.Credit_account_numbe__c = amget.Credit_account_numbe__c;
             am.Used_Credit_amount__c = amget.Used_Credit_amount__c;
             am.Sales_value__c = amget.Sales_value__c;
-            am.Credit_validity__c = amget.Credit_validity__c;
+            // am.Credit_validity__c = amget.Credit_validity__c;
             am.Total_credit_risk__c = amget.Total_credit_risk__c;
             am.Guarantee_amount_receivable__c = amget.Guarantee_amount_receivable__c;
             am.Risk_kind__c = amget.Risk_kind__c;
             am.Risk_kind_describe__c = amget.Risk_kind_describe__c;
-           
+            am.Not_received_Amount__c = amget.Not_received_Amount__c;
+            am.Overdue_amount__c = amget.Overdue_amount__c;
+            am.payment_terms_describe__c = amget.payment_terms_describe__c;
+            
         }catch(Exception ex){  
             ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.ERROR,ex.getMessage() + '\n' + ex.getStackTraceString()));    
         }

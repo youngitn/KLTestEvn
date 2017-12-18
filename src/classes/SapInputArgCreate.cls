@@ -353,7 +353,7 @@ public without sharing class SapInputArgCreate {
             FROM Approval_Managed_Item__c 
             WHERE Purchase_Info_Inquiry__c = :expenseReimburse.Id];
         List<Approval_Managed_Item__c> vouchers = 
-            [SELECT Id,SAPID__c,Voucher_Info__c,Row_Index__c,Accounting_Code__c,Subject__c,Amount__c,
+            [SELECT Id,Name,SAPID__c,Voucher_Info__c,Row_Index__c,Accounting_Code__c,Subject__c,Amount__c,
                     Dept_of_CostCenter__c,Allocation__c,Text__c,Reason_Code__c,SGL__c,Type_of_Affair__c 
             FROM Approval_Managed_Item__c  
             WHERE Voucher_Info__c = :expenseReimburse.Id];
