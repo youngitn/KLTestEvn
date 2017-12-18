@@ -75,9 +75,7 @@
                             inv.hide();
                             invlabel.hide();
                             setTimeout(bindAction,100);
-                            //隱藏現金管理群組欄位和標籤-->
-                            cmg.hide();
-                            j$("label[for$='Cash_Manage_Group__c']").hide();
+                            
                             //隱藏現金管理群組欄位和標籤<--
                             
                             Term_of_Payment_Corp.hide();
@@ -90,9 +88,6 @@
                             inv.show();
                             invlabel.show();
                             tg.show();
-
-                            cmg.show();
-                            j$("label[for$='Cash_Manage_Group__c']").show();
                             Term_of_Payment_Corp.show();
                         }
                        
