@@ -80,7 +80,7 @@ public class AMCustomerCreditLoanExtension {
             am.Risk_kind_describe__c = amget.Risk_kind_describe__c;
             am.Not_received_Amount__c = amget.Not_received_Amount__c;
             am.Overdue_amount__c = amget.Overdue_amount__c;
-            am.payment_terms_describe__c = amget.payment_terms_describe__c;
+           
             
         }catch(Exception ex){  
             ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.ERROR,ex.getMessage() + '\n' + ex.getStackTraceString()));    

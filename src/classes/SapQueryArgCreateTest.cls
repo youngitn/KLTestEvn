@@ -1,7 +1,7 @@
 /**
-	目的：从SAP查询数据相关参数创建类的测试类
-	作者：Lily
-	创建时间：2017-06-07
+*	目的：从SAP查询数据相关参数创建类的测试类
+*	作者：Lily
+*	创建时间：2017-06-07
 **/
 @isTest
 private class SapQueryArgCreateTest {
@@ -27,6 +27,21 @@ private class SapQueryArgCreateTest {
             SapQueryArgCreate.createMaterialCertificateArgs('1','2','3','4','5');
             SapQueryArgCreate.formatSAPDate(System.today());         
             SapQueryArgCreate.createVacationQuery('10210911');
+            SapQueryArgCreate.createSapClientQueryArgs('1');
+            SapQueryArgCreate.createSapClientQueryArgs('1','2','3','4','5','6','7','8','9','10','11','12','13','14');
+            SapQueryArgCreate.createCustomerTestcateArgs();
+            SapQueryArgCreate.createCustomerTestcateArgs('1');
+            SapQueryArgCreate.createSapVendorArgs('1');
+            SapQueryArgCreate.createSapVendorArgs('1','2','3','4','5');
+            SapQueryArgCreate.createSapMaterialQueryDesc('1');
+            SapQueryArgCreate.createSapMaterialQueryDesc('1','2');
+            SapQueryArgCreate.createSapCreditLoanQueryDesc('1','2');
+            SapQueryArgCreate.createSapCreditLoanQueryDesc('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15');
+            SapQueryArgCreate.createSapSalesPriceQueryDesc('1','2');
+            SapQueryArgCreate.createSapSalesPriceQueryDesc('1','2','3');
+            SapQueryArgCreate.createSapInventoryQueryDesc('1','2');
+            SapQueryArgCreate.createSapInventoryQueryDesc('1','2','3','4');
+
         }
     }
 }

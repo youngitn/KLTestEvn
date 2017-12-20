@@ -84,7 +84,7 @@
 
             var desc6 = j$("[id$='Account_Number']");
 
-            var desc7 = j$("[id$='Account_Name']"); 
+            var desc7 = j$("[id$='Account']"); 
 
             var desc8 = j$("[id$='Term_of_Payment']");
 
@@ -354,11 +354,11 @@
                 desc12.hide();
                 desc12.parent().prev().children("label").hide();
 
-                desc13.show();
-                desc13.parent().prev().children("label").show();
+                desc13.hide();
+                desc13.parent().prev().children("label").hide();
 
-                desc14.show();
-                desc14.parent().prev().children("label").show();
+                desc14.hide();
+                desc14.parent().prev().children("label").hide();
 
                 desc15.hide();
                 desc15.parent().prev().children("label").hide();
@@ -436,7 +436,7 @@
             	<!-- 数量 -->
                 <apex:inputField id="Quantity" value="{!am.Quantity__c}" required="true"></apex:inputField>
                  <!-- 客户 -->
-                <apex:inputField id="Account" value="{!am.Account__c}" required="true"></apex:inputField>
+                <apex:inputField id="Account" value="{!am.Account__c}"></apex:inputField>
                 <!-- 客户编号 -->
                 <apex:outputField id="Account_Number" value="{!am.Account_Number__c}"></apex:outputField> 
             	<!-- 付款条件 -->
@@ -450,9 +450,9 @@
             	<!-- 质保金&违约金比例（%） -->
             	<apex:inputField id="Retention_penalty" value="{!am.Retention_penalty__c}"></apex:inputField>
             	<!-- 合约金额 -->
-            	<apex:inputField id="acacetin" value="{!am.acacetin__c}" required="true"></apex:inputField>
+            	<apex:inputField id="acacetin" value="{!am.acacetin__c}" ></apex:inputField>
             	<!-- 币别 -->
-            	<apex:inputField id="Currency" value="{!am.Currency__c}" required="true"></apex:inputField>
+            	<apex:inputField id="Currency" value="{!am.Currency__c}"></apex:inputField>
             	<!-- 验收条件 -->
             	<apex:inputField id="Acceptance_condition" value="{!am.Acceptance_condition__c}" ></apex:inputField>
             	<!-- 验收条件内容 -->

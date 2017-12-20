@@ -87,10 +87,11 @@
                 <!-- 申请信用额度-->
                 <apex:inputField value="{!am.Application_credit_limit__c}" required="true"></apex:inputField>
                 <!-- 付款条件-->
-                <!-- <apex:outputField value="{!am.Term_of_Payment__c}" required="true"></apex:outputField> -->
+                <apex:inputField value="{!am.Term_of_Payment_account__c}" style="width: 300px"></apex:inputField>
                 <!-- 付款条件描述-->
-                <apex:outputField value="{!am.payment_terms_describe__c}"></apex:outputField>
+                <!-- <apex:inputField value="{!am.payment_terms_describe__c}"></apex:inputField> -->
                 <apex:pageBlockSection >
+                    <!-- 查询按钮 -->
                     <apex:commandButton value="客户查询" action="{!queryAccountInfo}"/>
                 </apex:pageBlockSection>
                 
@@ -100,11 +101,12 @@
                 <apex:outputField value="{!am.credit_line__c}"></apex:outputField>
                 <!-- 客户编号--> 
                 <apex:outputField value="{!am.Account_Number__c}"></apex:outputField>
-                 <!-- 确认信用限额-->
-                <apex:inputField value="{!am.Confirmation_credit_limits__c}"></apex:inputField>
                 <!-- 第三方征信额度-->
                 <apex:inputField value="{!am.Third_credit_line__c}"></apex:inputField>
-                 <!-- 币种-->
+                <!-- 确认信用限额-->
+                <apex:inputField value="{!am.Confirmation_credit_limits__c}"></apex:inputField>
+                
+                <!-- 币种-->
                 <apex:outputField value="{!am.Currency__c}"></apex:outputField>
                 <!-- 应收金额-->
                 <apex:outputField value="{!am.Amount_receivable__c}"></apex:outputField>

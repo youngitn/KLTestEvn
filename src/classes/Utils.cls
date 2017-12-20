@@ -26,8 +26,22 @@ public without sharing class Utils
         md.Is_Send_Succeed__c = false;
         md.Send_Direction__c = 'SF_TO_SAP';
         Insert md;
+
         //生成一个计划任务去同步数据到SAP
-        SyncFromSfToSapSchedule.createNewSchedule();
+        // SyncFromSfToSapSchedule.createNewSchedule();
+
+        /*
+        changed by zhonghui  17-12-19
+        两种方式调用发送数据接口，可系统设置
+        true:   接口及时发送数据，不用计划任务发送.试用，看能否防止单据重复发送情况
+        false: 接口通过计划任务发送数据到SAP 
+        */
+        SAP_Interface_Setting__c sis = SAP_Interface_Setting__c.getValues('SapSetting');
+        if (sis.Is_Now_To_Sap__c) {
+            SyncFromSfToSapSchedule.syncToSAP_Now(md.Id,true);
+        }else{
+            SyncFromSfToSapSchedule.createNewSchedule();
+        }
     }
     /*
         目　的：从SAP同步数据到SF
