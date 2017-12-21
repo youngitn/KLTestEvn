@@ -1,0 +1,186 @@
+<apex:page applyhtmltag="true" doctype="html-5.0" extensions="ApproverGroupMaintainSystemController" lightningstylesheets="true" standardcontroller="Organizational__c">
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <html>
+        <head>
+            <link crossorigin="anonymous" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" rel="stylesheet"/>
+            <link href="https://unpkg.com/purecss@1.0.0/build/base-min.css" rel="stylesheet"/>
+            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/libs/jquery-3.2.1.js')}">
+            </script>
+            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/libs/vue.js')}">
+            </script>
+            <script>
+                const  j$ = jQuery.noConflict();
+            	j$(function() {
+            		j$('a[id $= lkwgt]').removeClass('slds-input');
+
+            		j$('input[id $= Applicant]').attr('required','true');
+            		j$('.btn').removeClass('btn');
+            	});
+
+            	function addGroup() {
+            		let groupName =  j$('input[id $= Name]').val();
+	            	ApproverGroupMaintainSystemController.addGroup(groupName, function(result, event){
+			                if(event.status) {
+			                    document.getElementById("result").innerHTML = result;
+			                }
+		            });
+        		}
+
+        		// register the grid component
+Vue.component('demo-grid', {
+  template: '#grid-template',
+  props: {
+    data: Array,
+    columns: Array,
+    filterKey: String
+  },
+  data: function () {
+    var sortOrders = {}
+    this.columns.forEach(function (key) {
+      sortOrders[key] = 1
+    })
+    return {
+      sortKey: '',
+      sortOrders: sortOrders
+    }
+  },
+  computed: {
+    filteredData: function () {
+      var sortKey = this.sortKey
+      var filterKey = this.filterKey && this.filterKey.toLowerCase()
+      var order = this.sortOrders[sortKey] || 1
+      var data = this.data
+      if (filterKey) {
+        data = data.filter(function (row) {
+          return Object.keys(row).some(function (key) {
+            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+          })
+        })
+      }
+      if (sortKey) {
+        data = data.slice().sort(function (a, b) {
+          a = a[sortKey]
+          b = b[sortKey]
+          return (a === b ? 0 : a > b ? 1 : -1) * order
+        })
+      }
+      return data
+    }
+  },
+  filters: {
+    capitalize: function (str) {
+      return str.charAt(0).toUpperCase() + str.slice(1)
+    }
+  },
+  methods: {
+    sortBy: function (key) {
+      this.sortKey = key
+      this.sortOrders[key] = this.sortOrders[key] * -1
+    }
+  }
+})
+
+// bootstrap the demo
+var demo = new Vue({
+  el: '#demo',
+  data: {
+    searchQuery: '',
+    gridColumns: ['name', 'power'],
+    gridData: [
+      { name: 'Chuck Norris', power: Infinity },
+      { name: 'Bruce Lee', power: 9000 },
+      { name: 'Jackie Chan', power: 7000 },
+      { name: 'Jet Li', power: 8000 }
+    ]
+  }
+})
+            </script>
+            <!-- component template -->
+        </head>
+        <body class="slds-scope">
+            <button onclick="addGroup();">
+                Say Hello
+            </button>
+            <br/>
+            <div id="result">
+                [Results]
+            </div>
+            <apex:pagemessages escape="true">
+            </apex:pagemessages>
+            <apex:pageblock>
+                <apex:form styleclass="pure-form pure-form-aligned">
+                    <fieldset>
+                        <div>
+                            <div class="pure-control-group ">
+                                <label class="slds-form-element__label" for="Name">
+                                    群組名稱
+                                </label>
+                                <apex:inputfield id="Name" value="{!mysObject.Name}">
+                                </apex:inputfield>
+                            </div>
+                            <div class="pure-control-group ">
+                                <label class="slds-form-element__label" for="Applicant">
+                                    流程步驟
+                                </label>
+                                <apex:inputfield id="Applicant" value="{!mysObject.Approval_Step_Name__c}">
+                                </apex:inputfield>
+                            </div>
+                            <div class="pure-control-group">
+                                <label class="slds-form-element__label" for="Approval_Personnel__c">
+                                    指定人
+                                </label>
+                                <apex:inputfield value="{!mysObject.Approval_Personnel__c }">
+                                </apex:inputfield>
+                            </div>
+                            <div class="pure-control-group pure-input-1-3">
+                                <label class="slds-form-element__label" for="Approval_Name__c">
+                                    流程名稱
+                                </label>
+                                <apex:inputfield value="{!mysObject.Approval_Name__c }">
+                                </apex:inputfield>
+                            </div>
+                        </div>
+                        <div class="pure-controls">
+                            <apex:commandbutton action="{!}" styleclass="pure-button pure-button-active" value="儲存">
+                            </apex:commandbutton>
+                            <apex:commandbutton action="{!}" styleclass="pure-button pure-button-active" value="取消">
+                            </apex:commandbutton>
+                        </div>
+                    </fieldset>
+                </apex:form>
+            </apex:pageblock>
+            <script id="grid-template" type="text/x-template">
+                <table>
+    <thead>
+      <tr>
+        <th v-for="key in columns"
+          @click="sortBy(key)"
+          :class="{ active: sortKey == key }">
+          {{ key | capitalize }}
+          <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="entry in filteredData">
+        <td v-for="key in columns">
+          {{entry[key]}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+            </script>
+            <!-- demo root element -->
+            <div id="demo">
+                <form id="search">
+                    Search
+                    <input html-v-model="searchQuery" name="query">
+                    </input>
+                </form>
+                <demo-grid xmlns:columns="gridColumns" xmlns:data="gridData" xmlns:filter-key="searchQuery">
+                </demo-grid>
+            </div>
+        </body>
+    </html>
+</apex:page>
