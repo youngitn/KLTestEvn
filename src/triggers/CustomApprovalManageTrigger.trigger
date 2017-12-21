@@ -2,7 +2,7 @@
 蓝岭开发流程：                新莱开发；                    台灣
 
 费用报销流程                  废料处理流程              資訊需求服務單
-预付款申请流程                供应商主数据维护流程
+预付款申请流程                供应商主数据维护流程      供應商索賠流程
 员工异动管理流程              采购信息记录维护流程
 资产购置流程                  标准采购订单作业流程
 品质异常单                    采购询价作业流程
@@ -46,8 +46,9 @@ trigger CustomApprovalManageTrigger on Custom_Approval_Managed__c(before insert,
     //设置销售订单审批流程各节点审批人
     .bind (Triggers.Evt.beforeinsert,new AMSaleOrderHandler())
     .bind (Triggers.Evt.beforeUpdate,new AMSaleOrderHandler())
-    
-
+    //供應商索賠流程 當insert執行時觸發塞審批人進指定欄位的動作
+    .bind (Triggers.Evt.beforeinsert,new AMVendorClaimHandler())
+    .bind (Triggers.Evt.beforeUpdate,new AMVendorClaimHandler())
     //设置记录共享
     .bind (Triggers.Evt.afterinsert,new ApprovalManualShareHandler())
     .bind (Triggers.Evt.afterupdate,new ApprovalManualShareHandler())
