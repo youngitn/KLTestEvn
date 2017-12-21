@@ -1,84 +1,81 @@
-public class AMVendorClaimHandler 
+public class AMVendorClaimHandler implements Triggers.Handler
 {
-    /**
-     *   Enum representing each of before/after CRUD events on Sobjects
-     */
-    public enum Evt 
+    public void handle()
     {
-        afterdelete, afterinsert, afterundelete,
-        afterupdate, beforedelete, beforeinsert, beforeupdate   
-    }
 
-    /*
-     *   Simplistic handler to implement on any of the event. It doesn't require or enforces any pattern except the
-     *   method name to be "handle()".
-     */
-    public interface HandlerInterface
-    {
-        void handle();          
-    } 
 
-    // Internal mapping of handlers
-    Map<String, List<HandlerInterface>> eventHandlerMapping = new Map<String, List<HandlerInterface>>();
+        Map<Decimal, Organizational__c>  mapSpecify = null;
+        Id rtId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.VENDORCLAIM, 'Custom_Approval_Managed__c');
 
-    /**
-     *   Core API to bind handlers with events
-     */
-    public AMVendorClaimHandler bind(Evt event, HandlerInterface eh)
-    {
-        List<HandlerInterface> handlers = eventHandlerMapping.get(event.name());
-        if (handlers == null) 
+        if (Trigger.isBefore && Trigger.isInsert)
         {
-            handlers = new List<HandlerInterface>();
-            eventHandlerMapping.put(event.name(), handlers);
-        }
-        handlers.add(eh);
-        return this;
-    }
-
-    /**
-     *   Invokes correct handlers as per the context of Trigger and available registered handlers
-     */
-    public void manage()
-    {
-        Evt ev = null;
-        if(Trigger.isInsert && Trigger.isBefore)
-        {
-            ev = Evt.beforeinsert;
-        }
-        else if(Trigger.isInsert && Trigger.isAfter)
-        {
-            ev = Evt.afterinsert;
-        }
-        else if(Trigger.isUpdate && Trigger.isBefore)
-        {
-            ev = Evt.beforeupdate;
-        }
-        else if(Trigger.isUpdate && Trigger.isAfter)
-        {
-            ev = Evt.afterupdate;
-        }
-        else if(Trigger.isDelete && Trigger.isBefore)
-        {
-            ev = Evt.beforedelete;
-        }
-        else if(Trigger.isDelete && Trigger.isAfter)
-        {
-            ev = Evt.afterdelete;
-        }
-        else if(Trigger.isundelete)
-        {
-            ev = Evt.afterundelete;             
-        }
-        
-        List<HandlerInterface> handlers = eventHandlerMapping.get(ev.name());
-        
-        if (handlers != null && ! handlers.isEmpty()) 
-        {
-            for (HandlerInterface h : handlers) 
+            Set<String> userIds = new Set<String>();
+            for (Custom_Approval_Managed__c cam : (List<Custom_Approval_Managed__c>)Trigger.new)
             {
-                h.handle();
+                if (cam.RecordTypeId == rtId)
+                {
+
+                    if (mapSpecify == null)
+                    {
+                        //這裡的step來源是[流程配置] 不是Approval Processes
+                        mapSpecify = Utils.getApprovalStepByAPIName(SapApprovalEnum.VENDORCLAIM);
+                    }
+                    setApprovalUser(mapSpecify, cam);
+                }
+
+                //申請人讀取權限
+                userIds.add( Utils.getUserIdByContactID(cam.Applicant__c));
+
+                if(userIds.size() > 0)
+                {
+                    Utils.ManualShareRecordToUsers(userIds, 'Custom_Approval_Managed__c', String.valueOf(cam.get('Id')));
+                }
             }
         }
+        if (Trigger.isBefore && Trigger.isUpdate)
+        {
+            System.debug('##################');
+
+            for (Custom_Approval_Managed__c cam : (List<Custom_Approval_Managed__c>)Trigger.new)
+            {
+
+                if (cam.RecordTypeId == rtId && cam.Is_Reset_Approvaler__c)
+                {
+                    if (mapSpecify == null)
+                    {
+                        mapSpecify = Utils.getApprovalStepByAPIName(SapApprovalEnum.VENDORCLAIM);
+                    }
+                    setApprovalUser(mapSpecify, cam);
+                    cam.Is_Reset_Approvaler__c = false;
+                }
+
+            }
+
+        }
     }
+    public void setApprovalUser(Map<Decimal, Organizational__c> mapSpecify, Custom_Approval_Managed__c cam)
+    {
+
+        // 品管主管審核 由Adam指派
+        cam.Approval_User1__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(1), null), 0);
+
+        //生管
+        cam.Approval_User2__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(2), null), 0);
+
+        //財務
+        cam.Approval_User3__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(3), null), 0);
+
+        //採購 申請人自己
+        cam.Approval_User4__c       = Peoples.getInstance().KlAllUserMapGetByNum.get(Peoples.getInstance().KlAllContactMapGetById.get(cam.Applicant__c).Number__c).Id;
+
+        //.採購主管
+        cam.Approval_User5__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(5), null), 0);
+
+        //財務結案
+        cam.Approval_User6__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(6), null), 0);
+
+
+
+    }
+
 }
