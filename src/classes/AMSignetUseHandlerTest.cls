@@ -26,27 +26,24 @@ private class AMSignetUseHandlerTest {
         Approval_Managed__c cusApprove = new Approval_Managed__c();
         cusApprove.RecordTypeId = rc.Id;
 
- 
         cusApprove.signet_type__c = '01';
         cusApprove.file_type__c = '04';
         cusApprove.FileName__c = '1000';
         cusApprove.Summary_content__c = '1agdshagdsg01';
         cusApprove.company_number__c = '02';
         cusApprove.Account__c = acc.Id;
-        //cusApprove.Account_Number__c = '7657t784895687';
         cusApprove.Term_of_Payment__c = 'YA45';
         cusApprove.payment_terms_describe__c = '2S45DGF465EWTGEDSGHASFA';
         cusApprove.Currency__c = 'GHC';
         cusApprove.Content_acceptance__c = 'KLAHGOAHGGFNGLKAHFI';
-
-
          INSERT cusApprove;
-         AMSignetUseExtension amIt = new AMSignetUseExtension(new ApexPages.StandardController(cusApprove));
+
+        AMSignetUseExtension amIt = new AMSignetUseExtension(new ApexPages.StandardController(cusApprove));
          
         amIt.save();
         amIt.cancel();
 
-        cusApprove.signet_type__c = '01';
+        cusApprove.signet_type__c = '02';
         cusApprove.file_type__c = '04';
         cusApprove.FileName__c = '1000';
         cusApprove.Summary_content__c = '1agdshagdsg01';
@@ -59,23 +56,24 @@ private class AMSignetUseHandlerTest {
         cusApprove.Is_Reset_Approvaler__c = true;
         Update cusApprove;
 
+        Approval_Managed__c cusApprove2 = new Approval_Managed__c();
+        cusApprove2.RecordTypeId = rc.Id;
+
+       //  客户/合约金额/币种  不能为空
+        cusApprove2.file_type__c = '02';
+        cusApprove2.Currency__c = '';
+        cusApprove2.Is_Reset_Approvaler__c = true;
+        cusApprove2.Account__c = null;
+        INSERT cusApprove2;
+
+        AMSignetUseExtension amIt2 = new AMSignetUseExtension(new ApexPages.StandardController(cusApprove2));
+        amIt2.save();
+        amIt2.cancel();
+
         test.stopTest();
 
 
     }
 
-       /***
-    创建相应审批配置记录
-    ***/
-    // static  void createApprovalconfig(Integer step, String approvalName) {
-    //     if (step>0) {
-    //         RecordType rc = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Organizational__c' AND  DeveloperName = 'Approval_Config'];
-    //         List<Organizational__c> lstOrg = new List<Organizational__c>();
-    //         for (Integer i =0;i<step ; i++) {
-    //             lstOrg.add(new Organizational__c(Approval_Name__c = approvalName ,Approval_Step__c = i+1, Approval_Rule__c = '指定人部门主管',RecordTypeId=rc.Id));
-    //         }
-    //         System.debug(LoggingLevel.INFO, '*** lstOrg: ' + lstOrg);
-    //         insert lstOrg;
-    //     }
-    // }
+
 }

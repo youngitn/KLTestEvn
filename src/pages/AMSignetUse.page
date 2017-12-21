@@ -15,58 +15,18 @@
 <head>
     <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
     <script>
-     var j$ = jQuery.noConflict();
- 
-        j$(document).ready(function(){
-            var cmb = j$("select[id$='file_type']");
-            var approvalValue = cmb.val();
-            console.log('approvalValue: ' + approvalValue);
-            
-            var desc1 = j$("[id$='FileName']");
+    var j$ = jQuery.noConflict();
+       //阻止事件继续进行
+    var EventUtil = {
+        preventDefault: function(event){
+            if(event.preventDefault){
+                event.preventDefault();
+            } else {
+                event.returnValue = false;
+            }
+        }
+    };
 
-            var desc2 = j$("[id$='New_account']"); 
-
-            var desc3 = j$("[id$='Quantity']"); 
-
-            var desc4 = j$("[id$='Summary_content']"); 
-
-            var desc5 = j$("[id$='company_number']"); 
-
-            var desc6 = j$("[id$='Account_Number']");
-
-            var desc7 = j$("[id$='Account']"); 
-
-            var desc8 = j$("[id$='Term_of_Payment']");
-
-            var desc9 = j$("[id$='payment_terms_describe']");
-
-            var desc10 = j$("[id$='Citic_policy_no']");
-
-            var desc11 = j$("[id$='Overdue_amount']");
-
-            var desc12 = j$("[id$='Retention_penalty']");
-
-            var desc13 = j$("[id$='acacetin']");
-
-            var desc14 = j$("[id$='Currency']");
-
-            var desc15 = j$("[id$='Acceptance_condition']");
-
-            var desc16 = j$("[id$='Content_acceptance']");
-
-            var desc17 = j$("[id$='Delivery_contract_review']");
-
-            var desc18 = j$("[id$='Standards']");
-
-            var desc19 = j$("[id$='Standard_parts']");
-
-            var desc20 = j$("[id$='Field1Intellectual_property']");
-
-            var desc21 = j$("[id$='Retention']");
-
-            var desc22 = j$("[id$='Contract_number']"); 
-            
-       });
             function toggleData(){
             var cmb = j$("select[id$='file_type']");
             var approvalValue = cmb.val();
@@ -226,7 +186,7 @@
                 desc14.show();
                 desc14.parent().prev().children("label").show();
 
-                desc15.hide();
+                desc15.hide(); 
                 desc15.parent().prev().children("label").hide();
 
                 desc16.hide();

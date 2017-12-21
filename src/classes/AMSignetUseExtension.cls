@@ -17,9 +17,12 @@ public with sharing class AMSignetUseExtension {
 
 
     public PageReference save() {
-        // if (am.Acceptance_condition__c == true && am.Content_acceptance__c != null) {
-            
-        // }
+        if (am.file_type__c == '01' || am.file_type__c == '02' || am.file_type__c == '03') {
+            if (am.Account__c == null || am.acacetin__c == null || am.Currency__c == null) {
+                ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '客户/合约金额/币种  不能为空'));
+                return null;
+            }
+        }
       if (String.isNotBlank(am.Account__c)) {
             list<Account> con = [SELECT AccountNumber, Name FROM Account WHERE Id = :am.Account__c];
             if (con.size() > 0) {
