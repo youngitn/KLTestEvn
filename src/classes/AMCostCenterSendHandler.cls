@@ -181,6 +181,11 @@ public without sharing class AMCostCenterSendHandler implements Triggers.Handler
             lstID.add(utils.getUserByEmployeeCode('10211664'));
 
         }
+        //计划外(成本中心)发料作业:D00  张 伟-60210025
+        else if (cam.Factory__c == '1000' && cam.Address_of_Stock__c == 'D00') {
+            lstID.add(utils.getUserByEmployeeCode('60210025'));
+
+        }
         else{
             return null;
         }
