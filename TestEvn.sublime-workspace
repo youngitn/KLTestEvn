@@ -309,11 +309,63 @@
 			}
 		},
 		{
-			"file": "src/classes/AMVendorExtension.cls",
+			"file": "/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/toolingapi.sublime-settings",
 			"settings":
 			{
-				"buffer_size": 12322,
+				"buffer_size": 1207,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/ApprovalHomeController.cls",
+			"settings":
+			{
+				"buffer_size": 18494,
 				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/ApprovalHome.page",
+			"settings":
+			{
+				"buffer_size": 48911,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMVendorClaimHandler.cls",
+			"settings":
+			{
+				"buffer_size": 2995,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/triggers/CustomApprovalManageTrigger.trigger",
+			"settings":
+			{
+				"buffer_size": 2417,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/SapApprovalEnum.cls",
+			"settings":
+			{
+				"buffer_size": 7261,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMVendorClaimExtension.cls",
+			"settings":
+			{
+				"buffer_size": 1112,
 				"line_ending": "Unix"
 			}
 		},
@@ -321,7 +373,7 @@
 			"file": "src/classes/SyncFromSfToSapSchedule.cls",
 			"settings":
 			{
-				"buffer_size": 22008,
+				"buffer_size": 22247,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -354,19 +406,45 @@
 			}
 		},
 		{
-			"file": "src/classes/ApproverUtilsTest.cls",
+			"file": "src/classes/ApproverUtils.cls",
 			"settings":
 			{
-				"buffer_size": 4785,
+				"buffer_size": 6934,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/ApproverGroupMaintainSystem.page",
+			"settings":
+			{
+				"buffer_size": 6864,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/ApproverGroupMaintainSystemController.cls",
+			"settings":
+			{
+				"buffer_size": 1118,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Organizational__c o = new Organizational__c();\no.Approval_Rule__c  = '指定岗位';\no.Approval_Post__c \t= Id.valueOf('20000000');\nId bossId = null;\n\n\nbossId = ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(o,null).get(0);",
+			"settings":
+			{
+				"buffer_size": 224,
+				"line_ending": "Windows"
 			}
 		},
 		{
 			"file": "src/classes/Utils.cls",
 			"settings":
 			{
-				"buffer_size": 62910,
+				"buffer_size": 63356,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -488,17 +566,21 @@
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app",
 		"/D/mmworkspace/TestEvn/src",
+		"/D/mmworkspace/TestEvn/src/classes",
 		"/D/mmworkspace/TestEvn/src/triggers"
 	],
 	"file_history":
 	[
+		"/D/mmworkspace/TestEvn/src/classes/ApproverGroupMaintainSystemExtention.cls",
+		"/D/mmworkspace/TestEvn/src/classes/ApproverUtilsTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/Triggers.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMVendorExtension.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SapApprovalEnum.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMVendorClaim.page",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/Peoples.cls",
 		"/D/mmworkspace/TestEvn/src/classes/PeoplesTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/ApproverUtilsTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ApproverUtils.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMVendorExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/Utils.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ApprovalPermissionHandler.cls",
@@ -519,7 +601,6 @@
 		"/D/mmworkspace/TestEvn/src/pages/ApprovalHome.page",
 		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/toolingapi.sublime-settings",
 		"/D/mmworkspace/TestEvn/src/classes/ApprovalHomeController.cls",
-		"/D/mmworkspace/TestEvn/src/classes/SapApprovalEnum.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMSupplierClaim.page",
 		"/D/mmworkspace/TestEvn/src/classes/AMSupplierClaimExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/HarryUtils.cls",
@@ -617,9 +698,7 @@
 		"/C/Users/young_cheng/Desktop/salesforceApexEmailExample",
 		"/D/mmworkspace/SB_Cheng/src/classes/ApprovalPermissionHandler.cls",
 		"/D/mmworkspace/SB_Cheng/src/triggers/ProcessRollBackTest.trigger",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/DocBlockr/README.md",
-		"/D/mmworkspace/SB_Cheng/src/triggers/HelloWorldTrigger.trigger",
-		"/D/mmworkspace/SB_Cheng/src/classes/AMAbnormalQualityHandler.cls-meta.xml"
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/DocBlockr/README.md"
 	],
 	"find":
 	{
@@ -695,7 +774,7 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 19,
 			"sheets":
 			[
 				{
@@ -719,10 +798,10 @@
 							"syntax": "Packages/Java/Java.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 240.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 14,
 					"type": "text"
 				},
 				{
@@ -749,7 +828,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
@@ -765,8 +844,8 @@
 						"selection":
 						[
 							[
-								1521,
-								1547
+								7971,
+								7971
 							]
 						],
 						"settings":
@@ -776,10 +855,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 360.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 20,
 					"type": "text"
 				},
 				{
@@ -795,8 +874,8 @@
 						"selection":
 						[
 							[
-								22,
-								52
+								1314,
+								1314
 							]
 						],
 						"settings":
@@ -809,7 +888,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 17,
 					"type": "text"
 				},
 				{
@@ -839,7 +918,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 27,
 					"type": "text"
 				},
 				{
@@ -869,7 +948,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 23,
 					"type": "text"
 				},
 				{
@@ -885,8 +964,8 @@
 						"selection":
 						[
 							[
-								2535,
-								2535
+								0,
+								9007
 							]
 						],
 						"settings":
@@ -899,24 +978,53 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
 					"buffer": 7,
-					"file": "src/classes/AMVendorExtension.cls",
+					"file": "/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/toolingapi.sublime-settings",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12322,
+						"buffer_size": 1207,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6546,
-								6546
+								0,
+								1207
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 900.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 25,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "src/classes/ApprovalHomeController.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18494,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								18054,
+								18054
 							]
 						],
 						"settings":
@@ -926,19 +1034,168 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2580.0,
+						"translation.y": 8159.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 16,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 9,
+					"file": "src/pages/ApprovalHome.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 48911,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								657,
+								657
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 21,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "src/classes/AMVendorClaimHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2995,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2323,
+								2323
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 780.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "src/triggers/CustomApprovalManageTrigger.trigger",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2417,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								908,
+								908
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 22,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "src/classes/SapApprovalEnum.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7261,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3177,
+								3188
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1140.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 24,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "src/classes/AMVendorClaimExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1112,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								560,
+								436
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
 					"file": "src/classes/SyncFromSfToSapSchedule.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 22008,
+						"buffer_size": 22247,
 						"regions":
 						{
 						},
@@ -959,11 +1216,11 @@
 						"translation.y": 3075.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 15,
 					"file": "src/classes/AMVendorHandler.cls",
 					"semi_transient": false,
 					"settings":
@@ -987,11 +1244,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 16,
 					"file": "src/classes/PushApprovalDataToSapHandler.cls",
 					"semi_transient": false,
 					"settings":
@@ -1013,14 +1270,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 300.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 17,
 					"file": "src/classes/AMAssetPurchaseHandlerTest.cls",
 					"semi_transient": false,
 					"settings":
@@ -1046,24 +1303,82 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 12,
-					"file": "src/classes/ApproverUtilsTest.cls",
+					"buffer": 18,
+					"file": "src/classes/ApproverUtils.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4785,
+						"buffer_size": 6934,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								545,
-								545
+								6931,
+								6931
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3180.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "src/pages/ApproverGroupMaintainSystem.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6864,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1141,
+								1141
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 20,
+					"file": "src/classes/ApproverGroupMaintainSystemController.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1118,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								800,
+								808
 							]
 						],
 						"settings":
@@ -1076,24 +1391,51 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
-					"file": "src/classes/Utils.cls",
+					"buffer": 21,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 62910,
+						"buffer_size": 224,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2740,
-								2742
+								79,
+								95
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 22,
+					"file": "src/classes/Utils.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 63356,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								17197,
+								17202
 							]
 						],
 						"settings":
@@ -1103,14 +1445,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 960.0,
+						"translation.y": 9286.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
+					"buffer": 23,
 					"file": "src/triggers/ContactTrigger.trigger",
 					"semi_transient": false,
 					"settings":
@@ -1134,11 +1476,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 26,
 					"type": "text"
 				},
 				{
-					"buffer": 15,
+					"buffer": 24,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1149,8 +1491,8 @@
 						"selection":
 						[
 							[
-								1306,
-								0
+								805,
+								876
 							]
 						],
 						"settings":
@@ -1158,14 +1500,14 @@
 							"syntax": "Packages/Java/Java.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 180.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
-					"buffer": 16,
+					"buffer": 25,
 					"file": "src/classes/AMEducationTrainingExtension.cls",
 					"semi_transient": false,
 					"settings":
@@ -1188,14 +1530,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2400.0,
+						"translation.y": 4896.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 17,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 17,
+					"buffer": 26,
 					"file": "src/pages/AMEducationTraining.page",
 					"semi_transient": false,
 					"settings":
@@ -1207,8 +1549,8 @@
 						"selection":
 						[
 							[
-								885,
-								885
+								819,
+								819
 							]
 						],
 						"settings":
@@ -1221,11 +1563,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 18,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 18,
+					"buffer": 27,
 					"file": "resource-bundles/JSbundle.resource/app/AMEducationTrainingJS.js",
 					"semi_transient": false,
 					"settings":
@@ -1251,11 +1593,11 @@
 						"translation.y": 1040.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 19,
+					"stack_index": 28,
 					"type": "text"
 				},
 				{
-					"buffer": 19,
+					"buffer": 28,
 					"file": "src/classes/AMEducationTrainingExtensionTest.cls",
 					"semi_transient": false,
 					"settings":
@@ -1267,8 +1609,8 @@
 						"selection":
 						[
 							[
-								1017,
-								1133
+								719,
+								719
 							]
 						],
 						"settings":
@@ -1278,10 +1620,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 720.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 16,
+					"stack_index": 18,
 					"type": "text"
 				}
 			]
@@ -1344,6 +1686,38 @@
 		"selected_items":
 		[
 			[
+				"groupcontroller",
+				"src\\classes\\ApproverGroupMaintainSystemController.cls"
+			],
+			[
+				"approverg",
+				"src\\classes\\ApproverGroupMaintainSystemExtention.cls"
+			],
+			[
+				"appru",
+				"src\\classes\\ApproverUtils.cls"
+			],
+			[
+				"sape",
+				"src\\classes\\SapApprovalEnum.cls"
+			],
+			[
+				"amvc",
+				"src\\classes\\AMVendorClaimHandler.cls"
+			],
+			[
+				"home",
+				"src\\pages\\ApprovalHome.page"
+			],
+			[
+				"sap",
+				"src\\classes\\SapApprovalEnum.cls"
+			],
+			[
+				"amvence",
+				"src\\classes\\AMVendorClaimExtension.cls"
+			],
+			[
 				"amvendor",
 				"src\\classes\\AMVendorExtension.cls"
 			],
@@ -1390,10 +1764,6 @@
 			[
 				"amedu",
 				"src\\classes\\AMEducationTrainingExtensionTest.cls"
-			],
-			[
-				"home",
-				"src\\pages\\ApprovalHome.page"
 			],
 			[
 				"util",
@@ -1504,10 +1874,6 @@
 				"KL-TEST-20171114\\src\\pages\\ApprovalHome.page"
 			],
 			[
-				"sap",
-				"SB_Cheng\\src\\classes\\SapApprovalEnum.cls"
-			],
-			[
 				"ema",
 				"SB_Cheng\\src\\classes\\EmailUtils.cls"
 			],
@@ -1600,7 +1966,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 491.0,
+	"side_bar_width": 404.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
