@@ -107,7 +107,7 @@ var demo = new Vue({
             </div>
             <apex:pagemessages escape="true">
             </apex:pagemessages>
-            <apex:pageblock>
+            <apex:pageblock >
                 <apex:form styleclass="pure-form pure-form-aligned">
                     <fieldset>
                         <div>
