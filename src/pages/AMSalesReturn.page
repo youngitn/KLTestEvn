@@ -6,22 +6,23 @@
  修改日期：
  修改原因：
  备    注：
- --
- 
+
 <-->
-<apex:page standardController="Approval_Managed__c" extensions="AMLeave">
+<apex:page standardController="Custom_Approval_Managed__c" extensions="AMSalesReturnExtension">  
 <!-- 请假管理流程 -->
 <html>
     <head>
     </head>
 <body>
-<apex:sectionHeader title="请假管理流程" subtitle="新建/编辑请假管理流程"></apex:sectionHeader>
+<apex:sectionHeader title="退货申请流程" subtitle="新建/编辑退货申请流程"></apex:sectionHeader>
     <!-- 页面信息提示区 -->
     <apex:pageMessages escape="true" id="message"></apex:pageMessages>
     <apex:form id="form">
+        <!--
         <apex:actionFunction action="{!queryVacation}" id="queryVacation" name="queryVacation" reRender="vacationhead,message" immediate="true" status="loading">
             <apex:param assignTo="{!am.Employee__c}" name="employee" value="employee"></apex:param>
         </apex:actionFunction>
+    -->
         <apex:pageBlock id="block">
             <apex:pageBlockButtons >
                 <apex:commandButton action="{!save}" value="保存"/>
@@ -46,24 +47,23 @@
                 <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
             </apex:pageBlockSection>
 
-           <apex:pageBlockSection title="请假管理流程信息" id="vacationhead">
-                <!-- 员工 -->
-                <apex:inputField id="Employee" value="{!am.Employee__c}" required="true"></apex:inputField>
-                <apex:commandButton value="查询剩余假期" action="{!queryVacation}"/>
-                <apex:outputField value="{!am.Employee_Code__c}"></apex:outputField>
-                <!-- 申请人岗位 -->
-                <apex:outputField id="Applicant" value="{!am.Applicant_position__c}" ></apex:outputField>
-                <!-- 年休假可用时数 -->
-                <apex:outputField value="{!am.Annual_leave__c}"></apex:outputField>
-                <!-- 职等职级 -->
-                <apex:inputField id="professional" value="{!am.Job_Title_Level__c}"></apex:inputField>
-                <!-- 调休假可用时数 -->
-                <apex:outputField id="Adjustable" value="{!am.Adjustable_vacation__c }"></apex:outputField>
-                <!-- 薪资管理员 -->
-                <apex:inputField id="Salary" value="{!am.Salary_Manager__c}"></apex:inputField>
-                <!--请假总时数-->
-                <apex:outputField id="Sum_Vacation__c" value="{!am.Sum_Vacation__c}"></apex:outputField>
-
+           <apex:pageBlockSection title="退货申请流程信息" id="vacationhead">
+                <!-- 订单 >
+                <apex:inputField id="Order_of_Sales__c" value="{!am.Order_of_Sales__c}" required="true"></apex:inputField>
+                <apex:commandButton value="查询订单" action="{!queryVacation}"/>
+                <apex:outputField value="{!am.customer_code__c}" />
+                <apex:outputField value="{!am.customer_name__c}" />
+                <apex:outputField value="{!am.reason_of_order__c}" />
+                <apex:outputField value="{!am.currency__c}" />
+                <apex:outputField value="{!am.opportunity_code__c}" />
+                <apex:outputField value="{!am.sales_org__c}" />
+                <apex:outputField value="{!am.distribution_channel__c}" />
+                <apex:outputField value="{!am.product_group__c}" />
+                <apex:outputField value="{!am.sales_office_area__c}" />
+                <apex:outputField value="{!am.sales_group__c}" />
+                <apex:outputField value="{!am.prepare_feed_protocol__c}" />
+                <apex:outputField value="{!am.purchase_required_date__c}" />
+        -->
             </apex:pageBlockSection>
 
             <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>行信息</h3></div>
@@ -93,21 +93,7 @@
                         </td>
                         <td>{!list1Index+1}</td>
                         <!-- 假别 -->
-                        <td><apex:inputField value="{!item.Leave_type__c}"  required="true" style="width: 85px"></apex:inputField></td>
-                        <!-- 请假事由 -->
-                        <td><apex:inputField value="{!item.Leave_reason__c}"  required="true" style="width: 250px"></apex:inputField></td>
-                        <!-- 请假开始日期 -->
-                        <td><apex:inputField value="{!item.Start_date__c}"  required="true" style="width: 60px"></apex:inputField></td>
-                        <!-- 请假开始时间 -->
-                        <td><apex:inputField value="{!item.Start_Time__c}" required="true" style="width: 120px"></apex:inputField></td>
-
-                        <!-- 请假结束日期 -->
-                        <td><apex:inputField value="{!item.End_date__c}"  required="true" style="width: 60px"></apex:inputField></td>
-                        <!-- 请假结束时间 -->
-                        <td><apex:inputField value="{!item.End_Time__c}" required="true" style="width: 120px"></apex:inputField></td>
-
-                        <!-- 请假时数 -->
-                        <td><apex:inputField value="{!item.time_number__c}" required="true" style="width: 50px"></apex:inputField></td>
+                        <!--td><apex:inputField value="{!item.Leave_type__c}"  required="true" style="width: 85px"></apex:inputField></td-->
                     </tr>
                     <apex:variable var="list1Index" value="{!list1Index+1}"/>
                 </apex:repeat>
