@@ -16,9 +16,15 @@ public with sharing class ApproverGroupMaintainSystemController {
     }
 
     @RemoteAction
-    public static String addGroup(String groupName) {
+    public static String addApproverGroup(String groupName,Id approverContactId) {
         Id rtId = HarryUtils.getRecordTypeIdByDevNameAndObjName('ApproverGroup', 'Organizational__c');
-        return 'alert("ok")';
+        Organizational__c approverGroup = new Organizational__c();
+
+        approverGroup.Name = groupName;
+        approverGroup.Approval_Personnel__c = approverContactId;
+        approverGroup.RecordTypeId = rtId;
+        upsert approverGroup;
+        return 'approverGroup id = '+ approverGroup.Id;
 
     }
 
