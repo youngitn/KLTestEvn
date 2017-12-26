@@ -2,13 +2,16 @@ public with sharing class ApproverGroupMaintainSystemController {
 
 	public Organizational__c mysObject{set;get;}
     public Id rtId {set;get;}
+    public String cMap  {set;get;}
     // The extension constructor initializes the private member
     // variable mysObject by using the getRecord method from the standard
     // controller.
     public ApproverGroupMaintainSystemController(ApexPages.StandardController stdController) {
+       
         this.mysObject = (Organizational__c)stdController.getRecord();
         rtId = HarryUtils.getRecordTypeIdByDevNameAndObjName('ApproverGroup', 'Organizational__c');
         this.mysObject.RecordTypeId  = rtId;
+        this.cMap = JSON.serialize(Peoples.getInstance().KlAllContactMapGetById);
     }
 
     public String getRecordName() {
