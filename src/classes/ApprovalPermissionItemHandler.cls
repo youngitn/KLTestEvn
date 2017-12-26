@@ -215,7 +215,7 @@ public without sharing class ApprovalPermissionItemHandler implements Triggers.H
                     existUpdateFields.put(targetId,ableUpdateFields);
                 }
 
-
+                System.debug(LoggingLevel.INFO, '*** ableUpdateFields: ' + ableUpdateFields);
                 for(Schema.SObjectField fld : fields){
                     String field = String.valueOf(fld);
                     newValue = obj.get(field);

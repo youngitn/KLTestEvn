@@ -62,5 +62,7 @@ public without sharing class AMAbnormalQualityHandler implements Triggers.Handle
         cam.Approval_User7__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(7),cam.Applicant__c),0);
         //节点八
         cam.Approval_User8__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8),cam.Applicant__c),0);
+
+        cam.Approval_User23__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(23),null),0);
     }
 }

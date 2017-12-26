@@ -1115,7 +1115,7 @@ public without sharing class Utils
                 }
             }
             List<Organizational__c> setlist = [
-                                                  SELECT Id, Node_Edit_Fields__c, Node_DetailEdit_Fields__c, Node_DetailRequire_Fields__c, //20171206增加子項必填
+                                                  SELECT Id, Node_Edit_Fields__c, Node_DetailEdit_Fields__c,
                                                   Node_Require_Fields__c
                                                   FROM Organizational__c
                                                   WHERE RecordType.DeveloperName = 'Node_Edit_Field'
