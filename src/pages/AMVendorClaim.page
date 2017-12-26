@@ -93,7 +93,7 @@
                         <div class="pure-controls">
                         	<apex:commandButton styleclass="pure-button pure-button-active" value="儲存" action="{!saveAction}"></apex:commandButton>
                             
-                            <apex:commandButton styleclass="pure-button pure-button-active" value="取消" action="{!saveAction}"></apex:commandButton>
+                            <apex:commandButton styleclass="pure-button pure-button-active" value="取消" action="{!cancelAction}"></apex:commandButton>
                         </div>
                     </fieldset>
                     <!-- <fieldset>

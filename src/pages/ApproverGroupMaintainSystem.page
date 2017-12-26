@@ -1,4 +1,4 @@
-<apex:page applyhtmltag="true" doctype="html-5.0" extensions="ApproverGroupMaintainSystemController" lightningstylesheets="true" showheader="false" sidebar="false" standardcontroller="Organizational__c">
+<apex:page applyhtmltag="true" doctype="html-5.0" extensions="ApproverGroupMaintainSystemController" showheader="false" sidebar="false" standardcontroller="Organizational__c">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <html>
         <head>
@@ -12,7 +12,7 @@
             <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/libs/vue.js')}">
             </script>
             <script>
-             const j$ = jQuery.noConflict();
+                const j$ = jQuery.noConflict();
             j$(function() {
                 j$('a[id $= lkwgt]').removeClass('slds-input');
 
@@ -30,26 +30,27 @@
                     }
                 });
             }
-           
-          
+
+
+
+	        var cmap = j$.parseJSON('{!cMap}'); 
+	        //ex: var lastname = cmap['003....'].LastName; 
             </script>
-             <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/ApproverGroupMaintainSystem/CreateApproverTable.js')}">
+            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/ApproverGroupMaintainSystem/CreateApproverTable.js')}">
             </script>
-            
             <!-- component template -->
         </head>
         <apex:remoteobjects jsnamespace="ApproverGroupObj">
-            <apex:remoteobjectmodel fields="Name,Approval_Personnel__c,RecordTypeId" jsshorthand="ConvenienceStores" name="Organizational__c">
+            <apex:remoteobjectmodel fields="Name,Approval_Personnel__c,RecordTypeId,Id" jsshorthand="ConvenienceStores" name="Organizational__c">
             </apex:remoteobjectmodel>
         </apex:remoteobjects>
-
-        <body class="slds-scope">
+        <body>
             <apex:pagemessages escape="true">
             </apex:pagemessages>
-            <apex:pageblock>
-                <apex:form styleclass="pure-form pure-form-aligned">
+            <apex:pageblock >
+                <apex:form styleclass="">
                     <fieldset>
-                        <div>
+                        <div class="container">
                             <div class="pure-control-group ">
                                 <label class="slds-form-element__label" for="Name">
                                     群組名稱
@@ -78,14 +79,15 @@
                                 <apex:inputfield value="{!mysObject.Approval_Name__c }">
                                 </apex:inputfield>
                             </div>
-                        </div>
-                        <div class="pure-controls" xmlns:v-on="/">
-                            <div id="addApprover" class="btn btn-primary" onclick="addApprover()" >
-                                Add approver
+                            <div  class="row">
+                                <div class="btn btn-primary btn-lg col-lg-2" id="addApprover" onclick="addApprover()" type="button">
+                                    Add approver
+                                </div>
                             </div>
-                            <br/>
-                            <div id="result">
-                                [Results]
+                            <div class="row">
+                                <div id="result">
+                                    [Results]
+                                </div>
                             </div>
                         </div>
                     </fieldset>
@@ -97,7 +99,7 @@
                     <input name="query" v-model="searchQuery"/>
                 </form>
                 <input type="button" v-if="is_show_load_button" v-on:click="ClickLoadApproverGroup" value="Load convenience stores"/>
-                <demo-grid v-bind:columns="gridColumns" v-bind:data="ApproverGroup" v-bind:filter-key="searchQuery">
+                <demo-grid v-bind:dataids="ApproverGroupId" v-bind:columns="gridColumns" v-bind:data="ApproverGroup" v-bind:filter-key="searchQuery">
                 </demo-grid>
             </div>
         </body>
@@ -118,6 +120,7 @@
                     <td v-for="key in columns">
                         {{entry[key]}}
                     </td>
+                    <td><button  onclick="alert(j$(this).html());">{{entry['ApproverGroupId']}}</button></td>
                 </tr>
             </tbody>
         </table>
