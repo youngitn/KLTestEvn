@@ -65,6 +65,8 @@ public without sharing class AMMRDieRequestHandler implements Triggers.Handler {
             	cam.Approval_User12__c = utils.getUserByEmployeeCode('10210776');//张 榕-10210776
             	//节点十一：申请人确认(模具)
             	cam.Approval_User11__c = utils.getUserByEmployeeCode(cam.Applicant_Code__c);
+
+                cam.Approval_User23__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(23),null),0);
             }
 
 
