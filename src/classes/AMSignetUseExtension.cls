@@ -18,8 +18,8 @@ public with sharing class AMSignetUseExtension {
 
     public PageReference save() {
         if (am.file_type__c == '01' || am.file_type__c == '02' || am.file_type__c == '03') {
-            if (am.Account__c == null || am.acacetin__c == null || am.Currency__c == null) {
-                ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '客户/合约金额/币种  不能为空'));
+            if (am.Account__c == null || am.acacetin__c == null || am.Currency__c == null || am.Term_of_Payment__c == null) {
+                ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '客户/合约金额/币种/付款条件  不能为空'));
                 return null;
             }
         }

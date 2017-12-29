@@ -400,7 +400,7 @@
                 <!-- 客户编号 -->
                 <apex:outputField id="Account_Number" value="{!am.Account_Number__c}"></apex:outputField> 
             	<!-- 付款条件 -->
-            	<apex:inputField id="Term_of_Payment" value="{!am.Term_of_Payment__c}" required="true"></apex:inputField>
+            	<apex:inputField id="Term_of_Payment" value="{!am.Term_of_Payment__c}"></apex:inputField>
             	<!-- 付款条件描述 -->
             	<!-- <apex:inputField id="payment_terms_describe" value="{!am.payment_terms_describe__c}" style="width: 80%"></apex:inputField> -->
             	<!-- 中信保单号 -->
