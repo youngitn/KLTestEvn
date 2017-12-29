@@ -32,15 +32,16 @@ public without sharing class ApprovalPermissionHandler implements Triggers.Handl
             Id recTypeID = null;
             //权限对象
             String sobjectName = '';
+
+            String Approval_Status = '';
             if(mapPF.containsKey(pId)){
                 //如果是系统管理员，可以修改记录
                 System.debug('*** 是系统管理员，可以修改记录');
-                return;
+                //return;
             }
             System.debug('*** 进入权限判断');
             Object newValue = null;//字段新值
             Object oldValue = null;//字段旧值
-
 
             List<Schema.SObjectField> fields = new List<Schema.SObjectField>();
             for(SObject obj : Trigger.new){
@@ -49,14 +50,31 @@ public without sharing class ApprovalPermissionHandler implements Triggers.Handl
                 ownerId = String.valueOf(obj.get('OwnerId'));
                 creatorId = String.valueOf(obj.get('CreatedById'));
                 recTypeID = String.valueOf(obj.get('RecordTypeId'));
+                Approval_Status = String.valueOf(obj.get('Approval_Status__c'));
                 sobjectName = String.valueOf(obj.getSObjectType());
-                
+
                 //记录当前审批人
                 Set<Id> aId = Utils.getApprovalUser(targetId);
                 //如果记录未提交待审批，不计算权限
                 if(aId == null){
                     continue;
                 }
+
+                //拒绝时候判定审批意见必输
+                if (Approval_Status == 'R') {
+                    System.debug(LoggingLevel.INFO, '*** check in ');
+                    List<ProcessInstance> pi = [SELECT TargetObjectId,
+                                                (SELECT Id, StepStatus, Comments FROM Steps ORDER BY CreatedDate DESC LIMIT 1 )
+                                                FROM ProcessInstance WHERE TargetObjectId = :targetId
+                                                ORDER BY CreatedDate DESC LIMIT 1];
+                    if (pi[0].Steps[0].Comments == null || pi[0].Steps[0].Comments.trim().length() == 0) {
+                        System.debug(LoggingLevel.INFO, '*** 请输入审批拒绝的原因: ');
+                        //obj.addError('请输入审批拒绝的原因!');
+                        obj.addError( '<script>document.getElementById("bodyCell").innerHTML="<cnter><H1 >请输入审批拒绝的原因!</H1></center>";</script>', false);
+                        break;  
+                    }
+                }
+
                  //当前审批人的代理人也得有权限
                 for (User u :[SELECT DelegatedApproverId FROM User WHERE Id IN:aId AND DelegatedApproverId != null AND IsActive =true]) {
                     if (!aId.contains(u.DelegatedApproverId)) {
@@ -70,20 +88,20 @@ public without sharing class ApprovalPermissionHandler implements Triggers.Handl
                     System.debug('*** 是记录所有人或记录创建人或者当前审批人，可以修改记录');
                     //得到当前审批节点可以更新字段集合
                     Map<String,Set<String>> updateFields = Utils.getNodeEditFields(targetId,recTypeID);
-
                     //判断表头可编辑字段
                     Set<String> ableUpdateFields = updateFields.get('main');
                     //判断表头必输字段
                     Set<String> mainRequireFields = updateFields.get('mainrequire');
+
                     for(Schema.SObjectField fld : fields){
                         String field = String.valueOf(fld);
                         //审批用户字段不包含在检查中
                         if(field.toLowerCase().startsWith('approval_user') && field.endsWith('__c')){
                             continue;
                         }
-
+                        System.debug(LoggingLevel.INFO, '*** field: ' + field);
                         newValue = obj.get(field);
-                        
+
                         System.debug('*** 判断编辑');
                         //是自定义字段且不包含在节点可编辑字段设置中
                         if(field.endsWith('__c') && !ableUpdateFields.contains(field)){
@@ -97,6 +115,7 @@ public without sharing class ApprovalPermissionHandler implements Triggers.Handl
                                 break;
                             }
                         }
+
                         System.debug('*** 判断必输');
                         //是自定义字段且包含在节点必输字段设置中
                         if(field.endsWith('__c') && mainRequireFields.contains(field)){
@@ -121,6 +140,13 @@ public without sharing class ApprovalPermissionHandler implements Triggers.Handl
                     break;
                 }
             }
+        }
+    }
+
+    public void checkcomments(){
+        if (Trigger.isBefore && Trigger.isUpdate) {
+
+
         }
     }
 }
