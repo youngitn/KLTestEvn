@@ -40,7 +40,7 @@
                                 <label class="slds-form-element__label" for="text-input-01">
                                     不良品工單單號
                                 </label>
-                                <apex:inputfield value="{!cam.Bill_No__c }">
+                                <apex:inputfield value="{!cam.MO_No__c }">
                                 </apex:inputfield>
                             </div>
                             <div class="pure-control-group pure-input-1-3">
