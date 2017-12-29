@@ -46,6 +46,9 @@ trigger CustomApprovalManageTrigger on Custom_Approval_Managed__c(before insert,
     //设置销售订单审批流程各节点审批人
     .bind (Triggers.Evt.beforeinsert,new AMSaleOrderHandler())
     .bind (Triggers.Evt.beforeUpdate,new AMSaleOrderHandler())
+    //设置RFQ业务询价流程各节点审批人
+    .bind (Triggers.Evt.beforeinsert,new AMRFQHandler())
+    .bind (Triggers.Evt.beforeUpdate,new AMRFQHandler())
     //供應商索賠流程 當insert執行時觸發塞審批人進指定欄位的動作
     .bind (Triggers.Evt.beforeinsert,new AMVendorClaimHandler())
     .bind (Triggers.Evt.beforeUpdate,new AMVendorClaimHandler())
