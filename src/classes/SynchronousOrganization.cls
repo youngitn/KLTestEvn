@@ -413,7 +413,7 @@ public with sharing class SynchronousOrganization {
 						  Human_Range__c,SAP_Post_Number__c,SAP_Dept_Number__c,Corp_Code__c,ProfileID__c,
 						  Post_Number__c,Post_Category__c,Job_Title_Level__c,Staff_Group__c,Sex__c,Extension_Number__c,
 						  Staff_Sub_Group__c,Take_Office_Date__c,End_Date_Contract__c,Birthdate,RoleID__c,
-						  Email,Phone,MobilePhone,Native_Place__c,Dept_Number__r.Dept_Level__c,Salary_Manager__c
+						  Email,Phone,MobilePhone,Native_Place__c,Dept_Number__r.Dept_Level__c,Salary_Manager__c,FederationIdentifier__c
 					FROM Contact 
 					WHERE RecordType.DeveloperName = 'Staff' 
 					AND RecordType.SobjectType = 'Contact'
@@ -491,7 +491,15 @@ public with sharing class SynchronousOrganization {
 					if (con.Dept_Number__r.Dept_Level__c == 4 && con.Is_Manager__c) {
 						sUsr.Is_Manager__c = true;
 					}
-					sUsr.FederationIdentifier = sUsr.Username;
+
+					//联盟ID
+					if (!STRING.isBlank(con.FederationIdentifier__c)) {
+						sUsr.FederationIdentifier = con.FederationIdentifier__c;
+					}	
+					else{
+						sUsr.FederationIdentifier = sUsr.Username;
+					}
+					
 					//手机
 					sUsr.MobilePhone = con.MobilePhone;
 					//电话
@@ -523,7 +531,21 @@ public with sharing class SynchronousOrganization {
 					}
 					//员工号
 					uUser.Number__c = con.Number__c;
-					uUser.FederationIdentifier = uUser.Username;
+					System.debug(LoggingLevel.INFO, '*** /////: ');
+					System.debug(LoggingLevel.INFO, '*** :con.Number__c ' + con.Number__c);
+					System.debug(LoggingLevel.INFO, '*** :uUser.Username ' + uUser.Username);
+					System.debug(LoggingLevel.INFO, '*** :con.FederationIdentifier__c ' + con.FederationIdentifier__c);
+					//联盟ID
+					if (!STRING.isBlank(con.FederationIdentifier__c)) {
+						System.debug(LoggingLevel.INFO, '*** 111: ' );
+						uUser.FederationIdentifier = con.FederationIdentifier__c;
+					}	
+					else{
+						System.debug(LoggingLevel.INFO, '*** 222: ' );
+						uUser.FederationIdentifier = uUser.Username;
+					}
+					System.debug(LoggingLevel.INFO, '*** :uUser.FederationIdentifier ' + uUser.FederationIdentifier);
+					System.debug(LoggingLevel.INFO, '*** /////: ');
 					//手机
 					uUser.MobilePhone = con.MobilePhone;
 					//电话

@@ -261,7 +261,7 @@
                         <!-- 负责人(工号) -->
                         <td><apex:outputField value="{!item.Header_Code__c}" style="width: 70px"></apex:outputField></td>
                         <!-- 文本 -->
-                        <td><apex:inputField value="{!item.Text_Long__c}"  style="width: 800px"></apex:inputField></td>
+                        <td><apex:inputField value="{!item.Text_Long__c}"  style="width: 800px" required="true"></apex:inputField></td>
                     </tr>
                     <apex:variable var="containmentIndex" value="{!containmentIndex+1}"/>
                 </apex:repeat>

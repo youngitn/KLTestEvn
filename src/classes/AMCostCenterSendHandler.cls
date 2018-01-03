@@ -135,7 +135,7 @@ public without sharing class AMCostCenterSendHandler implements Triggers.Handler
     public List<Id> specialCal2(Custom_Approval_Managed__c cam){
 
         List<Id> lstID = new List<Id>();
-        Set<String> set1 = new Set<String>{'A00','A02','A03','A04','PRO','H00','H01','H02','H03','C01','C02','C03','C04','E00'};
+        Set<String> set1 = new Set<String>{'A00','A02','A03','A04','PRO','H00','H01','H02','H03','C01','C02','C03','C04','E00','A08'};
         Set<String> set2 = new Set<String>{'A01','D02','C07','C08','C11','C13'};
         Set<String>  set3= new Set<String>{'D05','D06','C10','D01','P06','P03'};
 
