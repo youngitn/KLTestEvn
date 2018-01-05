@@ -5,36 +5,36 @@
 
     <!-- <apex:image url="{!URLFOR($Resource.Material01,'Certification/j.bmp')}" /> -->
 
-    <apex:image url="{!URLFOR($Resource.MaterialCertification, 'Certification/img_certification_kl.png')}" 
+    <apex:image url="{!URLFOR($Resource.MaterialCertificationN, 'Certification/img_certification_kl.png')}"  width="100%"
     	rendered="{!logo='KL'&&is_bpe!='X'}"/>
 
     <!-- BPE -->	
-    <apex:image url="{!URLFOR($Resource.MaterialCertification, 'Certification/img_certification_kl_bpe.png')}" 
+    <apex:image url="{!URLFOR($Resource.MaterialCertificationN, 'Certification/img_certification_kl_bpe.png')}"  width="100%"
     	rendered="{!logo='KL'&&is_bpe='X'}"/>
 
-    <apex:image url="{!URLFOR($Resource.MaterialCertification, 'Certification/img_certification_pl.png')}" 
+    <apex:image url="{!URLFOR($Resource.MaterialCertificationN, 'Certification/img_certification_pl.png')}"  width="100%"
     	rendered="{!logo='PL'}"/>
 
 
-    <apex:image url="{!URLFOR($Resource.MaterialCertification, 'Certification/img_certification_kl.png')}" 
+    <apex:image url="{!URLFOR($Resource.MaterialCertificationN, 'Certification/img_certification_kl.png')}"  width="100%"
     	rendered="{!logo='SS'&&is_bpe!='X'}"/>
-    <apex:image url="{!URLFOR($Resource.MaterialCertification, 'Certification/img_certification_kl_bpe.png')}" 
+    <apex:image url="{!URLFOR($Resource.MaterialCertificationN, 'Certification/img_certification_kl_bpe.png')}"  width="100%"
     	rendered="{!logo='SS'&&is_bpe='X'}"/>
 
-    <apex:image url="{!URLFOR($Resource.MaterialCertification, 'Certification/img_certification_kl.png')}" 
+    <apex:image url="{!URLFOR($Resource.MaterialCertificationN, 'Certification/img_certification_kl.png')}"   width="100%"
     	rendered="{!logo='NR'&&is_bpe!='X'}"/>
-    <apex:image url="{!URLFOR($Resource.MaterialCertification, 'Certification/img_certification_kl_bpe.png')}" 
+    <apex:image url="{!URLFOR($Resource.MaterialCertificationN, 'Certification/img_certification_kl_bpe.png')}"   width="100%"
     	rendered="{!logo='NR'&&is_bpe='X'}"/>
 
 
-    <apex:image url="{!URLFOR($Resource.MaterialCertification, 'Certification/img_certification_kl.png')}" 
+    <apex:image url="{!URLFOR($Resource.MaterialCertificationN, 'Certification/img_certification_kl.png')}"   width="100%"
     	rendered="{!logo='FF'&&is_bpe!='X'}"/>
-    <apex:image url="{!URLFOR($Resource.MaterialCertification, 'Certification/img_certification_kl_bpe.png')}" 
+    <apex:image url="{!URLFOR($Resource.MaterialCertificationN, 'Certification/img_certification_kl_bpe.png')}"   width="100%"
     	rendered="{!logo='FF'&&is_bpe='X'}"/>
 
 
-    <apex:image url="{!URLFOR($Resource.MaterialCertification, 'Certification/img_certification_kl.png')}" 
+    <apex:image url="{!URLFOR($Resource.MaterialCertificationN, 'Certification/img_certification_kl.png')}"   width="100%"
     	rendered="{!logo='LH'&&is_bpe!='X'}"/>
-    <apex:image url="{!URLFOR($Resource.MaterialCertification, 'Certification/img_certification_kl_bpe.png')}" 
+    <apex:image url="{!URLFOR($Resource.MaterialCertificationN, 'Certification/img_certification_kl_bpe.png')}"   width="100%"
     	rendered="{!logo='LH'&&is_bpe='X'}"/>
 </apex:page>

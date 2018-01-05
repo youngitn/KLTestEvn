@@ -1,17 +1,22 @@
 <apex:page controller="MaterialKsklDownload">
 
 <div class="footer"> 
-	<apex:image url="{!URLFOR($Resource.MaterialFooter, 'Footer/img_footer_kl_enzh.png')}"  
+	<apex:image url="{!URLFOR($Resource.MaterialFooterN, 'Footer/img_footer_kl_enzh.png')}"   width="100%"
 		rendered="{!logo='KL'&&langu='ZH'}"/>
 
-	<apex:image url="{!URLFOR($Resource.MaterialFooter, 'Footer/img_footer_kl.png')}"  
+	<apex:image url="{!URLFOR($Resource.MaterialFooterN, 'Footer/img_footer_kl.png')}"    width="100%"
 		rendered="{!logo='KL'&&langu!='ZH'}"/>
 
-	<apex:image url="{!URLFOR($Resource.MaterialFooter, 'Footer/img_footer_kl.png')}" rendered="{!logo='LH'}"/>
-	<apex:image url="{!URLFOR($Resource.MaterialFooter, 'Footer/img_footer_kl.png')}" rendered="{!logo='SS'}"/>
+	<apex:image url="{!URLFOR($Resource.MaterialFooterN, 'Footer/img_footer_kl.png')}" 
+	width="100%" rendered="{!logo='LH'}"/>
+	<apex:image url="{!URLFOR($Resource.MaterialFooterN, 'Footer/img_footer_kl.png')}" 
+     width="100%"
+	rendered="{!logo='SS'}"/>
 
-	<apex:image url="{!URLFOR($Resource.MaterialFooter, 'Footer/img_footer_ff.png')}" rendered="{!logo='FF'}"/> 
-	<apex:image url="{!URLFOR($Resource.MaterialFooter, 'Footer/img_footer_pl.png')}" rendered="{!logo='PL'}"/> 
+	<apex:image url="{!URLFOR($Resource.MaterialFooterN, 'Footer/img_footer_ff.png')}" width="100%"
+	rendered="{!logo='FF'}"/> 
+	<apex:image url="{!URLFOR($Resource.MaterialFooterN, 'Footer/img_footer_pl.png')}" width="100%"
+	rendered="{!logo='PL'}"/> 
 </div>
 
 </apex:page>

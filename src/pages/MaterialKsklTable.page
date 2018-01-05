@@ -191,7 +191,7 @@
     
     <!-- Mechanical Test Continuation  带图章-->
     <apex:outputText rendered="{!is_stamp='T'}" >
-        <div style="background: url({!URLFOR($Resource.MaterialStamp, 'Stamp/img_stamp.png')}) right no-repeat ; background-size: 50%" >        
+        <div style="background: url({!URLFOR($Resource.MaterialStampN, 'Stamp/img_stamp.png')}) right no-repeat ; background-size: 50%"  >        
             <apex:include pageName="MaterialKsklTableMtc"/>
         </div>
     </apex:outputText>
