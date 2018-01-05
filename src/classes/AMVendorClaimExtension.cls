@@ -1,4 +1,4 @@
-public with sharing class AMVendorClaimExtension extends BaseExtension
+public with sharing class AMVendorClaimExtension extends VFShowInApprovalExtension
 {
 
     public Custom_Approval_Managed__c cam  {Get; Set;}
@@ -9,16 +9,13 @@ public with sharing class AMVendorClaimExtension extends BaseExtension
         System.debug('OK');
         cam = (Custom_Approval_Managed__c)sobj;
         System.debug(cam);
-        if (con.getId() != null)
-        {
-            cam = (Custom_Approval_Managed__c)con.getRecord();
-        }
+        
       
     }
 
     public override PageReference saveAction()
     {
         upsert cam;
-        return new PageReference('/' + cam.Id);
+        return goPage(cam.Id);
     }
 }
