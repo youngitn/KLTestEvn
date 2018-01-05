@@ -52,9 +52,9 @@
 <apex:sectionHeader title="客户信用贷款主数据申请" subtitle="新建/客户信用贷款主数据申请"></apex:sectionHeader>
     <apex:form id="form">
 
-        <apex:actionFunction action="{!queryAccountInfo}" id="queryAccountInfo" name="queryAccountInfo" reRender="creditloan" immediate="true" status="loading">
+     <!--    <apex:actionFunction action="{!queryAccountInfo}" id="queryAccountInfo" name="queryAccountInfo" reRender="creditloan" immediate="true" status="loading">
             <apex:param assignTo="{!am.Account__c}" name="Account" value="Account"></apex:param>
-        </apex:actionFunction>
+        </apex:actionFunction> -->
 
         <apex:pageBlock >
             <apex:pageBlockButtons >
