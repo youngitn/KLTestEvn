@@ -50,6 +50,7 @@ public without sharing class ApprovalPermissionItemHandler implements Triggers.H
         Map<Id,User> mapUser = new Map<Id,User>([SELECT Id, DelegatedApproverId FROM User WHERE DelegatedApproverId != null AND IsActive=true]);
         //已取出的可编辑字段集合
         Map<String,Set<String>> existUpdateFields = new Map<String,Set<String>>();
+        Map<String,Set<String>> existRequireFields = new Map<String,Set<String>>();
         for(SObject obj : Trigger.new){
             fields = obj.getSObjectType().getDescribe().fields.getMap().values();
             sobjectName = String.valueOf(obj.getSObjectType());
@@ -206,26 +207,39 @@ public without sharing class ApprovalPermissionItemHandler implements Triggers.H
                 System.debug('*** 是记录所有人或记录创建人或者当前审批人，可以修改记录');
                 //得到当前审批节点可以更新字段集合
                 Set<String> ableUpdateFields = new Set<String>();
+                //判断项次必输字段
+                Set<String> detailRequireFields = new Set<String>();
                 
+
                 if(existUpdateFields.containsKey(targetId)){
                     ableUpdateFields = existUpdateFields.get(targetId);
                 }else{
                     Map<String,Set<String>> updateFields = Utils.getNodeEditFields(targetId,masterRecordTypeName);
                     ableUpdateFields = updateFields.get('detail');
+                    detailRequireFields = updateFields.get('detailrequire');
                     existUpdateFields.put(targetId,ableUpdateFields);
+                    existRequireFields.put(targetId,detailRequireFields);
                 }
 
+
                 System.debug(LoggingLevel.INFO, '*** ableUpdateFields: ' + ableUpdateFields);
+                System.debug(LoggingLevel.INFO, '*** detailRequireFields: ' + detailRequireFields);
                 for(Schema.SObjectField fld : fields){
                     String field = String.valueOf(fld);
+                    Map<String, Schema.SObjectField> myFields = new Map<String, Schema.SObjectField>();
                     newValue = obj.get(field);
                     //是自定义字段且不包含在节点可编辑字段设置中
                     //比较值是否发生变动
+                    System.debug(LoggingLevel.INFO, '*** field: ' + field);
                     if(field.endsWith('__c') && !ableUpdateFields.contains(field)){
+                        System.debug(LoggingLevel.INFO, '*** check in1: ');
+
                         oldValue = Trigger.oldMap.get(recordID).get(field);
                         if(newValue != oldValue){
-                                System.debug('*** 更新字段不在可更新设置中!字段:' +field+' 新值：'+newValue+'旧值:'+oldValue);
-                                obj.addError(Label.No_Permission+'字段:' +field+' 新值：'+newValue+'旧值:'+oldValue);
+                            System.debug('*** 更新字段不在可更新设置中，字段:' +field+' 新值：'+newValue+'旧值:'+oldValue);
+                            myFields = obj.getSObjectType().getDescribe().fields.getMap();
+                            obj.addError(+'字段:' +myFields.get(field).getDescribe().getLabel()+' 新值：'+newValue+'旧值:'+oldValue);
+                            //obj.addError(Label.No_Permission+'字段:' +field+' 新值：'+newValue+'旧值:'+oldValue);
                             break;
                         }
                     }
@@ -233,6 +247,15 @@ public without sharing class ApprovalPermissionItemHandler implements Triggers.H
                     /*由于项次有多个表行的原因，单个表可以进行必输控制，多个表就不可以进行必输控制了，因为
                     第二张表不一定需要输入这个字段，但是无法根据表的记录类型进行判断字段是否为NULL
                     */
+                    if(field.endsWith('__c') && detailRequireFields.contains(field)){
+                        System.debug(LoggingLevel.INFO, '*** check in2: ');
+                        if(newValue == null ){
+                            System.debug('*** 字段:' +field+' 必输');
+                            myFields = obj.getSObjectType().getDescribe().fields.getMap();
+                            obj.addError('字段:' +myFields.get(field).getDescribe().getLabel() +' 必输');
+                            break;
+                        }
+                    }
                 }
 
             }else{
