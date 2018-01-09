@@ -1077,6 +1077,7 @@ public without sharing class Utils
         Set<String> mainUpdateFields = new Set<String>();
         Set<String> detailUpdateFields = new Set<String>();
         Set<String> mainRequireFields = new Set<String>();
+        Set<String> detailRequireFields = new Set<String>();
 
         //在审批中不做权限拦截的字段
         System_Setting__c ssc = System_Setting__c.getValues('Setting');
@@ -1116,7 +1117,7 @@ public without sharing class Utils
             }
             List<Organizational__c> setlist = [
                                                   SELECT Id, Node_Edit_Fields__c, Node_DetailEdit_Fields__c,
-                                                  Node_Require_Fields__c
+                                                  Node_Require_Fields__c,Node_DetailRequire_Fields__c
                                                   FROM Organizational__c
                                                   WHERE RecordType.DeveloperName = 'Node_Edit_Field'
                                                           AND Node_API__c = : nodeAPI
@@ -1140,7 +1141,7 @@ public without sharing class Utils
                     }
                 }
 
-                //项次
+                //项次可编辑
                 String flds = setlist[0].Node_DetailEdit_Fields__c;
                 if(!String.isBlank(flds))
                 {
@@ -1175,12 +1176,30 @@ public without sharing class Utils
                 }
 
 
+                //项次必输
+                String flds2 = setlist[0].Node_DetailRequire_Fields__c;
+                if(!String.isBlank(flds2))
+                {
+                    flds2 = flds2.replace('，', ',');
+                    flds2 = flds2.removeEnd(',');
+                    flds2 = flds2.removeStart(',');
+                    List<String> flist = flds2.split(',');
+                    for(String field : flist)
+                    {
+                        if(!detailRequireFields.contains(field))
+                        {
+                            detailRequireFields.add(field);
+                        }
+                    }
+                }
+
             }
         }
         Map<String, Set<String>> result = new Map<String, Set<String>>();
         result.put('main', mainUpdateFields);
         result.put('detail', detailUpdateFields);
         result.put('mainrequire', mainRequireFields);
+        result.put('detailrequire', detailRequireFields);
         return result;
     }
     /*
