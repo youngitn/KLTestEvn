@@ -3,7 +3,7 @@
  因後續尚有眾多修改計畫以此流程為基準,
  所以沒有共用計畫.
 <-->
-<apex:page doctype="html-5.0" extensions="AMLeaveApplicationExtension" standardcontroller="Approval_Managed__c" standardstylesheets="false">
+<apex:page applyhtmltag="true" doctype="html-5.0" extensions="AMLeaveApplicationExtension" standardcontroller="Approval_Managed__c" standardstylesheets="false">
     <!-- 请假管理流程 -->
     <html>
         <head>
@@ -16,8 +16,13 @@
             </script>
             <script>
                 const  j$ = jQuery.noConflict();
-      //       	j$( function() {
-
+             	j$( function() {
+             		j$( "select[id*=Approval_Status]").bind("change",function(){
+             			j$(this).val('D');
+             		});
+             		
+             		addButtonClass();				
+						
 				  //   j$( "#dialog-confirm" ).dialog({
 				  //     resizable: false,
 				  //     height: "auto",
@@ -32,7 +37,90 @@
 				  //       }
 				  //     }
 				  //   });
-				  // } );
+				  //   
+					  j$("input[id $= Employee]").on('change',function(){
+					  	setTimeout(getEmpInfo, 500);
+					  });
+				  
+				  });
+
+       //       j$(document).on("mousemove", ".datepicker", function () {
+             		
+				  	// j$(this).datepicker({ dateFormat: 'yy/mm/dd' });
+				      
+				   //  });
+			function getEmpInfo() {
+					  		
+						  	let cId = j$("input[id $= Employee_lkid]").val();
+						  	if (cId != '000000000000000' ){
+						  		queryVacation(cId);
+						  		queryEmpId(cId);
+						  	}
+					  	
+					  	}
+       		
+            function queryEmpId(cId){
+
+            	AMLeaveApplicationExtension.queryEmpId(cId, function(result, event) {
+                    if (event.status) {
+                       JSON.parse(result.replace(/(&quot\;)/g,"\""),function(k, v) {
+                       	console.log(k+','+v); 
+                       	if (k == 'Take_Office_Date') {
+						 	j$('input[id $= Take_Office_Date]').val(v.trim());
+						 }
+
+						 
+						 if (k == 'Job_Title_Level') {
+						 	j$('input[id $= Job_Title_Level]').val(v.trim());
+						 }
+
+						 if (k == 'Applicant_position') {
+						 	j$('input[id $= Applicant_position]').val(v.trim());
+						 }      
+					
+
+                       });
+                       // let empId = result;
+                       // j$('input[id $= Employee_Code]').val(empId);
+                       
+                    }
+                    
+                })
+
+            	
+            } 	
+            function addButtonClass(){
+            	j$( "input[type=submit]").removeClass('btn').addClass( "pure-button pure-button-primary pure-u-2-3" );
+            }
+            function queryVacation(cId) {
+                //let empId = j$('input[id $= Name]').val();
+               //alert(empId);
+                AMLeaveApplicationExtension.queryVacation(cId, function(result, event) {
+                    if (event.status) {
+                        
+                        
+                        JSON.parse(result.replace(/(&quot\;)/g,"\""),function(k, v) {
+						  console.log(k+','+v); 
+						 //調休可用時數
+						 if (k == 'adjustable_vacation__c') {
+						 	j$('input[id $= Adjustable_vacation]').val(v.trim());
+						 }
+
+						 //特休可用時數
+						 if (k == 'annual_leave__c') {
+						 	j$('input[id $= Annual_leave]').val(v.trim());
+						 }
+
+						 if (k == 'employee_code__c') {
+						 	j$('input[id $= Employee_Code]').val(v.trim());
+						 }      
+						});
+                        
+                        
+                        
+                    }
+                });
+            }
             </script>
         </head>
         <body>
@@ -44,10 +132,10 @@
             </div>
             <apex:sectionheader subtitle="新建/编辑请假管理流程" title="请假管理流程">
             </apex:sectionheader>
-            <apex:form styleclass="pure-form pure-form-stacked" id="form">
+            <apex:form id="form" styleclass="pure-form pure-form-stacked">
                 <fieldset>
                     <legend>
-                        表單基本資料
+                        基本資料
                     </legend>
                     <div class="pure-g">
                         <div class="pure-u-1-3">
@@ -87,14 +175,14 @@
                         </div>
                         <div class="pure-u-1-3">
                             審批狀態:
-                            <input class="pure-u-2-3" readonly="true" value="{!am.Approval_Status__c}">
-                            </input>
+                            <apex:inputfield id="Approval_Status" styleclass="pure-u-2-3" value="{!am.Approval_Status__c}">
+                            </apex:inputfield>
                         </div>
                     </div>
                 </fieldset>
                 <fieldset>
                     <legend>
-                        請假人
+                        請假資訊
                     </legend>
                     <div class="pure-g">
                         <div class="pure-u-1-3 ">
@@ -108,111 +196,111 @@
                             <label for="last-name">
                                 請假人工號
                             </label>
-                            <apex:inputfield id="Employee_Code" value="{!am.Employee_Code__c}">
+                            <apex:inputfield id="Employee_Code" styleclass="pure-u-2-3" value="{!am.Employee_Code__c}">
                             </apex:inputfield>
                         </div>
                         <div class="pure-u-1-3">
                             <label for="email">
                                 特休可用時數
                             </label>
-                            <apex:inputfield id="Annual_leave" value="{!am.Annual_leave__c}">
+                            <apex:inputfield id="Annual_leave" styleclass="pure-u-2-3" value="{!am.Annual_leave__c}">
                             </apex:inputfield>
                         </div>
                         <div class="pure-u-1-3">
                             <label for="city">
                                 調休可用時數
                             </label>
-                            <apex:inputfield id="Adjustable_vacation" value="{!am.Adjustable_vacation__c }">
+                            <apex:inputfield id="Adjustable_vacation" styleclass="pure-u-2-3" value="{!am.Adjustable_vacation__c }">
                             </apex:inputfield>
                         </div>
                         <div class="pure-u-1-3">
                             <label for="city">
                                 總休假時數
                             </label>
-                            <apex:inputfield id="Sum_Vacation" value="{!am.Sum_Vacation__c}">
+                            <apex:inputfield id="Sum_Vacation" styleclass="pure-u-2-3" value="{!am.Sum_Vacation__c}">
                             </apex:inputfield>
                         </div>
                         <div class="pure-u-1-3">
                             <label for="city">
                                 請假人職稱
                             </label>
-                            <apex:inputfield id="Applicant_position" type="text" value="{!am.Applicant_position__c}">
-                            </apex:inputfield>
+                            <input id="Applicant_position" class="pure-u-2-3" type="text" value="{!am.Applicant_position__c}">
+                            </input>
                         </div>
                         <div class="pure-u-1-3">
                             <label for="city">
                                 請假人職等
                             </label>
-                            <apex:inputfield id="Job_Title_Level" value="{!am.Job_Title_Level__c}">
-                            </apex:inputfield>
+                            <input id="Job_Title_Level" class="pure-u-2-3" value="{!am.Job_Title_Level__c}">
+                            </input>
                         </div>
                         <div class="pure-u-1-3">
                             <label for="city">
                                 到職日期
                             </label>
-                            <apex:inputfield id="Take_Office_Date" value="{!am.Take_Office_Date__c}">
-                            </apex:inputfield>
+                            <input id="Take_Office_Date" class="pure-u-2-3" value="{!am.Take_Office_Date__c}">
+                            </input>
                         </div>
                     </div>
                 </fieldset>
-                <apex:actionfunction action="{!queryVacation}" id="queryVacation" immediate="true" name="queryVacation" rerender="vacationhead,message" status="loading">
-                    <apex:param assignto="{!am.Employee__c}" name="employee" value="employee">
-                    </apex:param>
-                </apex:actionfunction>
-                <apex:pageblock id="block">
-                    <apex:pageblockbuttons>
-                        <apex:commandbutton action="{!save}" value="保存">
+                <div class="pure-g">
+                    <div class="pure-u-1-3">
+                    </div>
+                    <div class="pure-u-1-12">
+                        <apex:commandbutton action="{!save}" id="btnSave" value="送出">
                         </apex:commandbutton>
-                        <apex:commandbutton action="{!cancel}" value="取消">
+                    </div>
+                    <div class="pure-u-1-12">
+                        <apex:commandbutton action="{!cancel}" id="btnCancel" value="取消">
                         </apex:commandbutton>
-                    </apex:pageblockbuttons>
-                    <apex:pageblocksection id="vacationhead" title="请假管理流程信息">
-                        <apex:commandbutton action="{!queryVacation}" value="查询剩余假期">
-                        </apex:commandbutton>
-                    </apex:pageblocksection>
+                    </div>
+                </div>
+                <div id="detail" >
                     <!-- 页面信息提示区 -->
                     <apex:pagemessages escape="true" id="message">
                     </apex:pagemessages>
-                    <apex:commandbutton action="{!newlist1}" immediate="true" rerender="list1" status="retrieveStatus" style="display:{!displayQueryResult};" value="新增">
-                    </apex:commandbutton>
-                    <apex:outputpanel id="list1" layout="block" style="display:{!displayQueryResult};" styleclass="scroll">
+                    <div class="pure-u-1-12">
+                        <apex:commandbutton action="{!newlist1}" immediate="true" rerender="list1" status="retrieveStatus" value="新增請假明細">
+                        </apex:commandbutton>
+                    </div>
+                    <apex:outputpanel id="list1" layout="block" styleclass="scroll">
                         <apex:actionstatus id="retrieveStatus" starttext="(waiting...)">
                         </apex:actionstatus>
-                        <table border="0" cellpadding="0" cellspacing="0" class="list" id="tableBank">
+                        <table border="0" cellpadding="0" cellspacing="0" class="pure-table" id="tableBank" width="100%">
                             <thead>
                                 <th>
                                 </th>
                                 <th>
-                                    序号
+                                    序號
                                 </th>
                                 <th>
-                                    假别
+                                    假別
                                 </th>
                                 <th>
-                                    请假事由
+                                    請假事由
                                 </th>
                                 <th>
-                                    请假开始日期
+                                    請假開始日期
                                 </th>
                                 <th>
-                                    请假开始时间
+                                    請假開始時間
                                 </th>
                                 <th>
-                                    请假结束日期
+                                    請假結束日期
                                 </th>
                                 <th>
-                                    请假结束时间
+                                    請假結束時間
                                 </th>
                                 <th>
-                                    请假时数
+                                    請假時數(小時) 
                                 </th>
                             </thead>
                             <tbody>
                                 <apex:variable value="{!0}" var="list1Index">
                                 </apex:variable>
                                 <apex:repeat value="{!list1}" var="item">
-                                    <tr>
-                                        <td>
+                                    <tr >
+                                        <td><script>addButtonClass();j$('.datepicker').datepicker({ dateFormat: 'yy/mm/dd' });</script>
                                             <apex:commandbutton action="{!deletelist1}" immediate="true" rerender="list1" value="删除">
                                                 <apex:param assignto="{!list1Row}" name="list1Row" value="{!list1Index}">
                                                 </apex:param>
@@ -223,37 +311,37 @@
                                         </td>
                                         <!-- 假别 -->
                                         <td>
-                                            <apex:inputfield required="true" style="width: 85px" value="{!item.Leave_type__c}">
+                                            <apex:inputfield required="true" style="width: 100%" value="{!item.Leave_type__c}">
                                             </apex:inputfield>
                                         </td>
                                         <!-- 请假事由 -->
                                         <td>
-                                            <apex:inputfield required="true" style="width: 250px" value="{!item.Leave_reason__c}">
+                                            <apex:inputfield required="true" style="width: 100%" value="{!item.Leave_reason__c}">
                                             </apex:inputfield>
                                         </td>
                                         <!-- 请假开始日期 -->
                                         <td>
-                                            <apex:inputfield required="true" style="width: 60px" value="{!item.Start_date__c}">
+                                            <apex:inputfield styleclass="datepicker" required="true" style="width: 100%" value="{!item.Start_date__c}">
                                             </apex:inputfield>
                                         </td>
                                         <!-- 请假开始时间 -->
                                         <td>
-                                            <apex:inputfield required="true" style="width: 120px" value="{!item.Start_Time__c}">
+                                            <apex:inputfield  required="true" style="width: 100%" value="{!item.Start_Time__c}">
                                             </apex:inputfield>
                                         </td>
                                         <!-- 请假结束日期 -->
                                         <td>
-                                            <apex:inputfield required="true" style="width: 60px" value="{!item.End_date__c}">
+                                            <apex:inputfield styleclass="datepicker" required="true" style="width: 100%" value="{!item.End_date__c}">
                                             </apex:inputfield>
                                         </td>
                                         <!-- 请假结束时间 -->
                                         <td>
-                                            <apex:inputfield required="true" style="width: 120px" value="{!item.End_Time__c}">
+                                            <apex:inputfield required="true" style="width: 100%" value="{!item.End_Time__c}">
                                             </apex:inputfield>
                                         </td>
                                         <!-- 请假时数 -->
                                         <td>
-                                            <apex:inputfield required="true" style="width: 50px" value="{!item.time_number__c}">
+                                            <apex:inputfield required="true" style="width: 100%" value="{!item.time_number__c}">
                                             </apex:inputfield>
                                         </td>
                                     </tr>
@@ -263,7 +351,7 @@
                             </tbody>
                         </table>
                     </apex:outputpanel>
-                </apex:pageblock>
+                </div>
             </apex:form>
         </body>
     </html>

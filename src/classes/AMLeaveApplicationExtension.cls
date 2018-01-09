@@ -1,4 +1,4 @@
-public with sharing class AMLeaveApplicationExtension
+global with sharing class AMLeaveApplicationExtension
 {
 
     public Approval_Managed__c am {get; set;}
@@ -31,7 +31,7 @@ public with sharing class AMLeaveApplicationExtension
         if (isInsert())
         {
             am = new Approval_Managed__c();
-            am.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.LEAVE, 'Approval_Managed__c');
+            am.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.LEAVEAPPLICATION, 'Approval_Managed__c');
 
             list1 = new List<Approval_Managed_Item__c>();
 
@@ -44,16 +44,16 @@ public with sharing class AMLeaveApplicationExtension
                 Contact c = Peoples.getInstance().KlAllContactMapGetByNum.get(u.Number__c);
                 am.company_number__c = c.Corp_Code__c;
                 am.Dept_Name__c = c.Dept_Number__r.Name;
+
             }
             am.Approval_Name__c = '請假申請流程';
-            am.Approval_Status__c = '草稿';
+            //am.Approval_Status__c = '草稿';
             am.Bill_Date__c =   Date.today();
-            
             return;
         }
 
         //获取到当前记录信息，目标获取后跳转到自定义PAGE里面有这条数据
-        String sql = Utils.getApprovalSQL(SapApprovalEnum.LEAVE, true);
+        String sql = Utils.getApprovalSQL(SapApprovalEnum.LEAVEAPPLICATION, true);
         sql = sql + ' WHERE Id = \'' + amId + '\'';
         am = Database.query(sql);
 
@@ -199,36 +199,52 @@ public with sharing class AMLeaveApplicationExtension
         return amId == null;
     }
 
-    public PageReference queryVacation()
+    @RemoteAction
+    global static String queryEmpId(String contactId){
+
+        Contact c = Peoples.getInstance().KlAllContactMapGetById.get(contactId);
+        Map<String,String> data = new Map<String,String>();
+        //Take_Office_Date Job_Title_Level Applicant_position
+        data.put('Take_Office_Date', String.valueOf(c.Take_Office_Date__c));
+        data.put('Job_Title_Level', c.Job_Title_Level__c);
+        data.put('Applicant_position', c.Post_Number__r.Post_Description__c);
+        return (String)JSON.serialize(data);
+     }
+
+
+    @RemoteAction
+    global static String queryVacation(String empId)
     {
-        System.debug(LoggingLevel.INFO, '*** 进入查询: ' + am);
-        if (String.isBlank(am.Employee__c))
+        System.debug(LoggingLevel.INFO, '*** 进入查询: ' + empId);
+        if (String.isBlank(empId))
         {
             ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '请输入员工名称'));
             return null;
         }
-         System.debug('am.Employee__c='+am.Employee__c);
-        Contact con = [SELECT Name, Number__c FROM Contact WHERE Id = :am.Employee__c AND RecordType.DeveloperName = 'Staff' LIMIT 1];
+         System.debug('empId='+empId);
+
+         //use Peoples
+        Contact con = [SELECT Name, Number__c FROM Contact WHERE Id = :empId AND RecordType.DeveloperName = 'Staff' LIMIT 1];
         System.debug('con='+con);
+        String ret;
         try
         {
             String str1 = SapQueryArgCreate.createVacationQuery(con.Number__c);
-
             System.debug(str1);
             String str2 = Utils.postToSAP(str1);
             SapWebServiceReturnArgs args = (SapWebServiceReturnArgs)JSON.deserialize(str2, SapWebServiceReturnArgs.class);
             System.debug(LoggingLevel.INFO, '*** args: ' + args);
             Approval_Managed__c amget = (Approval_Managed__c)JSON.deserialize(JSON.serialize(args.content[0].main), Approval_Managed__c.class);
-            am.Employee_Code__c = amget.Employee_Code__c;
-            am.Annual_leave__c  = amget.Annual_leave__c;
-            am.Adjustable_vacation__c  = amget.Adjustable_vacation__c;
+            // am.Employee_Code__c = amget.Employee_Code__c;
+            // am.Annual_leave__c  = amget.Annual_leave__c;
+            // am.Adjustable_vacation__c  = amget.Adjustable_vacation__c;
+            ret = JSON.serialize(args.content[0].main);
         }
         catch(Exception ex)
         {
             ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.ERROR, ex.getMessage() + '\n' + ex.getStackTraceString()));
         }
-        displayQueryResult = null;
-        return null;
+        return ret;
     }
 
 }
