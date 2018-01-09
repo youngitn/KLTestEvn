@@ -75,6 +75,7 @@ public without sharing class AMCostCenterSendHandler implements Triggers.Handler
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
                 }
+                cam.head_description__c  = cam.Reason_of_Required__c;
             }
         }
     }

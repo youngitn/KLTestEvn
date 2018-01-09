@@ -17,6 +17,7 @@
 
         <!-- 搜索条件-->
         <div class="slds-grid slds-grid_align-space">
+          <!-- 
             <div class="slds-col">
                 <div class="slds-form-element">
                   <label class="slds-form-element__label" for="text-input-id-1">
@@ -65,10 +66,11 @@
                   </div>
                 </div>
             </div>
+            -->
             <div class="slds-col">
                 <div class="slds-form-element">
                   <label class="slds-form-element__label" for="text-input-id-5">
-                    <font size="3" >批次</font>
+                    <font size="3" >材证编号/Certificate Number</font>
                   </label>
                   <div class="slds-form-element__control">
                   <font size="3" >

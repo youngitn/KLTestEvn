@@ -78,6 +78,7 @@ public without sharing class AMExpenseReimburseHandler implements Triggers.Handl
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
                 }
+                cam.head_description__c  = cam.Remark_of_Explain__c;
             }
         }
     }

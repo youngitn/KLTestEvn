@@ -34,6 +34,7 @@ public without sharing class AMOvertimeManagerHandler implements Triggers.Handle
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
                 }
+                cam.head_description__c  = cam.overtime_instructions__c;
             }
         }
     }

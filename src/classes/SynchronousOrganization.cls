@@ -531,10 +531,6 @@ public with sharing class SynchronousOrganization {
 					}
 					//员工号
 					uUser.Number__c = con.Number__c;
-					System.debug(LoggingLevel.INFO, '*** /////: ');
-					System.debug(LoggingLevel.INFO, '*** :con.Number__c ' + con.Number__c);
-					System.debug(LoggingLevel.INFO, '*** :uUser.Username ' + uUser.Username);
-					System.debug(LoggingLevel.INFO, '*** :con.FederationIdentifier__c ' + con.FederationIdentifier__c);
 					//联盟ID
 					if (!STRING.isBlank(con.FederationIdentifier__c)) {
 						System.debug(LoggingLevel.INFO, '*** 111: ' );
@@ -544,8 +540,7 @@ public with sharing class SynchronousOrganization {
 						System.debug(LoggingLevel.INFO, '*** 222: ' );
 						uUser.FederationIdentifier = uUser.Username;
 					}
-					System.debug(LoggingLevel.INFO, '*** :uUser.FederationIdentifier ' + uUser.FederationIdentifier);
-					System.debug(LoggingLevel.INFO, '*** /////: ');
+					
 					//手机
 					uUser.MobilePhone = con.MobilePhone;
 					//电话

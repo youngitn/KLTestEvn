@@ -34,6 +34,7 @@ public without sharing class AMInformationServiceHandler implements Triggers.Han
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
                 }
+                cam.head_description__c  = cam.Service_Desc__c;
             }
         }
     }

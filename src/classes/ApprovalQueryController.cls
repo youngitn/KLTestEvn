@@ -53,6 +53,8 @@ public without sharing class ApprovalQueryController {
         public String ApproverId{GET; SET;}
         //审批状态
         public String ApprovalStatus {GET; SET;}
+        //备注信息
+        public String Head_Description {GET; SET;}
         //接口信息
         public String Interface_Info {GET; SET;}
     }   
@@ -60,7 +62,7 @@ public without sharing class ApprovalQueryController {
     public PageReference query() {
         System.debug(LoggingLevel.INFO, '*** Querystart!: ');
         allApproval = new List<AllApprovalData>();
-        String sqlSelect = 'SELECT Id, Name,SAPID__c, Approval_Name__c, Applicant__c, Applicant__r.Name, Dept_Name__c, Bill_Date__c,Approval_Status__c,RecordType.DeveloperName,Interface_Info__c ';
+        String sqlSelect = 'SELECT Id, Name,SAPID__c, Approval_Name__c, Applicant__c, Applicant__r.Name, Dept_Name__c, Bill_Date__c,Approval_Status__c,RecordType.DeveloperName,Head_description__c,Interface_Info__c ';
         String sqlFrom = ' FROM ';
         String sqlWhere = ' WHERE Id != null ';
         System.debug(LoggingLevel.INFO, '*** selectedStatusValue: ' + selectedStatusValue);
@@ -158,6 +160,7 @@ public without sharing class ApprovalQueryController {
             // data.Approver = approval2currentApproverMap.get(am.Id);
             data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
             data.Interface_Info = am.Interface_Info__c;
+            data.Head_description = am.Head_description__c;
             allApproval.add(data);
         }
         for (Custom_Approval_Managed__c am : capp) {
@@ -173,6 +176,7 @@ public without sharing class ApprovalQueryController {
             // data.Approver = approval2currentApproverMap.get(am.Id);
             data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
             data.Interface_Info = am.Interface_Info__c;
+            data.Head_description = am.Head_description__c;
             allApproval.add(data);
         }
         for (Approval_Managed1__c am : app1) {
@@ -188,6 +192,7 @@ public without sharing class ApprovalQueryController {
             // data.Approver = approval2currentApproverMap.get(am.Id);
             data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
             data.Interface_Info = am.Interface_Info__c;
+            data.Head_description = am.Head_description__c;
             allApproval.add(data);
         }
         for (Approval_Managed2__c am : app2) {
@@ -203,6 +208,7 @@ public without sharing class ApprovalQueryController {
             // data.Approver = approval2currentApproverMap.get(am.Id);
             data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
             data.Interface_Info = am.Interface_Info__c;
+            data.Head_description = am.Head_description__c;
             allApproval.add(data);
         }
         //计算相关记录的当前审批人

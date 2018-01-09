@@ -1,4 +1,4 @@
-<apex:page controller="ApprovalQueryController" docType="html-5.0" showHeader="true" readOnly="true">
+<apex:page controller="ApprovalQueryController" docType="html-5.0" showHeader="true" readOnly="true" sidebar="false">
 	<head>
 		<apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
 		<apex:stylesheet value="{!URLFOR($Resource.loading,'loading.gif')}" />
@@ -158,20 +158,23 @@
 				<!-- 不选择审批流程时显示的Table -->
 				<apex:dataTable value="{!allApproval}" var="row">			
 					<!-- 所有流程公共显示字段 -->
-					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh">
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh"
+					style="width: 185px;">
 						<apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
 					</apex:column>
-					<apex:column styleClass="dataTableTd" headerValue="原单号(SAP/HLY)" headerClass="dataTableTh" value="{!row.Original_Code}" ></apex:column>
-					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" value="{!row.Approval_Name}" ></apex:column>
-					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh">
+					<apex:column styleClass="dataTableTd" headerValue="原单号(SAP/HLY)" headerClass="dataTableTh" style="width: 100px;" value="{!row.Original_Code}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" style="width: 200px;" value="{!row.Approval_Name}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" style="width: 80px;">
 						<apex:outputLink styleClass="btnLink" value="/{!(row.Applicant_Id)}">{!row.Applicant_Name}</apex:outputLink>
 					</apex:column>
-					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" value="{!row.Dept_Name}" ></apex:column>
-					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" value="{!row.Bill_Date}" ></apex:column>
-					<apex:column styleClass="dataTableTd" headerValue="当前审批人" headerClass="dataTableTh">
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" style="width: 100px;" value="{!row.Dept_Name}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" style="width: 80px;" value="{!row.Bill_Date}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="当前审批人" headerClass="dataTableTh" style="width: 80px;">
 						<apex:outputLink styleClass="btnLink" value="/{!(row.ApproverId)}">{!row.Approver}</apex:outputLink>
 					</apex:column>
-					<apex:column styleClass="dataTableTd" headerValue="审批状态" headerClass="dataTableTh" value="{!row.ApprovalStatus}"></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="审批状态" headerClass="dataTableTh" value="{!row.ApprovalStatus}"
+					style="width: 80px;"></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="备注" headerClass="dataTableTh" style="width: 200px;" value="{!row.Head_description}" />x
 					<apex:column styleClass="rfc_info" headerValue="接口信息" headerClass="dataTableTh" value="{!row.Interface_Info}"></apex:column>
 				</apex:dataTable>
 			</apex:pageBlockSection>

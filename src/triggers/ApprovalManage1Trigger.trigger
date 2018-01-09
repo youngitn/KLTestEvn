@@ -24,8 +24,8 @@ trigger ApprovalManage1Trigger on Approval_Managed1__c (before insert,before upd
     .bind (Triggers.Evt.beforeinsert,new AMBookDinnerHander())
     .bind (Triggers.Evt.beforeupdate,new AMBookDinnerHander())
     //运货车辆申请流程
-    .bind (Triggers.Evt.afterinsert,new AMFreightVehiclesHandler())
-    .bind (Triggers.Evt.afterupdate,new AMFreightVehiclesHandler())
+   // .bind (Triggers.Evt.afterinsert,new AMFreightVehiclesHandler())
+   // .bind (Triggers.Evt.afterupdate,new AMFreightVehiclesHandler())
     //售后服务简化流程
     .bind (Triggers.Evt.beforeinsert,new AMPostSaleServiceHandler())
     .bind (Triggers.Evt.beforeupdate,new AMPostSaleServiceHandler())
@@ -34,8 +34,12 @@ trigger ApprovalManage1Trigger on Approval_Managed1__c (before insert,before upd
      //教育訓練申請流程
     .bind (Triggers.Evt.beforeinsert,new AMEducationTrainingHandler())
     .bind (Triggers.Evt.beforeupdate,new AMEducationTrainingHandler())
+    //QCC客诉申请流程
+    .bind (Triggers.Evt.beforeinsert,new AMQccHandler())
+    .bind (Triggers.Evt.beforeupdate,new AMQccHandler())
     //设置记录共享
     .bind (Triggers.Evt.afterinsert,new ApprovalManualShareHandler())
     .bind (Triggers.Evt.afterupdate,new ApprovalManualShareHandler())
     .manage(); 
+    
 }

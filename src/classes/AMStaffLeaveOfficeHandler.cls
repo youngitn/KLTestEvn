@@ -34,6 +34,7 @@ public without sharing class AMStaffLeaveOfficeHandler implements Triggers.Handl
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
                 }
+                cam.head_description__c  = cam.Reason_of_Purchase__c;
             }
         }
     }
