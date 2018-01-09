@@ -77,8 +77,8 @@ public with sharing class ApprovalHomeController
         canCreateApproval.add(SapApprovalEnum.EDUCATIONTRAININGREQUEST);//教育訓練申請流程
         canCreateApproval.add(SapApprovalEnum.CUSTOMERCREDITLOAN);//客户信用贷款主数据申请
         canCreateApproval.add(SapApprovalEnum.VENDORCLAIM);//供應商索賠流程
-
-
+        canCreateApproval.add(SapApprovalEnum.LEAVEAPPLICATION);//台灣 請假申請流程
+        canCreateApproval.add(SapApprovalEnum.QCC);//QCC客诉申请流程
         //Object = Custom_Approval_Managed__c, approval counts = 16
         approval_Custom = Utils.getCAMApprovalName();
         //Object = Approval_Managed__c, approval counts = 16
@@ -332,6 +332,10 @@ public with sharing class ApprovalHomeController
 
                 pageName = '/apex/AMInternalmemo';
             }
+            else if(selectedApprovalValue == SapApprovalEnum.QCC)
+            {
+                pageName = '/apex/AMQcc';
+            }
             else if(selectedApprovalValue == SapApprovalEnum.CANCELTECO)
             {
                 //解除TECO
@@ -397,11 +401,19 @@ public with sharing class ApprovalHomeController
 
                 pageName = '/apex/AMEducationTraining';
 
-            }else if(selectedApprovalValue == SapApprovalEnum.VENDORCLAIM)
+            }
+            else if(selectedApprovalValue == SapApprovalEnum.VENDORCLAIM)
             {
                 //供應商索賠
 
                 pageName = '/apex/AMVendorClaim';
+
+            }
+            else if(selectedApprovalValue == SapApprovalEnum.LEAVEAPPLICATION)
+            {
+                //供應商索賠
+
+                pageName = '/apex/AMLeaveApplication';
 
             }
             else
