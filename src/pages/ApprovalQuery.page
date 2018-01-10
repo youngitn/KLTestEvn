@@ -160,7 +160,7 @@
 					<!-- 所有流程公共显示字段 -->
 					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh"
 					style="width: 185px;">
-						<apex:outputLink styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+						<apex:outputLink target="_blank" styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
 					</apex:column>
 					<apex:column styleClass="dataTableTd" headerValue="原单号(SAP/HLY)" headerClass="dataTableTh" style="width: 100px;" value="{!row.Original_Code}" ></apex:column>
 					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" style="width: 200px;" value="{!row.Approval_Name}" ></apex:column>
