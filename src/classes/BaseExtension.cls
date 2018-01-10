@@ -15,7 +15,7 @@ public virtual  class BaseExtension implements IExtension
 
     public BaseExtension(String sobjName,String ApprovalName,ApexPages.StandardController con)
     {
-        this.recordTypeId 	= Schema.getGlobalDescribe().get(sobjName).getDescribe().getRecordTypeInfosByName().get(ApprovalName).getRecordTypeId();
+        this.recordTypeId 	= getReCTypeId(sobjName,ApprovalName);
         //System.debug(this.recordTypeId);
         this.sobj 			= (SObject)Type.forName(sobjName).newInstance();
         this.sobj.put('Approval_Name__c',ApprovalName);
@@ -33,7 +33,9 @@ public virtual  class BaseExtension implements IExtension
     {
         return new PageReference('/'  + sobj.Id);
     }
-
+    public Id getReCTypeId(String sobjName,String ApprovalName){
+        return Schema.getGlobalDescribe().get(sobjName).getDescribe().getRecordTypeInfosByName().get(ApprovalName).getRecordTypeId();
+    }
     public virtual PageReference cancelAction()
     {
         return new PageReference('/apex/ApprovalHome?sfdc.tabName=01rO0000000Dz6T');

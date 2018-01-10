@@ -5,7 +5,7 @@ public with sharing class AMVendorClaimExtension extends VFShowInApprovalExtensi
    
     public AMVendorClaimExtension(ApexPages.StandardController con)
     {
-        super('Custom_Approval_Managed__c','供應商索賠',con);
+        super('Custom_Approval_Managed__c','供應商索賠',con,null,null,null);
         System.debug('OK');
         cam = (Custom_Approval_Managed__c)sobj;
         System.debug(cam);
