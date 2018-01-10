@@ -26,6 +26,10 @@ public with sharing class AMExpenseReimburseExtension {
         list2Row = 0;
         amId = con.getId();
         map2 = new Map<String,Approval_Managed_Item__c>();
+
+        //public Boolean isInsert() {
+        //    return amId == null;
+        //}
         if (isInsert()) {
             am = new Approval_Managed__c();
             am.Is_HLY_ExpenseReimburse__c = false;
@@ -215,9 +219,7 @@ public with sharing class AMExpenseReimburseExtension {
         return null;
     }
 
-    public Boolean isInsert() {
-        return amId == null;
-    }
+    
 
     public Integer getmaxindex() {
         maxindex = 0;
