@@ -21,6 +21,10 @@ private class AMOvertimeManagerExtensionTest {
         cusApprove.Remark__c='456';
         Update cusApprove;
 
+        cusApprove.RecordTypeId = rc.Id;
+        cusApprove.Is_Reset_Approvaler__c = true;
+        UPDATE cusApprove;
+
         
 
         test.stopTest();
