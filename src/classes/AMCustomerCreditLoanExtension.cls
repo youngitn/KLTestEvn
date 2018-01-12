@@ -24,6 +24,7 @@ public class AMCustomerCreditLoanExtension {
  
      public PageReference save() {
 
+        System.debug(LoggingLevel.INFO, '*** 进入保存1 '); 
       if (String.isNotBlank(am.Account__c)) {
             list<Account> con = [SELECT AccountNumber, Name FROM Account WHERE Id = :am.Account__c];
             if (con.size() > 0) {
@@ -33,12 +34,13 @@ public class AMCustomerCreditLoanExtension {
         }
         try {
             upsert am;
-            System.debug(LoggingLevel.INFO, '*** am: ' + am); 
+            System.debug(LoggingLevel.INFO, '*** 进入保存upsert '); 
         } catch (Exception e) {
             System.debug('The following exception has occurred: ' + e.getMessage());
             ApexPages.addMessages(e);
             return null;
         }
+        System.debug(LoggingLevel.INFO, '*** 进入保存end '); 
         return new PageReference('/' + am.Id);
     }
 
