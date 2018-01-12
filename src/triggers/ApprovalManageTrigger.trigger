@@ -62,10 +62,7 @@ trigger ApprovalManageTrigger on Approval_Managed__c(before insert, after update
     .bind (Triggers.Evt.beforeinsert,new AMPMTicketHandler())
     .bind (Triggers.Evt.beforeupdate,new AMPMTicketHandler())
 
-//MR
-    //设置MR模具申请流程各节点审批人
-    .bind (Triggers.Evt.beforeinsert,new AMMRDieRequestHandler())
-    .bind (Triggers.Evt.beforeupdate,new AMMRDieRequestHandler())
+
 
 //MM
     //设置标准采购订单作业审批流程各节点审批人
@@ -109,7 +106,10 @@ trigger ApprovalManageTrigger on Approval_Managed__c(before insert, after update
     //员工主动离职审批流程各节点审批人
     .bind (Triggers.Evt.beforeinsert,new AMStaffLeaveOfficeHandler())
     .bind (Triggers.Evt.beforeupdate,new AMStaffLeaveOfficeHandler())
-
+//MR
+    //设置MR模具申请流程各节点审批人
+    .bind (Triggers.Evt.beforeinsert,new AMMRDieRequestHandler())
+    .bind (Triggers.Evt.beforeupdate,new AMMRDieRequestHandler())
 
 //**********************************************************************************
     //设置记录共享
