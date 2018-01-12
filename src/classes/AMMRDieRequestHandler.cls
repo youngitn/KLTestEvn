@@ -24,8 +24,6 @@ public without sharing class AMMRDieRequestHandler implements Triggers.Handler {
             }
         }
 
-
-        
         if (Trigger.isBefore && Trigger.isUpdate) {
             for (Approval_Managed__c cam : (List<Approval_Managed__c>)Trigger.new) {
                 if (cam.RecordTypeId == rtId && cam.Is_Reset_Approvaler__c) {
@@ -34,8 +32,9 @@ public without sharing class AMMRDieRequestHandler implements Triggers.Handler {
                     }
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
+                    cam.head_description__c  = cam.Material_Number__c + '-' + cam.Modify_description__c + '-' + cam.die_use_bu__c;
                 }
-                cam.head_description__c  = cam.Modify_description__c;
+                
             }
         }
     }
@@ -56,11 +55,12 @@ public without sharing class AMMRDieRequestHandler implements Triggers.Handler {
                     cam.Approval_User5__c=listID[0];  //节点五：下单
                     cam.Approval_User6__c=listID[0];  //节点六：生产
                     cam.Approval_User10__c=listID[0]; //节点十：模具/刻字/入库
+                    //节点八：工单TECO  谢 壮壮-10211860
+                    cam.Approval_User8__c  = listID[0];
                 }
             	//节点七：检验  吴 正红-10210955
             	cam.Approval_User7__c  = utils.getUserByEmployeeCode('10210955');
-            	//节点八：工单TECO  谢 壮壮-10211860
-            	cam.Approval_User8__c  = utils.getUserByEmployeeCode('10211860');
+            	
             	//节点九：成本计算/编固资号/维护结算规则
             	cam.Approval_User9__c = utils.getUserByEmployeeCode('10210900');//汪 军义-10210900
             	cam.Approval_User12__c = utils.getUserByEmployeeCode('10210776');//张 榕-10210776

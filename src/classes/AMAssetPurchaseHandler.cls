@@ -56,8 +56,9 @@ public without sharing class AMAssetPurchaseHandler implements Triggers.Handler 
                     }
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
+                    cam.head_description__c  = cam.Reason_of_Purchase__c;
                 }
-                cam.head_description__c  = cam.Reason_of_Purchase__c;
+                
             }
         }
     }

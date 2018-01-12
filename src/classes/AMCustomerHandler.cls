@@ -35,8 +35,9 @@ public without sharing class AMCustomerHandler implements Triggers.Handler {
                     }
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
+                    cam.head_description__c  = cam.Remark_reason__c;
                 }
-                cam.head_description__c  = cam.Remark_reason__c;
+
             }
         }
     }

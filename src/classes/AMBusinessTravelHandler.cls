@@ -48,8 +48,9 @@ public without sharing class AMBusinessTravelHandler implements Triggers.Handler
                     }
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
+                    cam.head_description__c  = cam.Description_of_Travel__c;
                 }
-                cam.head_description__c  = cam.Description_of_Travel__c;
+                
             }
         }
     }
