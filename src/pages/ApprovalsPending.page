@@ -1,4 +1,4 @@
-<apex:page controller="ApprovalsPendingController">
+<apex:page controller="ApprovalsPendingController" sidebar="false">
 <script>
 	function navigateUrl(){
 		window.parent.location = '/04i';
@@ -26,9 +26,9 @@
 				<apex:column headerValue="{!$Label.approval_RecordName}">
 						<apex:outputLink styleClass="btnLink" target="_blank" value="/{!(item.recordId)}">{!item.recordName}</apex:outputLink>
 				</apex:column>
-				<apex:column value="{!item.approvalRecordName}" headerValue="{!$Label.approval_Name}"/>
-				<apex:column value="{!item.approvalinfo}" headerValue="{!$Label.approval_info}"/>
-				<apex:column value="{!item.sObjectLabel}" headerValue="{!$Label.apporval_Object}"/>
+				<apex:column value="{!item.approvalRecordName}" headerValue="{!$Label.approval_Name}" style="width: 200px"/>
+				<apex:column value="{!item.approvalinfo}" headerValue="{!$Label.approval_info}" style="width: 150px" />
+				<!--<apex:column value="{!item.sObjectLabel}" headerValue="{!$Label.apporval_Object}" style="width: 200px"/>-->
 				<apex:column value="{!item.submiterName}" headerValue="{!$Label.approval_submitter}"/>
 				<apex:column value="{!item.applicantName}" headerValue="{!$Label.approval_Applicant}"/>
  				<apex:column value="{!item.approver}" headerValue="{!$Label.approval_approver}"/>

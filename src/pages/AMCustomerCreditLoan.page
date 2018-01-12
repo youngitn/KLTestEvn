@@ -62,10 +62,10 @@
                 <apex:commandButton action="{!cancel}" value="取消"/>
             </apex:pageBlockButtons>
             <apex:pageBlockSection title="基本信息" collapsible="false">
-                <!-- 单据编号 -->
-                <apex:outputField value="{!am.Bill_number__c}"></apex:outputField>
-                <!-- 部门 -->
-                <apex:outputField value="{!am.Department__c}"></apex:outputField>
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
                 <!-- 流程名称 -->
                 <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
                 <!-- 申请人(姓名) -->

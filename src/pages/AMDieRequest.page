@@ -50,16 +50,21 @@ j$(document).ready(function()
     var save2=j$("[name$='j_id0:j_id31:j_id32:j_id33:j_id34']");
     save.click(function()
         {
-            alert("截取事件");
-            EventUtil.preventDefault(window.event);
+            //alert("截取事件");
+            //EventUtil.preventDefault(window.event);
         });
     save2.click(function()
         {
-            alert("不截取事件，只提示");
+            //alert("不截取事件，只提示");
             //EventUtil.preventDefault(window.event);
         });
-    
 
+    j$("[id$='Operator_Abnormal']").attr("disabled","disabled");   
+    j$("[id$='j_id0:j_id31:j_id32:j_id43:Operator_Abnormal_lkwgt']").click(function()
+        {
+            //alert("截取事件");
+            EventUtil.preventDefault(window.event);
+        });
 });
 
 </script>
@@ -104,7 +109,7 @@ j$(document).ready(function()
                 <apex:inputField value="{!am.actual_working_hours__c}"></apex:inputField>
                 <apex:inputField value="{!am.workpiece_value__c}"></apex:inputField>
                 <apex:inputField value="{!am.isOutsourcing__c}"></apex:inputField>
-                <apex:inputField value="{!am.Operator_Abnormal__c}"></apex:inputField>
+                <apex:inputField id="Operator_Abnormal" value="{!am.Operator_Abnormal__c}" ></apex:inputField>
                 <apex:inputField value="{!am.Dept_of_CostCenter__c}" required="true"></apex:inputField>
                 
             </apex:pageBlockSection>
