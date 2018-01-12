@@ -24,6 +24,7 @@
             obj.children().children().children().attr("disabled","disabled");
             j$("[id$='Responsibility']").attr("disabled","disabled");
             obj2.children().children().attr("disabled","disabled");
+            j$("[id$='qcclosses']").attr("disabled","");
             
 
         });
@@ -61,49 +62,49 @@
                 <!-- 工厂 -->
                 <apex:inputField id="factory" value="{!am.Factory__c}" required="true" onchange="toggleData1() " ></apex:inputField>
                 <!-- 申请单位 -->
-                <apex:inputField id="department" value="{!am.KOSTL__c}" required="true" ></apex:inputField>
+                <apex:inputField id="department" value="{!am.KOSTL__c}" required="true"></apex:inputField>
                 <!-- 客户 -->
                 <apex:inputField id="Customer" value="{!am.Customer__c }" required="true" ></apex:inputField>
                 <!-- 客户料号 -->
-                <apex:inputField id="CustomerMaterial" value="{!am.CustomerMaterial__c }" required="true" ></apex:inputField>
+                <apex:inputField id="CustomerMaterial" value="{!am.CustomerMaterial__c }" required="true" style="width: 42%"></apex:inputField>
                 <!-- 订单数量 -->
                 <apex:inputField id="OrderNumber1" value="{!am.OrderNumber1__c}" required="true" ></apex:inputField>
                 <!-- 客诉数量 -->
                 <apex:inputField id="GuestsNumber" value="{!am.GuestsNumber__c}" required="true" ></apex:inputField>
-                <!-- 产品 -->
-                <apex:inputField id="Product" value="{!am.Product__c}" required="true" ></apex:inputField>
+                <!-- 拣配单号 -->
+                <apex:inputField id="Product" value="{!am.Product__c}" required="true" style="width: 42%" ></apex:inputField>
                 <!-- 收单人 -->
                 <apex:inputField id="AcquiringPeople" value="{!am.AcquiringPeople__c}" required="true"></apex:inputField>
+                <!-- 问题描述 -->
+                <apex:inputField id="Service" value="{!am.Service_Desc__c}" required="true" style="width: 204%"></apex:inputField>
             </apex:pageBlockSection>
-            <apex:pageBlockSection title="QCC客诉申请流程信息-品管" >
+            <apex:pageBlockSection title="QCC客诉申请流程详细信息-品管" >
                 <!-- 是否新莱责任 -->
                 <apex:inputField id="Responsibility" value="{!am.Responsibility__c}"></apex:inputField>
             </apex:pageBlockSection>
             <apex:pageBlockSection title="QCC客诉申请流程详细信息">
-                <!-- QCC损失金额 -->
-                <apex:inputField id="qcclosses"  value="{!am.qcclosses__c}"></apex:inputField>
-                 <!-- D1小组成员 -->
-                <apex:inputField id="D1Group" value="{!am.D1Group__c}"></apex:inputField>
+                <!-- D1小组成员 -->
+                <apex:inputField id="D1Group" value="{!am.D1Group__c}" style="width: 42%"></apex:inputField>
                 <!-- D2问题描述 -->
-                <apex:inputField id="D2Problem" value="{!am.D2Problem__c}"></apex:inputField>
+                <apex:inputField id="D2Problem" value="{!am.D2Problem__c}" style="width: 42%"></apex:inputField>
                 <!-- D3临时措施 -->
-                <apex:inputField id="D3Measures" value="{!am.D3Measures__c}"></apex:inputField>
+                <apex:inputField id="D3Measures" value="{!am.D3Measures__c}" style="width: 42%"></apex:inputField>
                 <!-- 临时措施责任人 -->
                 <apex:inputField id="Responsible" value="{!am.Responsible__c}"></apex:inputField>
                 <!-- 临时措施纳期 -->
                 <apex:inputField id="MeasuresDate" value="{!am.MeasuresDate__c}"></apex:inputField>
                  <!-- D4根本原因分析5W -->
-                <apex:inputField id="D4CauseAnalysis" value="{!am.D4CauseAnalysis__c}"></apex:inputField>
+                <apex:inputField id="D4CauseAnalysis" value="{!am.D4CauseAnalysis__c}" style="width: 42%"></apex:inputField>
                 <!-- D5永久对策 -->
-                <apex:inputField id="D5Countermeasures" value="{!am.D5Countermeasures__c}"></apex:inputField>
+                <apex:inputField id="D5Countermeasures" value="{!am.D5Countermeasures__c}" style="width: 42%"></apex:inputField>
                 <!-- 永久对策责任人 -->
                 <apex:inputField id="PermanentCountermeasures" value="{!am.PermanentCountermeasures__c}"></apex:inputField>
                 <!-- 永久对策纳期 -->
-                <apex:inputField id="CountermeasuresDate" value="{!am.CountermeasuresDate__c}"></apex:inputField>
+                <apex:inputField id="CountermeasuresDate" value="{!am.CountermeasuresDate__c}" style="width: 42%"></apex:inputField>
                 <!-- D6永久措施效果验证 -->
-                <apex:inputField id="D6Effect" value="{!am.D6Effect__c}"></apex:inputField>
+                <apex:inputField id="D6Effect" value="{!am.D6Effect__c}" style="width: 42%"></apex:inputField>
                 <!-- D7预防措施 -->
-                <apex:inputField id="D7PreventiveMeasures" value="{!am.D7PreventiveMeasures__c}"></apex:inputField>
+                <apex:inputField id="D7PreventiveMeasures" value="{!am.D7PreventiveMeasures__c}" style="width: 42%"></apex:inputField>
                 <!-- D8关闭 -->
                 <apex:inputField id="D8Close" value="{!am.D8Close__c}"></apex:inputField>
                 <!-- 第一责任部门 -->
