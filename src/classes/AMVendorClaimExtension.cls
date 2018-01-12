@@ -7,7 +7,7 @@ public with sharing class AMVendorClaimExtension extends VFShowInApprovalExtensi
     {
         super('Custom_Approval_Managed__c','供應商索賠',con,null,null,null);
         System.debug('OK');
-        cam = (Custom_Approval_Managed__c)sobj;
+        cam = (Custom_Approval_Managed__c)this.sobj;
         System.debug(cam);
         
       
@@ -16,6 +16,6 @@ public with sharing class AMVendorClaimExtension extends VFShowInApprovalExtensi
     public override PageReference saveAction()
     {
         upsert cam;
-        return goPage(cam.Id);
+        return this.goPage(cam.Id);
     }
 }
