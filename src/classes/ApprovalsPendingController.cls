@@ -117,11 +117,11 @@ global class ApprovalsPendingController{
             pendingApprovals.add(pa);
             processInstanceIds.add(p.ProcessInstanceId);
         }
-        Map<Id,SObject>  mapSobject= new Map<Id,SObject>([SELECT Id, Approval_Name__c, Applicant_Name__c,SAPID__c FROM Approval_Managed__c 
+        Map<Id,SObject>  mapSobject= new Map<Id,SObject>([SELECT Id, Approval_Name__c, Applicant_Name__c,SAPID__c,Head_description__c FROM Approval_Managed__c 
         													WHERE Id IN :mapRecordId.get('Approval_Managed__c')]);
-        mapSobject.putAll(new Map<Id,SObject>([SELECT Id, Approval_Name__c, Applicant_Name__c,SAPID__c FROM Custom_Approval_Managed__c 
+        mapSobject.putAll(new Map<Id,SObject>([SELECT Id, Approval_Name__c, Applicant_Name__c,SAPID__c,Head_description__c FROM Custom_Approval_Managed__c 
         													WHERE Id IN :mapRecordId.get('Custom_Approval_Managed__c')]));
-        mapSobject.putAll(new Map<Id,SObject>([SELECT Id, Approval_Name__c, Applicant_Name__c,SAPID__c FROM approval_Managed1__c 
+        mapSobject.putAll(new Map<Id,SObject>([SELECT Id, Approval_Name__c, Applicant_Name__c,SAPID__c,Head_description__c FROM approval_Managed1__c 
         													WHERE Id IN :mapRecordId.get('Approval_Managed1__c')]));
         Map<Id, Id> processInstance2Step = new Map<Id, Id>();
         for(ProcessInstanceStep step : [select id, ProcessInstanceId, Actor.Name, 
@@ -137,7 +137,8 @@ global class ApprovalsPendingController{
                 p.approvalRecordName = String.valueOf(mapSobject.get(p.recordId).get('Approval_Name__c')) ;
                 p.applicantName = String.valueOf(mapSobject.get(p.recordId).get('Applicant_Name__c'));
                 //p.approvalinfo = String.valueOf(mapSobject.get(p.recordId).get('SAPID__c')) +  Stirng .xxx
-                p.approvalinfo = String.valueOf(mapSobject.get(p.recordId).get('SAPID__c'));
+                p.approvalinfo = String.valueOf(mapSobject.get(p.recordId).get('SAPID__c')==null?'':mapSobject.get(p.recordId).get('SAPID__c') + ' ') + String.valueOf(mapSobject.get(p.recordId).get('Head_description__c')==null?'':mapSobject.get(p.recordId).get('Head_description__c'));
+                //p.sObjectLabel = String.valueOf(mapSobject.get(p.recordId).get('Head_description__c'));
             }
             if (p.approvalStepId != null) {
                 finalPendingApprovals.add(p);
