@@ -13,19 +13,19 @@ public virtual  class BaseExtension implements IExtension
     public Map<Id, User> usersById {get;private set;}
     public Map<String, User> usersByNum {get;private set;} 
 
-    public BaseExtension(String sobjName,String ApprovalName,ApexPages.StandardController con)
+    public BaseExtension(String sobjName,String approvalName, ApexPages.StandardController con)
     {
-        this.recordTypeId 	= getReCTypeId(sobjName,ApprovalName);
+        recordTypeId 	= getReCTypeId(sobjName,approvalName);
         //System.debug(this.recordTypeId);
-        this.sobj 			= (SObject)Type.forName(sobjName).newInstance();
-        this.sobj.put('Approval_Name__c',ApprovalName);
-
-        this.sobj.put('RecordTypeId',this.recordTypeId);
-
-        this.contactsById 	= Peoples.getInstance().KlAllContactMapGetById;
-        this.contactsByNum 	= Peoples.getInstance().KlAllContactMapGetByNum;
-        this.usersById 		= Peoples.getInstance().KlAllUserMapGetById;
-        this.usersByNum 	= Peoples.getInstance().KlAllUserMapGetByNum;
+        sobj 			= (SObject)Type.forName(sobjName).newInstance();
+        sobj.put('Approval_Name__c',approvalName);
+        System.debug('BaseExtension approvalName = '+approvalName);
+        sobj.put('RecordTypeId',recordTypeId);
+        System.debug('BaseExtension recordTypeId = '+recordTypeId);
+        contactsById 	= Peoples.getInstance().KlAllContactMapGetById;
+        contactsByNum 	= Peoples.getInstance().KlAllContactMapGetByNum;
+        usersById 		= Peoples.getInstance().KlAllUserMapGetById;
+        usersByNum 	= Peoples.getInstance().KlAllUserMapGetByNum;
 
         
     }
@@ -33,8 +33,8 @@ public virtual  class BaseExtension implements IExtension
     {
         return new PageReference('/'  + sobj.Id);
     }
-    public Id getReCTypeId(String sobjName,String ApprovalName){
-        return Schema.getGlobalDescribe().get(sobjName).getDescribe().getRecordTypeInfosByName().get(ApprovalName).getRecordTypeId();
+    public Id getReCTypeId(String sobjName,String approvalName){
+        return Schema.getGlobalDescribe().get( sobjName ).getDescribe().getRecordTypeInfosByName().get( approvalName ).getRecordTypeId();
     }
     public virtual PageReference cancelAction()
     {
