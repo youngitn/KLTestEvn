@@ -15,15 +15,34 @@
             </script>
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">
             </script>
-            <script type="text/javascript" src="https://malsup.github.io/jquery.blockUI.js"></script>
+            <script src="https://malsup.github.io/jquery.blockUI.js" type="text/javascript">
+            </script>
             <script>
                 const  j$ = jQuery.noConflict();
                 var openLookupPage = null;
+                var credential = ' OAuth ' + '{!GETSESSIONID()}'; // native VF function
              	j$( function() {
-             		{!ActionOfStatus}
+             		
+             		if ('{!nowStatus}' === 'INSERT'){
+             			j$('#btnEdit').hide();
+
+             		}else if ('{!nowStatus}' === 'PROCESS'){
+             			if(true/*如果有編輯權限,這部分要靠後端了*/){
+             				j$('input[type = submit]').hide();
+
+             				j$('#btnEdit').on('click', function(event) {
+	             				j$('input[type = submit]').show();
+	             				j$(this).hide()
+	             			});; 
+             			}
+             			
+             			            	
+					}
+
              		j$( "select[id*=Approval_Status]").bind("change",function(){
              			j$(this).val('D');
              		});
+             		j$('#baseInfo input,#baseInfo select,.readOnly').attr({'readOnly':'true','onfocus':''});
              		
              		addButtonClass();				
 						
@@ -71,9 +90,11 @@
                     if (event.status && result!=null) {
 
                        JSON.parse(result.replace(/(&quot\;)/g,"\""),function(k, v) {
-                       	console.log(k+','+v); 
+                       	console.log(k+','+v);
+                       	//到職日不須給值 單純顯示在sapn中即可
+                       	//實際上只要有儲存動作 這個欄位會套公式自己取得值 
                        	if (k == 'Take_Office_Date') {
-						 	j$('input[id $= Take_Office_Date]').val( v!= null?v.trim():v);
+						 	j$('span[id $= Take_Office_Date]').html( v!= null?v.trim():v);
 						 }
 
 						 
@@ -98,7 +119,7 @@
             }
             //將所有按鈕class風格統一 	
             function addButtonClass(){
-            	j$( "input[type=submit]").removeClass('btn').addClass( "pure-button pure-button-primary pure-u-2-3" );
+            	j$( "input[type=submit],input[type=button]").removeAttr('class').addClass( "pure-button pure-button-primary pure-u-2-3" );
             }
             //從SAP取請假資料
             function queryVacation(cId) {
@@ -130,52 +151,54 @@
                     }
                 });
             }
+
+
             </script>
         </head>
         <body>
             <apex:sectionheader title="請假申請流程">
             </apex:sectionheader>
-            <apex:pageblock >
-                <apex:form id="form" styleclass="pure-form pure-form-stacked" >
-                    <fieldset>
+            <apex:pageblock>
+                <apex:form id="form" styleclass="pure-form pure-form-stacked">
+                    <fieldset id="baseInfo">
                         <legend>
                             基本資料
                         </legend>
                         <div class="pure-g">
                             <div class="pure-u-1-3">
                                 申請人姓名:
-                                <input class="pure-u-2-3" readonly="true" value="{!am.Applicant_Name__c}">
-                                </input>
+                                <apex:inputfield styleclass="pure-u-2-3" value="{!am.Applicant_Name__c}">
+                                </apex:inputfield>
                             </div>
                             <div class="pure-u-1-3">
                                 申請人工號:
-                                <input class="pure-u-2-3" readonly="true" value="{!am.Applicant_Code__c}">
-                                </input>
+                                <apex:inputfield styleclass="pure-u-2-3" value="{!am.Applicant_Code__c}">
+                                </apex:inputfield>
                             </div>
                             <div class="pure-u-1-3">
                                 流程名稱:
-                                <input class="pure-u-2-3" readonly="true" value="{!am.Approval_Name__c}">
-                                </input>
+                                <apex:inputfield styleclass="pure-u-2-3" value="{!am.Approval_Name__c}">
+                                </apex:inputfield>
                             </div>
                             <div class="pure-u-1-3">
                                 單號:
-                                <input class="pure-u-2-3" readonly="true" value="{!am.Name}">
-                                </input>
+                                <apex:inputfield styleclass="pure-u-2-3" value="{!am.Name}">
+                                </apex:inputfield>
                             </div>
                             <div class="pure-u-1-3">
                                 公司代碼:
-                                <input class="pure-u-2-3" readonly="true" value="{!am.Applicant_Corp_Code__c}">
-                                </input>
+                                <apex:inputfield styleclass="pure-u-2-3" value="{!am.Applicant_Corp_Code__c}">
+                                </apex:inputfield>
                             </div>
                             <div class="pure-u-1-3">
                                 申請人部門:
-                                <input class="pure-u-2-3" readonly="true" value="{!am.Dept_Name__c}">
-                                </input>
+                                <apex:inputfield styleclass="pure-u-2-3" value="{!am.Dept_Name__c}">
+                                </apex:inputfield>
                             </div>
                             <div class="pure-u-1-3">
                                 申請日期:
-                                <input class="pure-u-2-3" readonly="true" value="{!am.Bill_Date__c}">
-                                </input>
+                                <apex:inputfield styleclass="pure-u-2-3" value="{!am.Bill_Date__c}">
+                                </apex:inputfield>
                             </div>
                             <div class="pure-u-1-3">
                                 審批狀態:
@@ -200,21 +223,21 @@
                                 <label for="Employee_Code">
                                     請假人工號
                                 </label>
-                                <apex:inputfield id="Employee_Code" styleclass="pure-u-2-3" value="{!am.Employee_Code__c}">
+                                <apex:inputfield id="Employee_Code" styleclass="pure-u-2-3 readOnly" value="{!am.Employee_Code__c}">
                                 </apex:inputfield>
                             </div>
                             <div class="pure-u-1-3">
                                 <label for="Annual_leave">
                                     特休可用時數
                                 </label>
-                                <apex:inputfield id="Annual_leave" styleclass="pure-u-2-3" value="{!am.Annual_leave__c}">
+                                <apex:inputfield id="Annual_leave" styleclass="pure-u-2-3 readOnly" value="{!am.Annual_leave__c}">
                                 </apex:inputfield>
                             </div>
                             <div class="pure-u-1-3">
                                 <label for="Adjustable_vacation">
                                     調休可用時數
                                 </label>
-                                <apex:inputfield id="Adjustable_vacation" styleclass="pure-u-2-3" value="{!am.Adjustable_vacation__c }">
+                                <apex:inputfield id="Adjustable_vacation" styleclass="pure-u-2-3 readOnly" value="{!am.Adjustable_vacation__c }">
                                 </apex:inputfield>
                             </div>
                             <div class="pure-u-1-3">
@@ -228,22 +251,22 @@
                                 <label for="Applicant_position">
                                     請假人職稱
                                 </label>
-                                <input class="pure-u-2-3" id="Applicant_position" type="text" value="{!am.Applicant_position__c}">
+                                <input class="pure-u-2-3 readOnly" id="Applicant_position" type="text" value="{!am.Applicant_position__c}">
                                 </input>
                             </div>
                             <div class="pure-u-1-3">
                                 <label for="Job_Title_Level">
                                     請假人職等
                                 </label>
-                                <input class="pure-u-2-3" id="Job_Title_Level" value="{!am.Job_Title_Level__c}">
+                                <input class="pure-u-2-3 readOnly" id="Job_Title_Level" value="{!am.Job_Title_Level__c}">
                                 </input>
                             </div>
                             <div class="pure-u-1-3">
                                 <label for="Take_Office_Date">
                                     到職日期
                                 </label>
-                                <input class="pure-u-2-3" id="Take_Office_Date" value="{!am.Take_Office_Date__c}">
-                                </input>
+                                <apex:inputfield id="Take_Office_Date" styleclass="pure-u-2-3 readOnly" value="{!am.Take_Office_Date__c}">
+                                </apex:inputfield>
                             </div>
                         </div>
                     </fieldset>
@@ -252,14 +275,18 @@
                     <div class="pure-g">
                         <div class="pure-u-1-3">
                         </div>
-                        <div class="pure-u-1-12" >
-                            <apex:commandbutton action="{!save}" id="btnSave" value="儲存">
+                        <div class="pure-u-1-12">
+                            <apex:commandbutton action="{!saveAction}" id="btnSave" value="儲存">
                             </apex:commandbutton>
                         </div>
                         <div class="pure-u-1-12">
                             <apex:commandbutton action="{!cancel}" id="btnCancel" value="取消">
                             </apex:commandbutton>
-                        </div> 
+                        </div>
+                        <div class="pure-u-1-12">
+                            <input type="button" id="btnEdit" value="編輯">
+                            </input>
+                        </div>
                     </div>
                     <br/>
                     <br/>
