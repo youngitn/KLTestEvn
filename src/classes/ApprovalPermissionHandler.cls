@@ -34,8 +34,6 @@ public without sharing class ApprovalPermissionHandler implements Triggers.Handl
             String sobjectName = '';
 
             String Approval_Status = '';
-            Boolean reject_action;
-
             if(mapPF.containsKey(pId)){
                 //如果是系统管理员，可以修改记录
                 System.debug('*** 是系统管理员，可以修改记录');
@@ -53,9 +51,7 @@ public without sharing class ApprovalPermissionHandler implements Triggers.Handl
                 creatorId = String.valueOf(obj.get('CreatedById'));
                 recTypeID = String.valueOf(obj.get('RecordTypeId'));
                 Approval_Status = String.valueOf(obj.get('Approval_Status__c'));
-                reject_action = Boolean.valueOf(obj.get('Reject_updater__c'));
                 sobjectName = String.valueOf(obj.getSObjectType());
-                System.debug(LoggingLevel.INFO, '*** :reject_action ' + reject_action);
 
                 //记录当前审批人
                 Set<Id> aId = Utils.getApprovalUser(targetId);
@@ -63,121 +59,95 @@ public without sharing class ApprovalPermissionHandler implements Triggers.Handl
                 if(aId == null){
                     continue;
                 }
-                /*
-                List<ProcessInstance> xxx = [SELECT TargetObjectId,CreatedDate,
-                                                (SELECT Id, StepStatus,CreatedDate,Comments FROM Steps ORDER BY CreatedDate DESC)
-                                                FROM ProcessInstance WHERE TargetObjectId = :targetId
-                                                ORDER BY CreatedDate DESC];
-                System.debug(LoggingLevel.INFO, '*** xxx: ' + xxx);
-                System.debug(LoggingLevel.INFO, '*** xxx[0].Steps: ' + xxx[0].Steps);
-                */
+
                 //拒绝时候判定审批意见必输
-                //if (Approval_Status == 'R' || reject_action == true) {
                 if (Approval_Status == 'R') {
                     System.debug(LoggingLevel.INFO, '*** check in ');
-                    List<ProcessInstance> pi = [SELECT TargetObjectId,CreatedDate,
-                                                (SELECT Id, StepStatus,CreatedDate,Comments FROM Steps ORDER BY CreatedDate DESC LIMIT 1)
+                    List<ProcessInstance> pi = [SELECT TargetObjectId,
+                                                (SELECT Id, StepStatus, Comments FROM Steps ORDER BY CreatedDate DESC LIMIT 1 )
                                                 FROM ProcessInstance WHERE TargetObjectId = :targetId
                                                 ORDER BY CreatedDate DESC LIMIT 1];
-                    System.debug(LoggingLevel.INFO, '*** pi: ' + pi);
-                    System.debug(LoggingLevel.INFO, '*** pi[0].Steps: ' + pi[0].Steps);
                     if (pi[0].Steps[0].Comments == null || pi[0].Steps[0].Comments.trim().length() == 0) {
                         System.debug(LoggingLevel.INFO, '*** 请输入审批拒绝的原因: ');
                         //obj.addError('请输入审批拒绝的原因!');
                         obj.addError( '<script>document.getElementById("bodyCell").innerHTML="<cnter><H1 >请输入审批拒绝的原因!</H1></center>";</script>', false);
                         break;  
                     }
-                    obj.put('Reject_updater__c',false);
-                    reject_action = Boolean.valueOf(obj.get('Reject_updater__c'));
-                    System.debug(LoggingLevel.INFO, '*** : reject_action' + reject_action);
-                }
-
-                 //当前审批人的代理人也得有权限
-                for (User u :[SELECT DelegatedApproverId FROM User WHERE Id IN:aId AND DelegatedApproverId != null AND IsActive =true]) {
-                    if (!aId.contains(u.DelegatedApproverId)) {
-                        aId.add(u.DelegatedApproverId);
-                    }
-                }
-                System.debug(LoggingLevel.INFO, '*** Limits.getAggregateQueries(): ' + Limits.getAggregateQueries());
-                //如果是记录所有人或记录创建人或者当前审批人，可以修改记录
-                System.debug(LoggingLevel.INFO, '*** 创建人ID: ' + creatorId+' 记录所有人:'+ownerId+'当前审批人：'+aId+' 当前用户:'+uId);
-                if(ownerId == uId  || creatorId == uId ||  aId.contains(uId)){
-                    System.debug('*** 是记录所有人或记录创建人或者当前审批人，可以修改记录');
-                    //得到当前审批节点可以更新字段集合
-                    Map<String,Set<String>> updateFields = Utils.getNodeEditFields(targetId,recTypeID);
-                    //判断表头可编辑字段
-                    Set<String> ableUpdateFields = updateFields.get('main');
-                    //判断表头必输字段
-                    Set<String> mainRequireFields = updateFields.get('mainrequire');
-
-                    for(Schema.SObjectField fld : fields){
-                        String field = String.valueOf(fld);
-                        Map<String, Schema.SObjectField> myFields = new Map<String, Schema.SObjectField>();
-                        //审批用户字段不包含在检查中
-                        if(field.toLowerCase().startsWith('approval_user') && field.endsWith('__c')){
-                            continue;
-                        }
-                        System.debug(LoggingLevel.INFO, '*** field: ' + field);
-                        newValue = obj.get(field);
-
-                        System.debug('*** 判断编辑');
-                        //是自定义字段且不包含在节点可编辑字段设置中
-                        if(field.endsWith('__c') && !ableUpdateFields.contains(field)){
-                            //获取字段新旧值
-                            
-                            oldValue = Trigger.oldMap.get(targetId).get(field);
-                            //比较值是否发生变动
-                            if(newValue != oldValue){
-                                System.debug('*** 更新字段不在可更新设置中!字段:' +field+' 新值：'+newValue+'旧值:'+oldValue);
-                                myFields = obj.getSObjectType().getDescribe().fields.getMap();
-                                obj.addError(Label.No_Permission+'字段:' +myFields.get(field).getDescribe().getLabel()+' 新值：'+newValue+'  旧值:'+oldValue);
-                                break;
-                            }
-                        }
-
-                        System.debug('*** 判断必输');
-                        //是自定义字段且包含在节点必输字段设置中
-                        if(field.endsWith('__c') && mainRequireFields.contains(field)){
-
-                            //比较值是否发生变动
-                            if(newValue == null){
-                                System.debug('*** 必输字段:' +field );
-                                //20171201取得欄位字段標籤
-                                myFields = obj.getSObjectType().getDescribe().fields.getMap();
-                                obj.addError('字段:' +myFields.get(field).getDescribe().getLabel() +' 必输');
-                                break;
-                            }
-                        }
-                    }
-
-
                 }else{
-                    System.debug('*** 无编辑对象权限!');
-                    obj.addError(Label.No_Permission);
-                    break;
+
+                     //当前审批人的代理人也得有权限
+                    for (User u :[SELECT DelegatedApproverId FROM User WHERE Id IN:aId AND DelegatedApproverId != null AND IsActive =true]) {
+                        if (!aId.contains(u.DelegatedApproverId)) {
+                            aId.add(u.DelegatedApproverId);
+                        }
+                    }
+                    System.debug(LoggingLevel.INFO, '*** Limits.getAggregateQueries(): ' + Limits.getAggregateQueries());
+                    //如果是记录所有人或记录创建人或者当前审批人，可以修改记录
+                    System.debug(LoggingLevel.INFO, '*** 创建人ID: ' + creatorId+' 记录所有人:'+ownerId+'当前审批人：'+aId+' 当前用户:'+uId);
+                    if(ownerId == uId  || creatorId == uId ||  aId.contains(uId)){
+                        System.debug('*** 是记录所有人或记录创建人或者当前审批人，可以修改记录');
+                        //得到当前审批节点可以更新字段集合
+                        Map<String,Set<String>> updateFields = Utils.getNodeEditFields(targetId,recTypeID);
+                        //判断表头可编辑字段
+                        Set<String> ableUpdateFields = updateFields.get('main');
+                        //判断表头必输字段
+                        Set<String> mainRequireFields = updateFields.get('mainrequire');
+
+                        for(Schema.SObjectField fld : fields){
+                            String field = String.valueOf(fld);
+                            Map<String, Schema.SObjectField> myFields = new Map<String, Schema.SObjectField>();
+                            //审批用户字段不包含在检查中
+                            if(field.toLowerCase().startsWith('approval_user') && field.endsWith('__c')){
+                                continue;
+                            }
+                            System.debug(LoggingLevel.INFO, '*** field: ' + field);
+                            newValue = obj.get(field);
+
+                            System.debug('*** 判断编辑');
+                            //是自定义字段且不包含在节点可编辑字段设置中
+                            if(field.endsWith('__c') && !ableUpdateFields.contains(field)){
+                                //获取字段新旧值
+                                
+                                oldValue = Trigger.oldMap.get(targetId).get(field);
+                                //比较值是否发生变动
+                                if(newValue != oldValue){
+                                    System.debug('*** 更新字段不在可更新设置中!字段:' +field+' 新值：'+newValue+'旧值:'+oldValue);
+                                    myFields = obj.getSObjectType().getDescribe().fields.getMap();
+                                    obj.addError(Label.No_Permission+'字段:' +myFields.get(field).getDescribe().getLabel()+' 新值：'+newValue+'  旧值:'+oldValue);
+                                    break;
+                                }
+                            }
+
+                            System.debug('*** 判断必输');
+                            //是自定义字段且包含在节点必输字段设置中
+                            if(field.endsWith('__c') && mainRequireFields.contains(field)){
+
+                                //比较值是否发生变动
+                                if(newValue == null){
+                                    System.debug('*** 必输字段:' +field );
+                                    //20171201取得欄位字段標籤
+                                    myFields = obj.getSObjectType().getDescribe().fields.getMap();
+                                    obj.addError('字段:' +myFields.get(field).getDescribe().getLabel() +' 必输');
+                                    break;
+                                }
+                            }
+                        }
+
+
+                    }else{
+                        System.debug('*** 无编辑对象权限!');
+                        obj.addError(Label.No_Permission);
+                        break;
+                    }
                 }
             }
         }
     }
-/*
-    public void change_reject_updater(){
+
+    public void checkcomments(){
         if (Trigger.isBefore && Trigger.isUpdate) {
-            for (SObject obj : Trigger.new) {
-                //不同对象对应的处理
-                if (HarryUtils.compareObjtype(obj, 'Custom_Approval_Managed__c')) {
-                    Custom_Approval_Managed__c cam = (Custom_Approval_Managed__c)obj;
-                } else if (HarryUtils.compareObjtype(obj, 'Approval_Managed__c')) {
-                    Approval_Managed__c cam = (Approval_Managed__c)obj;
-                    cam.reject_updater__c = false;
-                } else if (HarryUtils.compareObjtype(obj, 'Approval_Managed1__c')) {
-                    Approval_Managed1__c cam = (Approval_Managed1__c)obj;
-                } else if (HarryUtils.compareObjtype(obj, 'Approval_Managed2__c')) {
-                    Approval_Managed2__c cam = (Approval_Managed2__c)obj;
-                    
-                }
-            }
+
 
         }
     }
-    */
 }
