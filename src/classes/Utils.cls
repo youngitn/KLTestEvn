@@ -888,6 +888,7 @@ public without sharing class Utils
         }
         return mapSpecify;
     }
+
     /*
         目 的：得到审批流程配置步骤
         参数1：org - 具体流程配置
@@ -911,6 +912,7 @@ public without sharing class Utils
     public static List<Id> approvalSearchApprrovalerByRule(Organizational__c org, Id contactID)
     {
         List<Id>  setSFID = new List<Id>();
+        Contact con = null;
         if(org == null)
         {
             return setSFID;
@@ -934,7 +936,7 @@ public without sharing class Utils
         }
         else if(org.Approval_Rule__c == '指定人上级主管')
         {
-            Contact con = !String.isBlank(contactID) ? [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c FROM Contact WHERE Id = :contactID] : null;
+            con = !String.isBlank(contactID) ? [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c,Corp_Code__c FROM Contact WHERE Id = :contactID] : null;
             //特例，当申请人为子公司层的主管时，上级都为新莱子公司层的主管
             if (con != null && !String.isBlank(Utils.checkSubCorpManager(con.Number__c)))
             {
@@ -944,10 +946,11 @@ public without sharing class Utils
             {
                 setSFID.add(Utils.approvalSearchManagerByApplication(contactID, false));
             }
+            
         }
         else if(org.Approval_Rule__c == '指定人部门主管')
         {
-            Contact con = !String.isBlank(contactID) ? [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c FROM Contact WHERE Id = :contactID] : null;
+            con = !String.isBlank(contactID) ? [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c,Corp_Code__c FROM Contact WHERE Id = :contactID] : null;
             //特例，当申请人为子公司层的主管时，上级都为新莱子公司层的主管
             if (con != null && !String.isBlank(Utils.checkSubCorpManager(con.Number__c)))
             {
@@ -979,7 +982,7 @@ public without sharing class Utils
         else if(org.Approval_Rule__c == '指定人一阶主管')
         {
             System.debug('***:String.isBlank(contactID): ' + String.isBlank(contactID) + '');
-            Contact con = !String.isBlank(contactID) ? [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c FROM Contact WHERE Id = :contactID] : null;
+            con = !String.isBlank(contactID) ? [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c,Corp_Code__c FROM Contact WHERE Id = :contactID] : null;
             //特例，当申请人为子公司层的主管时，上级都为新莱子公司层的主管
             if (con != null && !String.isBlank(Utils.checkSubCorpManager(con.Number__c)))
             {
@@ -996,6 +999,13 @@ public without sharing class Utils
                 setSFID.add(Utils.approvalSearchSpecificManagerByApplication(contactID, 3, false));
             }
 
+        }
+        /**
+         * 20180112 當申請人=主管職&&公司別=台灣新萊&&審批人找不到
+         * 審批人一律設為總經理.
+         */
+        if (con != null && (setSFID.size() == 0 || setSFID.get(0) == null) && con.Corp_Code__c == '3000' && con.SF_User__r.Is_First_Manager__c){
+             setSFID.add(Id.valueOf('00528000006nvgB'));
         }
         return setSFID;
     }
