@@ -3,16 +3,9 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
 
     public  Approval_Managed__c am {get; set;}
 
-    public  Id amId {get; set;}
     public  List<Approval_Managed_Item__c> list1 {get; set;}
 
-    public  Map<String, Approval_Managed_Item__c> mapVoucher {get; set;}
-
     public  Integer list1Row {get; set;}
-    public  Boolean isDeletedStatus {GET; SET;}
-    //明细记录类型ID
-    private Id recTypeDetailId = null;
-   
 
     public AMLeaveApplicationExtension(ApexPages.StandardController con)
     {
@@ -20,23 +13,8 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
 
        
         list1Row                    = 0;
-        amId                        = con.getId();    
-        am                          = (Approval_Managed__c)this.sobj;
+        am                          = (Approval_Managed__c)SObjectUtils.init(this.sobj);
         list1                       = (List<Approval_Managed_Item__c>)this.detailSObjList;
-        
-        //一進表單秀出起單人資料,表單名稱,起單日期.. 
-        //這部分即使留空存檔時也會填入
-        am.Applicant_Name__c        = UserInfo.getName();
-        User u                      = Peoples.getInstance().KlAllUserMapGetById.get(UserInfo.getUserId());
-        if (u.Number__c != null && !String.isBlank(u.Number__c))
-        {
-            Contact c               = Peoples.getInstance().KlAllContactMapGetByNum.get(u.Number__c);
-            am.company_number__c    = c.Corp_Code__c;
-            am.Dept_Name__c         = c.Dept_Number__r.Name;
-
-        }
-        am.Approval_Name__c         = '請假申請流程';
-        am.Bill_Date__c             =   Date.today();
         
     }
 
@@ -139,17 +117,14 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
 
     }
 
-
-    public PageReference cancel()
-    {
-        return new PageReference('/apex/ApprovalHome?sfdc.tabName=01rO0000000Dz6T');
-    }
-
     public PageReference newlist1()
     {
+
         Approval_Managed_Item__c ami    = new Approval_Managed_Item__c();
         ami.RecordTypeId                = this.detailRecTypeId;
+        System.debug('add one item');
         list1.add(ami);
+        System.debug('add one item1');
         return null;
     }
 
@@ -162,13 +137,12 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
         list1.remove(list1Row);
         return null;
     }
-
-
-    public Boolean isInsert()
-    {
-        return amId == null;
-    }
-
+    
+    /**
+     * AJAX 查詢個人資料
+     * @param  contactId 聯絡人ID
+     * @return String    json格式的字串
+     */
     @RemoteAction
     global static String queryEmpId(String contactId)
     {
@@ -182,11 +156,12 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
         return (String)JSON.serialize(data);
     }
 
-
+    //RemoteActionsOfLeave.queryVacation 靜態方法
+    //用來查詢SAP的特休&補休資料<-此方法只回傳這兩個假別資訊
     @RemoteAction
     global static String queryVacation(String empId)
     {
-        return RemoteActionsOfLeave.queryVacation(empId);
+       return RemoteActionsOfLeave.queryVacation(empId);
     }
 
 }
