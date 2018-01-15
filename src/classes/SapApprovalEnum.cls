@@ -163,7 +163,7 @@ public without sharing class SapApprovalEnum {
 	public static final String EDUCATIONTRAININGREQUEST = 'EducationTraining';
 	//客户信用贷款主数据申请
 	public static final String CUSTOMERCREDITLOAN = 'CustomerCreditLoan';
-	//客户信用贷款主数据申请
+	//請假申請流程
 	public static final String LEAVEAPPLICATION = 'LeaveApplication';
 	//QCC客诉申请流程
 	public static final String QCC = 'Qcc';
