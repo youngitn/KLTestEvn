@@ -5,13 +5,10 @@
 public virtual class VFShowInApprovalExtension extends BaseExtension
 {
 
-    //
-    public String developerName {set; get;}
-    public String detaildeveloperName {set; get;}
     public boolean isOld {set; get;}
     public Id detailRecTypeId {set; get;}
     public List<SObject> detailSObjList {set; get;}
-     public String nowStatus {GET; SET;}
+    public String nowStatus {GET; SET;}
     /////////////////////////////////////////////////////////////////////////////////////////////////
     // BaseExtension
     // 屬性 -->
@@ -26,38 +23,44 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
     // public Id getReCTypeId(String sobjName,String approvalName)
     // public virtual PageReference cancelAction()
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    
+
     public VFShowInApprovalExtension(String sobjName, String ApprovalName, ApexPages.StandardController stdController,
-                                     String DetailSobjName , String DetailApprovalName,String MasterKey)
+                                     String DetailSobjName , String DetailApprovalName, String MasterKey)
     {
         super(sobjName, ApprovalName, stdController);
         isOld = false;
-        String listType = 'List<' + DetailSobjName + '>';
-        detailSObjList = (List<SObject>)Type.forName(listType).newInstance();
         nowStatus = 'INSERT';
+        //有子項 則進行子項紀錄類型查詢
         if (DetailApprovalName != null)
         {
-            detailRecTypeId = this.getReCTypeId(DetailSobjName,DetailApprovalName);
+            detailRecTypeId = this.getReCTypeId(DetailSobjName, DetailApprovalName);
+            //建立子項實體
+            String listType = 'List<' + DetailSobjName + '>';
+            detailSObjList = (List<SObject>)Type.forName(listType).newInstance();
         }
+
+        //不是進入流程創建頁,則執行已存在紀錄查詢
+        //如有子項也一併處理
         if (stdController.getId() != null)
         {
             nowStatus = 'PROCESS';
             isOld = true;
-            developerName = [SELECT name, DeveloperName  from RecordType where Id = :this.recordTypeId Limit 1].get(0).DeveloperName;
-            String sql = Utils.getApprovalSQL(developerName, true);
-
-            sql = sql + ' WHERE Id = \'' + stdController.getId() + '\'';
+            String sql = '';
+        
+            sql += 'Select ' + SObjectUtils.getAllFields(sobjName).get(sobjName) + ' from ' + sobjName;
+            sql += ' WHERE Id = \'' + stdController.getId() + '\'';
             this.sobj = Database.query(sql);
-            System.debug(sql);
-            //cam = (Custom_Approval_Managed__c)con.getRecord();
+            System.debug('master record SQL = ' + sql);
+
+            //如果有子項則進入處理
             if (DetailApprovalName != null)
             {
                 
-                String dSql = Utils.getApprovalSQL(developerName, false);
-                
-                detaildeveloperName = [SELECT name, DeveloperName  from RecordType where Id = :detailRecTypeId Limit 1].get(0).DeveloperName;
-                dSql = dSql + ' WHERE '+MasterKey +'= \'' + stdController.getId() + '\'' + ' AND RecordType.DeveloperName = '+'\''+detaildeveloperName+'\'';
-                System.debug('dSql@@='+dSql);
+                String dSql = '';
+         
+                dSql += 'Select ' + SObjectUtils.getAllFields(DetailSobjName).get(DetailSobjName) + ' from ' + DetailSobjName;
+                dSql += ' WHERE ' + MasterKey + '= \'' + stdController.getId() + '\'';
+                System.debug('detail Sql =' + dSql);
                 this.detailSObjList = Database.query(dSql);
 
             }
@@ -65,6 +68,9 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
         }
 
     }
+
+    //如果是開啟既有紀錄,則按下儲存時導向目前頁
+    //否則會出現iframe當中又再出現iframe
     public PageReference goPage(Id recordId)
     {
         if (this.isOld)
