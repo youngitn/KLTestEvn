@@ -1,7 +1,6 @@
 <apex:component >
-   <apex:attribute name="inputObject" type="sObject" description="Object Name"/>
-   <apex:attribute name="inputFieldName" type="String" description="Field Name"/>
-                     
+   <apex:attribute name="inputObject" type="sObject" description="Object Name" />
+
     <fieldset id="baseInfo">
                         <legend>
                             基本資料
