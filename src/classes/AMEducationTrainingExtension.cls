@@ -18,6 +18,7 @@ public class AMEducationTrainingExtension
 
         am.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.EDUCATIONTRAININGREQUEST, 'Approval_Managed1__c');
 
+        System.debug(LoggingLevel.INFO, '*** am.RecordTypeId: ' + am.RecordTypeId);
         am.Approval_Name__c = SapApprovalEnum.EDUCATIONTRAININGREQUEST;
 
         if (con.getId() != null)
@@ -35,7 +36,7 @@ public class AMEducationTrainingExtension
 
     public PageReference save()
     {
-
+        System.debug(LoggingLevel.INFO, '*** am.RecordTypeId: ' + am.RecordTypeId);
         if (am.StartDate__c == null )
         {
             am.StartDate__c = Date.today();
@@ -86,9 +87,9 @@ public class AMEducationTrainingExtension
         }
         try
         {
-            System.debug('amId---->' + am.id);
+            System.debug(LoggingLevel.INFO, '*** check in: ');
             Upsert am;
-
+            System.debug('amId---->' + am.id);
 
         }
         catch (DmlException e)
@@ -185,6 +186,7 @@ public class AMEducationTrainingExtension
             }
         }
         System.debug('In save extention ');
+        System.debug(LoggingLevel.INFO, '*** am.Id: ' + am.Id);
         return new PageReference('/' + am.Id);
     }
 
