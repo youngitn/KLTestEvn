@@ -1,40 +1,40 @@
 <apex:page controller="ApprovalsPendingController" sidebar="false">
 <script>
-	function navigateUrl(){
-		window.parent.location = '/04i';
-	}
-	function oppenUlr(){
+    function navigateUrl(){
+        window.parent.location = '/04i';
+    }
+    function oppenUlr(){
 
-	window.open("https://console.huilianyi.com/#/login/");
-	}
-	function myrefresh(){
-	window.location.reload();
-	}
-	setTimeout('myrefresh()',10000); //指定60秒刷新一次
+    window.open("https://console.huilianyi.com/#/login/");
+    }
+    function myrefresh(){
+    window.location.reload();
+    }
+    setTimeout('myrefresh()',10000); //指定60秒刷新一次
 </script>
-	<apex:form >
-		<apex:pageBlock title="{!$Label.approval_Project}">
-		<div style="text-align:center;">
-			 <input value="{!$Label.approval_ManageAll}" class="btn" name="manageAll" onclick="navigateUrl()" title="{!$Label.approval_ManageAll}" type="button"/> 
-			<input value="{!$Label.URL_01}" class="btn" name="URL_01" onclick="oppenUlr()" title="{!$Label.URL_01}" type="button"/>
-		</div>
-			<apex:pageBlockTable value="{!lstPending}" var="item">
-				<apex:column headerValue="{!$Label.Operation}">
-				 <apex:outputLink styleClass="actionLink" target="_blank" value="/{!(item.workItemId)}/e?et=REASSIGN&retURL=%2F{!(item.recordId)}" style="color: #015ba7;text-decoration:none;font-weight:normal;">{!$Label.approval_ressign}</apex:outputLink> |&nbsp;
-						<apex:outputLink styleClass="actionLink" target="_blank" value="/p/process/ProcessInstanceWorkitemWizardStageManager?id={!(item.workItemId)}" style="color: #015ba7;text-decoration:none;font-weight:normal;">{!$Label.approval_Action}</apex:outputLink>
-				</apex:column>
-				<apex:column headerValue="{!$Label.approval_RecordName}">
-						<apex:outputLink styleClass="btnLink" target="_blank" value="/{!(item.recordId)}">{!item.recordName}</apex:outputLink>
-				</apex:column>
-				<apex:column value="{!item.approvalRecordName}" headerValue="{!$Label.approval_Name}" style="width: 200px"/>
-				<apex:column value="{!item.approvalinfo}" headerValue="{!$Label.approval_info}" style="width: 150px" />
-				<!--<apex:column value="{!item.sObjectLabel}" headerValue="{!$Label.apporval_Object}" style="width: 200px"/>-->
-				<apex:column value="{!item.submiterName}" headerValue="{!$Label.approval_submitter}"/>
-				<apex:column value="{!item.applicantName}" headerValue="{!$Label.approval_Applicant}"/>
- 				<apex:column value="{!item.approver}" headerValue="{!$Label.approval_approver}"/>
- 				<apex:column value="{!item.submitDate}" headerValue="{!$Label.approval_SubmitDate}"/>
+    <apex:form >
+        <apex:pageBlock title="{!$Label.approval_Project}">
+        <div style="text-align:center;">
+             <input value="{!$Label.approval_ManageAll}" class="btn" name="manageAll" onclick="navigateUrl()" title="{!$Label.approval_ManageAll}" type="button"/> 
+            <input value="{!$Label.URL_01}" class="btn" name="URL_01" onclick="oppenUlr()" title="{!$Label.URL_01}" type="button"/>
+        </div>
+            <apex:pageBlockTable value="{!lstPending}" var="item">
+                <apex:column headerValue="{!$Label.Operation}">
+                 <apex:outputLink styleClass="actionLink" target="_blank" value="/{!(item.workItemId)}/e?et=REASSIGN&retURL=%2F{!(item.recordId)}" style="color: #015ba7;text-decoration:none;font-weight:normal;">{!$Label.approval_ressign}</apex:outputLink> |&nbsp;
+                        <apex:outputLink styleClass="actionLink" target="_blank" value="/p/process/ProcessInstanceWorkitemWizardStageManager?id={!(item.workItemId)}" style="color: #015ba7;text-decoration:none;font-weight:normal;">{!$Label.approval_Action}</apex:outputLink>
+                </apex:column>
+                <apex:column headerValue="{!$Label.approval_RecordName}">
+                        <apex:outputLink styleClass="btnLink" target="_blank" value="/{!(item.recordId)}">{!item.recordName}</apex:outputLink>
+                </apex:column>
+                <apex:column value="{!item.approvalRecordName}" headerValue="{!$Label.approval_Name}" style="width: 200px"/>
+                <apex:column value="{!item.approvalinfo}" headerValue="{!$Label.approval_info}" style="width: 150px" />
+                <!--<apex:column value="{!item.sObjectLabel}" headerValue="{!$Label.apporval_Object}" style="width: 200px"/>-->
+                <apex:column value="{!item.submiterName}" headerValue="{!$Label.approval_submitter}"/>
+                <apex:column value="{!item.applicantName}" headerValue="{!$Label.approval_Applicant}"/>
+                <apex:column value="{!item.approver}" headerValue="{!$Label.approval_approver}"/>
+                <apex:column value="{!item.submitDate}" headerValue="{!$Label.approval_SubmitDate}"/>
 
-			</apex:pageBlockTable>
-		</apex:pageBlock>
-	</apex:form>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
 </apex:page>
