@@ -35,7 +35,7 @@ public with sharing class SObjectUtils
             sobj.put('Dept_Name__c', c.Dept_Number__r.Name);
 
         }
-        sobj.put('Approval_Name__c', '請假申請流程123');
+        //sobj.put('Approval_Name__c', '請假申請流程');
         sobj.put('Bill_Date__c', Date.today());
 
         //Schema.SObjectType = controllerObject.getSObjectType();
