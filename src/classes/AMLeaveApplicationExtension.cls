@@ -15,6 +15,9 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
         list1Row                    = 0;
         am                          = (Approval_Managed__c)SObjectUtils.init(this.sobj);
         list1                       = (List<Approval_Managed_Item__c>)this.detailSObjList;
+        if (con.getId() == null){
+            newlist1();
+        }
         
     }
 
@@ -122,9 +125,9 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
 
         Approval_Managed_Item__c ami    = new Approval_Managed_Item__c();
         ami.RecordTypeId                = this.detailRecTypeId;
-        System.debug('add one item');
+        
         list1.add(ami);
-        System.debug('add one item1');
+        
         return null;
     }
 
