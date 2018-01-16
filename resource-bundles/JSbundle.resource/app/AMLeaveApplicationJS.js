@@ -70,7 +70,7 @@
  }
  //將所有按鈕class風格統一 	
  function addButtonClass() {
-     j$("input[type=submit],input[type=button]").removeAttr('class').addClass("pure-button pure-button-primary pure-u-2-3");
+     j$("input[type=submit]").removeAttr('class').addClass("pure-button pure-button-primary");
  }
  //從SAP取請假資料
  function queryVacation(cId) {
