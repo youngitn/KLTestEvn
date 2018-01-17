@@ -52,6 +52,11 @@ trigger CustomApprovalManageTrigger on Custom_Approval_Managed__c(before insert,
     //供應商索賠流程 當insert執行時觸發塞審批人進指定欄位的動作
     .bind (Triggers.Evt.beforeinsert,new AMVendorClaimHandler())
     .bind (Triggers.Evt.beforeUpdate,new AMVendorClaimHandler())
+    
+    //SCC供应商索赔申请流程流程
+    .bind (Triggers.Evt.beforeinsert,new AMSCCSupplierClaimHandler())
+    .bind (Triggers.Evt.beforeupdate,new AMSCCSupplierClaimHandler())
+
     //设置记录共享
     .bind (Triggers.Evt.afterinsert,new ApprovalManualShareHandler())
     .bind (Triggers.Evt.afterupdate,new ApprovalManualShareHandler())
