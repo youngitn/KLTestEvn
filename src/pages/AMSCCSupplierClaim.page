@@ -1,0 +1,105 @@
+<!--> 
+ 名    称：SCC供应商索赔申请流程流程
+ 目    的：SCC供应商索赔申请流程流程页面
+ 作    者：刘忠林
+ 创建日期：2018-1-17
+ 修 改 人：
+ 修改日期：
+ 修改原因：
+ 备    注：
+ 
+<-->
+
+<apex:page standardController="Custom_Approval_Managed__c" extensions="AMSCCSupplierClaimExtension" >
+<html>
+<body>
+<apex:sectionHeader title="SCC供应商索赔申请流程" subtitle="新建/SCC供应商索赔申请流程"></apex:sectionHeader>
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" collapsible="false">
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 审核状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+
+            </apex:pageBlockSection> 
+
+            <apex:pageBlockSection title="头信息" collapsible="false">
+            	<!-- ECR 类型型 -->
+            	<apex:inputField value="{!am.ECRType__c}"></apex:inputField>
+            	<!-- 变更描述 -->
+            	<apex:inputField value="{!am.ChangeDescription__c}"></apex:inputField>
+            	<!-- 工厂 -->
+            	<apex:inputField value="{!am.Factory__c}"></apex:inputField>
+            	<!-- 注释 -->
+                <apex:inputField value="{!am.Remark__c}"></apex:inputField>            	
+            	<!-- 物料号 -->
+            	<apex:inputField value="{!am.Material_Number__c}"></apex:inputField>
+            	<!-- 工单总数量 -->
+                <apex:inputField value="{!am.WorkOrderCount__c}"></apex:inputField>
+                 <!-- 异常发生站别 -->
+                <apex:inputField value="{!am.AnomalyStation__c}"></apex:inputField>
+                <!-- 工单号 -->
+                <apex:inputField value="{!am.WorkOrderNumber__c}"></apex:inputField> 
+            	<!-- 返工工单号 -->
+            	<apex:inputField value="{!am.ReworkOrderNumber__c}"></apex:inputField>
+            	<!-- 制程损失时数 -->
+            	<apex:inputField value="{!am.ProcessLossTime__c}"></apex:inputField>
+            	<!-- 材质检验损失时数-->
+            	<apex:inputField value="{!am.MaterialLossTime__c}"></apex:inputField>
+            	<!-- 外观检验损失时数 -->
+            	<apex:inputField value="{!am.AppearanceLossTime__c}"></apex:inputField>
+            	<!-- 产品损失数量 -->
+            	<apex:inputField value="{!am.ProductLoss__c}"></apex:inputField>
+            	<!-- 其他损失 -->
+            	<apex:inputField value="{!am.OtherlLoss__c}"></apex:inputField>
+            	<!-- 所属BU产值 -->
+            	<apex:inputField value="{!am.BUProductionValue__c}"></apex:inputField>
+            	<!-- 责任供应商名称和代码 -->
+            	<apex:inputField value="{!am.SupplierName_Code__c}"></apex:inputField>
+                <!-- 确认描述-->
+                <apex:inputField value="{!am.ConfirmDescription__c}"></apex:inputField> 
+            	<!-- 制程损失费用 -->
+            	<apex:inputField value="{!am.ProcessCost__c}"></apex:inputField>
+            	<!-- 产品损失费用 -->
+            	<apex:inputField value="{!am.ProductCost__c}"></apex:inputField>
+            	<!-- 工时损失费用 -->
+            	<apex:inputField value="{!am.TimeCost__c}"></apex:inputField>
+            	<!-- 其他损失费用 -->
+            	<apex:inputField value="{!am.OtherCost__c}"></apex:inputField>
+            	<!-- 合计费用 -->
+            	<apex:inputField value="{!am.TotalCost__c}" ></apex:inputField>
+            	<!-- 供应商名称 -->
+            	<apex:inputField value="{!am.Vendor__c}"></apex:inputField>
+            	<!-- 制程损失扣款单号 -->
+            	<apex:inputField value="{!am.ProcessDeductionNumber__c}"></apex:inputField>
+            	<!-- 制程损失扣款金额 -->
+            	<apex:inputField value="{!am.ProcessDeductionMoney__c}"></apex:inputField>
+            	<!-- 产品损失扣款单号 -->
+            	<apex:inputField value="{!am.ProductDeductionNumber__c}"></apex:inputField>
+            	<!-- 产品损失扣款金额 -->
+            	<apex:inputField value="{!am.ProductDeductionMoney__c}"></apex:inputField>
+
+            </apex:pageBlockSection>          
+        </apex:pageBlock>
+    </apex:form>>
+</body>
+</html>
+</apex:page>
