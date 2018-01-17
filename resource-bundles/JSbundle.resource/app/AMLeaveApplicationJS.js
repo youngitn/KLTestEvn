@@ -20,11 +20,14 @@
          if (openLookupPage != null) {
              openLookupPage.close();
          }
-         openLookupPage = window.open('/_ui/common/data/LookupPage?lkfm=j_id0:j_id3:form&lknm=j_id0:j_id3:form:Employee&lktp=' + getElementByIdCS('j_id0:j_id3:form:Employee_lktp').value + '&lksrch=' + escapeUTF(getElementByIdCS('j_id0:j_id3:form:Employee').value.substring(0, 80)), "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400");
+         openLookupPage = window.open('/_ui/common/data/LookupPage?lkfm=j_id0:j_id13:form&lknm=j_id0:j_id13:form:Employee&lktp=' + getElementByIdCS('j_id0:j_id13:form:Employee_lktp').value + '&lksrch=' + escapeUTF(getElementByIdCS('j_id0:j_id3:form:Employee').value.substring(0, 80)), "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400");
      });
      //當請假人input VALUE改變時 關閉人員選擇視窗	
      j$("input[id $= Employee]").on('change', function() {
-         openLookupPage.close();
+          if (openLookupPage != null) {
+             openLookupPage.close();
+         }
+
          setTimeout(getEmpInfo, 500);
      });
      ////////////////////////////////////////////////////////////////////////
