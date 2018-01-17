@@ -167,6 +167,8 @@ public without sharing class SapApprovalEnum {
 	public static final String LEAVEAPPLICATION = 'LeaveApplication';
 	//QCC客诉申请流程
 	public static final String QCC = 'Qcc';
+	//SCC供应商索赔申请流程
+	public static final String SCCSUPPLIERCLAIM = 'SCCSupplierClaim';
 	
 
 

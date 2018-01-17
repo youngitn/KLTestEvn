@@ -79,6 +79,7 @@ public with sharing class ApprovalHomeController
         canCreateApproval.add(SapApprovalEnum.VENDORCLAIM);//供應商索賠流程
         canCreateApproval.add(SapApprovalEnum.LEAVEAPPLICATION);//台灣 請假申請流程
         canCreateApproval.add(SapApprovalEnum.QCC);//QCC客诉申请流程
+        canCreateApproval.add(SapApprovalEnum.SCCSUPPLIERCLAIM);//SCC供应商索赔申请流程流程
         //Object = Custom_Approval_Managed__c, approval counts = 16
         approval_Custom = Utils.getCAMApprovalName();
         //Object = Approval_Managed__c, approval counts = 16
@@ -311,9 +312,13 @@ public with sharing class ApprovalHomeController
                 //销售定价业务流程
                 pageName = '/apex/AMSalesPricing';
             }
-            else if(selectedApprovalValue == SapApprovalEnum.SALESPRICE){
+            else if(selectedApprovalValue == SapApprovalEnum.CUSTOMERCREDITLOAN){
                 //客户信用贷款主数据申请
                 pageName = '/apex/AMCustomerCreditLoan';
+            }
+            else if(selectedApprovalValue == SapApprovalEnum.SCCSUPPLIERCLAIM){
+                //SCC供应商索赔申请流程流程
+                pageName = '/apex/AMSCCSupplierClaim';
             }
             else if(selectedApprovalValue == SapApprovalEnum.FREIGHT_VEHICLES)
             {

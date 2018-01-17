@@ -94,8 +94,13 @@ public without sharing class AMAssetPurchaseHandler implements Triggers.Handler 
           if (cam.Asset_Type__c  == '03' ) {
             //cam.Approval_User8__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8),null),0);
             cam.Approval_User8__c = utils.getUserByEmployeeCode('10210000');
+            cam.Approval_User18__c = utils.getUserByEmployeeCode('10210000');
+          }else if (cam.Asset_Type__c  == '04' ){
+            cam.Approval_User8__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8),null),0);
+            cam.Approval_User18__c  = utils.getUserByEmployeeCode('30210004');
           }else{
             cam.Approval_User8__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8),null),0);
+            cam.Approval_User18__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8),null),0);
           }
           //节点九
           //cam.Approval_User9__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(9),null),0); 
@@ -134,7 +139,7 @@ public without sharing class AMAssetPurchaseHandler implements Triggers.Handler 
             //审批用户同节点2
           //节点二十
           //节点二十一 两个审批用户
-          cam.Approval_User18__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(22),null),0);
+          
           //节点二十二
            //审批用户同节点16
           //节点二十三
@@ -173,7 +178,7 @@ public without sharing class AMAssetPurchaseHandler implements Triggers.Handler 
         //类型为04 资讯办公设备
         if (cam.Asset_Type__c  == '04' ) {
           lstID.add(utils.getUserByEmployeeCode('10210225'));
-          lstID.add(utils.getUserByEmployeeCode('30210004'));
+          //lstID.add(utils.getUserByEmployeeCode('30210004'));
         }
 
         //类型为05 总务办公设备

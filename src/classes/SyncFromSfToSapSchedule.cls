@@ -162,6 +162,10 @@ global class SyncFromSfToSapSchedule implements Schedulable {
                 //销售定价业务流程 
                 returnJson = Utils.postToSAP(SapInputArgCreate.createSapSalesPriceInputArgs(job.ApprovalID__c));
 
+            }else if(job.Approval_Name__c == SapApprovalEnum.CUSTOMERCREDITLOAN){
+                //客户信贷主数据申请 
+                returnJson = Utils.postToSAP(SapInputArgCreate.createSapCustomerCreditLoanInputArgs(job.ApprovalID__c));
+
             }else if(job.Approval_Name__c == SapApprovalEnum.PURCHASEORDER){
                 //标准采购订单
                 returnJson = Utils.postToSAP(SapInputArgCreate.createSapPurchaseOrderInputArgs(job.ApprovalID__c));
