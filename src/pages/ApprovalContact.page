@@ -261,11 +261,6 @@
 
 	       <div id="tabs-4">
 	       <table id="example" class="display" width="100%"></table>
-	      <apex:dataTable value="{!allApproval}" var="row">		
-
-					<apex:column styleClass="dataTableTd"  headerClass="dataTableTh" value="{!row.Klphone}">
-					</apex:column>
-						</apex:dataTable>
 						
 	      </div>
 	    </div>
