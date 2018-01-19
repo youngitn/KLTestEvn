@@ -15,10 +15,10 @@
              });
 
         if ('{!Status}' === 'INSERT') {
-         j$('input[id$=btnEdit],input[id$=btnCancelEdit]').hide();
+            j$('input[id$=btnEdit],input[id$=btnCancelEdit]').hide();
 
-     } else if ('{!Status}' === 'PROCESS') {
-         if (true /*如果有編輯權限,這部分要靠後端了*/ ) {
+        } else if ('{!Status}' === 'PROCESS') {                         
+            if (true /*如果有編輯權限,這部分要靠後端了*/ ) {
              j$('input[type = submit],input[id$=btnCancelEdit]').hide();
              j$('input[id$=btnEdit]').on('click', function(event) {
                  j$('input[id$=btnCancelEdit]').show();
@@ -30,7 +30,9 @@
 
      }
 
-     j$(".action-btn,input[type=submit]").removeAttr('class').addClass("pure-button pure-button-primary pure-u-1-1 pure-u-md-1-4");
+     j$(".action-btn,#btnCancelEdit,input[id$=btnSave],input[id$=btnCancel],#btnEdit")
+            .removeAttr('class')
+            .addClass("pure-button pure-button-primary pure-u-1-1 pure-u-md-1-4");
  });
     </script>
     <div class="pure-g">
