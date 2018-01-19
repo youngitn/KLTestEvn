@@ -2,7 +2,7 @@
  var openLookupPage = null;
  
  j$(function() {
-     
+      
      j$("select[id*=Approval_Status]").bind("change", function() {
          j$(this).val('D');
      });
@@ -16,12 +16,12 @@
      ////////////////註冊 請假人員選擇的彈跳視窗事件  ///////////////////////
      ///////////////點擊請假人input open選擇視窗/////////////////////////////
      ////////////////////////////////////////////////////////////////////////
-     j$("input[id $= Employee]").on('click', function() {
-         if (openLookupPage != null) {
-             openLookupPage.close();
-         }
-         openLookupPage = window.open('/_ui/common/data/LookupPage?lkfm=j_id0:j_id13:form&lknm=j_id0:j_id13:form:Employee&lktp=' + getElementByIdCS('j_id0:j_id13:form:Employee_lktp').value + '&lksrch=' + escapeUTF(getElementByIdCS('j_id0:j_id3:form:Employee').value.substring(0, 80)), "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400");
-     });
+     // j$("input[id $= Employee]").on('click', function() {
+     //     if (openLookupPage != null) {
+     //         openLookupPage.close();
+     //     }
+     //     openLookupPage = window.open('/_ui/common/data/LookupPage?lkfm=j_id0:j_id13:form&lknm=j_id0:j_id13:form:Employee&lktp=' + getElementByIdCS('j_id0:j_id13:form:Employee_lktp').value + '&lksrch=' + escapeUTF(getElementByIdCS('j_id0:j_id3:form:Employee').value.substring(0, 80)), "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400");
+     // });
      //當請假人input VALUE改變時 關閉人員選擇視窗	
      j$("input[id $= Employee]").on('change', function() {
           if (openLookupPage != null) {
@@ -73,7 +73,8 @@
  }
  //將所有按鈕class風格統一 	
  function addButtonClass() {
-     j$("input[type=submit]").removeAttr('class').addClass("pure-button pure-button-primary");
+     j$("input[type=submit]").removeAttr('class').addClass("pure-button pure-button-primary pure-u-1-1");
+     
  }
  //從SAP取請假資料
  function queryVacation(cId) {
