@@ -34,12 +34,15 @@ public without sharing class Utils
         changed by zhonghui  17-12-19
         两种方式调用发送数据接口，可系统设置
         true:   接口及时发送数据，不用计划任务发送.试用，看能否防止单据重复发送情况
-        false: 接口通过计划任务发送数据到SAP 
+        false: 接口通过计划任务发送数据到SAP
         */
         SAP_Interface_Setting__c sis = SAP_Interface_Setting__c.getValues('SapSetting');
-        if (sis.Is_Now_To_Sap__c) {
-            SyncFromSfToSapSchedule.syncToSAP_Now(md.Id,true);
-        }else{
+        if (sis.Is_Now_To_Sap__c)
+        {
+            SyncFromSfToSapSchedule.syncToSAP_Now(md.Id, true);
+        }
+        else
+        {
             SyncFromSfToSapSchedule.createNewSchedule();
         }
     }
@@ -936,7 +939,7 @@ public without sharing class Utils
         }
         else if(org.Approval_Rule__c == '指定人上级主管')
         {
-            con = !String.isBlank(contactID) ? [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c,Corp_Code__c FROM Contact WHERE Id = :contactID] : null;
+            con = !String.isBlank(contactID) ? [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c, Corp_Code__c FROM Contact WHERE Id = :contactID] : null;
             //特例，当申请人为子公司层的主管时，上级都为新莱子公司层的主管
             if (con != null && !String.isBlank(Utils.checkSubCorpManager(con.Number__c)))
             {
@@ -946,11 +949,11 @@ public without sharing class Utils
             {
                 setSFID.add(Utils.approvalSearchManagerByApplication(contactID, false));
             }
-            
+
         }
         else if(org.Approval_Rule__c == '指定人部门主管')
         {
-            con = !String.isBlank(contactID) ? [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c,Corp_Code__c FROM Contact WHERE Id = :contactID] : null;
+            con = !String.isBlank(contactID) ? [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c, Corp_Code__c FROM Contact WHERE Id = :contactID] : null;
             //特例，当申请人为子公司层的主管时，上级都为新莱子公司层的主管
             if (con != null && !String.isBlank(Utils.checkSubCorpManager(con.Number__c)))
             {
@@ -982,7 +985,7 @@ public without sharing class Utils
         else if(org.Approval_Rule__c == '指定人一阶主管')
         {
             System.debug('***:String.isBlank(contactID): ' + String.isBlank(contactID) + '');
-            con = !String.isBlank(contactID) ? [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c,Corp_Code__c FROM Contact WHERE Id = :contactID] : null;
+            con = !String.isBlank(contactID) ? [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c, Corp_Code__c FROM Contact WHERE Id = :contactID] : null;
             //特例，当申请人为子公司层的主管时，上级都为新莱子公司层的主管
             if (con != null && !String.isBlank(Utils.checkSubCorpManager(con.Number__c)))
             {
@@ -1004,8 +1007,9 @@ public without sharing class Utils
          * 20180112 當申請人=主管職&&公司別=台灣新萊&&審批人找不到
          * 審批人一律設為總經理.
          */
-        if (con != null && (setSFID.size() == 0 || setSFID.get(0) == null) && con.Corp_Code__c == '3000' && con.SF_User__r.Is_First_Manager__c){
-             setSFID.add(Id.valueOf('00528000006nvgB'));
+        if (con != null && (setSFID.size() == 0 || setSFID.get(0) == null) && con.Corp_Code__c == '3000' && con.SF_User__r.Is_First_Manager__c)
+        {
+            setSFID.add(Id.valueOf('00528000006nvgB'));
         }
         return setSFID;
     }
@@ -1127,7 +1131,7 @@ public without sharing class Utils
             }
             List<Organizational__c> setlist = [
                                                   SELECT Id, Node_Edit_Fields__c, Node_DetailEdit_Fields__c,
-                                                  Node_Require_Fields__c,Node_DetailRequire_Fields__c
+                                                  Node_Require_Fields__c, Node_DetailRequire_Fields__c
                                                   FROM Organizational__c
                                                   WHERE RecordType.DeveloperName = 'Node_Edit_Field'
                                                           AND Node_API__c = : nodeAPI
@@ -1547,6 +1551,62 @@ public without sharing class Utils
         am2.add(SapApprovalEnum.EXP_APPLICATIONFEE);//EXP费用申请流程
         return am2;
     }
+
+    //20180117 參數給一個<欄位名稱,欄位值>的map
+    //這個方法會判斷map的值是不是空的 而產生SQL查詢字串
+    public static String checkStringToBuildSOQLString(Map<String, String> inputMap, Boolean isfirst)
+    {
+        String ret = '';
+        String WHEREs = ' WHERE ';
+        Integer i = 1;
+        Map<String, String> newMap = new Map<String, String>();
+        if (inputMap != null && inputMap.size() != 0)
+        {
+            for (String k : inputMap.keySet())
+            {
+
+                if(inputMap.get(k) != null && inputMap.get(k).trim().length() != 0)
+                {
+                    newMap.put(k, inputMap.get(k));
+                }
+            }
+
+        }
+        for (String nk : newMap.keySet())
+        {
+            String lowkey = nk.toLowerCase();
+            i++;
+            if(lowkey.contains('start') && lowkey.contains('date'))
+            {
+                ret = ret + nk + '>=' + newMap.get(nk) + ' ';
+
+            }
+            else if(lowkey.contains('end') && lowkey.contains('date'))
+            {
+                ret = ret + nk + '<=' + newMap.get(nk) + ' ';
+
+            }
+            else
+            {
+                ret = ret + nk + '=\'' + newMap.get(nk) + '\'';
+            }
+
+            if(i <= newMap.size())
+            {
+                ret += ' AND ';
+
+            }
+
+        }
+
+        if (i > 1)
+        {
+            ret = WHEREs + ret;
+        }
+        return ret;
+    }
+
+
     @future(callout = true)
 
 
