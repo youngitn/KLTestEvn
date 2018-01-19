@@ -33,9 +33,8 @@ public without sharing class AMInformationServiceHandler implements Triggers.Han
                     }
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
-                    cam.head_description__c  = cam.Service_Desc__c;
                 }
-                
+                cam.head_description__c  = cam.Service_Desc__c;
             }
         }
     }
@@ -228,11 +227,11 @@ public without sharing class AMInformationServiceHandler implements Triggers.Han
             lstID.add(utils.getUserByEmployeeCode('10210225')); //徐井西
         }
 
-        if (cam.Factory__c != '3000' && cam.ServiceCategory__c =='120') {
-          lstID.add(utils.getUserByEmployeeCode('10210225')); //徐井西
+        if (cam.Factory__c == '3000' && cam.ServiceCategory__c =='270') {
+          lstID.add(utils.getUserByEmployeeCode('30210240')); // 李軏瀚          
         }
 
-         if (cam.Factory__c != '3000' && cam.ServiceCategory__c == '120') {
+         if (cam.Factory__c != '3000' && (cam.ServiceCategory__c == '120' || cam.ServiceCategory__c == '270')) {
           lstID.add(utils.getUserByEmployeeCode('10210225')); //徐井西
         }
 
