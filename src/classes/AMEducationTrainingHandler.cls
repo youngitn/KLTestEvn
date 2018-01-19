@@ -156,39 +156,39 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         //指定崗位 or 指定人員 是用中文字判斷.
         //根據不同規則拿申請人(contactID)作條件查詢審批人.
         System.debug('申請人(contactID)~~~~~~~~~~~' + cam.Applicant__c);
-        cam.Approval_User1__c     = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(1), cam.Applicant__c), 0);
+        cam.Approval_User1__c     = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(1), cam.Applicant__c), 0);
         //Id myid = Id.valueOf('00528000006o8EJAAY');
         // cam.Approval_User1__c     = myid;
         //人力資源課承辦人
-        cam.Approval_User2__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(2), null), 0);
+        cam.Approval_User2__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2), null), 0);
 
         //人力資源課
-        cam.Approval_User3__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(3), null), 0);
+        cam.Approval_User3__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3), null), 0);
 
         //管理部
-        cam.Approval_User4__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(4), null), 0);
+        cam.Approval_User4__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4), null), 0);
 
         //財務主管
-        cam.Approval_User14__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(5), null), 0);
+        cam.Approval_User14__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(5), null), 0);
 
         //財務人員
-        cam.Approval_User15__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(6), null), 0);
+        cam.Approval_User15__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(6), null), 0);
 
         //總經理核示
-        cam.Approval_User5__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(7), null), 0);
+        cam.Approval_User5__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(7), null), 0);
 
         // //6-13节点审批人设置
-        cam.Approval_User6__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(8), cam.Applicant__c), 0);
-        cam.Approval_User7__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(9), cam.Applicant__c), 0);
-        cam.Approval_User8__c       = Peoples.getInstance().KlAllUserMapGetByNum.get('10210853').Id;
-        cam.Approval_User9__c       = Peoples.getInstance().KlAllUserMapGetByNum.get('10210016').Id;//郭 红飞-10210016
-        if(!Test.isRunningTest() || ![SELECT Id, IsSandbox FROM Organization].get(0).IsSandbox)
-        {
-            cam.Approval_User11__c      = Peoples.getInstance().KlAllContactMapGetById.get(cam.Applicant__c).SF_User__c;
-            cam.Approval_User12__c      = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(14), cam.Applicant__c), 0);
-            cam.Approval_User10__c      = Peoples.getInstance().KlAllUserMapGetByNum.get('10212239').Id;//颜 斌-10212239
-            cam.Approval_User13__c      = Peoples.getInstance().KlAllUserMapGetByNum.get('10212239').Id;//颜 斌-10212239
-        }
+        cam.Approval_User6__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8), cam.Applicant__c), 0);
+        cam.Approval_User7__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(9), cam.Applicant__c), 0);
+        cam.Approval_User8__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(10), null), 0);
+        cam.Approval_User9__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(11), null), 0);
+        /*if(!Test.isRunningTest() || ![SELECT Id, IsSandbox FROM Organization].get(0).IsSandbox)
+        {*/
+        cam.Approval_User10__c      = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(12), null), 0);
+        cam.Approval_User11__c      = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(13),cam.Applicant__c),0);
+        cam.Approval_User12__c      = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(14), cam.Applicant__c), 0);
+        cam.Approval_User13__c      = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(15), null), 0);
+        //}
 
 
     }
