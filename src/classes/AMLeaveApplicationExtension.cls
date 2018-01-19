@@ -2,6 +2,7 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
 {
 
     public  Approval_Managed__c am {get; set;}
+    public  String Start_date {get; set;}
 
     public  List<Approval_Managed_Item__c> list1 {get; set;}
 
@@ -22,7 +23,7 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
     }
 
     public override PageReference saveAction()
-    {
+    {   System.debug(Start_date);
         if (String.isNotBlank(am.Employee__c) )
         {
             List<Contact> lstCon    = [SELECT Name, Number__c FROM Contact WHERE Id = :am.Employee__c AND RecordType.DeveloperName = 'Staff'];
