@@ -9,34 +9,29 @@ global with sharing class LeaveQueryController
     }
 
     @RemoteAction
-    global static String doQuery(String queryApplicantNum, String sQueryDate, String eQueryDate, String queryAplStatus, String queryTypesOfLeave, String queryLeave_reason)
+    global static String doQuery(String sQueryDate,String  eQueryDate,String queryAplStatus,String queryTypesOfLeave,String queryApplicantNum )
     {
+    	
         String sobjName = 'Approval_Managed_item__c';
         Id recType = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.LEAVEAPPLICATION, 'Approval_Managed__c');
-        System.debug(recType);
         
-        Set<Id> amIds = new Set<id>();
-        for ( Approval_Managed__c am :  [SELECT Id From Approval_Managed__c WHERE Applicant_Code__c = :queryApplicantNum AND RecordTypeId = :recType])
-        {
-        	 amIds.add(am.Id);
-        }
-
         String sql = 'Select LeaveManage__r.Approval_Status__c,' + SObjectUtils.getAllFields(sobjName).get(sobjName) + ' from ' + sobjName;
-        sql += ' WHERE LeaveManage__c in :amIds';
-        //List<String> sqlAndString = 
+
+        Map<String,String> inputMap = new Map<String,String>();
+		inputMap.put('Start_date__c',sQueryDate);
+		inputMap.put('End_date__c',eQueryDate);
+		inputMap.put('TypesOfLeave__c',queryTypesOfLeave);
+		inputMap.put('LeaveManage__r.Approval_Status__c',queryAplStatus);
+		inputMap.put('LeaveManage__r.Applicant_Code__c',queryApplicantNum);
+		inputMap.put('LeaveManage__r.RecordTypeId',recType);
+        
+        System.debug(inputMap);
+        sql += ' '+Utils.checkStringToBuildSOQLString(inputMap,true) ;
+        System.debug(sql);
         List<Approval_Managed_item__c> amis = Database.query(sql);
 
         System.debug(JSON.serialize(amis));
         return JSON.serialize(amis).unescapeHtml4();
     }
 
-    // public List<sObject> objects(String setName, String soqlString){
-    //     return Database.query(soqlString.replace('XXX',setName));
-    // }
-
-    // public void soqlExecuter1(){
-    //     ami.clear();
-    //     ami = objects('set1', soql1);
-
-    // }
 }
