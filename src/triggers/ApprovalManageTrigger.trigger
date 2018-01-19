@@ -106,6 +106,10 @@ trigger ApprovalManageTrigger on Approval_Managed__c(before insert, after update
     //员工主动离职审批流程各节点审批人
     .bind (Triggers.Evt.beforeinsert,new AMStaffLeaveOfficeHandler())
     .bind (Triggers.Evt.beforeupdate,new AMStaffLeaveOfficeHandler())
+
+    //請假申請流程
+    .bind (Triggers.Evt.beforeinsert,new AMLeaveApplicationHandler())
+    .bind (Triggers.Evt.beforeupdate,new AMLeaveApplicationHandler())
 //MR
     //设置MR模具申请流程各节点审批人
     .bind (Triggers.Evt.beforeinsert,new AMMRDieRequestHandler())
