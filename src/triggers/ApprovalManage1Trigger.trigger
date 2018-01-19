@@ -37,6 +37,8 @@ trigger ApprovalManage1Trigger on Approval_Managed1__c (before insert,before upd
     //QCC客诉申请流程
     .bind (Triggers.Evt.beforeinsert,new AMQccHandler())
     .bind (Triggers.Evt.beforeupdate,new AMQccHandler())
+
+
     //设置记录共享
     .bind (Triggers.Evt.afterinsert,new ApprovalManualShareHandler())
     .bind (Triggers.Evt.afterupdate,new ApprovalManualShareHandler())

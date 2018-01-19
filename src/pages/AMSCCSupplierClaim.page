@@ -10,7 +10,7 @@
  
 <-->
 
-<apex:page standardController="Custom_Approval_Managed__c" extensions="AMSCCSupplierClaimExtension" >
+<apex:page standardController="Custom_Approval_Managed__c" extensions="AMSCCSupplierClaimExtension">
 <html>
 <body>
 <apex:sectionHeader title="SCC供应商索赔申请流程" subtitle="新建/SCC供应商索赔申请流程"></apex:sectionHeader>
@@ -96,6 +96,16 @@
             	<apex:inputField value="{!am.ProductDeductionNumber__c}"></apex:inputField>
             	<!-- 产品损失扣款金额 -->
             	<apex:inputField value="{!am.ProductDeductionMoney__c}"></apex:inputField>
+            	<!-- 审批用户01 -->
+            	<apex:inputField value="{!am.Approval_User1__c}"></apex:inputField>
+            	<!-- 审批用户02 -->
+            	<apex:inputField value="{!am.Approval_User2__c}"></apex:inputField>
+            	<!-- 审批用户03 -->
+            	<apex:inputField value="{!am.Approval_User3__c}"></apex:inputField>
+            	<!-- 审批用户05 -->
+            	<apex:inputField value="{!am.Approval_User5__c}"></apex:inputField>
+            	<!-- 审批用户07 -->
+            	<apex:inputField value="{!am.Approval_User7__c}"></apex:inputField>
 
             </apex:pageBlockSection>          
         </apex:pageBlock>
