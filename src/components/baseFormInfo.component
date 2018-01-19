@@ -38,10 +38,8 @@
                             </div>
                             <div class="pure-u-1 pure-u-md-1-3">
                                 申請日期:
-                                <apex:outputText value="{0,date,yyyy'/'MM'/'dd}" styleclass="pure-u-1 pure-u-md-2-3">
-                                    <apex:param value="{!inputObject['Bill_Date__c']}"/>
-                                </apex:outputText>
-                                
+                                <apex:inputfield styleclass="pure-u-1 pure-u-md-2-3" value="{!inputObject['Bill_Date__c']}">
+                                </apex:inputfield>            
                             </div>
                             <div class="pure-u-1 pure-u-md-1-3">
                                 審批狀態:

@@ -12,75 +12,12 @@
             <link crossorigin="anonymous" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" rel="stylesheet"/>
             <link href="https://unpkg.com/purecss@1.0.0/build/base-min.css" rel="stylesheet"/>
             <link href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css" rel="stylesheet"/>
-            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/libs/jquery-3.2.1.js')}">
-            </script>
-            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">
-            </script>
-            <script src="https://malsup.github.io/jquery.blockUI.js" type="text/javascript">
-            </script>
-            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/AMLeaveApplicationJS.js')}">
-            </script>
-            <style type="text/css">
-                .rwd-table {
-					background: #fff;
-					overflow: hidden;
-				}
-
-				.rwd-table tr:nth-of-type(2n) {
-					background: #eee;
-				}
-
-				.rwd-table th, .rwd-table td {
-					margin: 0.5em 1em;
-				}
-
-				.rwd-table {
-					min-width: 100%;
-				}
-
-				.rwd-table th {
-					display: none;
-				}
-
-				.rwd-table td {
-					display: block;
-				}
-
-				.rwd-table td:before {
-					content: attr(data-th) " : ";
-					font-weight: bold;
-					width: 6.5em;
-					display: inline-block;
-				}
-
-				.rwd-table th, .rwd-table td {
-					text-align: left;
-				}
-
-				.rwd-table th, .rwd-table td:before {
-					color: #25517d;
-					font-weight: bold;
-				}
-
-				@media ( min-width : 480px) {
-					.rwd-table td:before {
-						display: none;
-					}
-					.rwd-table th, .rwd-table td {
-						display: table-cell;
-						padding: 0.25em 0.5em;
-					}
-					.rwd-table th:first-child, .rwd-table td:first-child {
-						padding-left: 0;
-					}
-					.rwd-table th:last-child, .rwd-table td:last-child {
-						padding-right: 0;
-					}
-					.rwd-table th, .rwd-table td {
-						padding: 1em !important;
-					}
-				}
-            </style>
+            <link href="{!URLFOR($Resource.JSbundle, '/app/RWD-Table.css')}" rel="stylesheet"/>
+            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/libs/jquery-3.2.1.js')}" />
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" />           
+            <script src="https://malsup.github.io/jquery.blockUI.js" type="text/javascript" />          
+            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/AMLeaveApplication/AMLeaveApplicationJS.js')}" />           
+            
             <script type="text/javascript">
                 j$( function() {
 			    j$( "#tabs" ).tabs({

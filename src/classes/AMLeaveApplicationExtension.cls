@@ -13,12 +13,15 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
         super('Approval_Managed__c','請假申請流程',con,'Approval_Managed_Item__c','请假明细表','LeaveManage__c');
 
        
-        list1Row                    = 0;
-        am                          = (Approval_Managed__c)SObjectUtils.init(this.sobj);
-        list1                       = (List<Approval_Managed_Item__c>)this.detailSObjList;
+        list1Row = 0; 
+        list1 = (List<Approval_Managed_Item__c>)this.detailSObjList;
+        am = (Approval_Managed__c)this.sobj;
         if (con.getId() == null){
+            am = (Approval_Managed__c)SObjectUtils.init(am);
             newlist1();
+
         }
+        
         
     }
 
