@@ -4,16 +4,40 @@
 		"selected_items":
 		[
 			[
+				"co",
+				"continue"
+			],
+			[
+				"c",
+				"PUBLIC contains(String str) \tBoolean"
+			],
+			[
+				"for",
+				"FROM"
+			],
+			[
+				"va",
+				"value"
+			],
+			[
+				"rem",
+				"removeClass\t.removeClass()"
+			],
+			[
+				"h",
+				"href"
+			],
+			[
+				"inp",
+				"inputField\tapex"
+			],
+			[
 				"s",
 				"script\tTag"
 			],
 			[
 				"pure-u-",
 				"pure-u-sm-1-1"
-			],
-			[
-				"c",
-				"controller\tString"
 			],
 			[
 				"d",
@@ -160,10 +184,6 @@
 				"ProfileId(設定檔識別碼)\tReference(Profile)"
 			],
 			[
-				"h",
-				"applyHtmlTag\tBoolean"
-			],
-			[
 				"f",
 				"form\tapex"
 			],
@@ -198,10 +218,6 @@
 			[
 				"m",
 				"minute()\tInteger"
-			],
-			[
-				"rem",
-				"removeAttr\t.removeAttr()"
 			],
 			[
 				"add",
@@ -242,10 +258,6 @@
 			[
 				"St",
 				"Start_Time__c"
-			],
-			[
-				"for",
-				"fore\tfor (each)"
 			],
 			[
 				"De",
@@ -332,41 +344,11 @@
 	"buffers":
 	[
 		{
-			"contents": "//介面 采购申请作业流程 模擬 for(SObject obj : Trigger.new)\nSObject obj  = Database.query('SELECT ' + getAllFields('Approval_Managed__c').get('Approval_Managed__c') + ' FROM Approval_Managed__c WHERE Name = ' + '\\'AN-170824-00001564\\'').get(0);\n\n// 取得各detail 必輸資訊\nMap<String, Map<String, Set<String>>> req = Utils.getDetailRequireFields(String.valueOf(obj.get('Id')), String.valueOf(obj.get('RecordTypeId')));\n\n// 取得master 必輸資訊\nMap<String, Set<String>> masterReq = Utils.getNodeEditFields(String.valueOf(obj.get('Id')), String.valueOf(obj.get('RecordTypeId')));\n\nSystem.debug(req);\nMap<String, Set<String>> subItem = req.get('detailrequire');\n//System.debug();\nMap<String, Schema.SObjectField> mmyFields = obj.getSObjectType().getDescribe().fields.getMap();\n\nString errMsg = '';\n\nfor(String ms : masterReq.get('mainrequire'))\n{\n\n    System.debug(obj.get('Approval_Name__c') + '主表必輸欄位 標籤:' + mmyFields.get(ms).getDescribe().getLabel() + ' API name:' + ms + ' 值:' + obj.get(ms));\n    errMsg += obj.get('Approval_Name__c') + '主表必輸欄位 標籤:' + mmyFields.get(ms).getDescribe().getLabel() + ' API name:' + ms + ' 值:' + obj.get(ms)+'\\\\n';\n}\n\n\nfor(String s : subItem.keySet())\n{\n    System.debug(s);\n    Set<String> subFieldSet = subItem.get(s);\n    //如果同一個父物件下兩個不同種明細但都是同一子物件 則將不會查詢到\n    //即使關聯欄位統一\n    List<SObject> objDetail = Database.query('SELECT ' + getAllFields(s).get(s) + ' FROM ' + s + ' WHERE Purchasing_Request__c =\\'' + obj.get('Id') + '\\'');\n    \n    for(SObject o : objDetail)\n    {\t\n    \tMap<String, Schema.SObjectField> myFields = o.getSObjectType().getDescribe().fields.getMap();\n        for(String fieldApiName : subFieldSet)\n        {\n\n            System.debug(obj.get('Approval_Name__c') + '子項必輸欄位 標籤:' + myFields.get(fieldApiName).getDescribe().getLabel() + ' API name:' + fieldApiName + ' 值:' + o.get(fieldApiName));\n        \terrMsg += obj.get('Approval_Name__c') + '子項必輸欄位 標籤:' + myFields.get(fieldApiName).getDescribe().getLabel() + ' API name:' + fieldApiName + ' 值:' + o.get(fieldApiName)+'\\\\n';\n        }\n\n    }\n\n}\n\n\nSystem.debug(getAllFields('Approval_Managed_Item__c').get('Approval_Managed_Item__c'));\n//System.debug(errMsg);\n// 物件取得所有欄位\npublic static Map<String, String> getAllFields(String sobjectname)\n{\n    if(!Schema.getGlobalDescribe().containsKey(sobjectname)) return new Map<String, String> {'Exception' => 'Invalid object name'};\n    Map<String, Schema.SObjectField> fields = Schema.getGlobalDescribe().get(sobjectname).getDescribe().SObjectType.getDescribe().fields.getMap();\n\n    List<String> accessiblefields = new List<String>();\n\n    for(Schema.SObjectField field : fields.values())\n    {\n        if(field.getDescribe().isAccessible())\n            accessiblefields.add(field.getDescribe().getName());\n    }\n\n    String allfields = '';\n\n    for(String fieldname : accessiblefields)\n        allfields += fieldname + ',';\n\n    allfields = allfields.subString(0, allfields.length() - 1);\n\n    return new Map<String, String> {sobjectname => allfields};\n}\n\n\n\n\n",
+			"contents": "//介面 采购申请作业流程 模擬 for(SObject obj : Trigger.new)\nSObject obj  = Database.query('SELECT ' + getAllFields('Approval_Managed__c').get('Approval_Managed__c') + ' FROM Approval_Managed__c WHERE Name = ' + '\\'AN-170824-00001564\\'').get(0);\n\n// 取得各detail 必輸資訊\nMap<String, Map<String, Set<String>>> req = Utils.getDetailRequireFields(String.valueOf(obj.get('Id')), String.valueOf(obj.get('RecordTypeId')));\n\n// 取得master 必輸資訊\nMap<String, Set<String>> masterReq = Utils.getNodeEditFields(String.valueOf(obj.get('Id')), String.valueOf(obj.get('RecordTypeId')));\n\nSystem.debug(req);\nMap<String, Set<String>> subItem = req.get('detailrequire');\n//System.debug();\nMap<String, Schema.SObjectField> mmyFields = obj.getSObjectType().getDescribe().fields.getMap();\n\nString errMsg = '';\n\nfor(String ms : masterReq.get('mainrequire'))\n{\n\n    System.debug(obj.get('Approval_Name__c') + '主表必輸欄位 標籤:' + mmyFields.get(ms).getDescribe().getLabel() + ' API name:' + ms + ' 值:' + obj.get(ms));\n    errMsg += obj.get('Approval_Name__c') + '主表必輸欄位 標籤:' + mmyFields.get(ms).getDescribe().getLabel() + ' API name:' + ms + ' 值:' + obj.get(ms)+'\\\\n';\n}\n\n\nfor(String s : subItem.keySet())\n{\n    System.debug(s);\n    Set<String> subFieldSet = subItem.get(s);\n    //如果同一個父物件下兩個不同種明細但都是同一子物件 則將不會查詢到\n    //即使關聯欄位統一\n    List<SObject> objDetail = Database.query('SELECT ' + getAllFields(s).get(s) + ' FROM ' + s + ' WHERE Purchasing_Request__c =\\'' + obj.get('Id') + '\\'');\n    \n    for(SObject o : objDetail)\n    {\t\n    \tMap<String, Schema.SObjectField> myFields = o.getSObjectType().getDescribe().fields.getMap();\n        for(String fieldApiName : subFieldSet)\n        {\n\n            System.debug(obj.get('Approval_Name__c') + '子項必輸欄位 標籤:' + myFields.get(fieldApiName).getDescribe().getLabel() + ' API name:' + fieldApiName + ' 值:' + o.get(fieldApiName));\n        \terrMsg += obj.get('Approval_Name__c') + '子項必輸欄位 標籤:' + myFields.get(fieldApiName).getDescribe().getLabel() + ' API name:' + fieldApiName + ' 值:' + o.get(fieldApiName)+'\\\\n';\n        }\n\n    }\n\n}\n\n\nSystem.debug(getAllFields('Approval_Managed_Item__c').get('Approval_Managed_Item__c'));\n//System.debug(errMsg);\n// 物件取得所有欄位\npublic static Map<String, String> getAllFields(String sobjectname)\n{\n    if(!Schema.getGlobalDescribe().containsKey(sobjectname)) return new Map<String, String> {'Exception' => 'Invalid object name'};\n    Map<String, Schema.SObjectField> fields = Schema.getGlobalDescribe().get(sobjectname).getDescribe().SObjectType.getDescribe().fields.getMap();\n\n    List<String> accessiblefields = new List<String>();\n\n    for(Schema.SObjectField field : fields.values())\n    {\n        if(field.getDescribe().isAccessible())\n            accessiblefields.add(field.getDescribe().getName());\n    }\n\n    String allfields = '';\n\n    for(String fieldname : accessiblefields)\n        allfields += fieldname + ',';\n\n    allfields = allfields.subString(0, allfields.length() - 1);\n\n    return new Map<String, String> {sobjectname => allfields};\n}\n\nselect id, Name,(select Id,LeaveManage__c from Approval_Managed_item__c) from Approval_Managed__c\n\n\n\n",
 			"settings":
 			{
-				"buffer_size": 2977,
+				"buffer_size": 3075,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: System.debug(getAllFields('Approval_Managed_Item__c').get('Approval_Managed_Item__c'));\nExecute Anonymous: //System.debug(errMsg);\nExecute Anonymous: // 物件取得所有欄位\nExecute Anonymous: public static Map<String, String> getAllFields(String sobjectname)\nExecute Anonymous: {\nExecute Anonymous:     if(!Schema.getGlobalDescribe().containsKey(sobjectname)) return new Map<String, String> {'Exception' => 'Invalid object name'};\nExecute Anonymous:     Map<String, Schema.SObjectField> fields = Schema.getGlobalDescribe().get(sobjectname).getDescribe().SObjectType.getDescribe().fields.getMap();\nExecute Anonymous: \nExecute Anonymous:     List<String> accessiblefields = new List<String>();\nExecute Anonymous: \nExecute Anonymous:     for(Schema.SObjectField field : fields.values())\nExecute Anonymous:     {\nExecute Anonymous:         if(field.getDescribe().isAccessible())\nExecute Anonymous:             accessiblefields.add(field.getDescribe().getName());\nExecute Anonymous:     }\nExecute Anonymous: \nExecute Anonymous:     String allfields = '';\nExecute Anonymous: \nExecute Anonymous:     for(String fieldname : accessiblefields)\nExecute Anonymous:         allfields += fieldname + ',';\nExecute Anonymous: \nExecute Anonymous:     allfields = allfields.subString(0, allfields.length() - 1);\nExecute Anonymous: \nExecute Anonymous:     return new Map<String, String> {sobjectname => allfields};\nExecute Anonymous: }\n13:55:38.9 (9022252)|USER_INFO|[EXTERNAL]|00528000005lirp|martinlee-jfx3@force.com|中国标准时间|GMT+08:00\n13:55:38.9 (9045305)|EXECUTION_STARTED\n13:55:38.9 (9048526)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n13:55:38.9 (54500980)|USER_DEBUG|[1]|DEBUG|Id,OwnerId,IsDeleted,Name,RecordTypeId,CreatedDate,CreatedById,LastModifiedDate,LastModifiedById,SystemModstamp,LastViewedDate,LastReferencedDate,Abnormal_Containment__c,Abnormal_Header__c,Abnormal_Problem__c,Abnormal_Rectify__c,Accounting_Code__c,Allocation__c,Amount_Price__c,Amount__c,Applicant_Row__c,Applicant__c,Asset_Code__c,Asset_Now_Value__c,Asset_Purchase_Date__c,Asset_Value__c,Back_Project__c,Code_Group__c,Currency_Tax__c,Currency__c,Delivery_Date__c,Dept_of_CostCenter__c,Device_Number__c,Drawing_Number__c,Drawing_Version__c,Factory__c,Header_Code__c,Header_Name__c,Header__c,Index_Item__c,Is_Free__c,Item__c,Last_Pick_Currency__c,Last_Pick_Date__c,Last_Pick_Number__c,Last_Pick_Price__c,Ledger_Account_Purchase__c,Ledger_Account__c,Material_Description__c,Material_Name__c,Material_Number__c,Material_Number_of_Vendor__c,Material_of_Customer__c,Name_of_Price__c,Number_of_Item__c,Number_of_Purchase__c,Order2_Number__c,Order_Of_SalesOrder__c,Parent_Row_Index__c,Per__c,Plan_Completed_Date__c,Price_Net__c,Price_Tax__c,Price__c,Project_No__c,Project__c,Purchase_Info_Inquiry__c,Purchase_Item_Type__c,Purchase_Order_Number__c,Purchase_Order_Price__c,Purchase_Order__c,Quantity_Detail__c,Quantity__c,Quote_Item__c,Quote__c,Reason_Code__c,Remark__c,Row_Index__c,SAPID__c,SGL__c,Sales_Amount_Total__c,Schedule_Date__c,Selected__c,Status_Overview__c,Subject_Alloc_Type__c,TaskID__c,Text_Project__c,Text__c,Type_Description_Bug__c,Type_of_Affair__c,Type_of_Bug__c,Type_of_Cost__c,Type_of_Price__c,Unit3__c,Unit__c,Value_of_Price__c,Vendor_Response__c,Vendor__c,Voucher_Info__c,Expense_Type__c,Text_Long__c,LeadName__c,OpportunityName__c,AccountName__c,ActivityPartialDescription__c,OwnerName__c,TaskSubject__c,Lead2_Id__c,Opportunity2_Id__c,Opportunity2__c,Customer2_Id__c,Customer2__c,Lead2__c,Subject__c,Attachment__c,Cost_of_Tax__c,Fixed__c,Inventory_Quantity__c,Item_Category__c,Job_Number__c,Material_Group__c,Out_Delivery__c,P_Inclusive_of_Tax__c,Ratio__c,Sales_Order_Number__c,Sales_Order__c,Street_House_Num__c,Type_of_Account_Assign__c,Zip_Code_City__c,LevelNumber__c,Purchasing_Request__c,Tprice__c,Price_Net_Formula__c,Leave_reason__c,Leave_type__c,SalesPricing_son2__c,UOM__c,time_number__c,Price_P__c,Amount_P__c,Price_Tax_F__c,End_date__c,Start_date__c,reference_mileage__c,enter_mileage__c,LeaveManage__c,End_Time__c,Start_Time__c,InventoryKinglai_table__c,Storage__c,batch__c,NumerationType__c,EndTime__c,StartTime__c,SalesPricing_son_table__c,Standard_parts__c,Device_fix_count__c,Device_fix_cost__c,Device_fix_date__c\n13:55:38.54 (54589524)|CUMULATIVE_LIMIT_USAGE\n13:55:38.54 (54589524)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 0 out of 100\n  Number of query rows: 0 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 0 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n13:55:38.54 (54589524)|CUMULATIVE_LIMIT_USAGE_END\n\n13:55:38.9 (54627228)|CODE_UNIT_FINISHED|execute_anonymous_apex\n13:55:38.9 (55747996)|EXECUTION_FINISHED\n",
-			"settings":
-			{
-				"buffer_size": 5063,
-				"line_ending": "Windows",
-				"name": "Execute Anonymous Result",
-				"scratch": true
-			}
-		},
-		{
-			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: System.debug(getAllFields('Approval_Managed_Item__c').get('Approval_Managed_Item__c'));\nExecute Anonymous: //System.debug(errMsg);\nExecute Anonymous: // 物件取得所有欄位\nExecute Anonymous: public static Map<String, String> getAllFields(String sobjectname)\nExecute Anonymous: {\nExecute Anonymous:     if(!Schema.getGlobalDescribe().containsKey(sobjectname)) return new Map<String, String> {'Exception' => 'Invalid object name'};\nExecute Anonymous:     Map<String, Schema.SObjectField> fields = Schema.getGlobalDescribe().get(sobjectname).getDescribe().SObjectType.getDescribe().fields.getMap();\nExecute Anonymous: \nExecute Anonymous:     List<String> accessiblefields = new List<String>();\nExecute Anonymous: \nExecute Anonymous:     for(Schema.SObjectField field : fields.values())\nExecute Anonymous:     {\nExecute Anonymous:         if(field.getDescribe().isAccessible())\nExecute Anonymous:             accessiblefields.add(field.getDescribe().getName());\nExecute Anonymous:     }\nExecute Anonymous: \nExecute Anonymous:     String allfields = '';\nExecute Anonymous: \nExecute Anonymous:     for(String fieldname : accessiblefields)\nExecute Anonymous:         allfields += fieldname + ',';\nExecute Anonymous: \nExecute Anonymous:     allfields = allfields.subString(0, allfields.length() - 1);\nExecute Anonymous: \nExecute Anonymous:     return new Map<String, String> {sobjectname => allfields};\nExecute Anonymous: }\n13:51:49.7 (7782349)|USER_INFO|[EXTERNAL]|00528000005lirp|martinlee-jfx3@force.com|中国标准时间|GMT+08:00\n13:51:49.7 (7801813)|EXECUTION_STARTED\n13:51:49.7 (7804635)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n13:51:49.7 (45763950)|USER_DEBUG|[1]|DEBUG|Id,OwnerId,IsDeleted,Name,RecordTypeId,CreatedDate,CreatedById,LastModifiedDate,LastModifiedById,SystemModstamp,LastViewedDate,LastReferencedDate,Abnormal_Containment__c,Abnormal_Header__c,Abnormal_Problem__c,Abnormal_Rectify__c,Accounting_Code__c,Allocation__c,Amount_Price__c,Amount__c,Applicant_Row__c,Applicant__c,Asset_Code__c,Asset_Now_Value__c,Asset_Purchase_Date__c,Asset_Value__c,Back_Project__c,Code_Group__c,Currency_Tax__c,Currency__c,Delivery_Date__c,Dept_of_CostCenter__c,Device_Number__c,Drawing_Number__c,Drawing_Version__c,Factory__c,Header_Code__c,Header_Name__c,Header__c,Index_Item__c,Is_Free__c,Item__c,Last_Pick_Currency__c,Last_Pick_Date__c,Last_Pick_Number__c,Last_Pick_Price__c,Ledger_Account_Purchase__c,Ledger_Account__c,Material_Description__c,Material_Name__c,Material_Number__c,Material_Number_of_Vendor__c,Material_of_Customer__c,Name_of_Price__c,Number_of_Item__c,Number_of_Purchase__c,Order2_Number__c,Order_Of_SalesOrder__c,Parent_Row_Index__c,Per__c,Plan_Completed_Date__c,Price_Net__c,Price_Tax__c,Price__c,Project_No__c,Project__c,Purchase_Info_Inquiry__c,Purchase_Item_Type__c,Purchase_Order_Number__c,Purchase_Order_Price__c,Purchase_Order__c,Quantity_Detail__c,Quantity__c,Quote_Item__c,Quote__c,Reason_Code__c,Remark__c,Row_Index__c,SAPID__c,SGL__c,Sales_Amount_Total__c,Schedule_Date__c,Selected__c,Status_Overview__c,Subject_Alloc_Type__c,TaskID__c,Text_Project__c,Text__c,Type_Description_Bug__c,Type_of_Affair__c,Type_of_Bug__c,Type_of_Cost__c,Type_of_Price__c,Unit3__c,Unit__c,Value_of_Price__c,Vendor_Response__c,Vendor__c,Voucher_Info__c,Expense_Type__c,Text_Long__c,LeadName__c,OpportunityName__c,AccountName__c,ActivityPartialDescription__c,OwnerName__c,TaskSubject__c,Lead2_Id__c,Opportunity2_Id__c,Opportunity2__c,Customer2_Id__c,Customer2__c,Lead2__c,Subject__c,Attachment__c,Cost_of_Tax__c,Fixed__c,Inventory_Quantity__c,Item_Category__c,Job_Number__c,Material_Group__c,Out_Delivery__c,P_Inclusive_of_Tax__c,Ratio__c,Sales_Order_Number__c,Sales_Order__c,Street_House_Num__c,Type_of_Account_Assign__c,Zip_Code_City__c,LevelNumber__c,Purchasing_Request__c,Tprice__c,Price_Net_Formula__c,Leave_reason__c,Leave_type__c,SalesPricing_son2__c,UOM__c,time_number__c,Price_P__c,Amount_P__c,Price_Tax_F__c,End_date__c,Start_date__c,reference_mileage__c,enter_mileage__c,LeaveManage__c,End_Time__c,Start_Time__c,InventoryKinglai_table__c,Storage__c,batch__c,NumerationType__c,EndTime__c,StartTime__c,SalesPricing_son_table__c,Standard_parts__c,Device_fix_count__c,Device_fix_cost__c,Device_fix_date__c\n13:51:49.45 (45847531)|CUMULATIVE_LIMIT_USAGE\n13:51:49.45 (45847531)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 0 out of 100\n  Number of query rows: 0 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 0 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n13:51:49.45 (45847531)|CUMULATIVE_LIMIT_USAGE_END\n\n13:51:49.7 (45878780)|CODE_UNIT_FINISHED|execute_anonymous_apex\n13:51:49.7 (47018665)|EXECUTION_FINISHED\n",
-			"settings":
-			{
-				"buffer_size": 5063,
-				"line_ending": "Windows",
-				"name": "Execute Anonymous Result",
-				"scratch": true
-			}
-		},
-		{
-			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: System.debug(getAllFields('Approval_Managed_Item__c'));\nExecute Anonymous: //System.debug(errMsg);\nExecute Anonymous: // 物件取得所有欄位\nExecute Anonymous: public static Map<String, String> getAllFields(String sobjectname)\nExecute Anonymous: {\nExecute Anonymous:     if(!Schema.getGlobalDescribe().containsKey(sobjectname)) return new Map<String, String> {'Exception' => 'Invalid object name'};\nExecute Anonymous:     Map<String, Schema.SObjectField> fields = Schema.getGlobalDescribe().get(sobjectname).getDescribe().SObjectType.getDescribe().fields.getMap();\nExecute Anonymous: \nExecute Anonymous:     List<String> accessiblefields = new List<String>();\nExecute Anonymous: \nExecute Anonymous:     for(Schema.SObjectField field : fields.values())\nExecute Anonymous:     {\nExecute Anonymous:         if(field.getDescribe().isAccessible())\nExecute Anonymous:             accessiblefields.add(field.getDescribe().getName());\nExecute Anonymous:     }\nExecute Anonymous: \nExecute Anonymous:     String allfields = '';\nExecute Anonymous: \nExecute Anonymous:     for(String fieldname : accessiblefields)\nExecute Anonymous:         allfields += fieldname + ',';\nExecute Anonymous: \nExecute Anonymous:     allfields = allfields.subString(0, allfields.length() - 1);\nExecute Anonymous: \nExecute Anonymous:     return new Map<String, String> {sobjectname => allfields};\nExecute Anonymous: }\n13:51:08.14 (14185238)|USER_INFO|[EXTERNAL]|00528000005lirp|martinlee-jfx3@force.com|中国标准时间|GMT+08:00\n13:51:08.14 (14206348)|EXECUTION_STARTED\n13:51:08.14 (14210262)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n13:51:08.14 (65813648)|USER_DEBUG|[1]|DEBUG|{Approval_Managed_Item__c=Id,OwnerId,IsDeleted,Name,RecordTypeId,CreatedDate,CreatedById,LastModifiedDate,LastModifiedById,SystemModstamp,LastViewedDate,LastReferencedDate,Abnormal_Containment__c,Abnormal_Header__c,Abnormal_Problem__c,Abnormal_Rectify__c,Accounting_Code__c,Allocation__c,Amount_Price__c,Amount__c,Applicant_Row__c,Applicant__c,Asset_Code__c,Asset_Now_Value__c,Asset_Purchase_Date__c,Asset_Value__c,Back_Project__c,Code_Group__c,Currency_Tax__c,Currency__c,Delivery_Date__c,Dept_of_CostCenter__c,Device_Number__c,Drawing_Number__c,Drawing_Version__c,Factory__c,Header_Code__c,Header_Name__c,Header__c,Index_Item__c,Is_Free__c,Item__c,Last_Pick_Currency__c,Last_Pick_Date__c,Last_Pick_Number__c,Last_Pick_Price__c,Ledger_Account_Purchase__c,Ledger_Account__c,Material_Description__c,Material_Name__c,Material_Number__c,Material_Number_of_Vendor__c,Material_of_Customer__c,Name_of_Price__c,Number_of_Item__c,Number_of_Purchase__c,Order2_Number__c,Order_Of_SalesOrder__c,Parent_Row_Index__c,Per__c,Plan_Completed_Date__c,Price_Net__c,Price_Tax__c,Price__c,Project_No__c,Project__c,Purchase_Info_Inquiry__c,Purchase_Item_Type__c,Purchase_Order_Number__c,Purchase_Order_Price__c,Purchase_Order__c,Quantity_Detail__c,Quantity__c,Quote_Item__c,Quote__c,Reason_Code__c,Remark__c,Row_Index__c,SAPID__c,SGL__c,Sales_Amount_Total__c,Schedule_Date__c,Selected__c,Status_Overview__c,Subject_Alloc_Type__c,TaskID__c,Text_Project__c,Text__c,Type_Description_Bug__c,Type_of_Affair__c,Type_of_Bug__c,Type_of_Cost__c,Type_of_Price__c,Unit3__c,Unit__c,Value_of_Price__c,Vendor_Response__c,Vendor__c,Voucher_Info__c,Expense_Type__c,Text_Long__c,LeadName__c,OpportunityName__c,AccountName__c,ActivityPartialDescription__c,OwnerName__c,TaskSubject__c,Lead2_Id__c,Opportunity2_Id__c,Opportunity2__c,Customer2_Id__c,Customer2__c,Lead2__c,Subject__c,Attachment__c,Cost_of_Tax__c,Fixed__c,Inventory_Quantity__c,Item_Category__c,Job_Number__c,Material_Group__c,Out_Delivery__c,P_Inclusive_of_Tax__c,Ratio__c,Sales_Order_Number__c,Sales_Order__c,Street_House_Num__c,Type_of_Account_Assign__c,Zip_Code_City__c,LevelNumber__c,Purchasing_Request__c,Tprice__c,Price_Net_Formula__c,Leave_reason__c,Leave_type__c,SalesPricing_son2__c,UOM__c,time_number__c,Price_P__c,Amount_P__c,Price_Tax_F__c,End_date__c,Start_date__c,reference_mileage__c,enter_mileage__c,LeaveManage__c,End_Time__c,Start_Time__c,InventoryKinglai_table__c,Storage__c,batch__c,NumerationType__c,EndTime__c,StartTime__c,SalesPricing_son_table__c,Standard_parts__c,Device_fix_count__c,Device_fix_cost__c,Device_fix_date__c}\n13:51:08.65 (65941107)|CUMULATIVE_LIMIT_USAGE\n13:51:08.65 (65941107)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 0 out of 100\n  Number of query rows: 0 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 0 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n13:51:08.65 (65941107)|CUMULATIVE_LIMIT_USAGE_END\n\n13:51:08.14 (65988887)|CODE_UNIT_FINISHED|execute_anonymous_apex\n13:51:08.14 (67194462)|EXECUTION_FINISHED\n",
-			"settings":
-			{
-				"buffer_size": 5067,
-				"line_ending": "Windows",
-				"name": "Execute Anonymous Result",
-				"scratch": true
 			}
 		},
 		{
@@ -398,7 +380,7 @@
 			"file": "src/classes/AMLeaveApplicationExtension.cls",
 			"settings":
 			{
-				"buffer_size": 5319,
+				"buffer_size": 5389,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -434,7 +416,7 @@
 			"file": "src/classes/SapApprovalEnum.cls",
 			"settings":
 			{
-				"buffer_size": 7392,
+				"buffer_size": 7475,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -449,10 +431,11 @@
 			}
 		},
 		{
-			"file": "src/components/ApprovalProcessButtonSwitcher.component-meta.xml",
+			"file": "src/classes/AMEducationTrainingHandler.cls",
 			"settings":
 			{
-				"buffer_size": 203,
+				"buffer_size": 11131,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
@@ -460,16 +443,7 @@
 			"file": "src/pages/AMLeaveApplication.page",
 			"settings":
 			{
-				"buffer_size": 16159,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/pages/LeaveQuery.page",
-			"settings":
-			{
-				"buffer_size": 1872,
+				"buffer_size": 15857,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -478,25 +452,88 @@
 			"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplicationJS.js",
 			"settings":
 			{
-				"buffer_size": 4204,
+				"buffer_size": 4299,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/components/baseFormInfo.component",
-			"settings":
-			{
-				"buffer_size": 3083,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "src/components/ApprovalProcessButtonSwitcher.component",
 			"settings":
 			{
-				"buffer_size": 2003,
+				"buffer_size": 2108,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/RemoteActionsOfLeave.cls",
+			"settings":
+			{
+				"buffer_size": 1643,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/LeaveQuery.page",
+			"settings":
+			{
+				"buffer_size": 10670,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/LeaveQueryController.cls",
+			"settings":
+			{
+				"buffer_size": 1491,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMLeaveApplicationHandler.cls",
+			"settings":
+			{
+				"buffer_size": 2711,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/triggers/ApprovalManageTrigger.trigger",
+			"settings":
+			{
+				"buffer_size": 4344,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/ApproverUtils.cls",
+			"settings":
+			{
+				"buffer_size": 6934,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/components/baseFormInfo.component",
+			"settings":
+			{
+				"buffer_size": 3128,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/Utils.cls",
+			"settings":
+			{
+				"buffer_size": 65851,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -519,6 +556,15 @@
 			}
 		},
 		{
+			"file": "src/pages/ApprovalContact.page",
+			"settings":
+			{
+				"buffer_size": 10042,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"contents": "<section class=\"side-2\" id=\"pageTop\">\n    <div class=\"container clearfix\">\n        <aside class=\"one-fourth\" id=\"sidebar\">\n            <div class=\"widget\">\n                <h3>\n                    Exhibition\n                </h3>\n                <nav class=\"manu\">\n                    <li>\n                        <a href=\"#SEMICON_Japan_2017\">\n                            SEMICON Japan 2017\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"#SEMICON China 2018 \">\n                            SEMICON China 2018\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"#2018 Western China International Vacuum Industry Exhibition \">\n                            2018 Western China International Vacuum Industry Exhibition\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"#China International Battery Fair (CIBF 2018) \">\n                            China International Battery Fair (CIBF 2018)\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"#SRI 2018 \">\n                            SRI 2018\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"#2018 OPTO TAIWAN \">\n                            2018 OPTO TAIWAN\n                        </a>\n                    </li>\n                </nav>\n            </div>\n        </aside>\n    </div>\n</section>\n<section class=\"three-fourths column-last\" id=\"main\">\n    <div class=\"container clearfix\">\n        <!-- begin our company -->\n        <section class=\"center-2\" id=\"SEMICON_Japan_2017\">\n            <h2>\n                SEMICON Japan 2017\n            </h2>\n            <p>\n                KING LAI, founded in 1991 in Taiwan, specializes in manufacturing stainless steel fittings and components for fluid and gas applications used in piping systems. Our expertise and top quality products are widely accepted in hygienic (food & dairy), pharmaceutical, vacuum, and semi-conductor/electronics industries.\n                <br/>\n                <br/>\n                Please visit us at SEMICON Japan 2017- 【AdvanTorr BOOTH NO : N2 2220】\n                <br/>\n                <br/>\n                Date: 2017,12/13~12/15\n                <br/>\n                <br/>\n                Place: Tokyo Big Sight ,Tokyo, Japan\n                <br/>\n                <br/>\n                Official Website:\n                <a href=\"http://www.semiconjapan.org/en/?vlang=en\" target=\"_blank\">\n                    http://www.semiconjapan.org/en/?vlang=en\n                </a>\n            </p>\n            <p>\n                <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/semicon_japan_2017_1.jpg\" width=\"100%\"/>\n            </p>\n            <p>\n                <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/semicon_japan_2017_2.jpg\" width=\"100%\"/>\n            </p>\n        </section>\n        <section class=\"center-2\" id=\"SEMICON China 2018\">\n            <h2>\n                SEMICON China 2018\n            </h2>\n            <p>\n                <strong>\n                    <span lang=\"EN-US\">\n                        Welcome to SEMICON China 2018\n                    </span>\n                </strong>\n            </p>\n            <p>\n                <strong>\n                    <strong>\n                        <span lang=\"EN-US\">\n                            Please visit us at SEMICON China 2018-\n                        </span>\n                    </strong>\n                    【\n                    <strong>\n                        <span lang=\"EN-US\">\n                            AdvanTorr Vacuum Products & Vacuum Valves\n                        </span>\n                    </strong>\n                    】\n                </strong>\n            </p>\n            <table>\n                <tbody>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Booth No:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                N1 1451\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Date:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                2018/03/14~03/16\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Place:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                Shanghai New International Expo Centre\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Official Website:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                http://www.semiconchina.org/\n                            </p>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n            <p>\n                <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/02-SEMICON-China-2018-KING-LAI.jpg\" width=\"100%\"/>\n            </p>\n            <h2>\n            </h2>\n        </section>\n        <section class=\"center-2\">\n            <h2>\n                <strong>\n                    2018 Western China International Vacuum Industry Exhibition\n                </strong>\n            </h2>\n            <p>\n                <strong>\n                    <span lang=\"EN-US\">\n                        Welcome to\n                    </span>\n                    <span lang=\"EN-US\">\n                        2018 Western China International Vacuum Industry Exhibition\n                    </span>\n                </strong>\n            </p>\n            <p>\n                <strong>\n                    <strong>\n                        <span lang=\"EN-US\">\n                            Please visit us at\n                        </span>\n                        <span lang=\"EN-US\">\n                            2018 Western China International Vacuum Industry Exhibition-\n                        </span>\n                    </strong>\n                    【\n                    <strong>\n                        <span lang=\"EN-US\">\n                            AdvanTorr Vacuum Products & Vacuum Valves\n                        </span>\n                    </strong>\n                    】\n                </strong>\n            </p>\n            <table>\n                <tbody>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Booth No:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                V16\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Date:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                2018/03/15~03/18\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Place:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                China-Xi'an\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Official Website:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                <a href=\"http://www.cwieme.com/\">\n                                    http://www.cwieme.com/\n                                </a>\n                            </p>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n            <p>\n                <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/03-2018西部真空展.jpg\" width=\"100%\"/>\n            </p>\n        </section>\n        <!-- end our team -->\n        <section class=\"center-2\">\n            <h2>\n                <strong>\n                    China International Battery Fair (CIBF 2018)\n                </strong>\n            </h2>\n            <!-- begin clients -->\n            <p>\n            </p>\n            <p>\n                <strong>\n                    <span lang=\"EN-US\">\n                        Welcome to\n                        <strong>\n                            China International Battery Fair (CIBF 2018)\n                        </strong>\n                    </span>\n                </strong>\n            </p>\n            <p>\n                <strong>\n                    <strong>\n                        <span lang=\"EN-US\">\n                            Please visit us at\n                            <strong>\n                                China International Battery Fair (CIBF 2018)-\n                            </strong>\n                        </span>\n                    </strong>\n                    【\n                    <strong>\n                        <span lang=\"EN-US\">\n                            AdvanTorr Vacuum Products & Vacuum Valves\n                        </span>\n                    </strong>\n                    】\n                </strong>\n            </p>\n            <table>\n                <tbody>\n                    <tr>\n                        <td width=\"189\">\n                            <p>\n                                <strong>\n                                    Booth No:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                3T045\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"189\">\n                            <p>\n                                <strong>\n                                    Date:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                2018/5/22~5/24\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"189\">\n                            <p>\n                                <strong>\n                                    Place:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                Shenzhen Convention and Exhibition Center\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"189\">\n                            <p>\n                                <strong>\n                                    Official Website:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                <a href=\"http://www.cibf.net/\">\n                                    http://www.cibf.net/\n                                </a>\n                            </p>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n            <p>\n                <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/04-CIBF-2018.jpg\" width=\"100%\"/>\n            </p>\n        </section>\n        <section class=\"center-2\">\n        <p>\n           \n                <span style=\"font-family: 'arial black', 'avant garde'; font-size: 12pt;\">\n                    <strong>\n                        <span lang=\"EN-US\">\n                            SRI 2018\n                        </span>\n                    </strong>\n                </span>\n            \n        </p>\n        <p>\n            <strong>\n                <span lang=\"EN-US\">\n                    Welcome to\n                </span>\n                <span lang=\"EN-US\">\n                    SRI 2018\n                </span>\n            </strong>\n        </p>\n        <p>\n            <strong>\n                <strong>\n                    <span lang=\"EN-US\">\n                        Please visit us at\n                    </span>\n                    <span lang=\"EN-US\">\n                        SRI 2018-\n                    </span>\n                </strong>\n                【\n                <strong>\n                    <span lang=\"EN-US\">\n                        AdvanTorr Vacuum Products & Vacuum Valves\n                    </span>\n                </strong>\n                】\n            </strong>\n        </p>\n        <table>\n            <tbody>\n                <tr>\n                    <td width=\"189\">\n                        <p>\n                            <strong>\n                                Booth No:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            3SA2\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td width=\"189\">\n                        <p>\n                            <strong>\n                                Date:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            2018/6/10-6/15\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td width=\"189\">\n                        <p>\n                            <strong>\n                                Place:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            Taipei International Convention Center\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td width=\"189\">\n                        <p>\n                            <strong>\n                                Official Website:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            <a href=\"http://sri2018.nsrrc.org.tw/site/page.aspx?pid=901&sid=1157&lang=en\">\n                                http://sri2018.nsrrc.org.tw/site/page.aspx?pid=901&sid;=1157〈=en\n                            </a>\n                        </p>\n                    </td>\n                </tr>\n            </tbody>\n        </table>\n        <p>\n            <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/05-SRI-2018.jpg\" width=\"100%\"/>\n        </p>\n        <!-- end clients -->\n         </section>\n        <section class=\"center-2\">\n        <p>\n            <span style=\"font-family: 'arial black', 'avant garde'; font-size: 12pt;\">\n                <strong>\n                    <span lang=\"EN-US\">\n                        2018 OPTO TAIWAN\n                    </span>\n                </strong>\n            </span>\n        </p>\n        <p>\n            <strong>\n                <span lang=\"EN-US\">\n                    Welcome to\n                </span>\n                <span lang=\"EN-US\">\n                    2018 OPTO TAIWAN\n                </span>\n            </strong>\n        </p>\n        <p>\n            <strong>\n                <strong>\n                    <span lang=\"EN-US\">\n                        Please visit us at\n                    </span>\n                    <span lang=\"EN-US\">\n                        2018 OPTO TAIWAN-\n                    </span>\n                </strong>\n                【\n                <strong>\n                    <span lang=\"EN-US\">\n                        AdvanTorr Vacuum Products & Vacuum Valves\n                    </span>\n                </strong>\n                】\n            </strong>\n        </p>\n        <table>\n            <tbody>\n                <tr>\n                    <td width=\"165\">\n                        <p>\n                            <strong>\n                                Booth No:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td width=\"165\">\n                        <p>\n                            <strong>\n                                Date:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            2018/8/29~8/31\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td width=\"165\">\n                        <p>\n                            <strong>\n                                Place:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            TWTC Nangang Exhibition Hall\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td width=\"165\">\n                        <p>\n                            <strong>\n                                Official Website:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            <a href=\"http://www.optotaiwan.com/\">\n                                http://www.optotaiwan.com/\n                            </a>\n                        </p>\n                    </td>\n                </tr>\n            </tbody>\n        </table>\n        <p>\n            <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/06-OPTO-2018.jpg\" width=\"100%\"/>\n        </p>\n        </section>\n    </div>\n</section>",
 			"settings":
 			{
@@ -535,10 +581,10 @@
 			}
 		},
 		{
-			"contents": "\n\n\n// for(Contact c : [SELECT Id, Email, Number__c, Name, SF_User__c FROM Contact])\n// {\n//     KlallContactMap.put(c.Id, c);\n//     KlAllContactMapByNum.put(c.Number__c, c);\n// }\n// for(User u : [SELECT Id, Email, Number__c, Name FROM User])\n// {\n//     KlAllUserMapByNum.put(u.Number__c, u);\n//     KlAllUserMap.put(u.Id,u);\n// }\n\nString a = '郭 士銓-30210286';\nList<String> pList = a.split(',');\nList<String> empidList = new List<String>();\nfor(String p : pList)\n{\n    empidList.add(p.substringAfter('-'));\n\n}\n//for(User ps :[SELECT Id, Email, Name FROM User WHERE Number__c IN : empidList]){\n//    sendMailToParticipants(ps.Name, ps.email, cam);\n//}\nOrganizational__c o = new Organizational__c();\no.Approval_Rule__c  = '指定人一阶主管';\nId bossId = null;\nfor(String num : empidList)\n{\n\n    //取得主管email\n    \n    Contact toCon = Peoples.getInstance().KlAllContactMapGetByNum.get(num);\n    System.debug('toCon='+toCon);\n    bossId           = ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(o, toCon.Id).get(0);\n    System.debug('bossID='+bossId);\n    String bossEmail    = Peoples.getInstance().KlAllUserMapGetById.get(bossId).email;\n    String toEmail      = toCon.email;\n    System.debug('bossemail='+bossEmail+' mailto='+toEmail);\n    //sendMailToParticipants(toCon.Name , toEmail , bossEmail , cam);\n}\nSystem.debug(Peoples.getInstance().KlAllContactMapGetByNum.get('10212239'));\nSystem.debug(Peoples.getInstance().KlAllUserMapGetByNum.get('10212239'));//10210853 10210016 10212239 \n\nSystem_Setting__c ssc = System_Setting__c.getValues('Setting');\nSystem.debug(System_Setting__c.getSObjectType());\n\nSystem.debug(Schema.getGlobalDescribe().get('Approval_Managed_Item__c').getDescribe().getRecordTypeInfosByName().get('请假明细表').getRecordTypeId());\n\nList<Id>  setSFID = new List<Id>();\nsetSFID.add(null);\nSystem.debug(setSFID.get(0) == null);\n\nList<Id>  setSFID = new List<Id>();\nContact con = [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c,Corp_Code__c FROM Contact WHERE Id = '00328000014shOr'];\nif ((setSFID.size() == 0 || setSFID.get(0) == null) && con.Corp_Code__c == '3000' && con.SF_User__r.Is_First_Manager__c){\n             setSFID.add(Id.valueOf('00528000006nvgB'));\n             System.debug('ANY o');\n        }\n",
+			"contents": "\n\n\n// for(Contact c : [SELECT Id, Email, Number__c, Name, SF_User__c FROM Contact])\n// {\n//     KlallContactMap.put(c.Id, c);\n//     KlAllContactMapByNum.put(c.Number__c, c);\n// }\n// for(User u : [SELECT Id, Email, Number__c, Name FROM User])\n// {\n//     KlAllUserMapByNum.put(u.Number__c, u);\n//     KlAllUserMap.put(u.Id,u);\n// }\n\nString a = '郭 士銓-30210286';\nList<String> pList = a.split(',');\nList<String> empidList = new List<String>();\nfor(String p : pList)\n{\n    empidList.add(p.substringAfter('-'));\n\n}\n//for(User ps :[SELECT Id, Email, Name FROM User WHERE Number__c IN : empidList]){\n//    sendMailToParticipants(ps.Name, ps.email, cam);\n//}\nOrganizational__c o = new Organizational__c();\no.Approval_Rule__c  = '指定人一阶主管';\nId bossId = null;\nfor(String num : empidList)\n{\n\n    //取得主管email\n    \n    Contact toCon = Peoples.getInstance().KlAllContactMapGetByNum.get(num);\n    System.debug('toCon='+toCon);\n    bossId           = ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(o, toCon.Id).get(0);\n    System.debug('bossID='+bossId);\n    String bossEmail    = Peoples.getInstance().KlAllUserMapGetById.get(bossId).email;\n    String toEmail      = toCon.email;\n    System.debug('bossemail='+bossEmail+' mailto='+toEmail);\n    //sendMailToParticipants(toCon.Name , toEmail , bossEmail , cam);\n}\nSystem.debug(Peoples.getInstance().KlAllContactMapGetByNum.get('10212239'));\nSystem.debug(Peoples.getInstance().KlAllUserMapGetByNum.get('10212239'));//10210853 10210016 10212239 \n\nSystem_Setting__c ssc = System_Setting__c.getValues('Setting');\nSystem.debug(System_Setting__c.getSObjectType());\n\nSystem.debug(Schema.getGlobalDescribe().get('Approval_Managed_Item__c').getDescribe().getRecordTypeInfosByName().get('请假明细表').getRecordTypeId());\n\nList<Id>  setSFID = new List<Id>();\nsetSFID.add(null);\nSystem.debug(setSFID.get(0) == null);\n\nList<Id>  setSFID = new List<Id>();\nContact con = [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c,Corp_Code__c FROM Contact WHERE Id = '00328000014shOr'];\nif ((setSFID.size() == 0 || setSFID.get(0) == null) && con.Corp_Code__c == '3000' && con.SF_User__r.Is_First_Manager__c){\n             setSFID.add(Id.valueOf('00528000006nvgB'));\n             System.debug('ANY o');\n        }\n\nMap<String,String> inputMap = new Map<String,String>();\ninputMap.put('aa','');\ninputMap.put('aas','aaas');\ninputMap.put('end_date','2018/02/01');\ninputMap.put('aasd','aaasd');\ninputMap.put('start_date','2018/01/01');\nSystem.debug(Utils.checkStringToBuildSOQLString(inputMap));\n",
 			"settings":
 			{
-				"buffer_size": 2264,
+				"buffer_size": 2542,
 				"line_ending": "Windows"
 			}
 		}
@@ -606,13 +652,19 @@
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app",
 		"/D/mmworkspace/TestEvn/src",
-		"/D/mmworkspace/TestEvn/src/components",
-		"/D/mmworkspace/TestEvn/src/pages"
+		"/D/mmworkspace/TestEvn/src/classes",
+		"/D/mmworkspace/TestEvn/src/triggers"
 	],
 	"file_history":
 	[
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplicationJS.js",
+		"/D/mmworkspace/TestEvn/src/classes/ApprovalPermissionHandler.cls",
+		"/D/mmworkspace/TestEvn/src/triggers/ApprovalManageTrigger.trigger",
+		"/D/mmworkspace/TestEvn/src/components/ApprovalProcessButtonSwitcher.component-meta.xml",
 		"/D/mmworkspace/TestEvn/src/components/baseFormInfo.component",
+		"/D/mmworkspace/TestEvn/src/pages/AMEducationTraining.page",
+		"/D/mmworkspace/TestEvn/src/components/ApprovalProcessButtonSwitcher.component",
+		"/D/mmworkspace/TestEvn/src/pages/LeaveQuery.page-meta.xml",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplicationJS.js",
 		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtension.cls",
 		"/D/mmworkspace/TestEvn/src/components/ProvalProcessButtonSwitcher.component",
 		"/D/mmworkspace/TestEvn/src/classes/AMExpenseReimburseExtension.cls",
@@ -635,7 +687,6 @@
 		"/D/mmworkspace/TestEvn/src/pages/AMleave.page",
 		"/D/mmworkspace/TestEvn/src/pages/ApprovalQuery.page",
 		"/D/mmworkspace/TestEvn/src/classes/SapApprovalEnum.cls",
-		"/D/mmworkspace/TestEvn/src/pages/AMEducationTraining.page",
 		"/D/mmworkspace/TestEvn/src/pages/ApproverGroupMaintainSystem.page",
 		"/D/mmworkspace/TestEvn/src/classes/ApproverGroupMaintainSystemController.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorExtension.cls",
@@ -667,7 +718,6 @@
 		"/D/mmworkspace/TestEvn/src/classes/ApproverGroupMaintainSystemExtention.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ApproverUtilsTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/PeoplesTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/ApprovalPermissionHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ApprovalManualShareHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/RequiredFieldsCheck.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ApprovalContactExtension.cls",
@@ -734,11 +784,7 @@
 		"/D/mmworkspace/SB_Cheng/src/classes/SapApprovalEnum.cls",
 		"/d/young_cheng/young/KL-TEST-20171114/src/pages/ApprovalHome.page",
 		"/D/mmworkspace/SB_Cheng/src/classes/ApprovalHomeController.cls",
-		"/D/mmworkspace/SB_Cheng/src/classes/AMEducationTrainingExtension.cls",
-		"/d/young_cheng/young/KL-TEST-20171117/src/classes/AMEducationTrainingHandler.cls",
-		"/d/young_cheng/young/KL-TEST-20171114/src/classes/SapApprovalEnum.cls",
-		"/d/young_cheng/young/KL-TEST-20171114/src/pages/AMEducationTraining.page",
-		"/d/young_cheng/young/KL-TEST-20171114/src/classes/ApprovalHomeController.cls"
+		"/D/mmworkspace/SB_Cheng/src/classes/AMEducationTrainingExtension.cls"
 	],
 	"find":
 	{
@@ -829,7 +875,7 @@
 	"groups":
 	[
 		{
-			"selected": 15,
+			"selected": 17,
 			"sheets":
 			[
 				{
@@ -837,15 +883,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2977,
+						"buffer_size": 3075,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2023,
-								2973
+								2974,
+								3071
 							]
 						],
 						"settings":
@@ -853,98 +899,14 @@
 							"syntax": "Packages/Java/Java.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 660.0,
+						"translation.y": 834.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 18,
+					"stack_index": 22,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5063,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1772,
-								4316
-							]
-						],
-						"settings":
-						{
-							"is_debug_log": true,
-							"syntax": "Packages/Java/Java.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 120.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 17,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5063,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5063,
-								5063
-							]
-						],
-						"settings":
-						{
-							"is_debug_log": true,
-							"syntax": "Packages/Java/Java.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 360.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 19,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5067,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5067,
-								5067
-							]
-						],
-						"settings":
-						{
-							"is_debug_log": true,
-							"syntax": "Packages/Java/Java.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 420.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 20,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
 					"file": "src/classes/SObjectUtils.cls",
 					"semi_transient": false,
 					"settings":
@@ -968,11 +930,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 23,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 2,
 					"file": "src/pages/MaterialKsklTable.page-meta.xml",
 					"semi_transient": false,
 					"settings":
@@ -996,11 +958,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 26,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 3,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1023,24 +985,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 25,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 4,
 					"file": "src/classes/AMLeaveApplicationExtension.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5319,
+						"buffer_size": 5389,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								839,
-								839
+								401,
+								407
 							]
 						],
 						"settings":
@@ -1050,14 +1012,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2760.0,
+						"translation.y": 300.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 5,
 					"file": "src/classes/BaseExtension.cls",
 					"semi_transient": false,
 					"settings":
@@ -1083,11 +1045,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 24,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 6,
 					"file": "src/classes/Peoples.cls",
 					"semi_transient": false,
 					"settings":
@@ -1110,14 +1072,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 60.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 16,
+					"stack_index": 20,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 7,
 					"file": "src/classes/VFShowInApprovalExtension.cls",
 					"semi_transient": false,
 					"settings":
@@ -1129,8 +1091,8 @@
 						"selection":
 						[
 							[
-								2017,
-								2017
+								2094,
+								2298
 							]
 						],
 						"settings":
@@ -1143,24 +1105,24 @@
 						"translation.y": 480.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 8,
 					"file": "src/classes/SapApprovalEnum.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7392,
+						"buffer_size": 7475,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7314,
-								7330
+								7294,
+								7310
 							]
 						],
 						"settings":
@@ -1169,14 +1131,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2827.0,
+						"translation.y": 2940.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 21,
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 9,
 					"file": "src/pages/AMVendorClaim.page",
 					"semi_transient": false,
 					"settings":
@@ -1199,19 +1161,19 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1431.0,
+						"translation.y": 1451.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
-					"file": "src/components/ApprovalProcessButtonSwitcher.component-meta.xml",
+					"buffer": 10,
+					"file": "src/classes/AMEducationTrainingHandler.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 203,
+						"buffer_size": 11131,
 						"regions":
 						{
 						},
@@ -1224,30 +1186,32 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/XML/XML.sublime-syntax"
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2880.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
+					"buffer": 11,
 					"file": "src/pages/AMLeaveApplication.page",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 16159,
+						"buffer_size": 15857,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4010,
-								4073
+								4555,
+								4566
 							]
 						],
 						"settings":
@@ -1255,57 +1219,27 @@
 							"syntax": "Packages/HTML/HTML.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1920.0,
+						"translation.y": 2547.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 15,
-					"file": "src/pages/LeaveQuery.page",
+					"buffer": 12,
+					"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplicationJS.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1872,
+						"buffer_size": 4299,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1647,
-								1647
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 120.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 16,
-					"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplicationJS.js",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 4204,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3249,
-								3280
+								1277,
+								1277
 							]
 						],
 						"settings":
@@ -1315,27 +1249,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 960.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 17,
-					"file": "src/components/baseFormInfo.component",
+					"buffer": 13,
+					"file": "src/components/ApprovalProcessButtonSwitcher.component",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3083,
+						"buffer_size": 2108,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2374,
-								2384
+								1285,
+								1285
 							]
 						],
 						"settings":
@@ -1345,55 +1279,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 300.0,
+						"translation.y": 360.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 18,
-					"file": "src/components/ApprovalProcessButtonSwitcher.component",
+					"buffer": 14,
+					"file": "src/classes/RemoteActionsOfLeave.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2003,
+						"buffer_size": 1643,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								459,
-								459
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 19,
-					"file": "src/classes/ApproverGroupMaintainSystemController.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1544,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								34,
-								34
+								602,
+								605
 							]
 						],
 						"settings":
@@ -1406,11 +1312,247 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "src/pages/LeaveQuery.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10670,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2568,
+								2568
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
 					"stack_index": 6,
 					"type": "text"
 				},
 				{
+					"buffer": 16,
+					"file": "src/classes/LeaveQueryController.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1491,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								112,
+								131
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"file": "src/classes/AMLeaveApplicationHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2711,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2272,
+								2375
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax"
+						},
+						"translation.x": 91.0,
+						"translation.y": 1020.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "src/triggers/ApprovalManageTrigger.trigger",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4344,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4344,
+								4344
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1620.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "src/classes/ApproverUtils.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6934,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								480,
+								480
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2226.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
 					"buffer": 20,
+					"file": "src/components/baseFormInfo.component",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3128,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2938,
+								2956
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 240.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 21,
+					"file": "src/classes/Utils.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 65851,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								59354,
+								59354
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 31159.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 22,
+					"file": "src/classes/ApproverGroupMaintainSystemController.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1544,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1424,
+								1424
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 23,
 					"file": "src/pages/ApproverGroupMaintainSystem.page",
 					"semi_transient": false,
 					"settings":
@@ -1422,8 +1564,8 @@
 						"selection":
 						[
 							[
-								5184,
-								5184
+								2008,
+								2012
 							]
 						],
 						"settings":
@@ -1433,14 +1575,43 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1542.0,
+						"translation.y": 1260.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 24,
+					"file": "src/pages/ApprovalContact.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10042,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2933,
+								3039
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1500.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 13,
 					"type": "text"
 				},
 				{
-					"buffer": 21,
+					"buffer": 25,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1463,11 +1634,11 @@
 						"translation.y": 114.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 23,
+					"stack_index": 27,
 					"type": "text"
 				},
 				{
-					"buffer": 22,
+					"buffer": 26,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1490,23 +1661,23 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 22,
+					"stack_index": 18,
 					"type": "text"
 				},
 				{
-					"buffer": 23,
+					"buffer": 27,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2264,
+						"buffer_size": 2542,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1854,
-								1861
+								2542,
+								2542
 							]
 						],
 						"settings":
@@ -1514,10 +1685,10 @@
 							"syntax": "Packages/Java/Java.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 19.0,
+						"translation.y": 799.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 21,
+					"stack_index": 17,
 					"type": "text"
 				}
 			]
@@ -1556,7 +1727,7 @@
 	"menu_visible": true,
 	"output.MavensMate-OutputPanel":
 	{
-		"height": 158.0
+		"height": 235.0
 	},
 	"output.error":
 	{
@@ -1580,8 +1751,16 @@
 		"selected_items":
 		[
 			[
+				"util",
+				"src\\classes\\Utils.cls"
+			],
+			[
 				"amedu",
-				"src\\classes\\AMEducationTrainingExtension.cls"
+				"src\\pages\\AMEducationTraining.page"
+			],
+			[
+				"appro",
+				"src\\pages\\ApprovalContact.page"
 			],
 			[
 				"uti",
@@ -1717,10 +1896,6 @@
 			],
 			[
 				"ut",
-				"src\\classes\\Utils.cls"
-			],
-			[
-				"util",
 				"src\\classes\\Utils.cls"
 			],
 			[
@@ -1916,7 +2091,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 332.0,
+	"side_bar_width": 648.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
