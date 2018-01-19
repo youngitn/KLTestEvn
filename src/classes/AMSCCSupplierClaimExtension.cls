@@ -14,7 +14,14 @@ public with sharing class AMSCCSupplierClaimExtension {
         am = Database.query(sql); 
     }
 
-     public PageReference save() {
+    public PageReference save() {
+        try {
+            upsert am;
+        } catch (Exception e) {
+            System.debug('The following exception has occurred: ' + e.getMessage());
+            ApexPages.addMessages(e);
+            return null;
+        }
         return new PageReference('/' + am.Id);
     }
 

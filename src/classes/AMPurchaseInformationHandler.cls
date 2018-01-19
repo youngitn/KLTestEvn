@@ -68,7 +68,7 @@
  	    }else if(cam.Applicant_Corp_Code__c != '3000'  && 
 	 		cam.Kind_of_Material__c != 'F'        &&
 	 		cam.Applicant_Code__c == '10210940'){
-	 		return utils.getUserByEmployeeCode('10211037');
+	 		return utils.getUserByEmployeeCode('10211961');
 	 	//张 伟-10210919
 		 }else if(cam.Applicant_Corp_Code__c != '3000'  && 
 	 		cam.Kind_of_Material__c == 'A'        &&
