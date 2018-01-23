@@ -5,35 +5,92 @@
     description="" type="ApexPages.Action" required="true"/>
     <apex:attribute name="cancelAction" 
     description="" type="ApexPages.Action" required="true"/>
+    <apex:attribute name="isEditable" 
+    description="" type="Boolean" required="true"/>
     <script>
+
 	j$(function() {
+        let btnEdit = j$('input[id$=btnEdit]');
+        let btnSave = j$('input[id$=btnSave]');
+        let btnCancel = j$('input[id$=btnCancel]');
+        let btnCancelEdit = j$('input[id$=btnCancelEdit]');
+		
+        //一開始全部隱藏
+        buttonInit(btnEdit,btnSave,btnCancel,btnCancelEdit);
+        
+        //新建表單頁面 隱藏編輯,和取消編輯按鈕
+        if ('{!Status}' === 'NEW') {
+            newIn(btnEdit,btnSave,btnCancel,btnCancelEdit);
+            
 
-		j$('input[id*=btnCancelEdit]').on('click', function(event) {
-                 j$('input[type = submit]').hide();
-                 j$('input[id$=btnEdit]').show();
-                 j$(this).hide()
+        }//審批表單頁面
+        else if ('{!Status}' === 'PROCESS') {
+           inApprovalProcess(btnEdit,btnSave,btnCancel,btnCancelEdit);
+                                   
+        }//狀態不是已通過就是已拒絕
+        else{
+            approvalDone(btnEdit,btnSave,btnCancel,btnCancelEdit);
+        }
+        classSeting(btnEdit);
+        classSeting(btnSave);
+        classSeting(btnCancel);
+        classSeting(btnCancelEdit);
+        
+            
+    });
+
+    //一進頁面的初始動作
+    function buttonInit(btnEdit,btnSave,btnCancel,btnCancelEdit){
+        btnEdit.hide();
+        btnSave.hide();
+        btnCancel.hide();
+        btnCancelEdit.hide();
+    }
+    //創建頁面動作
+    function newIn(btnEdit,btnSave,btnCancel,btnCancelEdit){
+        btnSave.show();
+        btnCancel.show();
+    }
+    //審批中動作
+    function inApprovalProcess(btnEdit,btnSave,btnCancel,btnCancelEdit){
+        //隱藏日期欄位下的"當日日期"點擊輸入字串
+        j$('.dateFormat').hide(); 
+        // 如果目前關卡有存在任何可編輯的欄位,編輯按鈕才開啟
+        // 並執行可編輯的事件綁定&按鈕顯示
+        if({!isEditable}){
+            btnEdit.show();
+            //先隱藏按下編輯紐才會出現的按鈕
+            btnSave.hide();
+            //新建頁面的取消在審批頁面不需要
+            btnCancel.hide();
+             //顯示按下編輯紐才會出現得按鈕 隱藏編輯紐   
+             btnEdit.on('click', function(event) {
+                 btnCancelEdit.show();
+                 btnSave.show();
+                 btnEdit.hide();
+                 
+            });
+
+             //按下取消編輯紐 隱藏自己 顯示編輯紐
+             btnCancelEdit.on('click', function(event) {
+                 btnSave.hide();
+                 btnEdit.show();
+                 btnCancelEdit.hide()
              });
+        }else{
+                btnEdit.hide();   
+        }
+    }
+    //已通過或已拒絕動作
+    function approvalDone(btnEdit,btnSave,btnCancel,btnCancelEdit){
+         btnSave.hide();
+         btnCancel.hide();
+    }
 
-        if ('{!Status}' === 'INSERT') {
-            j$('input[id$=btnEdit],input[id$=btnCancelEdit]').hide();
-
-        } else if ('{!Status}' === 'PROCESS') {                         
-            if (true /*如果有編輯權限,這部分要靠後端了*/ ) {
-             j$('input[type = submit],input[id$=btnCancelEdit]').hide();
-             j$('input[id$=btnEdit]').on('click', function(event) {
-                 j$('input[id$=btnCancelEdit]').show();
-                 j$('input[type = submit]').show();
-                 j$(this).hide();
-                 j$('input[id$=btnCancel]').hide();
-             });
-         }
-
-     }
-
-     j$(".action-btn,#btnCancelEdit,input[id$=btnSave],input[id$=btnCancel],#btnEdit")
-            .removeAttr('class')
+    function classSeting(domItem){
+        domItem.removeAttr('class')
             .addClass("pure-button pure-button-primary pure-u-1-1 pure-u-md-1-4");
- });
+    }
     </script>
     <div class="pure-g">
         <div class="pure-u-1-1 pure-u-md-1-5">
