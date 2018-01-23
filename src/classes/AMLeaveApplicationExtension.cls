@@ -20,6 +20,8 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
             am = (Approval_Managed__c)SObjectUtils.init(am);
             newlist1();
 
+        }else{
+            System.debug(Utils.getNodeEditFields(con.getId(),this.recordTypeId));
         }
         
         
@@ -96,7 +98,11 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
                     }
                 }
             }
-
+            if (am.Sum_Vacation__c >= 24 && am.Is_Been_Evaluated__c == false)
+            {
+                ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '請假天數大於三天,請勾選"連續休假天數是否三天以上(含例假/國定假日)"欄位!'));
+                return null;
+            }
             //年休和>剩余年休||调休和>剩余调休 ->报错
             if (am.Sum_Vacation__c == 0)
             {
