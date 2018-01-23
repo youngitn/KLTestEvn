@@ -1,8 +1,8 @@
 public without sharing class AMSCCSupplierClaimHandler implements Triggers.Handler {
     public void handle() {
-        Map<Decimal,Organizational__c>  mapSpecify = null;
+        Map<Decimal,Organizational__c>  mapSpecify = null; 
         Id rtId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.SCCSUPPLIERCLAIM,'Custom_Approval_Managed__c');
-        if (Trigger.isBefore && Trigger.isInsert) {
+        if (Trigger.isBefore && Trigger.isInsert) { 
             for (Custom_Approval_Managed__c cam : (List<Custom_Approval_Managed__c>)Trigger.new) {
                 if (cam.RecordTypeId == rtId) {
                     if(mapSpecify == null){
@@ -32,7 +32,8 @@ public without sharing class AMSCCSupplierClaimHandler implements Triggers.Handl
         //节点一：主管审核
         cam.Approval_User1__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(1),cam.Applicant__c),0);
         //节点二: 生产/业务单位
-        cam.Approval_User2__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2),cam.Approval_User2__c),0);
+        // Custom_Approval_Managed__c am = new Custom_Approval_Managed__c();
+        cam.Approval_User2__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2),cam.Applicant__c),0);
         //节点二: 生产/业务单位
         cam.Approval_User3__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3),cam.Applicant__c),0);
         //节点四: 成本中心核算
