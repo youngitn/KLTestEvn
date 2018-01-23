@@ -18,7 +18,7 @@ public without sharing class APtest implements Triggers.Handler {
                 return;
             }
             //系统管理员
-            Map<Id,Profile> mapPF = new Map<Id,Profile>([SELECT Id,Name FROM Profile WHERE Name='系统管理员' OR Name='Administrator']);
+            Map<Id,Profile> mapPF = new Map<Id,Profile>([SELECT Id,Name FROM Profile WHERE Name='系统管理员' OR Name='Administrator' OR Name='系統管理員']);
             Id uId = UserInfo.getUserId();
             System.debug(LoggingLevel.INFO, '*** uId: ' + uId);
             Id pId = UserInfo.getProfileId();
