@@ -9,6 +9,9 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
     public Id detailRecTypeId {set; get;}
     public List<SObject> detailSObjList {set; get;}
     public String nowStatus {GET; SET;}
+    public String nowNode  {GET; SET;}
+    public Boolean isEditable {GET; SET;}
+
     /////////////////////////////////////////////////////////////////////////////////////////////////
     // BaseExtension
     // 屬性 -->
@@ -29,7 +32,8 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
     {
         super(sobjName, ApprovalName, stdController);
         isOld = false;
-        nowStatus = 'INSERT';
+        isEditable = false;
+        nowStatus = 'NEW';
         //有子項 則進行子項紀錄類型查詢
         if (DetailApprovalName != null)
         {
@@ -43,13 +47,23 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
         //如有子項也一併處理
         if (stdController.getId() != null)
         {
-            nowStatus = 'PROCESS';
-            isOld = true;
-            String sql = '';
-        
+             String sql = '';
             sql += 'Select ' + SObjectUtils.getAllFields(sobjName).get(sobjName) + ' from ' + sobjName;
             sql += ' WHERE Id = \'' + stdController.getId() + '\'';
             this.sobj = Database.query(sql);
+
+            if ((String)this.sobj.get('Approval_Status__c') == 'S'){
+                isEditable = ProcessUtils.checkEditable(stdController.getId(),recordTypeId);
+                nowStatus = 'PROCESS';
+            }else{
+                nowStatus = 'RejectedOrApproved';
+            }
+            
+            isOld = true;
+           
+            
+            
+            
             System.debug('master record SQL = ' + sql);
 
             //如果有子項則進入處理
@@ -83,4 +97,6 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
     {
         return 'Hello ' + (String)this.sobj.get('name') + ' (' + (Id)this.sobj.get('Id') + ')';
     }
+
+    
 }
