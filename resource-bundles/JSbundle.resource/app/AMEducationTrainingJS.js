@@ -69,7 +69,7 @@
                      });
                      //onfocus="ActivityFunction.saveStartTime('StartDateTime','StartDateTime_time');ActivityFunction.showTimePicker('StartDateTime_time')"
                      //目前只提供判斷空值功能
-                     j$('form[id*=validateForm]').formValidator();
+                     //j$('form[id*=validateForm]').formValidator();
                      // j$('input[id$=BegingTime__c],input[id$=EndTime__c]').timepicker({
                      //     timeFormat: 'HH:mm ',
                      //     interval: 30,
