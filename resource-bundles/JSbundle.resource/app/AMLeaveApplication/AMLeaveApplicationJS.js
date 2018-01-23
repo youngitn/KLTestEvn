@@ -2,7 +2,10 @@
  var openLookupPage = null;
  
  j$(function() {
-      
+    j$('.dateFormat').hide();
+    //先讓請假單一張單子只能填一種假別
+     j$("input[id*=btnAdd]").hide();
+     j$("input[id*=btnDel]").hide();
      j$("select[id*=Approval_Status]").bind("change", function() {
          j$(this).val('D');
      });
