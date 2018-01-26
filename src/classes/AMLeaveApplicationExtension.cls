@@ -20,29 +20,28 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
             am = (Approval_Managed__c)SObjectUtils.init(am);
             newlist1();
 
-        }else{
-            System.debug(Utils.getNodeEditFields(con.getId(),this.recordTypeId));
         }
         
         
     }
 
     public override PageReference saveAction()
-    {   System.debug(Start_date);
+    {   
+
         if (String.isNotBlank(am.Employee__c) )
         {
-            List<Contact> lstCon    = [SELECT Name, Number__c FROM Contact WHERE Id = :am.Employee__c AND RecordType.DeveloperName = 'Staff'];
-            if (lstCon.size() > 0)
-            {
-                am.Employee_Code__c = lstCon[0].Number__c;
-                am.Employee_Name__c = lstCon[0].Name;
+            //List<Contact> lstCon    = [SELECT Name, Number__c FROM Contact WHERE Id = :am.Employee__c AND RecordType.DeveloperName = 'Staff'];
+             Contact c = this.contactsById.get(am.Employee__c);
+             if (c != null)
+             {
+                am.Employee_Code__c = this.contactsById.get(am.Employee__c).Number__c;
+                am.Employee_Name__c = this.contactsById.get(am.Employee__c).Name;
             }
         }
         else
         {
-            am.Employee_Code__c = null;
-            am.Employee_Name__c = null;
-            am.Employee__c      = null;
+           ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '請假人不可為空!'));
+           return null;
         }
         try
         {
@@ -85,7 +84,7 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
                     ami.LeaveManage__c  = am.Id;
                     am.Sum_Vacation__c += Decimal.valueOf(ami.time_number__c);
 
-                    //计算年休和
+                    //计算特休和
                     if (ami.Leave_type__c == '1006' && Decimal.valueOf(ami.time_number__c) != null)
                     {
                         sum1 -= Decimal.valueOf(ami.time_number__c);
@@ -98,6 +97,7 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
                     }
                 }
             }
+            //單筆請假時數總和超過24小時,等於連續三天,存檔時會顯示錯誤訊息.
             if (am.Sum_Vacation__c >= 24 && am.Is_Been_Evaluated__c == false)
             {
                 ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '請假天數大於三天,請勾選"連續休假天數是否三天以上(含例假/國定假日)"欄位!'));
@@ -166,6 +166,7 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
         data.put('Take_Office_Date',    String.valueOf(c.Take_Office_Date__c));
         data.put('Job_Title_Level',     c.Job_Title_Level__c);
         data.put('Applicant_position',  c.Post_Number__r.Post_Description__c);
+        data.put('Number__c',  c.Number__c);
         return (String)JSON.serialize(data);
     }
 
