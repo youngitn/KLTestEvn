@@ -1,9 +1,16 @@
 public with sharing class ProcessUtils {
 	public static Boolean checkEditable(Id objId,Id rId){
-       String nowNode = [SELECT Id, ProcessNodeId, ProcessNode.DeveloperName, ProcessInstance.ProcessDefinition.DeveloperName
+       
+      List<ProcessInstanceNode> pins = [SELECT Id, ProcessNodeId, ProcessNode.DeveloperName, ProcessInstance.ProcessDefinition.DeveloperName
                          FROM ProcessInstanceNode
                          WHERE ProcessInstance.TargetObjectId =:objId  ORDER BY CreatedDate DESC
-                                 LIMIT 1].get(0).ProcessNode.DeveloperName;
+                                 LIMIT 1];
+      String nowNode = 'APnone';
+      if (pins.size() > 0){
+        nowNode = pins.get(0).ProcessNode.DeveloperName;
+      }
+
+
         System.debug(nowNode);                        
         String RTDevName = [SELECT Id, Name, DeveloperName FROM RecordType WHERE id =: rId].get(0).DeveloperName;
         System.debug(RTDevName);
@@ -14,7 +21,8 @@ public with sharing class ProcessUtils {
                                                       AND Node_API__c = :nowNode
                                                               AND Approval_Name__c = :RTDevName];
         System.debug(setlist);
-        if (setlist.get(0).Node_Edit_Fields__c != null){
+
+        if (setlist.size() > 0 && setlist.get(0).Node_Edit_Fields__c != null){
             return true;
         }
         return false;
