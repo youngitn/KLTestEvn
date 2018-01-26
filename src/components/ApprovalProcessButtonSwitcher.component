@@ -14,22 +14,27 @@
         let btnSave = j$('input[id$=btnSave]');
         let btnCancel = j$('input[id$=btnCancel]');
         let btnCancelEdit = j$('input[id$=btnCancelEdit]');
+        //lookup dom
+        let lkwgt = j$('a[id$=lkwgt]');
+        let dateFormat = j$('.dateFormat');
 		
         //一開始全部隱藏
-        buttonInit(btnEdit,btnSave,btnCancel,btnCancelEdit);
-        
+        buttonInit(btnEdit,btnSave,btnCancel,btnCancelEdit,lkwgt,dateFormat);
+        //alert('{!Status}');
         //新建表單頁面 隱藏編輯,和取消編輯按鈕
         if ('{!Status}' === 'NEW') {
-            newIn(btnEdit,btnSave,btnCancel,btnCancelEdit);
+            newIn(btnSave,btnCancel,lkwgt,dateFormat);
             
 
-        }//審批表單頁面
+        }//審批表單頁面 其中會判斷是否允許編輯欄位
         else if ('{!Status}' === 'PROCESS') {
-           inApprovalProcess(btnEdit,btnSave,btnCancel,btnCancelEdit);
+           inApprovalProcess(btnEdit,btnSave,btnCancel,btnCancelEdit,lkwgt);
                                    
-        }//狀態不是已通過就是已拒絕
-        else{
-            approvalDone(btnEdit,btnSave,btnCancel,btnCancelEdit);
+        }//草稿
+        else if ('{!Status}' === 'SKETCH'){
+            btnSave.show();
+            btnCancel.show();
+            lkwgt.show();
         }
         classSeting(btnEdit);
         classSeting(btnSave);
@@ -40,29 +45,29 @@
     });
 
     //一進頁面的初始動作
-    function buttonInit(btnEdit,btnSave,btnCancel,btnCancelEdit){
+    function buttonInit(btnEdit,btnSave,btnCancel,btnCancelEdit,lkwgt,dateFormat){
         btnEdit.hide();
         btnSave.hide();
         btnCancel.hide();
         btnCancelEdit.hide();
+        lkwgt.hide();
+        dateFormat.hide();
     }
     //創建頁面動作
-    function newIn(btnEdit,btnSave,btnCancel,btnCancelEdit){
+    function newIn(btnSave,btnCancel,lkwgt,dateFormat){
         btnSave.show();
         btnCancel.show();
+        lkwgt.show();
+        dateFormat.show();
     }
     //審批中動作
-    function inApprovalProcess(btnEdit,btnSave,btnCancel,btnCancelEdit){
-        //隱藏日期欄位下的"當日日期"點擊輸入字串
-        j$('.dateFormat').hide(); 
+    function inApprovalProcess(btnEdit,btnSave,btnCancel,btnCancelEdit,lkwgt){
+    
         // 如果目前關卡有存在任何可編輯的欄位,編輯按鈕才開啟
         // 並執行可編輯的事件綁定&按鈕顯示
         if({!isEditable}){
+            lkwgt.show();
             btnEdit.show();
-            //先隱藏按下編輯紐才會出現的按鈕
-            btnSave.hide();
-            //新建頁面的取消在審批頁面不需要
-            btnCancel.hide();
              //顯示按下編輯紐才會出現得按鈕 隱藏編輯紐   
              btnEdit.on('click', function(event) {
                  btnCancelEdit.show();
@@ -77,15 +82,9 @@
                  btnEdit.show();
                  btnCancelEdit.hide()
              });
-        }else{
-                btnEdit.hide();   
         }
     }
-    //已通過或已拒絕動作
-    function approvalDone(btnEdit,btnSave,btnCancel,btnCancelEdit){
-         btnSave.hide();
-         btnCancel.hide();
-    }
+    
 
     function classSeting(domItem){
         domItem.removeAttr('class')
