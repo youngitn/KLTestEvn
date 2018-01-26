@@ -5,7 +5,7 @@ public with sharing class SObjectUtils
     {
         if(!Schema.getGlobalDescribe().containsKey(sobjectname)) return new Map<String, String> {'Exception' => 'Invalid object name'};
         Map<String, Schema.SObjectField> fields = Schema.getGlobalDescribe().get(sobjectname).getDescribe().SObjectType.getDescribe().fields.getMap();
-
+        System.debug('fields:'+fields);
         List<String> accessiblefields = new List<String>();
 
         for(Schema.SObjectField field : fields.values())
@@ -13,7 +13,7 @@ public with sharing class SObjectUtils
             if(field.getDescribe().isAccessible())
                 accessiblefields.add(field.getDescribe().getName());
         }
-
+        System.debug('accessiblefields:'+accessiblefields);
         String allfields = '';
 
         for(String fieldname : accessiblefields)
@@ -31,8 +31,19 @@ public with sharing class SObjectUtils
         if (u.Number__c != null && !String.isBlank(u.Number__c))
         {
             Contact c               = Peoples.getInstance().KlAllContactMapGetByNum.get(u.Number__c);
-            sobj.put('company_number__c', c.Corp_Code__c);
-            sobj.put('Dept_Name__c', c.Dept_Number__r.Name);
+            System.debug(c);
+            System.debug(u);
+            if (c.Corp_Code__c == null){
+                sobj.put('company_number__c','');
+            }else{
+                sobj.put('company_number__c', c.Corp_Code__c);
+            }
+            if (c.Dept_Number__r.Name == null){
+                sobj.put('Dept_Name__c','');
+            }else{
+                sobj.put('Dept_Name__c', c.Dept_Number__r.Name);
+            }
+            
 
         }
         //sobj.put('Approval_Name__c', '請假申請流程');
