@@ -416,7 +416,7 @@ public with sharing class ApprovalHomeController
             }
             else if(selectedApprovalValue == SapApprovalEnum.LEAVEAPPLICATION)
             {
-                //供應商索賠
+                //請假申請流程
 
                 pageName = '/apex/AMLeaveApplication';
 
