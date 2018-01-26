@@ -1,10 +1,20 @@
  j$( function() {
-                let nameDom = j$( "#queryApplicantName");
+                let nameDom = j$( "input[id$=queryApplicantName]");
                 let nunDom = j$( "#queryApplicantNum");
                 let queryTable;
                 nameDom.val(j$( "input[id$=baseApplicantName]" ).val());
                 nunDom.val(j$( "input[id$=baseApplicantNum]" ).val());
-
+                
+                j$("input[id$=queryApplicantName]").on('change',function(){
+                    if (j$(this).val() != ''){
+                        j$('body').block({
+                          message: '處理中...'
+                        });
+                      setTimeout(getEmpid, 1500);
+                    }
+                    
+                    
+                });
                 j$("#doQuery").on('click', function(event) {
                     event.preventDefault();
 
@@ -93,7 +103,9 @@
 
 
               } );
-
+              function sleep(d){
+                for(var t = Date.now();Date.now() - t <= d;);
+              }
               function getSelectTypesOfLeave(){
                 let conceptName = new Map();
                 let queryTypesOfLeaveOpt = j$( "select[id$=queryTypesOfLeave]" ).find("option");
@@ -106,7 +118,24 @@
                  console.log(conceptName);
                  return conceptName;
               }
+              function getEmpid(){
+                let cId = j$("input[id $= queryApplicantName_lkid]").val();
+                    //alert(j$("input[id $= queryApplicantName_lkid]").val());
+                    LeaveQueryController.getEmpId(cId, function(result, event) {
+                       if (event.status && result != null) {
+                            
+                           
+                               j$( "#queryApplicantNum").val(result);
+                           
+                                                        
+                       }else{
+                         alert('錯誤發生');
+                       }
+                       j$('body').unblock();
 
+                   })
+
+              }
               function getSelectApproval_Status(){
                 let conceptName = new Map();
                 let queryTypesOfLeaveOpt = j$( "select[id$=queryAplStatus]" ).find("option");
