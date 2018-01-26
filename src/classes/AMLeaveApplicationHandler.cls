@@ -16,23 +16,27 @@ public with sharing class AMLeaveApplicationHandler  implements Triggers.Handler
             {
                 if (cam.RecordTypeId == rtId)
                 {
-
+                     if (cam.Employee__c == null){
+                        cam.addError('Employee__c is empty');
+                     }
                     if (mapSpecify == null)
                     {
                         //這裡的step來源是[流程配置] 不是Approval Processes
                         mapSpecify = Utils.getApprovalStepByAPIName(SapApprovalEnum.LEAVEAPPLICATION);
                     }
                     setApprovalUser(mapSpecify, cam);
+                    //申請人讀取權限
+                    //userIds.add( Peoples.getInstance().KlAllUserMapGetByNum.get(Peoples.getInstance().KlAllContactMapGetById.get(cam.Applicant__c).Number__c).Id);
+                    
+                    userIds.add( Peoples.getInstance().KlAllUserMapGetByNum.get(Peoples.getInstance().KlAllContactMapGetById.get(cam.Employee__c).Number__c).Id);
+
+                    if(userIds.size() > 0)
+                    {
+                        Utils.ManualShareRecordToUsers(userIds, 'Approval_Managed__c', String.valueOf(cam.get('Id')));
+                    }
                 }
 
-                //申請人讀取權限
-                userIds.add( Utils.getUserIdByContactID(cam.Applicant__c));
-                userIds.add( Utils.getUserIdByContactID(cam.Employee__c));
-
-                if(userIds.size() > 0)
-                {
-                    Utils.ManualShareRecordToUsers(userIds, 'Approval_Managed__c', String.valueOf(cam.get('Id')));
-                }
+                
             }
         }
         if (Trigger.isBefore && Trigger.isUpdate)
@@ -42,14 +46,16 @@ public with sharing class AMLeaveApplicationHandler  implements Triggers.Handler
             for (Approval_Managed__c cam : (List<Approval_Managed__c>)Trigger.new)
             {
 
-                if (cam.RecordTypeId == rtId && cam.Is_Reset_Approvaler__c)
+                if (cam.RecordTypeId == rtId )
                 {
-                    if (mapSpecify == null)
-                    {
-                        mapSpecify = Utils.getApprovalStepByAPIName(SapApprovalEnum.LEAVEAPPLICATION);
-                    }
-                    setApprovalUser(mapSpecify, cam);
-                    cam.Is_Reset_Approvaler__c = false;
+                    if (cam.Is_Reset_Approvaler__c){
+                        if (mapSpecify == null)
+                        {
+                            mapSpecify = Utils.getApprovalStepByAPIName(SapApprovalEnum.LEAVEAPPLICATION);
+                        }
+                        setApprovalUser(mapSpecify, cam);
+                        cam.Is_Reset_Approvaler__c = false;
+                    }                    
                 }
 
             }
