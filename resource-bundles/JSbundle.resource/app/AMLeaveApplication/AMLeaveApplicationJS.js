@@ -2,10 +2,10 @@
  var openLookupPage = null;
  
  j$(function() {
-    j$('.dateFormat').hide();
-    //先讓請假單一張單子只能填一種假別
-     j$("input[id*=btnAdd]").hide();
-     j$("input[id*=btnDel]").hide();
+    
+    
+   
+
      j$("select[id*=Approval_Status]").bind("change", function() {
          j$(this).val('D');
      });
@@ -13,6 +13,16 @@
          'readOnly': 'true',
          'onfocus': ''
      });
+
+     //到職日存檔後會自動給值 這邊只需要抓值 轉換 即可
+     let Take_Office_Date = j$('span[id $= Take_Office_Date]').children();
+     if (Take_Office_Date.html().trim() != ''){
+        let d = new Date(Take_Office_Date.html().trim());
+        j$('#Take_Office_Date_box').val(d.getMonth()+'/'+ d.getDate());
+        Take_Office_Date.hide();
+
+     }
+     
      addButtonClass();
      ////////////////////////////////////////////////////////////////////////
      ////////////////////////////////////////////////////////////////////////
@@ -59,7 +69,11 @@
                  //到職日不須給值 單純顯示在sapn中即可
                  //實際上只要有儲存動作 這個欄位會套公式自己取得值 
                  if (k == 'Take_Office_Date') {
-                     j$('span[id $= Take_Office_Date]').html(v != null ? v.trim() : v);
+                        //因應個資法,到職日需隱藏年分
+                        let vv = v != null ? v.trim() : v;
+                        let d = new Date(v);
+                        j$('#Take_Office_Date_box').val(d.getMonth()+'/'+ d.getDate());
+                     //j$('#Take_Office_Date_box').val();
                  }
                  if (k == 'Job_Title_Level') {
                      j$('input[id $= Job_Title_Level]').val(v != null ? v.trim() : v);
@@ -76,7 +90,7 @@
  }
  //將所有按鈕class風格統一 	
  function addButtonClass() {
-     j$("input[type=submit]").removeAttr('class').addClass("pure-button pure-button-primary pure-u-1-1");
+     j$("input[id$=btnDel],input[id$=btnAdd]").removeAttr('class').addClass("pure-button pure-button-primary pure-u-1-1");
      
  }
  //從SAP取請假資料
@@ -87,18 +101,89 @@
          if (event.status && result != null) {
              JSON.parse(result.replace(/(&quot\;)/g, "\""), function(k, v) {
                  console.log(k + ',' + v);
-                 //調休可用時數
+                 //調休可用時數 
                  if (k == 'adjustable_vacation__c') {
                      j$('input[id $= Adjustable_vacation]').val(v != null ? v.trim() : v);
                  }
-                 //特休可用時數
+                 //目前特休可用時數
                  if (k == 'annual_leave__c') {
                      j$('input[id $= Annual_leave]').val(v != null ? v.trim() : v);
                  }
                  if (k == 'employee_code__c') {
                      j$('input[id $= Employee_Code]').val(v != null ? v.trim() : v);
                  }
+                  //下年度特休可用時數
+                 if (k == 'annual_leave1__c') {
+                    //alert(v);
+                     j$('input[id $= Annual_leave_Reset]').val(v != null ? v.trim() : v);
+                 }
+
              });
          }
      });
  }
+
+ function checkDay(self,type){
+    let IsLeave3Days = j$('input[id$=IsLeave3Days]');
+     let mydate = new Date(self.val());
+     if (!IsLeave3Days.prop( "checked")){
+
+
+         if (mydate.getDay() == 1){
+            alert('這個日期為禮拜一,如果請假天數含例假日超過三天,請確認是否勾選"連續休假天數是否三天以上(含例假/國定假日)"');
+         }else if (mydate.getDay() == 5){
+             alert('這個日期為禮拜五,如果請假天數含例假日超過三天,請確認是否勾選"連續休假天數是否三天以上(含例假/國定假日)"');
+         }
+
+         if (type == 'end'){
+            let td = self.parents( "td" );
+            let tr = td.parent();
+            let sdate = new Date(tr.children().find('input[id$=Start_date]').val());
+            
+            let timeDiff = mydate.getTime() - sdate.getTime();
+            let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+            // alert(IsLeave3Days.attr('checked'));
+            if ((diffDays+1) >=3){
+                alert('連續請假超過三日,系統將自動勾選"連續休假天數是否三天以上(含例假/國定假日)".');
+                j$('input[id$=IsLeave3Days]').prop( "checked", true );
+            }else if(timeDiff < 0){
+                alert('結束日期不得小於開始日期!');
+            }
+            
+         }
+  }
+ }
+
+ //請假時間自動完成 需要班表
+// function leaveHourCalBySingleDetail(self){
+      
+//         var td = self.parents( "td" );
+//         //取得本列第一欄tde，此行code沒特別用途，只是寫來做個語法紀錄
+//         td.parents("table:first").find("td");
+//         //取得td的父層(tr)
+//         var tr = td.parent();
+        
+//         let stVlaue = tr.children().find('select[id$=Start_Time] option:selected').val();
+//         let etVlaue = tr.children().find('select[id$=End_Time] option:selected').val();
+
+
+//         var sdate = new Date(tr.children().find('input[id$=Start_date]').val() + ' ' + tr.children().find('select[id$=Start_Time] option:selected').text());
+//         var edate = new Date(tr.children().find('input[id$=End_date]').val()   + ' ' + tr.children().find('select[id$=End_Time] option:selected').text());
+//        // alert(tr.children().find('input[id$=Start_date]').val() + ' ' + tr.children().find('select[id$=Start_Time] option:selected').text());
+//        // alert(tr.children().find('input[id$=End_date]').val()   + ' ' + tr.children().find('select[id$=End_Time] option:selected').text());
+//         let timeDiff = edate.getTime() - sdate.getTime();
+//         if (timeDiff < 0){
+//             alert('結束時間不得小於開始時間!');
+//         }
+//         else{
+//             let diffHours = (timeDiff / (3600000)).toFixed(1); 
+//             if (stVlaue <= 120000 && etVlaue >= 170000){
+//                 diffHours -= 1; 
+//             }
+//             alert(timeDiff);
+//             self.val(diffHours);
+//         }
+                
+                
+         
+// }
