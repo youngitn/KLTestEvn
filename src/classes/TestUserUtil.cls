@@ -19,7 +19,8 @@ public class TestUserUtil
                                 LanguageLocaleKey = 'en_US',
                                 ProfileId = profId,
                                 UserRoleId = roleId,
-                                Number__c = empid);
+                                Number__c = empid,
+                                IsActive = true);
         return tuser;
     }
 }
