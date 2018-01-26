@@ -1,17 +1,17 @@
 public with sharing class RemoteActionsOfLeave {
 	
-    public static String queryVacation(String empId)
+    public static String queryVacation(String cId)
     {
-        System.debug(LoggingLevel.INFO, '*** 查詢SAP特假&調休 EMPID: ' + empId);
-        if (String.isBlank(empId))
+        System.debug(LoggingLevel.INFO, '*** 查詢SAP特假&調休 cId: ' + cId);
+        if (String.isBlank(cId))
         {
             ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '請假人不可為空'));
             return null;
         }
-        System.debug('empId=' + empId);
+        System.debug('cId=' + cId);
 
         //use Peoples
-        Contact con = [SELECT Name, Number__c FROM Contact WHERE Id = :empId AND RecordType.DeveloperName = 'Staff' LIMIT 1];
+        Contact con = Peoples.getInstance().KlAllContactMapGetById.get(cId);
         System.debug('con=' + con);
         String ret;
         try
