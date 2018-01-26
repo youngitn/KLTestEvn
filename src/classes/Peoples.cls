@@ -21,7 +21,7 @@ public class Peoples {
         KlAllUserMapGetByNum = new Map<String, User>();
         for(Contact c : [SELECT Id, Email, Number__c, Name, Is_Manager__c,SF_User__c ,SF_User__r.Is_First_Manager__c ,SF_User__r.Is_Manager__c,Dept_Number__c,Dept_Number__r.Parent_Number__c,Dept_Number__r.Name,Corp_Code__c,Take_Office_Date__c,Job_Title_Level__c,Title,Post_Number__r.Post_Description__c    
                             FROM Contact 
-                            WHERE SF_User__r.IsActive = true AND RecordType.DeveloperName = 'Staff'
+                            WHERE SF_User__r.IsActive = true 
                             ])
         {
             KlAllContactMapGetById.put(c.Id, c);
