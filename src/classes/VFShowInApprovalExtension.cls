@@ -53,17 +53,22 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
             this.sobj = Database.query(sql);
 
             if ((String)this.sobj.get('Approval_Status__c') == 'S'){
+                //送審後須判斷是否允許編輯
                 isEditable = ProcessUtils.checkEditable(stdController.getId(),recordTypeId);
+
                 nowStatus = 'PROCESS';
-            }else{
+            }else if((String)this.sobj.get('Approval_Status__c') == 'R' || (String)this.sobj.get('Approval_Status__c') == 'A'){
+                //通過和拒絕都不能編輯 isEditable 維持預設值false
                 nowStatus = 'RejectedOrApproved';
+            }else{
+                //草稿不需判斷能否編輯 直接給true
+                isEditable = true;
+                nowStatus = 'SKETCH';
             }
-            
+            //這筆資料已存在紀錄 
+            //給 goPage(Id recordId)判斷用
             isOld = true;
-           
-            
-            
-            
+             
             System.debug('master record SQL = ' + sql);
 
             //如果有子項則進入處理
@@ -84,19 +89,18 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
     }
 
     //如果是開啟既有紀錄,則按下儲存時導向目前頁
+    //發生在流程查詢頁面 (同審批頁面)
     //否則會出現iframe當中又再出現iframe
     public PageReference goPage(Id recordId)
     {
         if (this.isOld)
         {
+            //審批中 編輯存檔導向
             return ApexPages.currentPage();
         }
+        //創建時 存檔導向
         return new PageReference('/' + recordId);
     }
-    public String getRecordName()
-    {
-        return 'Hello ' + (String)this.sobj.get('name') + ' (' + (Id)this.sobj.get('Id') + ')';
-    }
-
+    
     
 }
