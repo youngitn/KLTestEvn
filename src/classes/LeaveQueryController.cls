@@ -34,4 +34,11 @@ global with sharing class LeaveQueryController
         return JSON.serialize(amis).unescapeHtml4();
     }
 
+    @RemoteAction
+    global static String getEmpId(String cId )
+    {
+        
+        return Peoples.getInstance().KlAllContactMapGetById.get(cId).Number__c;
+    }
+
 }
