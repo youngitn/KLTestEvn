@@ -1,7 +1,8 @@
-public with sharing class AMSCCSupplierClaimExtension {
+public with sharing class AMSCCSupplierClaimExtension {  
 
 	public Custom_Approval_Managed__c am{get;set;} 
     public Id amId {get; set;}
+    Map<Decimal,Organizational__c> mapSpecify = Utils.getApprovalStepByAPIName(SapApprovalEnum.SCCSUPPLIERCLAIM);
     public AMSCCSupplierClaimExtension(ApexPages.StandardController con) {
          amId = con.getId();
         Id recType = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.SCCSUPPLIERCLAIM, 'Custom_Approval_Managed__c');

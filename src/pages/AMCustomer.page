@@ -356,10 +356,10 @@
                             <td><apex:inputField value="{!item.Extension_Number__c}" styleClass="text"/></td>
                             <td><apex:inputField value="{!item.Department__c}" styleClass="text"/></td>
                             <td><apex:inputField value="{!item.Functionally__c}"  styleClass="text"/></td>
-                            <td><apex:inputField value="{!item.MobilePhone}" styleClass="text"/></td>
+                            <td><apex:inputField value="{!item.MobilePhone}" styleClass="text" required="true" /></td>
                             <td><apex:inputField value="{!item.Fax}" styleClass="text"/></td>
                             <td><apex:inputField value="{!item.Extension_Number_Fax__c}" styleClass="text"/></td>
-                            <td><apex:inputField value="{!item.Email}" styleClass="text"/></td>
+                            <td><apex:inputField value="{!item.Email}" styleClass="text" required="true"/></td>
                         </tr>
                         <apex:variable var="listIndex2" value="{!listIndex2+1}"/>
                     </apex:repeat>

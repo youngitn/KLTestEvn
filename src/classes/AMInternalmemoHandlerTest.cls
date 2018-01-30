@@ -8,6 +8,7 @@ private class AMInternalmemoHandlerTest {
     	 cusApprove.RecordTypeId = rc.Id;
     	 cusApprove.Factory__c = '1000';
     	 cusApprove.TYPE__c = '05';
+         cusApprove.Service_Desc__c = 'aasdsad';
     	 INSERT cusApprove;
     	 AMInternalmemoExtension amIt = new AMInternalmemoExtension(new ApexPages.StandardController(cusApprove));
     		amIt.save();
@@ -22,6 +23,7 @@ private class AMInternalmemoHandlerTest {
     	cusApprove.Is_Reset_Approvaler__c = true;
     	cusApprove.Factory__c = '1000';
     	cusApprove.TYPE__c = '07';
+
     	Update cusApprove;
 
     	cusApprove.Is_Reset_Approvaler__c = true;

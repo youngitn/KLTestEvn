@@ -31,6 +31,9 @@ public without sharing class AMInternalmemoHandler implements Triggers.Handler {
                         mapSpecify = Utils.getApprovalStepByAPIName(SapApprovalEnum.INTERNALMEMO);
                     }
                     setApprovalUser(mapSpecify,cam);
+                    if (cam.Service_Desc__c != null) {
+                      cam.head_description__c  = cam.Service_Desc__c.substring(0,(cam.Service_Desc__c.length()>200?200:cam.Service_Desc__c.length()));
+                    }
                     cam.Is_Reset_Approvaler__c = false;
                 }
             }

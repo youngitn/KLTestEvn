@@ -1,10 +1,10 @@
 @isTest
 private class AMSCCSupplierClaimTest { 
 
-    static testMethod void testMethod1() {
+    static testMethod void testMethod1() { 
         Test.startTest();
          //添加员工
-        RecordType rc = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Custom_Approval_Managed__c' AND  DeveloperName = 'SCCSUPPLIERCLAIM'];
+        RecordType rc = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Custom_Approval_Managed__c' AND  DeveloperName = :SapApprovalEnum.SCCSUPPLIERCLAIM ];
         RecordType rcContact = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Contact' AND  DeveloperName = 'Staff'];
         Contact con = new Contact(LastName = '测试人员',number__c = '10210911', RecordTypeId=rcContact.Id);
         insert con;
@@ -23,7 +23,7 @@ private class AMSCCSupplierClaimTest {
     static testMethod void testextension(){
         Test.startTest();
 
-        RecordType rc = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Custom_Approval_Managed__c' AND  DeveloperName = 'SCCSUPPLIERCLAIM'];  
+        RecordType rc = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Custom_Approval_Managed__c' AND  DeveloperName = :SapApprovalEnum.SCCSUPPLIERCLAIM ];  
         RecordType rcContact = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Contact' AND DeveloperName = 'Staff'];
         Contact con = new Contact(LastName = '测试人员',number__c = '10210911', RecordTypeId=rcContact.Id);
         insert con;

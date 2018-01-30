@@ -28,6 +28,7 @@ private class AMITServiceRequestExtensionTest {
         cusApprove.RecordTypeId = rc.Id;
         cusApprove.ServiceCategory__c = '100';
         cusApprove.Factory__c = '1000';
+        cusApprove.Service_Desc__c = 'adad';
         INSERT cusApprove;
         cusApprove.Is_Reset_Approvaler__c =true;
         cusApprove.ServiceCategory__c = '';

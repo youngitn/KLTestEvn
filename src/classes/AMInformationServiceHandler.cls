@@ -32,9 +32,13 @@ public without sharing class AMInformationServiceHandler implements Triggers.Han
                         mapSpecify = Utils.getApprovalStepByAPIName(SapApprovalEnum.IRS_INFORMATIONSERVICE);
                     }
                     setApprovalUser(mapSpecify,cam);
+                    if (cam.Service_Desc__c != null) {
+                      cam.head_description__c  = cam.ServiceCategory__c + cam.Service_Desc__c.substring(0,(cam.Service_Desc__c.length()>200?200:cam.Service_Desc__c.length()));
+                    }
+                    //cam.head_description__c  = cam.ServiceCategory__c + cam.Service_Desc__c.substring(0,(cam.Service_Desc__c.length()>200?200:cam.Service_Desc__c.length()));
                     cam.Is_Reset_Approvaler__c = false;
                 }
-                cam.head_description__c  = cam.Service_Desc__c;
+                
             }
         }
     }

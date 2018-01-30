@@ -90,15 +90,15 @@
                 <!-- D3临时措施 -->
                 <apex:inputField id="D3Measures" value="{!am.D3Measures__c}" style="width: 42%"></apex:inputField>
                 <!-- 临时措施责任人 -->
-                <apex:inputField id="Responsible" value="{!am.Responsible__c}"></apex:inputField>
+                <apex:inputField id="Responsible1" value="{!am.Responsible1__c}"></apex:inputField>
                 <!-- 临时措施纳期 -->
-                <apex:inputField id="MeasuresDate" value="{!am.MeasuresDate__c}"></apex:inputField>
+                <apex:inputField id="MeasuresDate" value="{!am.MeasuresDate__c}"></apex:inputField>  
                  <!-- D4根本原因分析5W -->
                 <apex:inputField id="D4CauseAnalysis" value="{!am.D4CauseAnalysis__c}" style="width: 42%"></apex:inputField>
-                <!-- D5永久对策 -->
-                <apex:inputField id="D5Countermeasures" value="{!am.D5Countermeasures__c}" style="width: 42%"></apex:inputField>
                 <!-- 永久对策责任人 -->
-                <apex:inputField id="PermanentCountermeasures" value="{!am.PermanentCountermeasures__c}"></apex:inputField>
+                <apex:inputField id="PermanentCountermeasures1" value="{!am.PermanentCountermeasures1__c}"></apex:inputField>
+                <!-- D5永久对策 -->
+                <apex:inputField id="D5Countermeasures" value="{!am.D5Countermeasures__c}" style="width: 42%"></apex:inputField>   
                 <!-- 永久对策纳期 -->
                 <apex:inputField id="CountermeasuresDate" value="{!am.CountermeasuresDate__c}" style="width: 42%"></apex:inputField>
                 <!-- D6永久措施效果验证 -->

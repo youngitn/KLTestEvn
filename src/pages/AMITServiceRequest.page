@@ -168,6 +168,17 @@
                         }
                     });
 
+/*                 j$("[id$='Service_Desc']").bind('input propertychange',function()
+                    {
+                        var len=j$("[id$='Service_Desc']").val().length;
+                        if()
+                        {
+                            
+                        }
+                    });*/
+
+                 
+
     //加代码
        });
 
