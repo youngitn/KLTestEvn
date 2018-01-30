@@ -85,13 +85,13 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
                     am.Sum_Vacation__c += Decimal.valueOf(ami.time_number__c);
 
                     //计算特休和
-                    if (ami.Leave_type__c == '1006' && Decimal.valueOf(ami.time_number__c) != null)
+                    if (ami.TypesOfLeave__c == '1006' && Decimal.valueOf(ami.time_number__c) != null)
                     {
                         sum1 -= Decimal.valueOf(ami.time_number__c);
                     }
 
                     //補休加總
-                    if (ami.Leave_type__c == '1015' && Decimal.valueOf(ami.time_number__c) != null)
+                    if (ami.TypesOfLeave__c == '1015' && Decimal.valueOf(ami.time_number__c) != null)
                     {
                         sum2 -= Decimal.valueOf(ami.time_number__c);
                     }

@@ -34,15 +34,21 @@ public with sharing class SObjectUtils
             System.debug(c);
             System.debug(u);
             if (c.Corp_Code__c == null){
-                sobj.put('company_number__c','');
+                sobj.put('Corp_Code__c','');
             }else{
-                sobj.put('company_number__c', c.Corp_Code__c);
+                sobj.put('Corp_Code__c', c.Corp_Code__c);
             }
             if (c.Dept_Number__r.Name == null){
                 sobj.put('Dept_Name__c','');
             }else{
                 sobj.put('Dept_Name__c', c.Dept_Number__r.Name);
             }
+            if (c.Dept_Number__r.Name == null){
+                sobj.put('Dept_Name__c','');
+            }else{
+                sobj.put('Dept_Name__c', c.Dept_Number__r.Name);
+            }
+            sobj.put('Applicant_Code__c', u.Number__c);
             
 
         }

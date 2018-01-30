@@ -28,7 +28,7 @@
                             </div>
                             <div class="pure-u-1 pure-u-md-1-3">
                                 公司代碼:
-                                <apex:inputfield styleclass="pure-u-1 pure-u-md-2-3" value="{!inputObject['Applicant_Corp_Code__c']}">
+                                <apex:inputfield styleclass="pure-u-1 pure-u-md-2-3" value="{!inputObject['Corp_Code__c']}">
                                 </apex:inputfield>
                             </div>
                             <div class="pure-u-1 pure-u-md-1-3">

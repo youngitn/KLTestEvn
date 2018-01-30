@@ -65,7 +65,7 @@ public with sharing class AMLeaveApplicationHandler  implements Triggers.Handler
     public void setApprovalUser(Map<Decimal, Organizational__c> mapSpecify, Approval_Managed__c cam)
     {
 
-        // 主管簽核
+        // 主管簽核(請假人主管)
         cam.Approval_User1__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(1), cam.Employee__c), 0);
 
         //大於三天總經理簽核
@@ -74,8 +74,12 @@ public with sharing class AMLeaveApplicationHandler  implements Triggers.Handler
         //HR經辦
         cam.Approval_User3__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(3), null), 0);
 
+        //-----以下為抓通知人用-----------
         //HR主管
         cam.Approval_User4__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(4), null), 0);
+
+        //請假人
+        cam.Approval_User5__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(5), cam.Employee__c), 0);
         
     }
 

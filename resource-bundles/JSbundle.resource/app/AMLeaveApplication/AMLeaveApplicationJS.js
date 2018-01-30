@@ -155,35 +155,35 @@
  }
 
  //請假時間自動完成 需要班表
-// function leaveHourCalBySingleDetail(self){
+function leaveHourCalBySingleDetail(self){
       
-//         var td = self.parents( "td" );
-//         //取得本列第一欄tde，此行code沒特別用途，只是寫來做個語法紀錄
-//         td.parents("table:first").find("td");
-//         //取得td的父層(tr)
-//         var tr = td.parent();
+        var td = self.parents( "td" );
+        //取得本列第一欄tde，此行code沒特別用途，只是寫來做個語法紀錄
+        td.parents("table:first").find("td");
+        //取得td的父層(tr)
+        var tr = td.parent();
         
-//         let stVlaue = tr.children().find('select[id$=Start_Time] option:selected').val();
-//         let etVlaue = tr.children().find('select[id$=End_Time] option:selected').val();
+        let stVlaue = tr.children().find('select[id$=Start_Time] option:selected').val();
+        let etVlaue = tr.children().find('select[id$=End_Time] option:selected').val();
 
 
-//         var sdate = new Date(tr.children().find('input[id$=Start_date]').val() + ' ' + tr.children().find('select[id$=Start_Time] option:selected').text());
-//         var edate = new Date(tr.children().find('input[id$=End_date]').val()   + ' ' + tr.children().find('select[id$=End_Time] option:selected').text());
-//        // alert(tr.children().find('input[id$=Start_date]').val() + ' ' + tr.children().find('select[id$=Start_Time] option:selected').text());
-//        // alert(tr.children().find('input[id$=End_date]').val()   + ' ' + tr.children().find('select[id$=End_Time] option:selected').text());
-//         let timeDiff = edate.getTime() - sdate.getTime();
-//         if (timeDiff < 0){
-//             alert('結束時間不得小於開始時間!');
-//         }
-//         else{
-//             let diffHours = (timeDiff / (3600000)).toFixed(1); 
-//             if (stVlaue <= 120000 && etVlaue >= 170000){
-//                 diffHours -= 1; 
-//             }
-//             alert(timeDiff);
-//             self.val(diffHours);
-//         }
+        var sdate = new Date(tr.children().find('input[id$=Start_date]').val() + ' ' + tr.children().find('select[id$=Start_Time] option:selected').text());
+        var edate = new Date(tr.children().find('input[id$=End_date]').val()   + ' ' + tr.children().find('select[id$=End_Time] option:selected').text());
+       // alert(tr.children().find('input[id$=Start_date]').val() + ' ' + tr.children().find('select[id$=Start_Time] option:selected').text());
+       // alert(tr.children().find('input[id$=End_date]').val()   + ' ' + tr.children().find('select[id$=End_Time] option:selected').text());
+        let timeDiff = edate.getTime() - sdate.getTime();
+        if (timeDiff < 0){
+            alert('結束時間不得小於開始時間!');
+        }
+        else{
+            let diffHours = (timeDiff / (3600000)).toFixed(1); 
+            if (stVlaue <= 120000 && etVlaue >= 170000){
+                diffHours -= 1; 
+            }
+            //alert(timeDiff);
+            //self.val(diffHours);
+        }
                 
                 
          
-// }
+}

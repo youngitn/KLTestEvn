@@ -33,7 +33,7 @@
         }//草稿
         else if ('{!Status}' === 'SKETCH'){
             btnSave.show();
-            btnCancel.show();
+            //btnCancel.show();
             lkwgt.show();
         }
         classSeting(btnEdit);

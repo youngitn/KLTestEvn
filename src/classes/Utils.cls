@@ -879,7 +879,7 @@ public without sharing class Utils
         //客户流程各节点配置
         List<Organizational__c> lstApproval = [
                 SELECT Id, Approval_Name__c, Approval_Step__c, Approval_Step_Name__c, Approval_Rule__c,
-                Approval_Department__c, Approval_Post__c, Approval_Personnel__c, Approval_Personnel__r.SF_User__c
+                Approval_Department__c, Approval_Post__c, Approval_Personnel__c, Approval_Personnel__r.SF_User__c,Approval_Special_Field__c
                 FROM Organizational__c
                 WHERE Approval_Name__c = : approvalAPIName
                                          AND RecordType.SObjectType = 'Organizational__c'
