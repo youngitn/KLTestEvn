@@ -107,7 +107,7 @@
                                     <!--使用Warehouse_confirmation__c 文字(10) 做為資料儲存欄位--> 
                                     <div class="pure-u-1 pure-u-md-1-3">
                                         <label for="Annual_leave_Reset">
-                                            下年度特休重置總時數(暫名)
+                                            下年度特休重置總時數
                                         </label>
                                         <apex:inputfield id="Annual_leave_Reset" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Warehouse_confirmation__c}">
                                         </apex:inputfield>
