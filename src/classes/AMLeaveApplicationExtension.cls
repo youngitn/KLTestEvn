@@ -1,12 +1,11 @@
 global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalExtension
 {
 
-    public  Approval_Managed__c am {get; set;}
-    public  String Start_date {get; set;}
+    public   Approval_Managed__c am {get; set;}
 
-    public  List<Approval_Managed_Item__c> list1 {get; set;}
+    public   List<Approval_Managed_Item__c> list1 {get; set;}
 
-    public  Integer list1Row {get; set;}
+    public  Transient Integer list1Row {get; set;}
 
     public AMLeaveApplicationExtension(ApexPages.StandardController con)
     {
@@ -31,11 +30,11 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
         if (String.isNotBlank(am.Employee__c) )
         {
             //List<Contact> lstCon    = [SELECT Name, Number__c FROM Contact WHERE Id = :am.Employee__c AND RecordType.DeveloperName = 'Staff'];
-             Contact c = this.contactsById.get(am.Employee__c);
+             Contact c = Peoples.getInstance().KlAllContactMapGetById.get(am.Employee__c);
              if (c != null)
              {
-                am.Employee_Code__c = this.contactsById.get(am.Employee__c).Number__c;
-                am.Employee_Name__c = this.contactsById.get(am.Employee__c).Name;
+                am.Employee_Code__c = c.Number__c;
+                am.Employee_Name__c = c.Name;
             }
         }
         else
@@ -167,6 +166,7 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
         data.put('Job_Title_Level',     c.Job_Title_Level__c);
         data.put('Applicant_position',  c.Post_Number__r.Post_Description__c);
         data.put('Number__c',  c.Number__c);
+        data.put('Phone',  c.Phone);
         return (String)JSON.serialize(data);
     }
 
