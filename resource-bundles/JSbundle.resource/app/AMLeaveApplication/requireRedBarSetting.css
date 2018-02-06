@@ -1,0 +1,8 @@
+.bPageBlock .requiredInput .requiredBlock {
+    background-color: #c00;
+    position: absolute;
+    left: -4px;
+    width: 3px;
+    top: 1px;
+    bottom: 35%;
+}
