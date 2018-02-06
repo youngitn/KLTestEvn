@@ -1,5 +1,5 @@
 <apex:page controller="ApprovalsPendingController" sidebar="false">
-<script>
+<script> 
     function navigateUrl(){
         window.parent.location = '/04i';
     }
@@ -12,6 +12,7 @@
     }
     setTimeout('myrefresh()',10000); //指定60秒刷新一次
 </script>
+
     <apex:form >
         <apex:pageBlock title="{!$Label.approval_Project}">
         <div style="text-align:center;">
