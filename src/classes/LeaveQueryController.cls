@@ -8,6 +8,7 @@ global with sharing class LeaveQueryController
         ami = new Approval_Managed_item__c();
     }
 
+    //queryApplicantNum 應該是查詢請假人而非申請人
     @RemoteAction
     global static String doQuery(String sQueryDate,String  eQueryDate,String queryAplStatus,String queryTypesOfLeave,String queryApplicantNum )
     {
@@ -22,7 +23,7 @@ global with sharing class LeaveQueryController
 		inputMap.put('End_date__c',eQueryDate);
 		inputMap.put('TypesOfLeave__c',queryTypesOfLeave);
 		inputMap.put('LeaveManage__r.Approval_Status__c',queryAplStatus);
-		inputMap.put('LeaveManage__r.Applicant_Code__c',queryApplicantNum);
+		inputMap.put('LeaveManage__r.Employee_Code__c',queryApplicantNum);//工號用來查請假人才正確
 		inputMap.put('LeaveManage__r.RecordTypeId',recType);
         
         System.debug(inputMap);
