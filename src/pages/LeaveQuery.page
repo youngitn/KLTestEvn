@@ -37,27 +37,27 @@
                         </div>
                     </div>
                     <div class="pure-g">
-                        <div class="pure-u-1 pure-u-md-1-5">
+                        <div class="pure-u-1 pure-u-xl-1-5">
                             <label for="Adjustable_vacation">
                                 開始日期
                             </label>
-                            <input id="sQueryDate" class="pure-u-1 pure-u-md-4-5" type="date" value="">
+                            <input id="sQueryDate" class="pure-u-1 pure-u-xl-4-5" type="date" value="">
                             </input>
                         </div>
-                        <div class="pure-u-1 pure-u-md-1-5">
+                        <div class="pure-u-1 pure-u-xl-1-5">
                             <label for="Sum_Vacation">
                                 結束日期
                             </label>
-                            <input id="eQueryDate" class="pure-u-1 pure-u-md-4-5" type="date" value="">
+                            <input id="eQueryDate" class="pure-u-1 pure-u-xl-4-5" type="date" value="">
                             </input>
                         </div>
                     </div>
                     <div class="pure-g">
-                        <div class="pure-u-1 pure-u-md-1-5">
+                        <div class="pure-u-1 pure-u-xl-1-5">
                             <label for="Adjustable_vacation">
                                 假別
                             </label>
-                            <apex:inputField id="queryTypesOfLeave" styleclass="pure-u-1 pure-u-md-4-5" value="{!ami.TypesOfLeave__c}">
+                            <apex:inputField id="queryTypesOfLeave" styleclass="pure-u-1 pure-u-xl-4-5" value="{!ami.TypesOfLeave__c}">
                             </apex:inputField>
                         </div>
                         <div class="pure-u-1 pure-u-md-1-5">
