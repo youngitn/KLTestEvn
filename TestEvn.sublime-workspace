@@ -4,6 +4,34 @@
 		"selected_items":
 		[
 			[
+				"get",
+				"KlAllContactMapGetById"
+			],
+			[
+				"Test",
+				"isRunningTest"
+			],
+			[
+				"Applicant",
+				"Applicant__c"
+			],
+			[
+				"e",
+				"Email"
+			],
+			[
+				"B",
+				"Boolean\tSystem"
+			],
+			[
+				"l",
+				"log"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
 				"d",
 				"DeveloperName(記錄類型名稱)\tString(80)"
 			],
@@ -128,20 +156,12 @@
 				"[U] Number__c(员工编号)\tString(80)"
 			],
 			[
-				"get",
-				"PUBLIC getUserId() \tString"
-			],
-			[
 				"getU",
 				"getUserId()\tString"
 			],
 			[
 				"applicant",
 				"Applicant_Name__c(申请人(姓名))\tString(255)"
-			],
-			[
-				"e",
-				"Employee__c(员工)\tReference(Contact)"
 			],
 			[
 				"g",
@@ -348,6 +368,86 @@
 	"buffers":
 	[
 		{
+			"file": "/D/mmworkspace/testRun/AMEductionTrainingEmailTest.txt",
+			"settings":
+			{
+				"buffer_size": 10002,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Approval_Managed1__c cam = [select Name,Applicant__c,EducationTrainingInHouseLecturerName__c, InternalEducationParticipants__c from Approval_Managed1__c where name = 'AN1-180126-00003656'].get(0);\n//System.debug(cam);\n\nList<String> pList = cam.InternalEducationParticipants__c.split(',');\n                    List<String> empidList = new List<String>();\n                    //一般間接員工 有SF帳號 email資訊\n                    List<String> commAddresses = new List<String>();\n                    //主管email\n                    List<String> bossAddresses = new List<String>();\n                    //直接員工 通常沒有SF帳號 email資訊\n                    List<String> nonAddresses = new List<String>();\n                    //直接員工 通常沒有SF帳號 email資訊\n                    String nonEmp = '';\n                    for(String p : pList)\n                    {\n                        empidList.add(p.substring(0,8));\n\n                    }\n                    if (cam.EducationTrainingInHouseLecturerName__c != null && !String.IsBlank(cam.EducationTrainingInHouseLecturerName__c))\n                    {\n                        List<User> u = [SELECT Name, Number__c FROM User WHERE id = :cam.EducationTrainingInHouseLecturerName__c];\n                        //u.get(0).Number__c;\n                        //u.get(0).Name;\n                        empidList.add(u.get(0).Number__c);\n                    }\n                    //for(User ps :[SELECT Id, Email, Name FROM User WHERE Number__c IN : empidList]){\n                    //    sendMailToParticipants(ps.Name, ps.email, cam);\n                    //}\n                    Organizational__c o = new Organizational__c();\n                    o.Approval_Rule__c  = '指定人部门主管';\n                    Contact toCon = new Contact();\n                    Id bossId = null;\n                    \n                    //取得主管email並寄出通知\n                    for(String num : empidList)\n                    {\n                        //從VF過來的都是聯絡人\n                        System.debug(num);\n                        toCon               = Peoples.getInstance().KlAllContactMapGetByNum.get(num);\n\n                        System.debug(toCon);\n                        String bossEmail  = 'SF@SF.com';\n                        Boolean noContactEmail = false;\n                        Boolean noBoss = false;\n                        //SF_USER已啟用的條件下 聯絡人沒有此人資料\n                        //有資料但是email是空的\n                        //收信設為申請人 設定 noContactEmail = true; noBoss = true;\n                        \n                        if (toCon == null || toCon.email == null || toCon.email == ''){\n                            System.debug('toCon == null 2');\n                            noContactEmail = true;\n                            noBoss = true;\n                            System.debug(cam.Applicant__c);\n                            toCon    = Peoples.getInstance().KlAllContactMapGetById.get(cam.Applicant__c);\n                            System.debug('55->'+toCon);\n                            //無SF帳號或email 寄給申請人\n                            nonAddresses.add(toCon.Email);\n                            nonEmp += num+'-'+[select Name from Contact where Number__c =: num].Name;\n                            System.debug('nonEmp1-->'+nonEmp);\n                            //sendMailToParticipants(toCon.Name , toCon.Email , bossEmail , cam ,noBoss , noContactEmail);\n                            continue;\n                        }\n                        \n                        String toEmail = toCon.email;            \n                        if(!Test.isRunningTest() )\n                        {\n                            //因為審批人必須是USER 所以使用ApproverUtils回傳的是USER.\n                            //如果此員工有找到主管 則設置主管相關資料到變數中\n                            bossId = ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(o, toCon.Id).get(0);\n                            if (bossId != null){\n                                System.debug('approvalSearchApprrovalerByRuleWithOutSOQL != null');\n                                bossEmail    = Peoples.getInstance().KlAllUserMapGetById.get(bossId).email;\n                            }//如果找不到主管 則收件人為申請人寄出通知\n                            else{\n                                noBoss = true;\n                                //無SF帳號或email 寄給申請人\n                                nonAddresses.add(toCon.Email);\n                                System.debug('nonEmp2-->'+nonEmp);\n                                 nonEmp += num+'-'+Peoples.getInstance().KlAllContactMapGetByNum.get(num).Name;\n                                //sendMailToParticipants(toCon.Name , toEmail , bossEmail , cam ,noBoss , noContactEmail);\n                                continue;\n                            }\n\n                            \n                        }\n                        //將有SF&EAMIL資料的員工email addr集中放置\n                        commAddresses.add(toEmail);\n                        bossAddresses.add(bossEmail);\n                        \n\n                    }\n\n\n                    sendMailToParticipants(commAddresses , bossAddresses ,nonAddresses,nonEmp, cam );\n                \n\n\npublic void sendMailToParticipants(List<String> commAddresses,List<String> bossAddresses,List<String> nonAddresses,String nonEmp,Approval_Managed1__c am)\n    {\n\n        Messaging.reserveSingleEmailCapacity(2);\n\n\n        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();\n\n        // Strings to hold the email addresses to which you are sending the email.\n        String[] toAddresses = commAddresses;\n        System.debug(toAddresses);\n        String[] ccAddresses = bossAddresses;\n        System.debug(ccAddresses);\n        String[] nnAddresses = nonAddresses;\n        System.debug('nnnnnn->'+nonEmp+nnAddresses);\n        System.debug('-------------------->' + ccAddresses);\n        \n\n        mail.setCharset('UTF-8');\n        // Assign the addresses for the To and CC lists to the mail object.\n        \n\n        // Specify the address used when the recipients reply to the email.\n        mail.setReplyTo('support@acme.com');\n\n        // Specify the name used as the display name.\n        mail.setSenderDisplayName('Salesforce');\n\n        Contact Applicant = Peoples.getInstance().KlAllContactMapGetById.get(am.Applicant__c);\n\n        \n        \n        // Set to True if you want to BCC yourself on the email.\n        mail.setBccSender(false);\n        // Optionally append the salesforce.com email signature to the email.\n        // The email address of the user executing the Apex Code will be used.\n        mail.setUseSignature(false);\n\n        mail.setSubject('Salesforce 教育訓練申請單 已批准');\n         nonEmp = '系統無法自動通知以下的人員與其主管,煩請手動通知:'+ nonEmp;\n        mail.setHtmlBody('您所參與的教育訓練申請流程已批准. <br> 單號:' + am.Name + '<br> 申請人:' + Applicant.Name +' '+ Applicant.Number__c +'<br>參訓名單:<br>'+am.InternalEducationParticipants__c+' <br>表單詳情請至連結檢視:<a href=\"https://kinglai.my.salesforce.com/\">https://kinglai.my.salesforce.com/'+am.id+'</a>');\n        mail.setToAddresses(nnAddresses);\n        //Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });\n\n\n        \n        mail.setHtmlBody('您所參與的教育訓練申請流程已批准. <br> 單號:' + am.Name + '<br> 申請人:' + Applicant.Name +' '+ Applicant.Number__c +'<br>參訓名單:<br>'+am.InternalEducationParticipants__c+' <br>表單詳情請至連結檢視:<a href=\"https://kinglai.my.salesforce.com/\">https://kinglai.my.salesforce.com/'+am.id+'</a>');\n        mail.setToAddresses(toAddresses);\n        mail.setCcAddresses(ccAddresses);\n        // Send the email you have created.\n       //Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });\n  \n    }\n\n\n    System.debug(Peoples.getInstance().KlAllContactMapGetByNum.get('30210035').Id);\n    System.debug( Peoples.getInstance().KlAllUserMapGetByContactId.get('003O0000012IDkAIAW'));\n    System.debug( Utils.getUserIdByContactID(Peoples.getInstance().KlAllContactMapGetByNum.get('30210345').Id));\n    System.debug( Peoples.getInstance().getUserByContactId(Peoples.getInstance().KlAllContactMapGetByNum.get('30210345').Id));\n    Utils.getUserByEmployeeCode(szApprover);\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210009');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Set<String> userIds = new Set<String>();\n    userIds.add( Peoples.getInstance().KlAllUserMapGetByNum.get('30210009').id);\n    // userIds.add( Peoples.getInstance().KlAllUserMapGetByNum.get('30210165').id);\n    \n    // userIds.add( Peoples.getInstance().KlAllUserMapGetByNum.get('30210259').id);\n    // userIds.add( Peoples.getInstance().KlAllUserMapGetByNum.get('30210016').id);\n   \n    Utils.ManualShareRecordToUsers(userIds, 'Approval_Managed1__c', 'a070I00000berpjQAA');\n",
+			"settings":
+			{
+				"buffer_size": 9250,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/classes/Peoples.cls",
+			"settings":
+			{
+				"buffer_size": 2483,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/ApprovalContact.page",
+			"settings":
+			{
+				"buffer_size": 10042,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/ApprovalContactExtension.cls",
+			"settings":
+			{
+				"buffer_size": 4397,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMEducationTrainingHandler.cls",
+			"settings":
+			{
+				"buffer_size": 15652,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/AMEducationTraining.page",
+			"settings":
+			{
+				"buffer_size": 14958,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMEducationTrainingHandlerTest.cls",
+			"settings":
+			{
+				"buffer_size": 3630,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/Utils.cls",
+			"settings":
+			{
+				"buffer_size": 65932,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"contents": "//介面 采购申请作业流程 模擬 for(SObject obj : Trigger.new)\nSObject obj  = Database.query('SELECT ' + getAllFields('Approval_Managed__c').get('Approval_Managed__c') + ' FROM Approval_Managed__c WHERE Name = ' + '\\'AN-170824-00001564\\'').get(0);\n\n// 取得各detail 必輸資訊\nMap<String, Map<String, Set<String>>> req = Utils.getDetailRequireFields(String.valueOf(obj.get('Id')), String.valueOf(obj.get('RecordTypeId')));\n\n// 取得master 必輸資訊\nMap<String, Set<String>> masterReq = Utils.getNodeEditFields(String.valueOf(obj.get('Id')), String.valueOf(obj.get('RecordTypeId')));\n\nSystem.debug(req);\nMap<String, Set<String>> subItem = req.get('detailrequire');\n//System.debug();\nMap<String, Schema.SObjectField> mmyFields = obj.getSObjectType().getDescribe().fields.getMap();\n\nString errMsg = '';\n\nfor(String ms : masterReq.get('mainrequire'))\n{\n\n    System.debug(obj.get('Approval_Name__c') + '主表必輸欄位 標籤:' + mmyFields.get(ms).getDescribe().getLabel() + ' API name:' + ms + ' 值:' + obj.get(ms));\n    errMsg += obj.get('Approval_Name__c') + '主表必輸欄位 標籤:' + mmyFields.get(ms).getDescribe().getLabel() + ' API name:' + ms + ' 值:' + obj.get(ms)+'\\\\n';\n}\n\n\nfor(String s : subItem.keySet())\n{\n    System.debug(s);\n    Set<String> subFieldSet = subItem.get(s);\n    //如果同一個父物件下兩個不同種明細但都是同一子物件 則將不會查詢到\n    //即使關聯欄位統一\n    List<SObject> objDetail = Database.query('SELECT ' + getAllFields(s).get(s) + ' FROM ' + s + ' WHERE Purchasing_Request__c =\\'' + obj.get('Id') + '\\'');\n    \n    for(SObject o : objDetail)\n    {\t\n    \tMap<String, Schema.SObjectField> myFields = o.getSObjectType().getDescribe().fields.getMap();\n        for(String fieldApiName : subFieldSet)\n        {\n\n            System.debug(obj.get('Approval_Name__c') + '子項必輸欄位 標籤:' + myFields.get(fieldApiName).getDescribe().getLabel() + ' API name:' + fieldApiName + ' 值:' + o.get(fieldApiName));\n        \terrMsg += obj.get('Approval_Name__c') + '子項必輸欄位 標籤:' + myFields.get(fieldApiName).getDescribe().getLabel() + ' API name:' + fieldApiName + ' 值:' + o.get(fieldApiName)+'\\\\n';\n        }\n\n    }\n\n}\n\n\nSystem.debug(getAllFields('Approval_Managed_Item__c').get('Approval_Managed_Item__c'));\n//System.debug(errMsg);\n// 物件取得所有欄位\npublic static Map<String, String> getAllFields(String sobjectname)\n{\n    if(!Schema.getGlobalDescribe().containsKey(sobjectname)) return new Map<String, String> {'Exception' => 'Invalid object name'};\n    Map<String, Schema.SObjectField> fields = Schema.getGlobalDescribe().get(sobjectname).getDescribe().SObjectType.getDescribe().fields.getMap();\n\n    List<String> accessiblefields = new List<String>();\n\n    for(Schema.SObjectField field : fields.values())\n    {\n        if(field.getDescribe().isAccessible())\n            accessiblefields.add(field.getDescribe().getName());\n    }\n\n    String allfields = '';\n\n    for(String fieldname : accessiblefields)\n        allfields += fieldname + ',';\n\n    allfields = allfields.subString(0, allfields.length() - 1);\n\n    return new Map<String, String> {sobjectname => allfields};\n}\n\nselect id, Name,(select Id,LeaveManage__c from Approval_Managed_item__c) from Approval_Managed__c\n\n\n\n\n\n\nId uId = UserInfo.getUserId();\nSystem.debug(isSysAdmin(uId));\npublic boolean isSysAdmin(String thisUserId) {\n        boolean isAdmin = false;\n        User thisUser;\n        try {\n            thisUser = [SELECT Profile.PermissionsModifyAllData\n                FROM User WHERE u.Id =: thisUserId];\n            isAdmin = thisUser.Profile.PermissionsModifyAllData;\n        } catch(Exception exc) {\n            //do nothing\n        }\n        return isAdmin;\n    }\n\n\n\n\n\n\n\n\n\n\n",
 			"settings":
 			{
@@ -372,37 +472,10 @@
 			}
 		},
 		{
-			"file": "src/classes/AMLeaveApplictionTest.cls",
+			"file": "src/pages/AMVisitorHosts.page",
 			"settings":
 			{
-				"buffer_size": 11181,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/AMLeaveApplicationHandler.cls",
-			"settings":
-			{
-				"buffer_size": 3390,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/ApproverUtils.cls",
-			"settings":
-			{
-				"buffer_size": 6934,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/Peoples.cls",
-			"settings":
-			{
-				"buffer_size": 2263,
+				"buffer_size": 27050,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -411,7 +484,7 @@
 			"file": "src/pages/AMLeaveApplication.page",
 			"settings":
 			{
-				"buffer_size": 16683,
+				"buffer_size": 18134,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -420,61 +493,16 @@
 			"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
 			"settings":
 			{
-				"buffer_size": 7657,
+				"buffer_size": 9377,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "src/classes/LeaveQueryController.cls",
+			"file": "src/components/ApprovalProcessButtonSwitcher.component",
 			"settings":
 			{
-				"buffer_size": 1658,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/pages/LeaveQuery.page",
-			"settings":
-			{
-				"buffer_size": 3882,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplication/LeaveQueryJS.js",
-			"settings":
-			{
-				"buffer_size": 8098,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/classes/RemoteActionsOfLeave.cls",
-			"settings":
-			{
-				"buffer_size": 1582,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/SapWebServiceReturnArgs.cls",
-			"settings":
-			{
-				"buffer_size": 1704,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/pages/ApprovalSetting.page",
-			"settings":
-			{
-				"buffer_size": 5742,
+				"buffer_size": 3553,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -483,16 +511,16 @@
 			"file": "src/classes/AMLeaveApplicationExtension.cls",
 			"settings":
 			{
-				"buffer_size": 5833,
+				"buffer_size": 5795,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/classes/SObjectUtils.cls",
+			"file": "src/classes/AMLeaveApplicationHandler.cls",
 			"settings":
 			{
-				"buffer_size": 2409,
+				"buffer_size": 3712,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -501,50 +529,7 @@
 			"file": "src/classes/VFShowInApprovalExtension.cls",
 			"settings":
 			{
-				"buffer_size": 3960,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/components/baseFormInfo.component",
-			"settings":
-			{
-				"buffer_size": 3015,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/components/ApprovalProcessButtonSwitcher.component-meta.xml",
-			"settings":
-			{
-				"buffer_size": 203,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/SObjectUtilsTest.cls",
-			"settings":
-			{
-				"buffer_size": 785,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/ProcessUtils.cls",
-			"settings":
-			{
-				"buffer_size": 1499,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/ProcessUtilsTest.cls",
-			"settings":
-			{
-				"buffer_size": 1047,
+				"buffer_size": 3970,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -553,15 +538,25 @@
 			"file": "src/classes/BaseExtension.cls",
 			"settings":
 			{
-				"buffer_size": 1793,
+				"buffer_size": 1269,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/classes/VFShowInApprovalExtensionTest.cls",
+			"file": "src/classes/AMLeaveApplictionTest.cls",
 			"settings":
 			{
-				"buffer_size": 3206,
+				"buffer_size": 13045,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMLeaveHander.cls",
+			"settings":
+			{
+				"buffer_size": 2564,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -627,7 +622,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 436.0
+		"width": 444.0
 	},
 	"console":
 	{
@@ -652,62 +647,72 @@
 		"/D/mmworkspace/TestEvn",
 		"/D/mmworkspace/TestEvn/resource-bundles",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource",
-		"/D/mmworkspace/TestEvn/src",
-		"/D/mmworkspace/TestEvn/src/pages"
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/ApproverGroupMaintainSystem"
 	],
 	"file_history":
 	[
-		"/D/mmworkspace/TestEvn/src/classes/SapQueryArgCreate.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtension.cls",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication/requireRedBarSetting.css",
+		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplictionTest.cls-meta.xml",
 		"/D/mmworkspace/TestEvn/src/components/ApprovalProcessButtonSwitcher.component",
-		"/D/mmworkspace/TestEvn/src/classes/Utils.cls",
-		"/D/mmworkspace/TestEvn/src/classes/LeaveQueryController.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMCostCenterSendExtension.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandler.cls",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/RWD-Table.css",
+		"/D/mmworkspace/TestEvn/src/classes/VFShowInApprovalExtensionTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/BaseExtension.cls",
-		"/D/mmworkspace/TestEvn/src/classes/LeaveQueryControllerTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/ProcessUtils.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ProcessUtilsTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/TestUserUtil.cls",
-		"/D/mmworkspace/TestEvn/src/classes/Peoples.cls",
-		"/D/mmworkspace/TestEvn/src/classes/SapApprovalEnum.cls",
-		"/D/mmworkspace/TestEvn/src/classes/SObjectUtils.cls",
+		"/D/mmworkspace/TestEvn/src/classes/ProcessUtils.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SObjectUtilsTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/ApprovalHomeController.cls",
+		"/D/mmworkspace/TestEvn/src/components/ApprovalProcessButtonSwitcher.component-meta.xml",
+		"/D/mmworkspace/TestEvn/src/components/baseFormInfo.component",
+		"/D/mmworkspace/TestEvn/src/classes/VFShowInApprovalExtension.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SObjectUtils.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplicationExtension.cls",
+		"/D/mmworkspace/TestEvn/src/pages/ApprovalSetting.page",
+		"/D/mmworkspace/TestEvn/src/classes/SapWebServiceReturnArgs.cls",
+		"/D/mmworkspace/TestEvn/src/classes/RemoteActionsOfLeave.cls",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication/LeaveQueryJS.js",
+		"/D/mmworkspace/TestEvn/src/classes/LeaveQueryController.cls",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/toolingapi.sublime-settings",
+		"/D/mmworkspace/TestEvn/src/pages/LeaveQuery.page",
+		"/D/mmworkspace/TestEvn/src/pages/AMEducationTraining.page",
 		"/D/mmworkspace/TestEvn/src/pages/AMLeaveApplication.page",
+		"/D/mmworkspace/TestEvn/src/classes/Peoples.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtensionTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandlerTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplictionTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/ApproverUtils.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandler.cls",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMEducationTrainingJS.js",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
+		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplicationHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SapQueryArgCreate.cls",
+		"/D/mmworkspace/TestEvn/src/classes/Utils.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMCostCenterSendExtension.cls",
+		"/D/mmworkspace/TestEvn/src/classes/LeaveQueryControllerTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/TestUserUtil.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SapApprovalEnum.cls",
+		"/D/mmworkspace/TestEvn/src/classes/ApprovalHomeController.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMAssetPurchaseExtensionTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMStaffTransferExtensionTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplicationHandler.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplicationExtension.cls",
-		"/D/mmworkspace/TestEvn/src/classes/RemoteActionsOfLeave.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/ApprovalManageTrigger.trigger",
 		"/D/mmworkspace/TestEvn/src/classes/ApprovalPermissionHandler.cls",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/JValidator.js",
 		"/D/mmworkspace/TestEvn/src/classes/APtest.cls",
-		"/D/mmworkspace/TestEvn/src/components/baseFormInfo.component",
-		"/D/mmworkspace/TestEvn/src/classes/VFShowInApprovalExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/UtilsTest.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMVendor.page",
-		"/D/mmworkspace/TestEvn/src/pages/AMEducationTraining.page",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimExtensionTest.cls",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
 		"/D/mmworkspace/TestEvn/src/components/baseFormInfo.component-meta.xml",
-		"/D/mmworkspace/TestEvn/src/pages/LeaveQuery.page",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication/LeaveQueryJS.js",
-		"/D/mmworkspace/TestEvn/src/classes/ApproverUtils.cls",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMEducationTrainingJS.js",
 		"/D/mmworkspace/TestEvn/src/classes/AMExpenseReimburseHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimHandler.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/ApprovalManage1Trigger.trigger",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/RWD-Table.css",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplicationJS.js",
 		"/D/mmworkspace/TestEvn/src/pages/AMVendorClaim.page",
 		"/D/mmworkspace/TestEvn/src/pages/MaterialKsklTable.page-meta.xml",
 		"/D/mmworkspace/TestEvn/src/pages/ApprovalContact.page",
 		"/D/mmworkspace/TestEvn/src/pages/ApproverGroupMaintainSystem.page",
 		"/D/mmworkspace/TestEvn/src/classes/ApproverGroupMaintainSystemController.cls",
-		"/D/mmworkspace/TestEvn/src/components/ApprovalProcessButtonSwitcher.component-meta.xml",
 		"/D/mmworkspace/TestEvn/src/pages/LeaveQuery.page-meta.xml",
-		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtension.cls",
 		"/D/mmworkspace/TestEvn/src/components/ProvalProcessButtonSwitcher.component",
 		"/D/mmworkspace/TestEvn/src/classes/AMExpenseReimburseExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SapSoapFunctions.cls",
@@ -715,7 +720,6 @@
 		"/D/mmworkspace/TestEvn/src/package.xml",
 		"/D/mmworkspace/TestEvn/src/pages/AMAbnormalQuality.page",
 		"/D/mmworkspace/TestEvn/src/classes/BaseFormInfoComponentController.cls",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/toolingapi.sublime-settings",
 		"/D/mmworkspace/TestEvn/src/classes/RemoteAction4Query.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMQccHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMSaleOrderHandler.cls",
@@ -731,11 +735,9 @@
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimHandlerTest.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/CustomApprovalManageTrigger.trigger",
 		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/DocBlockr/README.md",
-		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtensionTest.cls",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/ApproverGroupMaintainSystem/CreateApproverTable.js",
 		"/C/Users/young_cheng/Documents/test.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/ContactTrigger.trigger",
-		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandlerTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMAssetPurchaseHandlerTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/PushApprovalDataToSapHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SyncFromSfToSapSchedule.cls",
@@ -778,17 +780,11 @@
 		"/D/mmworkspace/TestEvn/src/staticresources/TryVuejs.resource",
 		"/D/mmworkspace/TestEvn/resource-bundles/TryVuejs.resource/app/app",
 		"/D/mmworkspace/TestEvn/resource-bundles/TryVuejs.resource/app/vue",
-		"/D/mmworkspace/TestEvn/src/classes/TestMaterialExtension.cls",
-		"/D/mmworkspace/TestEvn/src/pages/TestMaterial.page",
-		"/D/mmworkspace/TestEvn/src/classes/AMAbnormalQualityExtensionTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/SapInputArgCreate.cls",
-		"/D/mmworkspace/TestEvn/src/workflows/User.workflow",
-		"/d/young_cheng/young/KL-TEST-20171121/src/pages/AMInventoryProcess.page",
-		"/d/young_cheng/young/KL-TEST-20171121/src/classes/AMInventoryProcessExtension.cls"
+		"/D/mmworkspace/TestEvn/src/classes/TestMaterialExtension.cls"
 	],
 	"find":
 	{
-		"height": 41.0
+		"height": 28.0
 	},
 	"find_in_files":
 	{
@@ -803,6 +799,14 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Phone ",
+			"getuser",
+			"lookupInput ",
+			"lookupIcon",
+			"kelly_liang",
+			"30210369",
+			"30210308",
+			"su",
 			"Approval_Special_Field__c",
 			"24",
 			"createQueryArg",
@@ -887,11 +891,277 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 13,
 			"sheets":
 			[
 				{
 					"buffer": 0,
+					"file": "/D/mmworkspace/testRun/AMEductionTrainingEmailTest.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10002,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7594,
+								7602
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 3000.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9250,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8637,
+								8637
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2640.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/classes/Peoples.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2483,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								288,
+								288
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/pages/ApprovalContact.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10042,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								31,
+								31
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/classes/ApprovalContactExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4397,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4240,
+								4245
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1788.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/classes/AMEducationTrainingHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15652,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3010,
+								3010
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 600.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/pages/AMEducationTraining.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14958,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1191,
+								1191
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/classes/AMEducationTrainingHandlerTest.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3630,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1993,
+								1993
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 600.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "src/classes/Utils.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 65932,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10097,
+								10107
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 5.0,
+						"translation.y": 5587.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
 					"semi_transient": false,
 					"settings":
 					{
@@ -911,14 +1181,14 @@
 							"syntax": "Packages/Java/Java.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1521.0,
+						"translation.y": 1348.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 21,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
+					"buffer": 10,
 					"semi_transient": false,
 					"settings":
 					{
@@ -941,11 +1211,11 @@
 						"translation.y": 120.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 16,
+					"stack_index": 20,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 11,
 					"semi_transient": false,
 					"settings":
 					{
@@ -956,131 +1226,13 @@
 						"selection":
 						[
 							[
-								519,
-								782
+								812,
+								812
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 25,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/classes/AMLeaveApplictionTest.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11181,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								11181
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 5820.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 21,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "src/classes/AMLeaveApplicationHandler.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3390,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3351,
-								3351
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 960.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "src/classes/ApproverUtils.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6934,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								480,
-								480
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 6.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "src/classes/Peoples.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2263,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1194,
-								1216
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1090,20 +1242,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "src/pages/AMLeaveApplication.page",
+					"buffer": 12,
+					"file": "src/pages/AMVisitorHosts.page",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 16683,
+						"buffer_size": 27050,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4016,
-								4005
+								15093,
+								15093
 							]
 						],
 						"settings":
@@ -1113,87 +1265,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1320.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7657,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6213,
-								6239
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2760.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "src/classes/LeaveQueryController.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1658,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1549,
-								1552
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1500.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 17,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
-					"file": "src/pages/LeaveQuery.page",
+					"buffer": 13,
+					"file": "src/pages/AMLeaveApplication.page",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3882,
+						"buffer_size": 18134,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1505,
-								1505
+								5558,
+								5558
 							]
 						],
 						"settings":
@@ -1203,57 +1295,117 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 600.0,
+						"translation.y": 1938.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 18,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
-					"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplication/LeaveQueryJS.js",
+					"buffer": 14,
+					"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8098,
+						"buffer_size": 9377,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4767,
-								4767
+								7337,
+								7337
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1020.0,
+						"translation.y": 3000.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 12,
-					"file": "src/classes/RemoteActionsOfLeave.cls",
+					"buffer": 15,
+					"file": "src/components/ApprovalProcessButtonSwitcher.component",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1582,
+						"buffer_size": 3553,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								641,
-								641
+								438,
+								438
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "src/classes/AMLeaveApplicationExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5795,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5499,
+								5504
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3000.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"file": "src/classes/AMLeaveApplicationHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3712,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1449,
+								1449
 							]
 						],
 						"settings":
@@ -1266,143 +1418,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 13,
-					"file": "src/classes/SapWebServiceReturnArgs.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1704,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1473,
-								1473
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 739.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 14,
-					"file": "src/pages/ApprovalSetting.page",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5742,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5150,
-								5175
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1140.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 15,
-					"file": "src/classes/AMLeaveApplicationExtension.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5833,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3148,
-								3148
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 120.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 16,
-					"file": "src/classes/SObjectUtils.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2409,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2069,
-								2073
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 300.0,
-						"zoom_level": 1.0
-					},
 					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 17,
+					"buffer": 18,
 					"file": "src/classes/VFShowInApprovalExtension.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3960,
+						"buffer_size": 3970,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2480,
-								2493
+								248,
+								262
 							]
 						],
 						"settings":
@@ -1415,46 +1448,16 @@
 						"translation.y": 480.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
-					"type": "text"
-				},
-				{
-					"buffer": 18,
-					"file": "src/components/baseFormInfo.component",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3015,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								908,
-								925
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
 					"stack_index": 9,
 					"type": "text"
 				},
 				{
 					"buffer": 19,
-					"file": "src/components/ApprovalProcessButtonSwitcher.component-meta.xml",
-					"semi_transient": true,
+					"file": "src/classes/BaseExtension.cls",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 203,
+						"buffer_size": 1269,
 						"regions":
 						{
 						},
@@ -1462,15 +1465,17 @@
 						[
 							[
 								0,
-								0
+								1269
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/XML/XML.sublime-syntax"
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 60.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 8,
@@ -1478,39 +1483,11 @@
 				},
 				{
 					"buffer": 20,
-					"file": "src/classes/SObjectUtilsTest.cls",
+					"file": "src/classes/AMLeaveApplictionTest.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 785,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								722,
-								741
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
-					"type": "text"
-				},
-				{
-					"buffer": 21,
-					"file": "src/classes/ProcessUtils.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1499,
+						"buffer_size": 13045,
 						"regions":
 						{
 						},
@@ -1518,7 +1495,7 @@
 						[
 							[
 								0,
-								0
+								13045
 							]
 						],
 						"settings":
@@ -1528,57 +1505,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 6741.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 24,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 22,
-					"file": "src/classes/ProcessUtilsTest.cls",
+					"buffer": 21,
+					"file": "src/classes/AMLeaveHander.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1047,
+						"buffer_size": 2564,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								685,
-								840
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 90.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 23,
-					"type": "text"
-				},
-				{
-					"buffer": 23,
-					"file": "src/classes/BaseExtension.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1793,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1036,
-								1308
+								1627,
+								1644
 							]
 						],
 						"settings":
@@ -1588,42 +1535,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 199.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 18,
 					"type": "text"
 				},
 				{
-					"buffer": 24,
-					"file": "src/classes/VFShowInApprovalExtensionTest.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3206,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2765,
-								2908
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1440.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 22,
-					"type": "text"
-				},
-				{
-					"buffer": 25,
+					"buffer": 22,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1646,11 +1565,11 @@
 						"translation.y": 114.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 27,
+					"stack_index": 24,
 					"type": "text"
 				},
 				{
-					"buffer": 26,
+					"buffer": 23,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1673,11 +1592,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 26,
+					"stack_index": 23,
 					"type": "text"
 				},
 				{
-					"buffer": 27,
+					"buffer": 24,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1700,7 +1619,7 @@
 						"translation.y": 985.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 20,
+					"stack_index": 22,
 					"type": "text"
 				}
 			]
@@ -1739,11 +1658,11 @@
 	"menu_visible": true,
 	"output.MavensMate-OutputPanel":
 	{
-		"height": 194.0
+		"height": 169.0
 	},
 	"output.error":
 	{
-		"height": 124.0
+		"height": 179.0
 	},
 	"output.find_results":
 	{
@@ -1763,6 +1682,78 @@
 		"selected_items":
 		[
 			[
+				"amed",
+				"src\\pages\\AMEducationTraining.page"
+			],
+			[
+				"amedu",
+				"src\\classes\\AMEducationTrainingExtension.cls"
+			],
+			[
+				"",
+				"src\\pages\\AMLeaveApplication.page"
+			],
+			[
+				"leaveatest",
+				"src\\classes\\AMLeaveApplictionTest.cls"
+			],
+			[
+				"leaveapptest",
+				"src\\classes\\AMLeaveApplictionTest.cls-meta.xml"
+			],
+			[
+				"leaveapphander",
+				"src\\classes\\AMLeaveApplicationHandler.cls"
+			],
+			[
+				"amlapp",
+				"src\\classes\\AMLeaveApplicationExtension.cls"
+			],
+			[
+				"approvalcontact",
+				"src\\pages\\ApprovalContact.page"
+			],
+			[
+				"edutest",
+				"src\\classes\\AMEducationTrainingHandlerTest.cls"
+			],
+			[
+				"hander",
+				"src\\classes\\AMLeaveHander.cls"
+			],
+			[
+				"leavea",
+				"src\\pages\\AMLeaveApplication.page"
+			],
+			[
+				"amvisitorhosts",
+				"src\\pages\\AMVisitorHosts.page"
+			],
+			[
+				"approv",
+				"src\\classes\\ApproverUtils.cls"
+			],
+			[
+				"amedutest",
+				"src\\classes\\AMEducationTrainingExtensionTest.cls"
+			],
+			[
+				"ameuc",
+				"src\\pages\\AMEducationTraining.page"
+			],
+			[
+				"eduha",
+				"src\\classes\\AMEducationTrainingHandlerTest.cls"
+			],
+			[
+				"educ",
+				"src\\classes\\AMEducationTrainingExtension.cls"
+			],
+			[
+				"leavequery",
+				"src\\pages\\LeaveQuery.page"
+			],
+			[
 				"approvalsetting",
 				"src\\pages\\ApprovalSetting.page"
 			],
@@ -1779,16 +1770,8 @@
 				"src\\classes\\VFShowInApprovalExtension.cls"
 			],
 			[
-				"leavequery",
-				"src\\classes\\LeaveQueryController.cls"
-			],
-			[
 				"leaveq",
 				"src\\classes\\LeaveQueryController.cls"
-			],
-			[
-				"amedu",
-				"src\\classes\\AMEducationTrainingHandler.cls"
 			],
 			[
 				"amleave",
@@ -1849,10 +1832,6 @@
 			[
 				"leaveapp",
 				"src\\pages\\AMLeaveApplication.page"
-			],
-			[
-				"educ",
-				"src\\pages\\AMEducationTraining.page"
 			],
 			[
 				"process",
@@ -2019,10 +1998,6 @@
 				"src\\classes\\SapApprovalEnum.cls"
 			],
 			[
-				"",
-				"src\\classes\\AMVendorClaimExtension.cls"
-			],
-			[
 				"amvendorc",
 				"src\\pages\\AMVendorClaim.page"
 			],
@@ -2069,10 +2044,6 @@
 			[
 				"checkc",
 				"src\\triggers\\CheckChatter.trigger"
-			],
-			[
-				"amed",
-				"src\\classes\\AMEducationTrainingHandlerTest.cls"
 			],
 			[
 				"approvalcon",
@@ -2191,7 +2162,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 421.0,
+	"side_bar_width": 368.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
