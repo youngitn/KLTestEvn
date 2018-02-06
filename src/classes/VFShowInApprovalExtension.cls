@@ -7,7 +7,7 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
 
     public boolean isOld {set; get;}
     public Id detailRecTypeId {set; get;}
-    public List<SObject> detailSObjList {set; get;}
+    public Transient List<SObject> detailSObjList {set; get;}
     public String nowStatus {GET; SET;}
     public String nowNode  {GET; SET;}
     public Boolean isEditable {GET; SET;}
