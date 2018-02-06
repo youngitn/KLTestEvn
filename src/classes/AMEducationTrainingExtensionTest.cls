@@ -8,12 +8,12 @@ private class AMEducationTrainingExtensionTest
 
     }
 
-    //static testMethod void testSave1()
-    //{
-    //   Test.startTest();
+    static testMethod void testSave1()
+    {
+       Test.startTest();
 
-    //   Test.stopTest();
-    //}
+       Test.stopTest();
+    }
     static testMethod void testSave()
     {
         Test.startTest();
@@ -60,7 +60,7 @@ private class AMEducationTrainingExtensionTest
             am.MeetingRooms__c = con3.id;
             am.Equipment_Order__c = true;
             am.EducationTrainingInHouseLecturerName__c = usr.id;
-
+            am.InternalEducationParticipants__c = '30210378 aaa';
             AMEducationTrainingExtension extension = new AMEducationTrainingExtension(new ApexPages.StandardController(am));
             System.debug('am.Days__c-----' + extension.am.Days__c);
             extension.am.Days__c = 1;
@@ -114,7 +114,7 @@ private class AMEducationTrainingExtensionTest
             Event e = new Event();
             e.DurationInMinutes = 1;
             e.ActivityDateTime = Datetime.now();
-            insert e;
+            
             extension.addParticipant();
             PageReference pageRef = new PageReference('/apex/EducationTraining');
             pageRef.getParameters().put('inputType', 'empid');
@@ -123,6 +123,7 @@ private class AMEducationTrainingExtensionTest
             Test.setCurrentPage(pageRef);
             extension.PutValue();
             extension.addInv(e, extension.participants.get(0));
+            insert e;
         }
 
         Test.stopTest();
@@ -177,6 +178,58 @@ private class AMEducationTrainingExtensionTest
         extension.cancel();
         Test.stopTest();
     }
+
+     static testMethod void test20180201()
+    {
+        Test.startTest();
+
+        System.debug('@@ ' + [SELECT Id, name FROM user ].get(0).name); //有資料
+
+        Profile pf = [SELECT Id FROM Profile WHERE name = '员工'];
+        Id rrid = [Select Id,RecordType.DeveloperName From RecordType where RecordType.DeveloperName = 'staff'].get(0).Id;
+        System.debug('pf->' + pf);
+        UserRole ur = new UserRole(Name = 'Finance');
+        insert ur;
+        User usr = TestUserUtil.createTestUser(ur.Id, pf.Id, 'Test FirstName', 'Test LastName', '30210999');
+        User usr2 = TestUserUtil.createTestUser(ur.Id, pf.Id, 'Test FirstName2', 'Test LastName2', '30210378');
+
+        System.runAs(usr)
+        {
+
+            Contact con2 = new Contact(LastName = 'bbb', number__c = '30210999', SF_User__c = usr.id );
+            con2.RecordTypeId = rrid;
+            insert con2;
+
+            Approval_Managed1__c am = new Approval_Managed1__c();
+            Datetime d = Datetime.now();
+            am.BegingTime__c = '10:00 上午' ;
+            am.EndTime__c = '11:00 上午';
+            am.Days__c = 2;
+            am.Applicant__c = con2.Id;
+            System.debug('@@ ' + am.Applicant__c);
+            am.RecordTypeId = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Approval_Managed1__c' AND  DeveloperName = :SapApprovalEnum.EDUCATIONTRAININGREQUEST].get(0).Id;
+            am.Start_Time__c = d;
+            am.End_Time__c = d.addHours(1);
+            am.EducationTrainingHours__c = 8;
+            am.EducationTrainingInHouseLecturerName__c = con2.Id;
+            am.Equipment_Order__c = true;
+            am.EducationTrainingInHouseLecturerName__c = usr.id;
+            
+            AMEducationTrainingExtension extension = new AMEducationTrainingExtension(new ApexPages.StandardController(am));
+            //<AMEducationTrainingExtension.participant>
+            AMEducationTrainingExtension.participant ep = new AMEducationTrainingExtension.participant();
+            ep.empid = '30210378';
+            ep.Name= 'aaa';
+            extension.participants.add(ep);
+            extension.ApplicantEmpid = '30210378';
+            extension.am.Days__c = 2;
+            extension.save();
+        }
+        Test.stopTest();
+
+    
+    }
+    
 
 
 

@@ -58,9 +58,10 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
                     List<String> empidList = new List<String>();
                     for(String p : pList)
                     {
-                        empidList.add(p.substringAfter('-'));
+                        empidList.add(p.substring(0,8));
 
                     }
+                    System.debug(empidList);
                     //for(User ps :[SELECT Id, Email, Name FROM User WHERE Number__c IN : empidList]){
                     //    userIds.add(ps.Id);
                     //}
@@ -89,14 +90,29 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
 
                 // 如果是最後已批准 寄出通知
                 // 審批狀態應該會更新進而觸發此程式
-                if (cam.Approval_Status__c == 'A' && cam.InternalEducationParticipants__c != null)
+                if (cam.RecordTypeId == rtId && cam.Approval_Status__c == 'A' && cam.InternalEducationParticipants__c != null)
                 {
                     List<String> pList = cam.InternalEducationParticipants__c.split(',');
                     List<String> empidList = new List<String>();
+                    //一般間接員工 有SF帳號 email資訊
+                    List<String> commAddresses = new List<String>();
+                    //主管email
+                    List<String> bossAddresses = new List<String>();
+                    //直接員工 通常沒有SF帳號 email資訊
+                    List<String> nonAddresses = new List<String>();
+
+                    String nonEmp = '';
                     for(String p : pList)
                     {
-                        empidList.add(p.substringAfter('-'));
+                        empidList.add(p.substring(0,8));
 
+                    }
+                    if (cam.EducationTrainingInHouseLecturerName__c != null && !String.IsBlank(cam.EducationTrainingInHouseLecturerName__c))
+                    {
+                        List<User> u = [SELECT Name, Number__c FROM User WHERE id = :cam.EducationTrainingInHouseLecturerName__c];
+                        //u.get(0).Number__c;
+                        //u.get(0).Name;
+                        empidList.add(u.get(0).Number__c);
                     }
                     //for(User ps :[SELECT Id, Email, Name FROM User WHERE Number__c IN : empidList]){
                     //    sendMailToParticipants(ps.Name, ps.email, cam);
@@ -105,29 +121,66 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
                     o.Approval_Rule__c  = '指定人部门主管';
                     Contact toCon = new Contact();
                     Id bossId = null;
+                    Set<String> userIds = new Set<String>();
                     //取得主管email並寄出通知
                     for(String num : empidList)
                     {
                         //從VF過來的都是聯絡人
                         System.debug(num);
                         toCon               = Peoples.getInstance().KlAllContactMapGetByNum.get(num);
+
                         System.debug(toCon);
-                        String bossEmail  = 'aaa@test.com';
-                        String toEmail = toCon.email;
+                        String bossEmail  = 'SF@SF.com';
+                        
+                        //SF_USER已啟用的條件下 聯絡人沒有此人資料
+                        //有資料但是email是空的
+                        //收信設為申請人 設定 noContactEmail = true; noBoss = true;
+                        if (toCon == null || toCon.email == null || toCon.email == ''){
+                            System.debug('toCon == null 2');
+                            
+                            toCon    = Peoples.getInstance().KlAllContactMapGetById.get(cam.Applicant__c);
+                            //無SF帳號或email 寄給申請人
+                            if (!Test.isRunningTest())
+                                nonAddresses.add(toCon.Email);
+                            nonEmp += num+'-'+[select Name from Contact where Number__c =: num].Name;
+                            //sendMailToParticipants(toCon.Name , toCon.Email , bossEmail , cam ,noBoss , noContactEmail);
+                            continue;
+                        }
+                        
+                        String toEmail = toCon.email;            
                         if(!Test.isRunningTest() )
                         {
                             //因為審批人必須是USER 所以使用ApproverUtils回傳的是USER.
-                            bossId              = ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(o, toCon.Id).get(0);
-                            bossEmail    = Peoples.getInstance().KlAllUserMapGetById.get(bossId).email;
+                            //如果此員工有找到主管 則設置主管相關資料到變數中
+                            
+                            bossId = ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(o, toCon.Id).get(0);
+                            if (bossId != null){
+                                System.debug('approvalSearchApprrovalerByRuleWithOutSOQL != null');
+                                bossEmail    = Peoples.getInstance().KlAllUserMapGetById.get(bossId).email;
+                                userIds.add(bossId);
+                            }//如果找不到主管 則收件人為申請人寄出通知
+                            else{
+                               
+                                //無SF帳號或email 寄給申請人
+                                nonAddresses.add(toCon.Email);
+                                 nonEmp += num+'-'+Peoples.getInstance().KlAllContactMapGetByNum.get(num).Name;
+                                //sendMailToParticipants(toCon.Name , toEmail , bossEmail , cam ,noBoss , noContactEmail);
+                                continue;
+                            }
+
                             
                         }
+                        //將有SF&EAMIL資料的員工email addr集中放置
+                        commAddresses.add(toEmail);
+                        bossAddresses.add(bossEmail);
                         
-                        sendMailToParticipants(toCon.Name , toEmail , bossEmail , cam);
 
                     }
-
-
-
+                    //主管也需要觀看權限
+                    if (userIds.size() > 0)
+                        Utils.ManualShareRecordToUsers(userIds, 'Approval_Managed1__c', 'a070I00000berpjQAA');
+                    
+                    sendMailToParticipants(commAddresses , bossAddresses ,nonAddresses, nonEmp,cam );
                 }
 
                 if (cam.RecordTypeId == rtId && cam.Is_Reset_Approvaler__c)
@@ -139,6 +192,14 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
                     setApprovalUser(mapSpecify, cam);
                     cam.Is_Reset_Approvaler__c = false;
                     cam.head_description__c  = cam.EducationTrainingName__c;
+                }
+
+                if(cam.RecordTypeId == rtId && cam.Approval_Status__c == 'R' ){
+
+                    List<Event> le = [select Id,Subject,whatId from Event where whatId = :cam.Id];
+                    List<EventRelation> ler = [select id from EventRelation where EventId in :le];
+
+                    Delete le;
                 }
                 
 
@@ -199,7 +260,7 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
      * @param bossEmail [參訓人部門主管郵件位址]
      * @param am        [表單物件]
      */
-    public void sendMailToParticipants(String name, String email , String bossEmail, Approval_Managed1__c am )
+    public void sendMailToParticipants(List<String> commAddresses,List<String> bossAddresses,List<String> nonAddresses,String nonEmp,Approval_Managed1__c am)
     {
 
         Messaging.reserveSingleEmailCapacity(2);
@@ -208,38 +269,55 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
 
         // Strings to hold the email addresses to which you are sending the email.
-        String[] toAddresses = new String[] {email};
-
-        String[] ccAddresses = new String[] {bossEmail};
+        String[] toAddresses = commAddresses;
+        System.debug(toAddresses);
+        String[] ccAddresses = bossAddresses;
+        System.debug(ccAddresses);
+        String[] nnAddresses = nonAddresses;
+        System.debug(nnAddresses);
         System.debug('-------------------->' + ccAddresses);
-        mail.setCcAddresses(ccAddresses);
+        
 
-
+        mail.setCharset('UTF-8');
         // Assign the addresses for the To and CC lists to the mail object.
-        mail.setToAddresses(toAddresses);
+        
 
         // Specify the address used when the recipients reply to the email.
         mail.setReplyTo('support@acme.com');
 
         // Specify the name used as the display name.
         mail.setSenderDisplayName('Salesforce');
+        String ApplicantName = '';
+        String ApplicantNum = '';
+        if (!Test.isRunningTest()){
+            Contact Applicant = Peoples.getInstance().KlAllContactMapGetById.get(am.Applicant__c);
+            ApplicantName = Applicant.Name;
+            ApplicantNum = Applicant.Number__c;
+        }
 
-        // Specify the subject line for your email address.
-        mail.setSubject('Salesforce 教育訓練申請單 員工:' + name + ' 所參與之教育訓練已批准');
-
+        
+        
         // Set to True if you want to BCC yourself on the email.
         mail.setBccSender(false);
-
         // Optionally append the salesforce.com email signature to the email.
         // The email address of the user executing the Apex Code will be used.
         mail.setUseSignature(false);
 
-        // Specify the text content of the email.
+        mail.setSubject('Salesforce 教育訓練申請單 已批准');
+         nonEmp = '系統無法自動通知以下的人員與其主管,煩請手動通知:'+ nonEmp;
+        mail.setHtmlBody('您所參與的教育訓練申請流程已批准. <br> 單號:' + am.Name + '<br> 申請人:' + ApplicantName +' '+ ApplicantNum +'<br>參訓名單:<br>'+am.InternalEducationParticipants__c+' <br>表單詳情請至連結檢視:<a href="https://kinglai.my.salesforce.com/'+am.id+'">https://kinglai.my.salesforce.com/'+am.id+'</a>');
+        mail.setToAddresses(nnAddresses);
+        if (!Test.isRunningTest())
+            Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
 
 
-        mail.setHtmlBody('name + ' + ' 您所參與的教育訓練申請流程 已批准. <br> 單號:' + am.Name + '<br> 申請人:' + am.Applicant__c  + '<br>表單詳情請至連結檢視:' + URL.getSalesforceBaseUrl() + '/' + am.Id );
-
+        
+        mail.setHtmlBody('您所參與的教育訓練申請流程已批准. <br> 單號:' + am.Name + '<br> 申請人:' + ApplicantName +' '+ ApplicantNum +'<br>參訓名單:<br>'+am.InternalEducationParticipants__c+' <br>表單詳情請至連結檢視:<a href="https://kinglai.my.salesforce.com/'+am.id+'">https://kinglai.my.salesforce.com/'+am.id+'</a>');
+        mail.setToAddresses(toAddresses);
+        mail.setCcAddresses(ccAddresses);
         // Send the email you have created.
-        Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+        if (!Test.isRunningTest())
+            Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+  
     }
 }

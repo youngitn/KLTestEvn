@@ -77,7 +77,12 @@ public class AMEducationTrainingExtension
             participants.add(p);
 
         }
+        //參訓人不可為空值 即使list > 0
         Integer participantSize = participants.size();
+        if(participantSize ==0 ||participants.get(0).empid == '' || participants.get(0).empid == null){
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.FATAL, '參訓人不可為空'));
+            return null;
+        }
         //天數不能為0
         if (am.Days__c == null || am.Days__c == 0)
         {
@@ -85,6 +90,9 @@ public class AMEducationTrainingExtension
             ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.FATAL, '天數必須大於0,請重新輸入'));
             return null;
         }
+
+        
+        
         try
         {
             System.debug(LoggingLevel.INFO, '*** check in: ');
@@ -101,10 +109,10 @@ public class AMEducationTrainingExtension
 
         System.debug('amId2---->' + am.id);
         System.debug('am.Equipment_Order__c---->' + am.Equipment_Order__c);
-        if (Test.isRunningTest())
-        {
-            am.Equipment_Order__c = true;
-        }
+        
+        //一律要產生事件
+        am.Equipment_Order__c = true;
+        //執行事件建立
         if (am.Equipment_Order__c)
         {
             //建立一event type=日循環
@@ -140,7 +148,6 @@ public class AMEducationTrainingExtension
 
             }
 
-
             e.RecurrenceInterval = 1; //循環頻率
             if (am.EducationTrainingHours__c == null)
             {
@@ -161,7 +168,8 @@ public class AMEducationTrainingExtension
                 res.Status = 'Accepted';//設為邀請人已接受 因為是資源 所以必須設為接受
                 insert res;
             }
-            // 如果參訓人有新增 則加入邀請
+
+            //參訓人加入邀請
             if (participantSize != null && participantSize > 0)
             {
                 for (participant p : participants)
@@ -170,21 +178,42 @@ public class AMEducationTrainingExtension
 
                     System.debug(p);
                     //增加邀請人
-
-                    ps += p.name + '-' + p.empid;
+                    if(p.empid == null || p.empid == '' || Peoples.getInstance().KlAllUserMapGetByNum.get(p.empid) == null){
+                        continue;
+                    }
+                    ps +=  p.empid + ' ' + p.name ;
                     if (participantSize > 0)
                     {
 
                         ps += ',';
                     }
+                    
                     addInv(e, p);
 
                 }
 
                 am.InternalEducationParticipants__c = ps;
-                update am;
-            }
+            }else{
+                ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '參訓人不可為空!'));
+                return null;
+            }  
+            //for (participant p : participants)
+            //{
+            //    participantSize--;
+
+            //    System.debug(p);
+            //    //增加邀請人
+
+            //    ps +=  p.empid + ' ' + p.name ;
+            //    if (participantSize > 0)
+            //    {
+
+            //        ps += ',';
+            //    }
+            //    addInv(e, p);
+            //}
         }
+        update am;
         System.debug('In save extention ');
         System.debug(LoggingLevel.INFO, '*** am.Id: ' + am.Id);
         return new PageReference('/' + am.Id);
@@ -199,7 +228,7 @@ public class AMEducationTrainingExtension
         if(!Test.isRunningTest())
         {
             er.EventId = e.Id;
-            er.RelationId =  Utils.getUserByEmployeeCode(p.empid);//用SF_User__r.id作為邀請人才是真邀請
+            er.RelationId =  Peoples.getInstance().KlAllUserMapGetByNum.get(p.empid).Id;//用SF_User__r.id作為邀請人才是真邀請
             er.Status = 'Accepted';
 
             insert er;

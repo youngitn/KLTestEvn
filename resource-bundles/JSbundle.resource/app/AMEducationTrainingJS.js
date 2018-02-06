@@ -13,7 +13,7 @@
                              ExTraining.hide();
                              InTraining.show();
                          } else if (j$(this).val() == 'ExternalTraining') {
-                             participants.hide();
+                             participants.show();
                              ExTraining.show();
                              InTraining.hide();
                              j$("input[id$='EducationTrainingExternalLecturerName']").removeAttr('disabled');

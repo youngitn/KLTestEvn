@@ -91,8 +91,6 @@
                         <!-- 教育訓練類別* -->
                         <apex:inputfield required="true" id="pl_EducationTrainingType" value="{!am.EducationTrainingType__c}">
                         </apex:inputfield>
-                        <apex:inputfield label="是否存檔時於行事曆建立事件" value="{!am.Equipment_Order__c}">
-                        </apex:inputfield>
                     </apex:pageblocksection>
                     <apex:pageblocksection title="內外訓共用資訊">
                         <!-- 九 課程類別(單選) -->
@@ -152,7 +150,7 @@
                         <apex:inputfield id="EducationTrainingInHouseLecturerName" value="{!am.EducationTrainingInHouseLecturerName__c}">
                         </apex:inputfield>
                     </apex:pageblocksection>
-                    <!-- 如果教育訓練類別 = 內訓 顯示參訓人員 -->
+                    <!-- 如果教育訓練類別 = 內訓 顯示參訓人員(已不分內外訓皆須填寫參訓人) -->
                     <apex:pageblocksection id="participants" title="參訓人員">
                         <apex:commandbutton action="{!addParticipant}" oncomplete="onCompleteJSFunc();" rerender="output1" status="retrieveStatus" value="新增">
                         </apex:commandbutton>
