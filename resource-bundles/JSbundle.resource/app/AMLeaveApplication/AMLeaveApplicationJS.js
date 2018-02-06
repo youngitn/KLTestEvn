@@ -43,12 +43,40 @@
 
          setTimeout(getEmpInfo, 500);
      });
+
+     j$("input[id $= Agent]").on('change', function() {
+
+         setTimeout(queryAgentExt, 500);
+     });
+     
      ////////////////////////////////////////////////////////////////////////
      ////////////////////////////////////////////////////////////////////////
      ////////////////////////////////////////////////////////////////////////
      ////////////////////////////////////////////////////////////////////////
      ////////////////////////////////////////////////////////////////////////
  });
+
+ function queryAgentExt(){
+     let cId = j$("input[id $= Agent_lkid]").val();
+     if (cId != '000000000000000' && cId != null && cId != '') {
+        AMLeaveApplicationExtension.queryEmpId(cId, function(result, event) {
+         if (event.status && result != null) {
+             JSON.parse(result.replace(/(&quot\;)/g, "\""), function(k, v) {
+                 console.log(k + ',' + v);
+                 if (k == 'Phone') {
+                        if (v == null){
+                           alert('查詢不到代理人分機,請手動輸入!');
+                            j$('input[id $= AgentExt]').val(null);  
+                        }else
+                            j$('input[id $= AgentExt]').val(v);
+                 }
+             });
+         }
+     })
+         
+     }
+ }
+
  //取得請假人資料 進入點
  function getEmpInfo() {
      let cId = j$("input[id $= Employee_lkid]").val();
@@ -86,7 +114,7 @@
              // j$('input[id $= Employee_Code]').val(empId);
              j$('form[id$=form]').unblock();
          }
-     })
+     });
  }
  //將所有按鈕class風格統一 	
  function addButtonClass() {
@@ -144,8 +172,8 @@
             let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
             // alert(IsLeave3Days.attr('checked'));
             if ((diffDays+1) >=3 && !IsLeave3Days.prop( "checked")){
-                alert('連續請假超過三日,系統將自動勾選"連續休假天數是否三天以上(含例假/國定假日)".');
-                j$('input[id$=IsLeave3Days]').prop( "checked", true );
+                alert('系統偵測到您的請假天數已達連續三日,請確認是否勾選"連續休假天數是否三天以上(含例假/國定假日)",以利正確審批.');
+                //j$('input[id$=IsLeave3Days]').prop( "checked", true );
             }else if(timeDiff < 0){
                 alert('結束日期不得小於開始日期!');
             }
@@ -160,8 +188,8 @@
             let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
             // alert(IsLeave3Days.attr('checked'));
             if ((diffDays+1) >=3 && !IsLeave3Days.prop( "checked")){
-                alert('連續請假超過三日,系統將自動勾選"連續休假天數是否三天以上(含例假/國定假日)".');
-                j$('input[id$=IsLeave3Days]').prop( "checked", true );
+                alert('系統偵測到您的請假天數已達連續三日,請確認是否勾選"連續休假天數是否三天以上(含例假/國定假日)",以利正確審批.');
+                //j$('input[id$=IsLeave3Days]').prop( "checked", true );
             }else if(timeDiff < 0){
                 alert('結束日期不得小於開始日期!');
             }
@@ -189,7 +217,8 @@ function leaveHourCalBySingleDetail(self){
        //alert(tr.children().find('input[id$=End_date]').val()   + ' ' + tr.children().find('select[id$=End_Time] option:selected').text());
         let timeDiff = edate.getTime() - sdate.getTime();
         if (timeDiff < 0){
-            alert('結束時間不得小於開始時間!');
+            alert('結束時間不得小於開始時間!請檢查 開始日期/開始時間 與 結束日期/結束時間 是否正確.');
+            j$('input[id$=Leave_Time]').val(null);
         }
         else{
             let diffHours = (timeDiff / (3600000)).toFixed(1); 
@@ -203,3 +232,4 @@ function leaveHourCalBySingleDetail(self){
                 
          
 }
+
