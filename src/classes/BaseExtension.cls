@@ -8,10 +8,6 @@ public virtual  class BaseExtension implements IExtension
     //getSObjAllField()
     public SObject sobj {set; get;}
     public Id recordTypeId {set; get;}
-    public Map<Id, Contact> contactsById {get; private set;}
-    public Map<String, Contact> contactsByNum {get; private set;}
-    public Map<Id, User> usersById {get; private set;}
-    public Map<String, User> usersByNum {get; private set;}
 
     public BaseExtension(String sobjName, String approvalName, ApexPages.StandardController con)
     {
@@ -22,12 +18,6 @@ public virtual  class BaseExtension implements IExtension
         System.debug('BaseExtension approvalName = ' + approvalName);
         sobj.put('RecordTypeId', recordTypeId);
         System.debug('BaseExtension recordTypeId = ' + recordTypeId);
-        contactsById    = Peoples.getInstance().KlAllContactMapGetById;
-        contactsByNum   = Peoples.getInstance().KlAllContactMapGetByNum;
-        usersById       = Peoples.getInstance().KlAllUserMapGetById;
-        usersByNum  = Peoples.getInstance().KlAllUserMapGetByNum;
-
-
     }
     public virtual PageReference saveAction()
     {
