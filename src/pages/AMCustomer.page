@@ -344,6 +344,7 @@
                     <th>{!$ObjectType.Contact.Fields.Fax.Label}</th>
                     <th>{!$ObjectType.Contact.Fields.Extension_Number_Fax__c.Label}</th>
                     <th>{!$ObjectType.Contact.Fields.Email.Label}</th>
+                    <th>{!$ObjectType.Contact.Fields.Contact_desc__c.Label}</th>
                 </thead>
                 <tbody>                    
                     <apex:variable var="listIndex2" value="{!1}"/>
@@ -360,6 +361,7 @@
                             <td><apex:inputField value="{!item.Fax}" styleClass="text"/></td>
                             <td><apex:inputField value="{!item.Extension_Number_Fax__c}" styleClass="text"/></td>
                             <td><apex:inputField value="{!item.Email}" styleClass="text" required="true"/></td>
+                            <td><apex:inputField value="{!item.Contact_desc__c}" styleClass="text" /></td>
                         </tr>
                         <apex:variable var="listIndex2" value="{!listIndex2+1}"/>
                     </apex:repeat>

@@ -30,7 +30,7 @@ private class AMSCCSupplierClaimTest {
 
         //创建流程查询SQL
         Id qId = Utils.getRecordTypeId('Metadata__c', 'Query_SQL');
-        String str = '[{"Model_Group__c":"ALL","SQL_Short__c":null,"SQL_Long__c":"SELECT Id,RecordTypeId,Name,Approval_Name__c,Applicant__c,Dept_Name__c,Applicant_Code__c,Bill_Date__c,Applicant_Name__c,Approval_Status__c,ECRType__c,ChangeDescription__c,Factory__c,Remark__c,Material_Number__c,WorkOrderCount__c,AnomalyStation__c,WorkOrderNumber__c,ReworkOrderNumber__c,ProcessLossTime__c,MaterialLossTime__c,AppearanceLossTime__c,ProductLoss__c,OtherlLoss__c,BUProductionValue__c,SupplierName_Code__c,ConfirmDescription__c,ProcessCost__c,ProductCost__c,TimeCost__c,OtherCost__c,TotalCost__c,Vendor__c,ProcessDeductionNumber__c,ProcessDeductionMoney__c,ProductDeductionNumber__c,ProductDeductionMoney__c,Approval_User1__c,Approval_User2__c,Approval_User3__c,Approval_User5__c,Approval_User7__c FROM Custom_Approval_Managed__c","Approval_Name__c":"SCCSUPPLIERCLAIM"}]';
+        String str = '[{"Model_Group__c":"ALL","SQL_Short__c":null,"SQL_Long__c":"SELECT Id,RecordTypeId,Name,Approval_Name__c,Applicant__c,Dept_Name__c,Applicant_Code__c,Bill_Date__c,Applicant_Name__c,Approval_Status__c,ECRType__c,ChangeDescription__c,Factory__c,Remark__c,CostAccount__c,Material_Number__c,WorkOrderCount__c,AnomalyStation__c,WorkOrderNumber__c,ReworkOrderNumber__c,ProcessLossTime__c,MaterialLossTime__c,AppearanceLossTime__c,ProductLoss__c,OtherlLoss__c,BUProductionValue__c,SupplierName_Code__c,ConfirmDescription__c,ProcessCost__c,ProductCost__c,TimeCost__c,OtherCost__c,TotalCost__c,Vendor__c,ProcessDeductionNumber__c,ProcessDeductionMoney__c,ProductDeductionNumber__c,ProductDeductionMoney__c,Approval_User1__c,user001__c,Approval_User2__c,Approval_User3__c,Approval_User4__c,Approval_User5__c,Approval_User6__c,Approval_User7__c,Approval_User8__c,Approval_User9__c,Approval_User10__c,Approval_User11__c,Approval_User12__c,Approval_User13__c,Approval_User14__c,Approval_User15__c FROM Custom_Approval_Managed__c","Approval_Name__c":"SCCSUPPLIERCLAIM"}]';
         List<Metadata__c> sqls = (List<Metadata__c>)JSON.deserialize(str,List<Metadata__c>.class);
         for(Metadata__c md : sqls){
             md.RecordTypeId = qId;
@@ -38,19 +38,25 @@ private class AMSCCSupplierClaimTest {
 
         INSERT sqls;
 
-        //配置文件数据创建
+        //配置文件数据创建 
         Custom_Approval_Managed__c am = new Custom_Approval_Managed__c();
         am.RecordTypeId = rc.Id;
 
         am.Factory__c = '1000';
         am.ChangeDescription__c = 'sdgfdsg';
         am.ECRType__c = 'AD'; 
-
         INSERT am;
+
+        am.Factory__c = '1000';
+        am.ChangeDescription__c = 'sdgSADFGDFG';
+        am.ECRType__c = 'AD'; 
+        UPDATE am;
+
 
         AMSCCSUPPLIERCLAIMExtension extension = new AMSCCSUPPLIERCLAIMExtension(new ApexPages.StandardController(am));
         extension.save();
         extension.cancel();
+        
 
         Test.stopTest();
     }

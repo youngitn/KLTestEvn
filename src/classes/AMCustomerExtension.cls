@@ -62,7 +62,7 @@ public without sharing class AMCustomerExtension {
                             FROM Custom_Approval_Managed_Item__c 
                             Where Customer_Tax__c = :con.getId() AND RecordTypeId = :recTypeTaxID];
             //联系人
-            listContact = [SELECT Id, RecordTypeId, Is_Checked__c, LastName, Phone, Department__c, Functionally__c, MobilePhone, Fax, Extension_Number__c, Extension_Number_Fax__c, Email 
+            listContact = [SELECT Id, RecordTypeId, Is_Checked__c, LastName, Phone, Department__c, Functionally__c, MobilePhone, Fax, Extension_Number__c, Extension_Number_Fax__c, Email ,Contact_desc__c
                             FROM Contact 
                             Where Customer_Contact__c = :con.getId() AND RecordTypeId = :recTypeContactID];
             //合作伙伴

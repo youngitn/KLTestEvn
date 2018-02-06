@@ -1,0 +1,44 @@
+<apex:page controller="AmAbnormalityHrPt60Controller" sidebar="false">
+<script>
+    function navigateUrl(){
+        window.parent.location = '/04i';
+    }
+    function myrefresh(){
+    window.location.reload();
+    }
+    setTimeout('myrefresh()',1800000); //指定60秒刷新一次
+</script>
+
+	<apex:form >
+		<apex:pageBlock >
+			<apex:pageBlockTable value="{!AbnormalityHr}" var="item">	
+
+				<apex:column value="{!item.pernr}" headerValue="{!$Label.pernr}" 
+				             style="width: 200px"/>				
+				<apex:column value="{!item.ename}" headerValue="{!$Label.ename}" 
+				             style="width: 200px"/>
+				<apex:column value="{!item.kurzt}" headerValue="{!$Label.kurzt}" 
+				             style="width: 200px"/>
+				<apex:column value="{!item.ldate}" headerValue="{!$Label.ldate}" 
+				             style="width: 200px"/>
+				<apex:column value="{!item.ltime}" headerValue="{!$Label.ltime}" 
+				             style="width: 200px"/>
+				<apex:column value="{!item.ltime2}" headerValue="{!$Label.ltime2}" 
+				             style="width: 200px"/>
+				<apex:column value="{!item.error}" headerValue="{!$Label.error}" 
+				             style="width: 200px"/>
+				<apex:column value="{!item.etext}" headerValue="{!$Label.etext}" 
+				             style="width: 200px"/>
+				<apex:column value="{!item.schkz}" headerValue="{!$Label.schkz}" 
+				             style="width: 200px"/>
+				<apex:column value="{!item.ttext}" headerValue="{!$Label.ttext}" 
+				             style="width: 200px"/>
+				<apex:column value="{!item.sobeg}" headerValue="{!$Label.sobeg}" 
+				             style="width: 200px"/>
+				<apex:column value="{!item.soend}" headerValue="{!$Label.soend}" 
+				             style="width: 200px"/>
+
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

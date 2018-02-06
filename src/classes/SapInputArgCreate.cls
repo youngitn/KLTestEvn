@@ -107,7 +107,7 @@ public without sharing class SapInputArgCreate {
             WHERE Customer_Tax__c = :customer.Id];
         List<Contact> contacts = 
             [SELECT Id,SAPID__c,Customer_Contact__c,LastName,Phone,Extension_Number__c,Department,Department__c,
-                    MobilePhone,Fax,Extension_Number_Fax__c,Email 
+                    MobilePhone,Fax,Extension_Number_Fax__c,Email,Contact_desc__c
             FROM Contact 
             WHERE Customer_Contact__c = :customer.Id];
         List<Contact> partners = 
