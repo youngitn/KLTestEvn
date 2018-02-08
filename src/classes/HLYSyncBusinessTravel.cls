@@ -212,12 +212,11 @@ global without sharing class HLYSyncBusinessTravel {
                         ami.Address__c = line.place; //地点
 
                         if (String.isBlank(ami.Address__c)) {
-                            reArg.err_msg = '行程日期中必须填写地点';
+                            reArg.err_msg = '行程日期中'+ ami.Visit_Date__c + '必须填写地点(error info:The position must be filled in on ' + ami.Visit_Date__c +')';
                             reArg.success = 'false';
                             return reArg;
                         }
                         ami.Campaign__c = line.activity_id; //活动-预约ID
-
                         ami.Aircraft_info__c = line.aircraft_info; //行程信息-飞机
                         ami.Train_info__c = line.train_info; //行程信息-火车
                         ami.Other_info__c = line.other_info; //行程信息-其他

@@ -1686,6 +1686,9 @@ public without sharing class Utils
                 row.put('LeadName__c', arg.LeadName);
                 row.put('OpportunityName__c', arg.OpportunityName);
                 row.put('AccountName__c', arg.AccountName);
+                if(!String.isBlank(arg.AccountName)){
+                    row.put('Corportion_Name__c', arg.AccountName);
+                }
                 row.put('ActivityPartialDescription__c', arg.ActivityPartialDescription);
                 row.put('OwnerName__c', arg.OwnerName);
                 row.put('TaskSubject__c', arg.Subject);

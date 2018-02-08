@@ -41,7 +41,9 @@ public without sharing class AMAdvanceChargeHandler implements Triggers.Handler 
                     }
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
-                    cam.head_description__c  = cam.Remark_of_Explain__c;
+                    if (cam.Remark_of_Explain__c != null) {
+                      cam.head_description__c  = cam.Purchase__c + cam.Remark_of_Explain__c.substring(0,(cam.Remark_of_Explain__c.length()>200?200:cam.Remark_of_Explain__c.length()));
+                    }
                 }
                 
             }

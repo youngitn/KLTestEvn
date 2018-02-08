@@ -9,7 +9,8 @@
  备    注：
  **********************************************************************/
 public without sharing class AMRFQHandler implements Triggers.Handler {
-    public void handle() {
-        
-    }
+    public void handle() { 
+
+     }   
+  
 }

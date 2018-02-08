@@ -21,6 +21,10 @@ public without sharing class AMSignetUseHandler implements Triggers.Handler {
                     }
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
+                    
+                    if (cam.Summary_content__c != null) {
+                      cam.head_description__c  = cam.Summary_content__c.substring(0,(cam.Summary_content__c.length()>200?200:cam.Summary_content__c.length()));
+                    }
                 }
             }
         }

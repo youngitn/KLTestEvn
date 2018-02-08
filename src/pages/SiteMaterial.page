@@ -5,7 +5,9 @@
     </head>
 
     <div ng-app="app" ng-controller="ctrl" class="slds">
+      
         <!-- 表头：将来用LOGO替换-->
+        <!-- 
         <div class="slds-col" style="text-align: center;margin: auto;">
             <label class="slds-form-element__label" for="text-input-id-1">
                 <font size="6" >
@@ -13,8 +15,8 @@
                 </font>
             </label>
         </div> 
-
-
+      -->
+       
         <!-- 搜索条件-->
         <div class="slds-grid slds-grid_align-space">
           <!-- 
@@ -54,6 +56,7 @@
                   </div>
                 </div>
             </div>
+            -->
             <div class="slds-col">
                 <div class="slds-form-element">
                   <label class="slds-form-element__label" for="text-input-id-4">
@@ -66,7 +69,7 @@
                   </div>
                 </div>
             </div>
-            -->
+
             <div class="slds-col">
                 <div class="slds-form-element">
                   <label class="slds-form-element__label" for="text-input-id-5">
@@ -126,7 +129,6 @@
 
     </div>
 
-
     <script>
         var app = angular.module('app', []);
         app.controller('ctrl',function($scope,$q){
@@ -143,7 +145,7 @@
                 $scope.materials = [];
                 $scope.loading= true;
                 var promise = $q(function(resolve,reject){
-                    SiteMaterialExtension.queryMaterial($scope.materialCertificateCode,$scope.materialNumber,$scope.stockingNO,$scope.contractNO,$scope.batchNO,function(res,event){
+                    SiteMaterialExtension.queryMaterial($scope.materialCertificateCode,$scope.materialNumber,$scope.stockingNO,$scope.contractNO,$scope.batchNO,'{!userName}',function(res,event){
                         resolve(res);
                     });
                 });

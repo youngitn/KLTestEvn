@@ -38,9 +38,9 @@ public without sharing class AMSCCSupplierClaimHandler implements Triggers.Handl
             cam.Approval_User3__c = cam.user001__c;
         }
         //节点二: 采购确认
-        cam.Approval_User4__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2),null),0);
+        // cam.Approval_User4__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2),null),0);
         //节点三: 采购确认
-        cam.Approval_User7__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3),null),0);
+        // cam.Approval_User7__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3),null),0);
         //节点四: 仓库主管
         cam.Approval_User10__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4),null),0);
         //节点五: 成本中心核算

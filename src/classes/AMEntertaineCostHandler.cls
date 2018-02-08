@@ -37,7 +37,9 @@ public without sharing class AMEntertaineCostHandler implements Triggers.Handler
                     }
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
-                    cam.head_description__c  = cam.Description_of_Travel__c;
+                    if (cam.Description_of_Travel__c != null) {
+                      cam.head_description__c  = cam.Description_of_Travel__c.substring(0,(cam.Description_of_Travel__c.length()>200?200:cam.Description_of_Travel__c.length()));
+                    }
                 }
                 
             }
