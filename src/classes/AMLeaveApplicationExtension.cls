@@ -26,7 +26,6 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
 
     public override PageReference saveAction()
     {   
-
         if (String.isNotBlank(am.Employee__c) )
         {
             //List<Contact> lstCon    = [SELECT Name, Number__c FROM Contact WHERE Id = :am.Employee__c AND RecordType.DeveloperName = 'Staff'];
@@ -72,6 +71,8 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
 
                 for (Approval_Managed_Item__c ami : list1)
                 {
+                    System.debug(ami.Start_Time__c);
+
 
                     if (ami.Start_date__c > ami.End_date__c)
                     {
@@ -176,6 +177,12 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
     global static String queryVacation(String empId)
     {
        return RemoteActionsOfLeave.queryVacation(empId);
+    }
+
+    @RemoteAction
+    global static String queryVacationTW(String empId)
+    {
+       return RemoteActionsOfLeave.queryVacationTW(empId);
     }
 
 }
