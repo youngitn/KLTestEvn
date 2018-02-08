@@ -86,6 +86,7 @@
          });
          queryVacation(cId);
          queryEmpId(cId);
+         queryVacationTW(cId);
      }
  }
  //從controller取請假人的聯絡資料
@@ -99,8 +100,11 @@
                  if (k == 'Take_Office_Date') {
                         //因應個資法,到職日需隱藏年分
                         let vv = v != null ? v.trim() : v;
-                        let d = new Date(v);
-                        j$('#Take_Office_Date_box').val(d.getMonth()+'/'+ d.getDate());
+                        if (vv !=null){
+                            let d = new Date(v);
+                            j$('#Take_Office_Date_box').val((d.getMonth())+1+'/'+ d.getDate());
+                        }
+                        
                      //j$('#Take_Office_Date_box').val();
                  }
                  if (k == 'Job_Title_Level') {
@@ -146,6 +150,48 @@
                      j$('input[id $= Annual_leave_Reset]').val(v != null ? v.trim() : v);
                  }
 
+             });
+         }
+     });
+ }
+
+ //從SAP取請假狀態
+ function queryVacationTW(cId) {
+     //let empId = j$('input[id $= Name]').val();
+     //alert(empId);
+     AMLeaveApplicationExtension.queryVacationTW(cId, function(result, event) {
+
+         if (event.status && result != null) {
+            console.log(result.replace(/(&quot\;)/g, "\""));
+             JSON.parse(result.replace(/(&quot\;)/g, "\""), function(k, v) {
+                 console.log(k + ',' + v);
+                 //調休可用時數 
+                 if (k == 'typesofleave__c') {
+                     j$('#sapRec_TypesOfLeave').val(v != null ? v.trim() : v);
+                 }
+                 //目前特休可用時數
+                 if (k == 'start_date__c') {
+                     j$('#sapRec_Start_date').val(v != null ? v.trim() : v);
+                 }
+                 if (k == 'start_time__c') {
+                     j$('#sapRec_Start_time').val(v != null ? v.trim() : v);
+                 }
+                  //下年度特休可用時數
+                 if (k == 'end_date__c') {
+                    //alert(v);
+                     j$('#sapRec_End_date').val(v != null ? v.trim() : v);
+                 }
+
+                 if (k == 'end_time__c') {
+                    //alert(v);
+                     j$('#sapRec_End_time').val(v != null ? v.trim() : v);
+                 }
+
+                 if (k == 'hours__c') {
+                    //alert(v);
+                     j$('#sapRec_Hours').val(v != null ? v.trim() : v);
+                 }
+                 
              });
          }
      });
