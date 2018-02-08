@@ -79,7 +79,7 @@ public  class VFShowInApprovalExtensionTest {
 		Test.startTest();
 
        	Id recordTypeId    = Schema.getGlobalDescribe().get( 'Approval_Managed1__c' ).getDescribe().getRecordTypeInfosByName().get( '教育訓練申請流程' ).getRecordTypeId();
-		Approval_Managed1__c obj = [SELECT Id FROM Approval_Managed1__c WHERE recordTypeId =:recordTypeId AND Approval_Status__c = 'D' LIMIT 1].get(0);
+		Approval_Managed1__c obj = [SELECT Id FROM Approval_Managed1__c WHERE recordTypeId =:recordTypeId  LIMIT 1].get(0);
         
 
         VFShowInApprovalExtension vfsiae = 

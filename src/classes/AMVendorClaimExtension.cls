@@ -1,21 +1,24 @@
-public with sharing class AMVendorClaimExtension extends VFShowInApprovalExtension
+public with sharing class AMVendorClaimExtension extends BaseExtension
 {
 
     public Custom_Approval_Managed__c cam  {Get; Set;}
    
     public AMVendorClaimExtension(ApexPages.StandardController con)
     {
-        super('Custom_Approval_Managed__c','供應商索賠',con,null,null,null);
+        super('Custom_Approval_Managed__c','供應商索賠',con);
         System.debug('OK');
-        cam = (Custom_Approval_Managed__c)this.sobj;
+        cam = (Custom_Approval_Managed__c)sobj;
         System.debug(cam);
-        
+        if (con.getId() != null)
+        {
+            cam = (Custom_Approval_Managed__c)con.getRecord();
+        }
       
     }
 
     public override PageReference saveAction()
     {
         upsert cam;
-        return this.goPage(cam.Id);
+        return new PageReference('/' + cam.Id);
     }
 }

@@ -24,11 +24,12 @@ private class AMVendorClaimExtensionTest
             Contact con2 = new Contact(LastName = 'bbb', number__c = '30210999', SF_User__c = usr.id);
             insert con2;
             
-            
+            //System.debug('any ID here??????->' + Peoples.getInstance().KlAllContactMapGetById.get(con2.Id));
             Custom_Approval_Managed__c am = new Custom_Approval_Managed__c();
            	am.Applicant__c = con2.Id;
-            
-
+            System.debug('any ID here??????->' + am.Applicant__c);
+            System.debug('any user ID here??????->' + Peoples.getInstance().KlAllUserMapGetByNum.get('30210999'));
+            System.debug('any user ID here 22222 ??????->' + Peoples.getInstance().KlAllContactMapGetById.get(con2.Id));
             AMVendorClaimExtension extension = new AMVendorClaimExtension(new ApexPages.StandardController(am));
            
 

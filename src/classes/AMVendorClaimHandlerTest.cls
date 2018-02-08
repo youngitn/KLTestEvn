@@ -28,7 +28,8 @@ private class AMVendorClaimHandlerTest
             Custom_Approval_Managed__c am = new Custom_Approval_Managed__c();
            	am.Applicant__c = con2.Id;
             
-
+            //Contact aa1 = [SELECT Id, Phone,SF_User__r.Id,SF_User__r.isActive, Email, Number__c, Name, Is_Manager__c,SF_User__c ,SF_User__r.Is_First_Manager__c ,SF_User__r.Is_Manager__c,Dept_Number__c,Dept_Number__r.Parent_Number__c,Dept_Number__r.Name,Corp_Code__c,Take_Office_Date__c,Job_Title_Level__c,Title,Post_Number__r.Post_Description__c    
+          
             AMVendorClaimExtension extension = new AMVendorClaimExtension(new ApexPages.StandardController(am));
            
 
@@ -36,6 +37,9 @@ private class AMVendorClaimHandlerTest
 
             System.debug(LoggingLevel.INFO, '*** page: ' + page);
 
+            Custom_Approval_Managed__c am1 = [SELECT id from Custom_Approval_Managed__c where id =: extension.cam.id].get(0);
+
+            update am1;
         }
 
         Test.stopTest();

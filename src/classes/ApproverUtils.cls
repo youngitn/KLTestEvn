@@ -24,6 +24,7 @@ public without sharing class ApproverUtils
     public static List<Id> approvalSearchApprrovalerByRuleWithOutSOQL(Organizational__c org, Id contactID)
     {
         List<Id>  setSFID = new List<Id>();
+        Contact con = null;
         if(org == null)
         {
             return setSFID;
@@ -47,7 +48,7 @@ public without sharing class ApproverUtils
         }
         else if(org.Approval_Rule__c == '指定人上级主管')
         {
-            Contact con = !String.isBlank(contactID) ? Peoples.getInstance().KlAllContactMapGetById.get(contactID) : null;
+            con = !String.isBlank(contactID) ? Peoples.getInstance().KlAllContactMapGetById.get(contactID) : null;
             //特例，当申请人为子公司层的主管时，上级都为新莱子公司层的主管
             if (con != null && !String.isBlank(ApproverUtils.checkSubCorpManagerWithOutSOQL(con.Number__c)))
             {
@@ -60,7 +61,7 @@ public without sharing class ApproverUtils
         }
         else if(org.Approval_Rule__c == '指定人部门主管')
         {
-            Contact con = !String.isBlank(contactID) ? Peoples.getInstance().KlAllContactMapGetById.get(contactID) : null;
+            con = !String.isBlank(contactID) ? Peoples.getInstance().KlAllContactMapGetById.get(contactID) : null;
             //特例，当申请人为子公司层的主管时，上级都为新莱子公司层的主管
             if (con != null && !String.isBlank(ApproverUtils.checkSubCorpManagerWithOutSOQL(con.Number__c)))
             {
@@ -92,7 +93,7 @@ public without sharing class ApproverUtils
         else if(org.Approval_Rule__c == '指定人一阶主管')
         {
             System.debug('***:String.isBlank(contactID): ' + String.isBlank(contactID) + '');
-            Contact con = !String.isBlank(contactID) ? Peoples.getInstance().KlAllContactMapGetById.get(contactID) : null;
+            con = !String.isBlank(contactID) ? Peoples.getInstance().KlAllContactMapGetById.get(contactID) : null;
             //特例，当申请人为子公司层的主管时，上级都为新莱子公司层的主管
             if (con != null && !String.isBlank(ApproverUtils.checkSubCorpManagerWithOutSOQL(con.Number__c)))
             {
@@ -110,6 +111,15 @@ public without sharing class ApproverUtils
             }
 
         }
+
+        /**
+         * 20180112 當申請人=主管職&&公司別=台灣新萊&&審批人找不到
+         * 審批人一律設為總經理.
+         */
+        if (con != null && (setSFID.size() == 0 || setSFID.get(0) == null) && con.Corp_Code__c == '3000' && (con.SF_User__r.Is_First_Manager__c || con.SAP_Dept_Number__c == '10000927'))
+        {
+            setSFID.add(Id.valueOf('00528000006nvgB'));
+        }
         return setSFID;
     }
 
@@ -121,11 +131,16 @@ public without sharing class ApproverUtils
     public static Id checkSubCorpManagerWithOutSOQL(String code)
     {
         System_Setting__c ssc = System_Setting__c.getValues('Setting');
+        String   szApprover = null;
+        String   szSpecialEmployee = null;
+        if (Test.isRunningTest()){
+                szSpecialEmployee = code;
+            }else{
+                szSpecialEmployee   =  ssc.Specify_Approval__c;
+                szApprover =  ssc.Specify_Approal_Employee__c;
+            }
         
-        String   szSpecialEmployee   =  ssc.Specify_Approval__c;
-
-        String   szApprover   =  ssc.Specify_Approal_Employee__c;
-        if (szSpecialEmployee.contains(code))
+        if (szSpecialEmployee.contains(code) && Peoples.getInstance().KlAllUserMapGetByNum.get(szApprover) != null)
         {
             return Peoples.getInstance().KlAllUserMapGetByNum.get(szApprover).Id;
         }
@@ -133,7 +148,7 @@ public without sharing class ApproverUtils
         {
             return null;
         }
-
+        
     }
     /*
         目 的：审批节点设置中，通过申请人找到申请人上级主管
@@ -148,17 +163,37 @@ public without sharing class ApproverUtils
         {
             return null;
         }
-
-        Id IdContact = isUserId ? Peoples.getInstance().KlAllContactMapGetByNum.get(Peoples.getInstance().KlAllUserMapGetById.get(applicationID).Number__c).Id: applicationID;
+        Id IdContact = null;
+        //如果傳進來的ID是USER ID 須轉成連絡人ID
+        if(isUserId){
+            User inU = Peoples.getInstance().KlAllUserMapGetById.get(applicationID);
+            if (inU != null ){
+                //用USER ID 找到工號,並用此工號找所屬聯絡人 
+                //如果有聯絡人進入處理
+                if (Peoples.getInstance().KlAllContactMapGetByNum.get(inU.Number__c) != null){
+                    IdContact = Peoples.getInstance().KlAllContactMapGetByNum.get(inU.Number__c).Id;
+                }else{
+                    
+                    //因查無聯絡人回傳null
+                    return null;
+                }                   
+            }
+        }else{
+            
+            IdContact = applicationID;
+        }
         Contact con = Peoples.getInstance().KlAllContactMapGetById.get(IdContact);
         //当前用户为主管则找所属部门主管，不是，则找上级部门主管
-        if (con.Is_Manager__c == false)
+        if (con != null )
         {
-            return Utils.approvalSearchUserByDept(con.Dept_Number__c);
+            if (con.Is_Manager__c == false)
+                return Utils.approvalSearchUserByDept(con.Dept_Number__c);
+            else
+                return Utils.approvalSearchUserByDept(con.Dept_Number__r.Parent_Number__c);
         }
         else
         {
-            return Utils.approvalSearchUserByDept(con.Dept_Number__r.Parent_Number__c);
+           return null;
         }
     }
 
@@ -176,10 +211,34 @@ public without sharing class ApproverUtils
         {
             return null;
         }
-        Peoples.getInstance().KlAllUserMapGetById.get(applicationID);
-        Id IdContact = isUserId ?Peoples.getInstance().KlAllContactMapGetByNum.get(Peoples.getInstance().KlAllUserMapGetById.get(applicationID).Number__c).Id : applicationID;
+        Id IdContact = null;
+
+        //如果傳進來的ID是USER ID 須轉成連絡人ID
+        if(isUserId){
+            User inU = Peoples.getInstance().KlAllUserMapGetById.get(applicationID);
+            if (inU != null ){
+                //用USER ID 找到工號,並用此工號找所屬聯絡人 
+                //如果有聯絡人進入處理
+                if (Peoples.getInstance().KlAllContactMapGetByNum.get(inU.Number__c) != null){
+                    IdContact = Peoples.getInstance().KlAllContactMapGetByNum.get(inU.Number__c).Id;
+                }else{
+                    
+                    //因查無聯絡人回傳null
+                    return null;
+                }                   
+            }
+        }else{
+            
+            IdContact = applicationID;
+        }
+        
         Contact con = Peoples.getInstance().KlAllContactMapGetById.get(IdContact);
-        return Utils.approvalSearchUserByDept(con.Dept_Number__c, deptLevel);
+        if (con != null){
+            return Utils.approvalSearchUserByDept(con.Dept_Number__c, deptLevel);
+        }else{
+            return null;
+        }
+        
     }
 
 
