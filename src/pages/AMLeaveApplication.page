@@ -14,7 +14,8 @@
             <link href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css" rel="stylesheet"/>
             <link href="{!URLFOR($Resource.JSbundle, '/app/RWD-Table.css')}" rel="stylesheet"/>
             <link href="{!URLFOR($Resource.JSbundle, '/app/AMLeaveApplication/requireRedBarSetting.css')}" rel="stylesheet"/>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+            </script>
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js">
             </script>
             <script src="https://malsup.github.io/jquery.blockUI.js" type="text/javascript">
@@ -97,7 +98,8 @@
                                         <apex:inputfield id="Employee_Code" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Employee_Code__c}">
                                         </apex:inputfield>
                                     </div>
-                                    <div class="pure-u-1 pure-u-md-1-3" />
+                                    <div class="pure-u-1 pure-u-md-1-3">
+                                    </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
                                         <label for="Agent">
                                             代理人
@@ -112,7 +114,8 @@
                                         <apex:inputfield id="AgentExt" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Contract_number__c}">
                                         </apex:inputfield>
                                     </div>
-                                    <div class="pure-u-1 pure-u-md-1-3" />
+                                    <div class="pure-u-1 pure-u-md-1-3">
+                                    </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
                                         <label for="Annual_leave">
                                             特休可用時數
@@ -120,7 +123,7 @@
                                         <apex:inputfield id="Annual_leave" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Annual_leave__c}">
                                         </apex:inputfield>
                                     </div>
-                                    <!--使用Warehouse_confirmation__c 文字(10) 做為資料儲存欄位--> 
+                                    <!--使用Warehouse_confirmation__c 文字(10) 做為資料儲存欄位-->
                                     <div class="pure-u-1 pure-u-md-1-3">
                                         <label for="Annual_leave_Reset">
                                             下年度特休重置總時數
@@ -135,7 +138,6 @@
                                         <apex:inputfield id="Adjustable_vacation" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Adjustable_vacation__c }">
                                         </apex:inputfield>
                                     </div>
-                                    
                                     <div class="pure-u-1 pure-u-md-1-3">
                                         <label for="Applicant_position">
                                             請假人職稱
@@ -149,8 +151,8 @@
                                         </label>
                                         <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Take_Office_Date_box" value="">
                                         </input>
-                                        <apex:inputField onchange="j$('#Take_Office_Date_box').val(j$(this).val());" id="Take_Office_Date" value="{!am.Take_Office_Date__c}">
-                                        </apex:inputField>
+                                        <apex:inputfield id="Take_Office_Date" onchange="j$('#Take_Office_Date_box').val(j$(this).val());" value="{!am.Take_Office_Date__c}">
+                                        </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
                                         <label for="Sum_Vacation">
@@ -161,14 +163,12 @@
                                     </div>
                                 </div>
                                 <div>
-                                    
                                 </div>
                             </fieldset>
                             <br/>
                             <br/>
-                            <c:ApprovalProcessButtonSwitcher isEditable="{!isEditable}" cancelaction="{!cancelAction}" saveaction="{!saveAction}" status="{!NowStatus}">
+                            <c:ApprovalProcessButtonSwitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
                             </c:ApprovalProcessButtonSwitcher>
-                            
                             <br/>
                             <br/>
                             <br/>
@@ -178,19 +178,16 @@
                                 <!-- 页面信息提示区 -->
                                 <apex:pagemessages escape="true" id="message">
                                 </apex:pagemessages>
-                                <div class="pure-u-md-2-24">
-                                    <apex:commandbutton id="btnAdd" action="{!newlist1}" immediate="true" rerender="list1" status="retrieveStatus" value="新增請假明細">
+                                <div class="pure-u-1 pure-u-md-4-24 pure-u-xl-2-24">
+                                    <apex:commandbutton action="{!newlist1}" id="btnAdd" immediate="true" rerender="list1" status="retrieveStatus" value="新增請假明細">
                                     </apex:commandbutton>
                                 </div>
                                 <!--將"是否已评估"欄位拿來做為"連續休假天數是否三天以上(含例假/國定假日):"欄位使用-->
-                                    <div class="pure-u-1 pure-u-md-1-4" style="border-width:3px;border-style:groove;border-color:red;padding:1px;">
-                                    
-                                        連續休假天數是否三天以上(含例假/國定假日):
-                                    
-                                    
-                                        <apex:inputfield id="IsLeave3Days" styleclass="pure-u-1" value="{!am.Is_Been_Evaluated__c}">
-                                        </apex:inputfield>
-                                    </div>
+                                <div class="pure-u-1 pure-u-md-1-4" style="border-width:3px;border-style:groove;border-color:red;padding:1px;">
+                                    連續休假天數是否三天以上(含例假/國定假日):
+                                    <apex:inputfield id="IsLeave3Days" styleclass="pure-u-1" value="{!am.Is_Been_Evaluated__c}">
+                                    </apex:inputfield>
+                                </div>
                                 <apex:outputpanel id="list1" layout="block" styleclass="scroll">
                                     <apex:actionstatus id="retrieveStatus" starttext="(waiting...)">
                                     </apex:actionstatus>
@@ -257,17 +254,17 @@
                                                     </td>
                                                     <!-- 請假開始時間 -->
                                                     <td data-th="請假開始時間">
-                                                        <apex:inputfield id="Start_Time" required="true" onchange="leaveHourCalBySingleDetail(j$(this))" style="width: 100%" value="{!item.Start_Time__c}">
+                                                        <apex:inputfield id="Start_Time" onchange="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.Start_Time__c}">
                                                         </apex:inputfield>
                                                     </td>
                                                     <!-- 請假結束日期 -->
                                                     <td data-th="請假結束日期">
-                                                        <apex:inputfield id="End_date"  onchange="checkDay(j$(this),'end')" required="true" style="width: 100%" value="{!item.End_date__c}">
+                                                        <apex:inputfield id="End_date" onchange="checkDay(j$(this),'end')" required="true" style="width: 100%" value="{!item.End_date__c}">
                                                         </apex:inputfield>
                                                     </td>
                                                     <!-- 請假結束時間 -->
                                                     <td data-th="請假結束時間">
-                                                        <apex:inputfield id="End_Time" required="true" onchange="leaveHourCalBySingleDetail(j$(this))" style="width: 100%" value="{!item.End_Time__c}">
+                                                        <apex:inputfield id="End_Time" onchange="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.End_Time__c}">
                                                         </apex:inputfield>
                                                     </td>
                                                     <!-- 請假時數(小時) -->
@@ -284,6 +281,56 @@
                                 </apex:outputpanel>
                             </div>
                         </apex:form>
+                        <div id="queryVacTw">
+                            <table class="pure-table">
+                                <thead>
+                                    <tr class="pure-table-odd">
+                                        <td>
+                                            TypesOfLeave__c
+                                        </td>
+                                        <td>
+                                            Start_date__c
+                                        </td>
+                                        <td>
+                                            Start_time__c
+                                        </td>
+                                        <td>
+                                            End_date__c
+                                        </td>
+                                        <td>
+                                            End_time__c
+                                        </td>
+                                        <td>
+                                            Hours__c
+                                        </td>
+                                    </tr>
+                                    
+                                </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <input id="sapRec_TypesOfLeave" type="text"/>
+                                            </td>
+                                            <td>
+                                                <input id="sapRec_Start_date" type="text"/>
+                                            </td>
+                                            <td>
+                                                <input id="sapRec_Start_time" type="text"/>
+                                            </td>
+                                            <td>
+                                                <input id="sapRec_End_date" type="text"/>
+                                            </td>
+                                            <td>
+                                                <input id="sapRec_End_time" type="text"/>
+                                            </td>
+                                            <td>
+                                                <input id="sapRec_Hours" type="text"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                
+                            </table>
+                        </div>
                     </apex:pageblock>
                 </div>
             </div>
