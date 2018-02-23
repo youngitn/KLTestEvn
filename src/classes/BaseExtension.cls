@@ -14,10 +14,23 @@ public virtual  class BaseExtension implements IExtension
         recordTypeId    = getReCTypeId(sobjName, approvalName);
         //System.debug(this.recordTypeId);
         sobj            = (SObject)Type.forName(sobjName).newInstance();
-        sobj.put('Approval_Name__c', approvalName);
-        System.debug('BaseExtension approvalName = ' + approvalName);
         sobj.put('RecordTypeId', recordTypeId);
-        System.debug('BaseExtension recordTypeId = ' + recordTypeId);
+        try
+        {
+            sobj.put('Approval_Name__c', approvalName);
+            System.debug('BaseExtension approvalName = ' + approvalName);
+            sobj.put('RecordTypeId', recordTypeId);
+            System.debug('BaseExtension recordTypeId = ' + recordTypeId);
+        }
+        catch(Exception e) 
+        {
+            System.debug('Exception caught: ' + e.getMessage());    
+        }
+        finally
+        {
+            
+            System.debug('finally');  
+        }
     }
     public virtual PageReference saveAction()
     {
