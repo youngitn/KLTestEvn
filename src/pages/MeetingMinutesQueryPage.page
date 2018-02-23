@@ -1,0 +1,76 @@
+<apex:page applybodytag="true" applyhtmltag="true" controller="QueryController" doctype="html-5.0" showheader="ture" sidebar="false" standardstylesheets="true">
+    <html>
+        <head>
+            <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet"/>
+            <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js">
+            </script>
+            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/MeetingMinutes/queryPageJS.js')}" />
+           
+            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/dataTableConfigObj.js')}" />
+           
+            <style type="text/css">
+                .dataTables_wrapper .dataTables_length {
+                      float: right;
+            }
+            .dataTables_wrapper .dataTables_filter {
+                      float: left;
+                      text-align: left;
+                  }
+            </style>
+            <title>
+                Page Title
+            </title>
+        </head>
+        <body>
+            <apex:pageblock>
+                <apex:form styleclass="pure-form pure-form-stacked">
+                    <div class="pure-g">
+                        <div class="pure-u-1 pure-u-md-1-5">
+                            <label for="Query_Toastmaster__c">
+                                會議主持人
+                            </label>
+                            <input class="pure-u-1 pure-u-md-4-5" id="Query_Toastmaster__c">
+                            </input>
+                        </div>
+                        <div class="pure-u-1 pure-u-md-1-5">
+                            <label for="Query_Note_Taker__c">
+                                會議紀錄人
+                            </label>
+                            <input class="pure-u-1 pure-u-md-4-5" id="Query_Note_Taker__c">
+                            </input>
+                        </div>
+                    </div>
+                    <div class="pure-g">
+                        <div class="pure-u-1 pure-u-xl-1-5">
+                            <label for="sQueryDate">
+                                會議日期-起
+                            </label>
+                            <input class="pure-u-1 pure-u-xl-4-5" id="sQueryDate" type="date" value="">
+                            </input>
+                        </div>
+                        <div class="pure-u-1 pure-u-xl-1-5">
+                            <label for="eQueryDate">
+                                會議日期-訖
+                            </label>
+                            <input class="pure-u-1 pure-u-xl-4-5" id="eQueryDate" type="date" value="">
+                            </input>
+                        </div>
+                    </div>
+                    <div class="pure-g">
+                        <div class="pure-u-1 pure-u-xl-3-5">
+                            <label for="Query_Meeting_Subject__c">
+                                會議主題
+                            </label>
+                            <input class="pure-u-1 pure-u-xl-4-5" id="Query_Meeting_Subject__c" value="">
+                            </input>
+                        </div>
+                    </div>
+                    <input class="pure-button pure-button-primary pure-u-1 pure-u-md-1-5" id="doQuery" type="button" value="查詢"/>
+                </apex:form>
+                <br/>
+                <table class="rwd-table" id="queryTable" width="100%">
+                </table>
+            </apex:pageblock>
+        </body>
+    </html>
+</apex:page>
