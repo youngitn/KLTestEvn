@@ -59,7 +59,7 @@ public with sharing class RemoteActionsOfLeave {
             // am.Employee_Code__c = amget.Employee_Code__c;
             // am.Annual_leave__c  = amget.Annual_leave__c;
             // am.Adjustable_vacation__c  = amget.Adjustable_vacation__c;
-            ret = JSON.serialize(args.content[0].main);
+            ret = JSON.serialize(args);
         }
         catch(Exception ex)
         {
