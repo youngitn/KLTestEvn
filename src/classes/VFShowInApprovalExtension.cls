@@ -51,19 +51,31 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
             sql += 'Select ' + SObjectUtils.getAllFields(sobjName).get(sobjName) + ' from ' + sobjName;
             sql += ' WHERE Id = \'' + stdController.getId() + '\'';
             this.sobj = Database.query(sql);
+            try
+            {
+                if ((String)this.sobj.get('Approval_Status__c') == 'S'){
+                    //送審後須判斷是否允許編輯
+                    isEditable = ProcessUtils.checkEditable(stdController.getId(),recordTypeId);
 
-            if ((String)this.sobj.get('Approval_Status__c') == 'S'){
-                //送審後須判斷是否允許編輯
-                isEditable = ProcessUtils.checkEditable(stdController.getId(),recordTypeId);
-
-                nowStatus = 'PROCESS';
-            }else if((String)this.sobj.get('Approval_Status__c') == 'R' || (String)this.sobj.get('Approval_Status__c') == 'A'){
-                //通過和拒絕都不能編輯 isEditable 維持預設值false
-                nowStatus = 'RejectedOrApproved';
-            }else{
-                //草稿不需判斷能否編輯 直接給true
+                    nowStatus = 'PROCESS';
+                }else if((String)this.sobj.get('Approval_Status__c') == 'R' || (String)this.sobj.get('Approval_Status__c') == 'A'){
+                    //通過和拒絕都不能編輯 isEditable 維持預設值false
+                    nowStatus = 'RejectedOrApproved';
+                }else{
+                    //草稿不需判斷能否編輯 直接給true
+                    isEditable = true;
+                    nowStatus = 'SKETCH';
+                }
+            }
+            catch(Exception e) 
+            {
+                System.debug('Exception caught: ' + e.getMessage());    
+            }
+            finally
+            {
                 isEditable = true;
                 nowStatus = 'SKETCH';
+                System.debug('finally');  
             }
             //這筆資料已存在紀錄 
             //給 goPage(Id recordId)判斷用
