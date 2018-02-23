@@ -24,8 +24,8 @@ trigger KLSystemsTrigger on KL_Systems__c (before insert, after update, before u
 */
 
     //會議記錄
- //   .bind (Triggers.Evt.afterinsert,new AMMeetingMinutesManualShareHandler())
- //   .bind (Triggers.Evt.afterupdate,new AMMeetingMinutesManualShareHandler())
+    .bind (Triggers.Evt.afterinsert,new MeetingMinutesMainPageHandler())
+    .bind (Triggers.Evt.afterupdate,new MeetingMinutesMainPageHandler())
 
     .manage(); 
 }
