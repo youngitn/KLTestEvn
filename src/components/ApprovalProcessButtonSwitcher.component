@@ -7,6 +7,15 @@
     description="" type="ApexPages.Action" required="true"/>
     <apex:attribute name="isEditable" 
     description="" type="Boolean" required="true"/>
+    <style type="text/css">
+         .cus_btn_border{
+            border-color:white white;
+            border-width:1px;
+            border-style:solid;
+            padding:5px;   
+         }
+         
+    </style>
     <script>
 
 	j$(function() {
@@ -88,7 +97,7 @@
 
     function classSeting(domItem){
         domItem.removeAttr('class')
-            .addClass("pure-button pure-button-primary pure-u-1-1 pure-u-xl-1-4");
+            .addClass("pure-button pure-button-primary pure-u-1-1 pure-u-xl-1-4 cus_btn_border");
     }
     </script>
     <div class="pure-g">
