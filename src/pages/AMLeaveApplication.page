@@ -22,33 +22,34 @@
             </script>
             <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/AMLeaveApplication/AMLeaveApplicationJS.js')}">
             </script>
+            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/dataTableConfigObj.js')}" />
             <script type="text/javascript">
                 j$( function() {
-                //隱藏新增刪除請假明細按鈕  
-                j$("input[id$=btnAdd],input[id$=btnDel]").hide();
-                //隱藏 查詢tab
-                j$('#ui-id-2').hide();
-                j$( "#tabs" ).tabs({
-                  beforeLoad: function( event, ui ) {
-                    ui.jqXHR.fail(function() {
-                      ui.panel.html(
-                        "Couldn't load this tab. We'll try to fix this as soon as possible. " +
-                        "If this wouldn't be a demo." );
-                    }); 
-                  }
-                });
+                    //隱藏新增刪除請假明細按鈕  
+                    j$("input[id$=btnAdd],input[id$=btnDel]").hide();
+                    //隱藏 查詢tab
+                    j$('#ui-id-2').hide();
+                    j$( "#tabs" ).tabs({
+                      beforeLoad: function( event, ui ) {
+                        ui.jqXHR.fail(function() {
+                          ui.panel.html(
+                            "Couldn't load this tab. We'll try to fix this as soon as possible. " +
+                            "If this wouldn't be a demo." );
+                        }); 
+                      }
+                    });
 
-                //搜尋tab只有在草稿和新建狀態顯示
-                if ('{!NowStatus}' == 'SKETCH' || '{!NowStatus}' == 'NEW') { 
-                    j$('#ui-id-2').show();              
-                }
-                //只有在草稿和新建狀態或者該關卡有可編輯欄位
-                //顯示新增刪除請假明細按鈕 
-                if("{!NowStatus}" === 'NEW' || "{!NowStatus}" === 'SKETCH' || "{!isEditable}" == 'true'){
-                   j$("input[id$=btnAdd],input[id$=btnDel]").show();
-                 }
-     
-
+                    //搜尋tab只有在草稿和新建狀態顯示
+                    if ('{!NowStatus}' == 'SKETCH' || '{!NowStatus}' == 'NEW') { 
+                        j$('#ui-id-2').show();              
+                    }
+                    //只有在草稿和新建狀態或者該關卡有可編輯欄位
+                    //顯示新增刪除請假明細按鈕 
+                    if("{!NowStatus}" === 'NEW' || "{!NowStatus}" === 'SKETCH' || "{!isEditable}" == 'true'){
+                       j$("input[id$=btnAdd],input[id$=btnDel]").show();
+                     }
+                    
+                      
 
               });
             </script>
@@ -281,55 +282,9 @@
                                 </apex:outputpanel>
                             </div>
                         </apex:form>
+                        
                         <div id="queryVacTw">
-                            <table class="pure-table">
-                                <thead>
-                                    <tr class="pure-table-odd">
-                                        <td>
-                                            TypesOfLeave__c
-                                        </td>
-                                        <td>
-                                            Start_date__c
-                                        </td>
-                                        <td>
-                                            Start_time__c
-                                        </td>
-                                        <td>
-                                            End_date__c
-                                        </td>
-                                        <td>
-                                            End_time__c
-                                        </td>
-                                        <td>
-                                            Hours__c
-                                        </td>
-                                    </tr>
-                                    
-                                </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <input id="sapRec_TypesOfLeave" type="text"/>
-                                            </td>
-                                            <td>
-                                                <input id="sapRec_Start_date" type="text"/>
-                                            </td>
-                                            <td>
-                                                <input id="sapRec_Start_time" type="text"/>
-                                            </td>
-                                            <td>
-                                                <input id="sapRec_End_date" type="text"/>
-                                            </td>
-                                            <td>
-                                                <input id="sapRec_End_time" type="text"/>
-                                            </td>
-                                            <td>
-                                                <input id="sapRec_Hours" type="text"/>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                
-                            </table>
+                            <table id="queryTable_SAP" class="display" width="100%"></table>
                         </div>
                     </apex:pageblock>
                 </div>
