@@ -892,6 +892,7 @@ public with sharing class SapQueryArgCreate {
         return arg;
     } 
 
+//请假申请流程
     public static String createVacationQuery(String pernr){
         List<Map<String,String>> lstCon = new List<Map<String,String>>();
         Integer index = 1;
@@ -902,6 +903,7 @@ public with sharing class SapQueryArgCreate {
         System.debug(LoggingLevel.INFO, '*** lstCon[0]: ' + lstCon[0]);
         return JSON.serialize(createQueryArg('VacationQuery',lstCon));
     }
+
 
 //客户信用贷款主数据申请
      public static String createSapCreditLoanQueryDesc(String Account,String CreditArea){
