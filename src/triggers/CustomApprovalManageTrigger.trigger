@@ -57,6 +57,10 @@ trigger CustomApprovalManageTrigger on Custom_Approval_Managed__c(before insert,
     .bind (Triggers.Evt.beforeinsert,new AMSCCSupplierClaimHandler())
     .bind (Triggers.Evt.beforeupdate,new AMSCCSupplierClaimHandler())
 
+    //退货申请流程
+    .bind (Triggers.Evt.beforeinsert,new AMSalesReturnhandler())
+    .bind (Triggers.Evt.beforeupdate,new AMSalesReturnhandler())
+    
     //设置记录共享
     .bind (Triggers.Evt.afterinsert,new ApprovalManualShareHandler())
     .bind (Triggers.Evt.afterupdate,new ApprovalManualShareHandler())

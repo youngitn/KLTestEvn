@@ -2,6 +2,7 @@ public with sharing class AMSignetUseExtension {
 
     public Approval_Managed__c am{get;set;} 
     public Id amId {get; set;}
+    // public String remark = '';
 
     public AMSignetUseExtension(ApexPages.StandardController con) {
         amId = con.getId();
@@ -30,7 +31,9 @@ public with sharing class AMSignetUseExtension {
               am.Account_Name__c = con[0].Name;
             }
         }
-        try {
+        am.Head_description__c = am.Account_Name__c + am.Summary_content__c + am.acacetin__c;
+        
+        try {               
             upsert am;
             System.debug(LoggingLevel.INFO, '*** am.Acceptance_condition__c: ' + am.Acceptance_condition__c); 
         } catch (Exception e) {

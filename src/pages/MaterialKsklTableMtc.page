@@ -16,6 +16,7 @@
                 </td>
                 <td>
                     <div>Impact Test</div>
+                    <div>(20℃-J)</div>
                     <apex:outputText rendered="{!langu='EL'||langu='ZH'}">
                         <div>冲击试验<br/>(20°C-J)</div>
                     </apex:outputText>
@@ -27,19 +28,22 @@
                     </apex:outputText>
                 </td>
                 <td>
+                    <div>Flaring /</div>
                     <div>Flaring Test</div>
                     <apex:outputText rendered="{!langu='EL'||langu='ZH'}">
                     <div>扩口/卷边试验</div>
                     </apex:outputText>
                 </td>
                 <td>
-                    <div>Flattening,Test</div>
+                    <div>Flattening &amp; </div>
+                    <div>Reverse Flattening Test</div>
                     <apex:outputText rendered="{!langu='EL'||langu='ZH'}">
                     <div>压扁试验</div>
                     </apex:outputText>
                 </td>
                 <td>
-                    <div>Bend &amp; Reverse-Bend Test </div>
+                    <div>Bend &amp; </div>
+                    <div>Reverse-Bend Test </div>
                     <apex:outputText rendered="{!langu='EL'||langu='ZH'}">
                     <div>弯曲和反向弯曲试</div>
                     </apex:outputText>

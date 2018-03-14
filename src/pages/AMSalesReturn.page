@@ -18,82 +18,89 @@
     <!-- 页面信息提示区 -->
     <apex:pageMessages escape="true" id="message"></apex:pageMessages>
     <apex:form id="form">
-        <!--
-        <apex:actionFunction action="{!queryVacation}" id="queryVacation" name="queryVacation" reRender="vacationhead,message" immediate="true" status="loading">
-            <apex:param assignTo="{!am.Employee__c}" name="employee" value="employee"></apex:param>
+        <apex:actionFunction action="{!querySalesReturn}" id="querySalesReturn" name="querySalesReturn" reRender="vacationhead,message" immediate="true" status="loading">
+            <apex:param assignTo="{!am.Bill_No__c}" name="Bill_No" value="Bill_No"></apex:param>
         </apex:actionFunction>
-    -->
-        <apex:pageBlock id="block">
+
+        <apex:pageBlock id="head">
             <apex:pageBlockButtons >
                 <apex:commandButton action="{!save}" value="保存"/>
                 <apex:commandButton action="{!cancel}" value="取消"/>
             </apex:pageBlockButtons>
-            <apex:pageBlockSection title="基本信息" >
+            <apex:pageBlockSection title="基础信息" id="head01">
                 <!-- 审批流程编号 -->
-                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <apex:outputField value="{!am.Name}"/>
                 <!-- 流程名称 -->
-                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <apex:outputField value="{!am.Approval_Name__c}"/>
                 <!-- 申请人(工号) -->
-                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <apex:outputField value="{!am.Applicant_Code__c}"/>
                 <!-- 申请人部门 -->
-                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <apex:outputField value="{!am.Dept_Name__c}"/>
                 <!-- 申请人(姓名) -->
-                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <apex:outputField value="{!am.Applicant_Name__c}"/>
                 <!-- 单据日期 -->
-                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <apex:outputField value="{!am.Bill_Date__c}"/>
                 <!-- 申请人(公司代码) -->
-                <apex:outputField value="{!am.Applicant_Corp_Code__c}"></apex:outputField>
+                <apex:outputField value="{!am.Applicant_Corp_Code__c}"/>
                 <!-- 单据状态 -->
-                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+                <apex:outputField value="{!am.Approval_Status__c}"/>
             </apex:pageBlockSection>
 
-           <apex:pageBlockSection title="退货申请流程信息" id="vacationhead">
-                <!-- 订单 >
-                <apex:inputField id="Order_of_Sales__c" value="{!am.Order_of_Sales__c}" required="true"></apex:inputField>
-                <apex:commandButton value="查询订单" action="{!queryVacation}"/>
-                <apex:outputField value="{!am.customer_code__c}" />
-                <apex:outputField value="{!am.customer_name__c}" />
-                <apex:outputField value="{!am.reason_of_order__c}" />
-                <apex:outputField value="{!am.currency__c}" />
-                <apex:outputField value="{!am.opportunity_code__c}" />
-                <apex:outputField value="{!am.sales_org__c}" />
-                <apex:outputField value="{!am.distribution_channel__c}" />
-                <apex:outputField value="{!am.product_group__c}" />
-                <apex:outputField value="{!am.sales_office_area__c}" />
-                <apex:outputField value="{!am.sales_group__c}" />
-                <apex:outputField value="{!am.prepare_feed_protocol__c}" />
-                <apex:outputField value="{!am.purchase_required_date__c}" />
-        -->
+           <apex:pageBlockSection title="表单信息" id="head02">
+                <apex:inputField id="Bill_No__c" value="{!am.Bill_No__c}" required="true"/>
+                <apex:commandButton value="查询退货单" action="{!querySalesReturn}"/>
+                <apex:outputField value="{!am.SAP_STATUS__c}"/>
+                <apex:outputField value="{!am.IS_SCRAP__c}"/>
             </apex:pageBlockSection>
 
-            <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>行信息</h3></div>
-            <apex:commandButton action="{!newlist1}" value="新增" reRender="list1" status="retrieveStatus"  style="display:{!displayQueryResult};" immediate="true"/>
-            <apex:outputPanel id="list1" layout="block" styleClass="scroll" style="display:{!displayQueryResult};">
+           <apex:pageBlockSection title="指定仓库人员" id="head03">
+                <apex:inputField id="Approval_User1__c" value="{!am.Approval_User1__c}" label="仓管员01" required="true"/>
+                <apex:inputField id="Approval_User2__c" value="{!am.Approval_User2__c}" label="仓管员02"/>
+            </apex:pageBlockSection>
+
+           <apex:pageBlockSection title="指定品检人员" id="head04">
+                <apex:inputField id="Approval_User3__c" value="{!am.Approval_User3__c}" label="品检员01"/>
+                <apex:inputField id="Approval_User4__c" value="{!am.Approval_User4__c}" label="品检员02"/>
+                <apex:inputField id="Approval_User5__c" value="{!am.Approval_User5__c}" label="品检员03"/>
+                <apex:inputField id="Approval_User6__c" value="{!am.Approval_User6__c}" label="品检员04"/>
+            </apex:pageBlockSection>
+
+            <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>明细信息</h3></div>
+            <!--apex:commandButton action="{!newlist1}" value="新增" reRender="list1" status="retrieveStatus"  style="display:{!displayQueryResult};" immediate="true"/-->
+            <apex:outputPanel id="list1" layout="block" styleClass="scroll" >
                 <apex:actionStatus startText="(waiting...)" id="retrieveStatus"/>
                 <table  class="list" border="0" cellspacing="0" cellpadding="0"  id="tableBank">
                     <thead>
-                        <th></th>
-                        <th>序号</th>
-                        <th>假别</th>
-                        <th>请假事由</th>
-                        <th>请假开始日期</th>
-                        <th>请假开始时间</th>
-                        <th>请假结束日期</th>
-                        <th>请假结束时间</th>
-                        <th>请假时数</th>
+                        <th>项次号</th>
+                        <th>物料号</th>
+                        <th>物料描述</th>
+                        <th>数量</th>
+                        <th>批次</th>
+                        <th>单位</th>
+                        <th>是否良品</th>
+                        <th>返修单号</th>
+                        <th>返修数量</th>
+                        <th>是否报废</th>
+                        <th>报废数量</th>
                     </thead>
                     <tbody>
                 <apex:variable var="list1Index" value="{!0}"/>
                 <apex:repeat value="{!list1}" var="item">
                     <tr>
-                        <td>
-                        <apex:commandButton action="{!deletelist1}" value="删除" reRender="list1" immediate="true">
-                            <apex:param assignTo="{!list1Row}" name="list1Row" value="{!list1Index}"></apex:param>
-                        </apex:commandButton>
-                        </td>
-                        <td>{!list1Index+1}</td>
-                        <!-- 假别 -->
-                        <!--td><apex:inputField value="{!item.Leave_type__c}"  required="true" style="width: 85px"></apex:inputField></td-->
+                        
+                        <td><apex:outputField value="{!item.Index_Item__c}" style="width: 80px" /></td>
+                        <td><apex:outputField value="{!item.Material_Number__c}" style="width: 150px" /></td>
+                        <td><apex:outputField value="{!item.Material_Description__c}" style="width: 300px" /></td>
+                        <td><apex:outputField value="{!item.Qty__c}" style="width: 100px" /></td>
+                        <td><apex:outputField value="{!item.Batch__c}" style="width: 100px" /></td>
+                        <td><apex:outputField value="{!item.Unit__c}" style="width: 100px" /></td>
+
+                        <td><apex:inputField value="{!item.IS_GOODS__c}" style="width: 20px" /></td>
+                        <td><apex:inputField value="{!item.FIX_NO__c}" style="width: 100px" /></td>
+                        <td><apex:inputField value="{!item.FIX_NUMBER__c}" style="width: 60px" /></td>
+                        <td><apex:inputField value="{!item.IS_SCRAP__c}" style="width: 20px" /></td>
+                        <td><apex:inputField value="{!item.SCRAP_NUMBER__c}" style="width: 60px" /></td>
+
                     </tr>
                     <apex:variable var="list1Index" value="{!list1Index+1}"/>
                 </apex:repeat>

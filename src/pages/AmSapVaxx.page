@@ -1,0 +1,46 @@
+<apex:page controller="AmSapVaxxController" >
+{!InfoText}
+	<apex:form >
+		<apex:pageBlock >
+			<apex:pageBlockTable id="x" value="{!items}" var="item">	
+
+				<apex:column value="{!item.Index_Item__c}" headerValue="项次" 
+				             style="width: 50px"/>
+				<apex:column value="{!item.Material_Number__c}" headerValue="物料号码" 
+				             style="width: 100px"/>		
+				<apex:column value="{!item.Material_Name__c}" headerValue="物料短文本" 
+				             style="width: 300px"/>		
+				<apex:column value="{!item.Quantity__c}" headerValue="数量" 
+				             style="width: 80px"/>		
+				<apex:column value="{!item.Unit__c}" headerValue="单位" 
+				             style="width: 50px"/>		
+				<apex:column value="{!item.Material_of_Customer__c}" headerValue="客户料号" 
+				             style="width: 100px"/>		
+				<apex:column value="{!item.Schedule_Date__c}" headerValue="首个交期" 
+				             style="width: 100px"/>		
+				 <!-- 因为公式字段不能赋值，所以前台用其他未用到的变量进行显示；在controller中替换到此字符				             !-->
+				<apex:column value="{!item.Price_of_Last__c}" headerValue="净值" 
+				             style="width: 80px"/>		
+				<apex:column value="{!item.Currency__c}" headerValue="币别" 
+				             style="width: 80px"/>		
+				<apex:column value="{!item.Reason__c}" headerValue="拒绝原因" 
+				             style="width: 100px"/>		
+				<apex:column value="{!item.Your_Reference__c}" headerValue="你的参考" 
+				             style="width: 100px"/>			
+				<apex:column value="{!item.Purchase_Order_Number__c}" headerValue="采购订单编号" 
+				             style="width: 100px"/>			
+				<apex:column value="{!item.Line_Remark__c}" headerValue="备注" 
+				             style="width: 200px"/>		
+				<!-- 测试行项目再开窗功能，记得将pageBlockTable设置ID
+				<apex:column style="width: 200px">
+               
+                <apex:commandButton action="{!redirectToBlankPage}" value="Selected" reRender="x">
+                    <apex:param name="param" value="{!item.Index_Item__c}" assignTo="{!param}"/>
+                  </apex:commandButton>
+                </apex:column>
+                !-->
+
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

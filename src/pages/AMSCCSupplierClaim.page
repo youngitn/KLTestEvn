@@ -95,7 +95,7 @@
                 <!-- 注释 -->
                 <apex:inputField value="{!am.Remark__c}" style="width: 80%"></apex:inputField>
                 <!-- 责任供应商名称和代码 -->
-                <apex:inputField value="{!am.SupplierName_Code__c}"></apex:inputField> 
+                <apex:inputField value="{!am.SupplierName_Code__c}" required="true"></apex:inputField> 
             </apex:pageBlockSection> 
 
             <apex:pageBlockSection title="主管审核" collapsible="false"> 
@@ -107,14 +107,14 @@
                 <apex:inputField value="{!am.Approval_User3__c}"></apex:inputField>
             </apex:pageBlockSection> 
 
-            <apex:pageBlockSection title="生产/业务单位" collapsible="false"> 
+            <!-- <apex:pageBlockSection title="生产/业务单位" collapsible="false">  -->
                 <!-- 审批用户04 -->
-                <apex:inputField value="{!am.Approval_User4__c}"></apex:inputField>
+                <!-- <apex:inputField value="{!am.Approval_User4__c}"></apex:inputField> -->
                 <!-- 审批用户05 -->
-                <apex:inputField value="{!am.Approval_User5__c}"></apex:inputField>
+                <!-- <apex:inputField value="{!am.Approval_User5__c}"></apex:inputField> -->
                 <!-- 审批用户06 -->
-                <apex:inputField value="{!am.Approval_User6__c}"></apex:inputField>
-            </apex:pageBlockSection> 
+                <!-- <apex:inputField value="{!am.Approval_User6__c}"></apex:inputField> -->
+            <!-- </apex:pageBlockSection>  -->
 
             <apex:pageBlockSection title="采购确认" collapsible="false"> 
                 <!-- 审批用户07 -->
@@ -145,14 +145,18 @@
                 <apex:outputField value="{!am.Approval_User13__c}"></apex:outputField>
             </apex:pageBlockSection> 
 
-            <apex:pageBlockSection title="业务确认" collapsible="false"> 
+            <apex:pageBlockSection title="生产/业务单位" collapsible="false"> 
                 <!-- 审批用户14 -->
                 <apex:inputField value="{!am.Approval_User14__c}"></apex:inputField>
+                <!-- 审批用户15 -->
+                <apex:inputField value="{!am.Approval_User15__c}"></apex:inputField>
+                <!-- 审批用户16 -->
+                <apex:inputField value="{!am.Approval_User16__c}"></apex:inputField>
             </apex:pageBlockSection> 
 
             <apex:pageBlockSection title="财务确认" collapsible="false">  
-                <!-- 审批用户15 -->
-                <apex:inputField value="{!am.Approval_User15__c}"></apex:inputField>
+                <!-- 审批用户17 -->
+                <apex:inputField value="{!am.Approval_User17__c}"></apex:inputField>
             </apex:pageBlockSection> 
 
         </apex:pageBlock>

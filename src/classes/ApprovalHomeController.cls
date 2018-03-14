@@ -80,6 +80,8 @@ public with sharing class ApprovalHomeController
         canCreateApproval.add(SapApprovalEnum.LEAVEAPPLICATION);//台灣 請假申請流程
         canCreateApproval.add(SapApprovalEnum.QCC);//QCC客诉申请流程
         canCreateApproval.add(SapApprovalEnum.SCCSUPPLIERCLAIM);//SCC供应商索赔申请流程流程
+        canCreateApproval.add(SapApprovalEnum.SAMPLEREQUEST);//样品申请流程
+        canCreateApproval.add(SapApprovalEnum.SALESRETURN);//退货申请流程
         //Object = Custom_Approval_Managed__c, approval counts = 16
         approval_Custom = Utils.getCAMApprovalName();
         //Object = Approval_Managed__c, approval counts = 16
@@ -371,6 +373,11 @@ public with sharing class ApprovalHomeController
                 //客户单笔信货核发申请流程
                 pageName = '/apex/AMCustomerCreditLoan';
             }
+            else if (selectedApprovalValue == SapApprovalEnum.SAMPLEREQUEST)
+            {
+                //样品申请流程
+                pageName = '/apex/AMSampleRequest';
+            }
             else if(selectedApprovalValue == SapApprovalEnum.EXPENSEREIMBURSE)
             {
                 //费用报销
@@ -387,6 +394,11 @@ public with sharing class ApprovalHomeController
             {
                 //请假管理流程
                 pageName = '/apex/AMLeave';
+            }
+            else if(selectedApprovalValue == SapApprovalEnum.SALESRETURN)
+            {
+                //退货申请流程
+                pageName = '/apex/AMSALESRETURN';
             }
             else if(selectedApprovalValue == SapApprovalEnum.BUSINESSTRAVEL)
             {

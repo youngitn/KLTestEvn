@@ -18,6 +18,11 @@
                 节点9 费用报销人员-非1000        相关用户：*审批用户9
  **********************************************************************/
 public without sharing class AMExpenseReimburseHandler implements Triggers.Handler {
+
+    public List<Approval_Managed_Item__c> list1 {get; set;}
+    public List<Approval_Managed_Item__c> list2 {get; set;}
+
+
     public void handle() {
         //获取费用报销流程各节点配置
         Map<Decimal,Organizational__c>  mapSpecify = null;
@@ -60,6 +65,7 @@ public without sharing class AMExpenseReimburseHandler implements Triggers.Handl
                     if(mapSpecify == null){
                         mapSpecify = Utils.getApprovalStepByAPIName(SapApprovalEnum.EXPENSEREIMBURSE);
                     }
+
                     setApprovalUser(mapSpecify,cam);
                 }
             }
@@ -79,10 +85,63 @@ public without sharing class AMExpenseReimburseHandler implements Triggers.Handl
                     cam.Is_Reset_Approvaler__c = false;
                     cam.head_description__c  = cam.Remark_of_Explain__c;
                 }
+
+                //如果最后审批完成，将金额回写至CRM modify by 王思佳 at 2018/02/23
+                /*if (cam.RecordTypeId == rtId && cam.Approval_Status__c == 'A')
+                {
+                    boolean flag=false;
+                    String taId;
+                    list1 = new List<Approval_Managed_Item__c>();
+                    list2 = new List<Approval_Managed_Item__c>();
+                    list1 = [SELECT RecordTypeId,Purchase_Info_Inquiry__c,Ledger_Account__c,Type_of_Cost__c,Quantity__c,Price__c,Amount__c,Dept_of_CostCenter__c,Remark__c,TaskID__c,Row_Index__c,Expense_Type__c
+                 FROM Approval_Managed_Item__c 
+                 WHERE Purchase_Info_Inquiry__c = :cam.Id AND RecordType.DeveloperName = 'Payment_Detail'];
+                    list2 = [SELECT RecordTypeId,Voucher_Info__c,Accounting_Code__c,Subject__c,Amount__c,Dept_of_CostCenter__c,Allocation__c,Text__c,Reason_Code__c,SGL__c,Type_of_Affair__c,Row_Index__c
+                 FROM Approval_Managed_Item__c Where Voucher_Info__c = :cam.Id AND RecordType.DeveloperName = 'Payment_Certificate'];
+                    for (Approval_Managed_Item__c ami : list1)
+                    {
+                        if(ami.TaskID__c !=null && ami.TaskID__c != '')
+                        {
+                            flag=true;
+                            taId=ami.TaskID__c;
+                            break;
+                        }
+                    }
+                    if(flag)
+                    {
+                        Decimal amount=0;
+                        for (Approval_Managed_Item__c ami : list2)
+                        {
+                            amount = amount + ami.Amount__c;
+                        }
+
+                    }
+                    Http http = new Http();
+                    HttpRequest request = new HttpRequest();
+                    request.setEndpoint('https://th-apex-http-callout.herokuapp.com/animals');
+                    request.setMethod('GET');
+                    HttpResponse response = http.send(request);
+                    // If the request is successful, parse the JSON response.
+                    if (response.getStatusCode() == 200) 
+                    {
+                    // Deserialize the JSON string into collections of primitive data types.
+                        Map<String, Object> results = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
+                        // Cast the values in the 'animals' key as a list
+                        List<Object> animals = (List<Object>) results.get('animals');
+                        System.debug('Received the following animals:');
+                        for (Object animal: animals)
+                        {
+                            System.debug(animal);
+                        }
+
+                    }
                 
+                }*/
             }
         }
     }
+
+
     public void setApprovalUser(Map<Decimal,Organizational__c> mapSpecify,Approval_Managed__c cam){
 
         cam.Approval_User1__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(1),null),0);

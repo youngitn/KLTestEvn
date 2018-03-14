@@ -4,12 +4,12 @@
 	    <div style="text-align: right; font-size: 12px; font-weight: 900;" >{!mc.customer_order_no}</div>
     </apex:outputText>
 
-	<apex:image url="{!URLFOR($Resource.MaterialTitleN, 'Title/img_title_kl.png')}" rendered="{!logo='KL'}" width="100%" />
-	<apex:image url="{!URLFOR($Resource.MaterialTitleN, 'Title/img_title_kl.png')}" rendered="{!logo='SS'}" width="100%"/>
-	<apex:image url="{!URLFOR($Resource.MaterialTitleN, 'Title/img_title_kl.png')}" rendered="{!logo='NR'}" width="100%"/>
-	<apex:image url="{!URLFOR($Resource.MaterialTitleN, 'Title/img_title_ff.png')}" rendered="{!logo='FF'}" width="100%"/>
-	<apex:image url="{!URLFOR($Resource.MaterialTitleN, 'Title/img_title_pl.png')}" rendered="{!logo='PL'}" width="100%"/>
-	<apex:image url="{!URLFOR($Resource.MaterialTitleN, 'Title/img_title_lh.png')}" rendered="{!logo='LH'}" width="100%"/>
+	<apex:image url="{!URLFOR($Resource.MaterialTitleN, 'Title/img_title_kl.png')}" rendered="{!logo='KL'}" width="70%" height="50%"/>
+	<apex:image url="{!URLFOR($Resource.MaterialTitleN, 'Title/img_title_kl.png')}" rendered="{!logo='SS'}" width="70%" height="50%"/>
+	<apex:image url="{!URLFOR($Resource.MaterialTitleN, 'Title/img_title_kl.png')}" rendered="{!logo='NR'}" width="70%" height="50%"/>
+	<apex:image url="{!URLFOR($Resource.MaterialTitleN, 'Title/img_title_ff.png')}" rendered="{!logo='FF'}" width="70%" height="50%"/>
+	<apex:image url="{!URLFOR($Resource.MaterialTitleN, 'Title/img_title_pl.png')}" rendered="{!logo='PL'}" width="70%" height="50%"/>
+	<apex:image url="{!URLFOR($Resource.MaterialTitleN, 'Title/img_title_lh.png')}" rendered="{!logo='LH'}" width="70%" height="50%"/>
 
 </div>
 </apex:page>

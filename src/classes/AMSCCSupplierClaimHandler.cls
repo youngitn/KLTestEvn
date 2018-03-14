@@ -49,10 +49,14 @@ public without sharing class AMSCCSupplierClaimHandler implements Triggers.Handl
         cam.Approval_User12__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(6),null),0);
         //节点七: 采购经理/SQE确认
         cam.Approval_User13__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(7),null),0);
-        //节点八: 业务确认
+        //节点八: 生产/业务单位
         cam.Approval_User14__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8),null),0);        
         //节点九: 财务确认
-        cam.Approval_User15__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(9),null),0);
+        cam.Approval_User17__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(9),null),0);
+        
+        //观察者
+        cam.Approval_User23__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(23),null),0);
+
 
     }   
     

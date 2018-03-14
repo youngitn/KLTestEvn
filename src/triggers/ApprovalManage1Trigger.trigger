@@ -38,6 +38,10 @@ trigger ApprovalManage1Trigger on Approval_Managed1__c (before insert,before upd
     .bind (Triggers.Evt.beforeinsert,new AMQccHandler())
     .bind (Triggers.Evt.beforeupdate,new AMQccHandler())
 
+    //样品申请流程
+    .bind (Triggers.Evt.beforeinsert,new AMSampleRequestHandler())
+    .bind (Triggers.Evt.beforeupdate,new AMSampleRequestHandler())
+
 
     //设置记录共享
     .bind (Triggers.Evt.afterinsert,new ApprovalManualShareHandler())

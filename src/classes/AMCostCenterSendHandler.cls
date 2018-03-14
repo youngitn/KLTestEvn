@@ -139,7 +139,7 @@ public without sharing class AMCostCenterSendHandler implements Triggers.Handler
         List<Id> lstID = new List<Id>();
         Set<String> set1 = new Set<String>{'A00','A02','A03','A04','PRO','H00','H01','H02','H03','C01','C02','C03','C04','E00','A08'};
         Set<String> set2 = new Set<String>{'A01','D02','C07','C08','C11','C13'};
-        Set<String>  set3= new Set<String>{'D05','D06','C10','D01','P06','P03'};
+        Set<String>  set3= new Set<String>{'D05','D06','C10','D01','P06','P03','P01'};
 
         //计划外(成本中心)发料作业:1000   夏 勤芳-10211128
         if (cam.Factory__c == '1000' && set1.contains(cam.Address_of_Stock__c)) {

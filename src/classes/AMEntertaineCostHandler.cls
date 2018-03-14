@@ -26,6 +26,9 @@ public without sharing class AMEntertaineCostHandler implements Triggers.Handler
                         mapSpecify = Utils.getApprovalStepByAPIName(SapApprovalEnum.ENTERTAINECOST);
                     }
                     setApprovalUser(mapSpecify,cam);
+                    if (cam.Description_of_Travel__c != null) {
+                      cam.head_description__c  = cam.Description_of_Travel__c.substring(0,(cam.Description_of_Travel__c.length()>200?200:cam.Description_of_Travel__c.length()));
+                    }
                 }
             }
         }

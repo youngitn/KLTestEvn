@@ -13,25 +13,25 @@ public with sharing class AMSCCSupplierClaimExtension {
         String sql = Utils.getApprovalSQL(SapApprovalEnum.SCCSUPPLIERCLAIM,true);
         sql = sql + ' WHERE Id = \'' + amId + '\'';
         am = Database.query(sql); 
-    }
+    } 
 
     public PageReference save() {
             
-        if (String.isBlank(am.Approval_User5__c)) {
-            am.Approval_User5__c = am.Approval_User4__c;
-        }
-        if (String.isBlank(am.Approval_User6__c)) {
-            am.Approval_User6__c = am.Approval_User4__c; 
-        }
-        System.debug(am.Approval_User4__c);
-
         if (String.isBlank(am.Approval_User8__c)) {
             am.Approval_User8__c = am.Approval_User7__c;
         }
         if (String.isBlank(am.Approval_User9__c)) {
             am.Approval_User9__c = am.Approval_User7__c;
         }
-        
+        if (String.isBlank(am.Approval_User15__c)) {
+            am.Approval_User15__c = am.Approval_User14__c;
+        }
+        if (String.isBlank(am.Approval_User16__c)) {
+            am.Approval_User16__c = am.Approval_User14__c;
+        }
+
+        am.Head_description__c = am.ChangeDescription__c;
+       
         try {
             upsert am;
         } catch (Exception e) {

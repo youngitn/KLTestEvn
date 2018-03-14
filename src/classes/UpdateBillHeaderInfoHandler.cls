@@ -85,6 +85,9 @@ public without sharing class UpdateBillHeaderInfoHandler implements Triggers.Han
 					}else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.SCCSUPPLIERCLAIM, 'Custom_Approval_Managed__c')) {
 						cam.Approval_Name__c = 'SCC供应商索赔申请流程流程'; //流程名称
 					}
+					else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.SALESRETURN, 'Custom_Approval_Managed__c')) {
+						cam.Approval_Name__c = '退货申请流程'; //流程名称
+					}
 
 
 				} else if (HarryUtils.compareObjtype(obj, 'Approval_Managed__c')) {

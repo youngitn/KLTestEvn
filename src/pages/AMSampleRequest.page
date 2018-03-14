@@ -1,0 +1,203 @@
+<apex:page standardController="Approval_Managed1__c" extensions="AMSampleRequestExtension" >
+<!-- MR模具申请流程 -->
+<html>
+<!-- <script src="{!URLFOR($Resource.JSbundle, '/libs/jquery-3.2.1.js')}" crossorigin="anonymous"></script>
+            <script src="/jslibrary/1510689194000/sfdc/Activity.js" crossorigin="anonymous"></script>
+            <script src="{!URLFOR($Resource.JSbundle, '/libs/vue.js')}" crossorigin="anonymous"></script>
+            <script src="{!URLFOR($Resource.JSbundle, '/app/vueComponents.js')}" crossorigin="anonymous"></script>
+            <script src="{!URLFOR($Resource.JSbundle, '/app/JValidator.js')}" crossorigin="anonymous"></script> -->
+<body>
+<script>
+
+
+/*var EventUtil = {
+ preventDefault: function(event){
+  
+  if(event.preventDefault){
+   event.preventDefault();
+  } else {
+   event.returnValue = false;
+  }
+ }
+};
+var j$ = jQuery.noConflict();
+function clear()
+{
+	j$("[id$='die_type']").val('');
+	j$("[id$='die_number']").val('');
+	j$("[id$='mr_number']").val('');
+	j$("[id$='production_number']").val('');
+}
+function poup()
+{
+	clear();
+	alert("禁止初始提交人编辑");
+}
+j$(document).ready(function()
+{
+	j$("[id$='die_type']").blur(function()
+		{
+			clear();
+		});
+	j$("[id$='die_number']").blur(function()
+		{
+			clear();
+		});
+	j$("[id$='mr_number']").blur(function()
+		{
+			clear();
+		});
+	j$("[id$='production_number']").blur(function()
+		{
+			clear();
+		});
+
+    var save=j$("[name$='j_id0:j_id31:j_id32:j_id33:bottom:j_id34']");
+    var save2=j$("[name$='j_id0:j_id31:j_id32:j_id33:j_id34']");
+    save.click(function()
+        {
+            //alert("截取事件");
+            //EventUtil.preventDefault(window.event);
+        });
+    save2.click(function()
+        {
+            //alert("不截取事件，只提示");
+            //EventUtil.preventDefault(window.event);
+        });
+
+    j$("[id$='Operator_Abnormal']").attr("disabled","disabled");   
+    j$("[id$='j_id0:j_id31:j_id32:j_id43:Operator_Abnormal_lkwgt']").click(function()
+        {
+            //alert("截取事件");
+            EventUtil.preventDefault(window.event);
+        });
+});*/
+
+</script>
+<apex:sectionHeader title="样品申请流程" subtitle="新建/样品申请流程"></apex:sectionHeader>
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" collapsible="false">
+                 <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 审核状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="申请信息" collapsible="false">
+                <!-- 样品类型 --> 
+                <apex:inputField value="{!am.SampleType__c}" required="true"></apex:inputField>
+                <!-- 销售组 -->
+                <apex:inputField value="{!am.SalesGroup__c}" required="true"></apex:inputField>
+                <!-- 客户 -->
+                <apex:inputField value="{!am.Customer__c}" required="true"></apex:inputField>
+                <!-- 类型 -->
+                <apex:inputField value="{!am.CustomerType__c}" required="true"></apex:inputField>
+                <!-- 样品处理方式 -->
+                <apex:inputField value="{!am.SampleDealType__c}" required="true"></apex:inputField>
+                <!-- 发货形式 -->
+                <apex:inputField value="{!am.SendType__c}" required="true"></apex:inputField>
+                <!-- 需求样品原因 -->
+                <apex:inputField value="{!am.RequireSampleReason__c}" required="true" style="width:500px"></apex:inputField>
+            </apex:pageBlockSection>
+
+
+            <apex:pageblocksection id="participants" title="表格">
+                        <apex:commandbutton action="{!addParticipant}" oncomplete="onCompleteJSFunc();" rerender="output1" status="retrieveStatus" value="新增">
+                        </apex:commandbutton>
+                        <br/>
+                        <apex:outputpanel id="output1" layout="block" styleclass="scroll">
+                            <apex:actionstatus id="retrieveStatus" starttext="(waiting...)">
+                            </apex:actionstatus>
+                            <table border="0" cellpadding="0" cellspacing="0" class="list" id="participantsTable">
+                                <thead>
+                                    <th>
+                                    </th>
+                                    <th style="width:500px">
+                                        物料号
+                                    </th>
+                                    <th style="width:250px">
+                                        描述
+                                    </th>
+                                    <th style="width:50px">
+                                        数量
+                                    </th>
+                                    <th style="width:50px">
+                                        价值
+                                    </th>
+                                    <th style="width:130px">
+                                        需求日期
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <!-- 定義 actionfunction 和其參數 param -->
+                                    <!-- 可理解為js function ->   function delRowInJavascript(rowId){ } -->
+                                    <apex:actionfunction action="{!deleteRow}" name="delRowInJavascript" rerender="output1" status="retrieveStatus">
+                                        <apex:param name="rowId" value="">
+                                        </apex:param>
+                                    </apex:actionfunction>
+                                     <apex:actionfunction action="{!putValue}" name="putValueInJavascript" rerender="output1" status="retrieveStatus">
+                                        <apex:param name="inputValue" value="">
+                                        </apex:param>
+                                        <apex:param name="rowId" value="">
+                                        </apex:param>
+                                        <apex:param name="inputType" value="">
+                                        </apex:param>
+                                    </apex:actionfunction> 
+                                    <!-- 定義actionfunction  -->
+                                    <!-- 定義一個叫做listIndex的變數 預設值設為 Integer 1 -->
+                                    <apex:variable value="{!1}" var="listIndex">
+                                    </apex:variable>
+                                    <!-- 定義一個for in ==> for (var(item) in value(List) ) {...} -->
+                                    <apex:repeat value="{!participants}" var="item">
+                                        <tr>
+                                            <td>
+                                                <input class="btn" onclick="delRowInJavascript('{!listIndex}')" type="button" value="删除"/>
+                                            </td>
+                                            <td>
+                                                <input onchange="putValueInJavascript(this.value,{!listIndex},'matno')"  style="width: 200px;" styleclass="text" type="text" value="{!item.matno}"/>
+                                            </td>
+                                            <td>
+                                                <input onchange="putValueInJavascript(this.value,{!listIndex},'descri')"  style="width: 250px;" styleclass="text" type="text" value="{!item.descri}"/>
+                                            </td>
+                                            <td>
+                                                <input onchange="putValueInJavascript(this.value,{!listIndex},'num')"  style="width: 50px;" styleclass="text" type="text" value="{!item.num}"/>
+                                            </td>
+                                            <td>
+                                                <input onchange="putValueInJavascript(this.value,{!listIndex},'value')"   style="width: 50px;" styleclass="text" type="text" value="{!item.value}"/>
+                                            </td>
+                                            <td>
+                                                <input onchange="putValueInJavascript(this.value,{!listIndex},'reqdate')"   style="width: 130px;" styleclass="text" type="date" value="{!item.reqdate}"/>
+                                            </td>
+                                        </tr>
+                                        <apex:variable value="{!listIndex+1}" var="listIndex">
+                                        </apex:variable>
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                        </apex:outputpanel>
+                    </apex:pageblocksection>
+
+            
+        </apex:pageBlock>
+    </apex:form>>
+</body>
+</html>
+</apex:page>

@@ -3,9 +3,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <style type="text/css">
     @page {
-        size: a4 {!CASE(direction,'H','','V','landscape','')};
-        margin-top: 40px;
-        margin-bottom: 80px;
+        size: {!spage} {!CASE(direction,'H','','V','landscape','')};
+        margin-top: 10px;
+        margin-bottom: 30px;
         @bottom-center { /* Page footer */
             content: element(footer);
         }
@@ -29,6 +29,7 @@
         page-break:always;
         page-break-inside: avoid; 
         page-break-after: auto;
+        font-size:10px; 
     }
     .title{
         text-align: center;

@@ -9,6 +9,7 @@ public with sharing class AMQccExtension {
 		}
     }
     public PageReference save(){
+        // am.Head_description__c = am.Approval_Name__c; 
     	Upsert am;
     	return new PageReference('/'+am.Id);
     }

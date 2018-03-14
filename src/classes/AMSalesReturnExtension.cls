@@ -1,19 +1,16 @@
 public with sharing class AMSalesReturnExtension {
 
-public Approval_Managed__c am {get; set;}
+public Custom_Approval_Managed__c am {get; set;}
 
     public Id amId {get; set;}
-    public List<Approval_Managed_Item__c> list1 {get; set;}
-    public List<Approval_Managed_Item__c> preDeletelist1 {get; set;}
+    public List<Custom_Approval_Managed_Item__c> list1 {get; set;}
     public Integer list1Row {get; set;}
-    public Boolean isDeletedStatus{GET;SET;}
     //明细记录类型ID
     private Id recTypeDetailId = null;
 
-
     public AMSalesReturnExtension(ApexPages.StandardController con) {
-        displayQueryResult = 'none';
-        recTypeDetailId = HarryUtils.getRecordTypeIdByDevNameAndObjName('LeaveDetails','Approval_Managed_Item__c');
+
+        recTypeDetailId = HarryUtils.getRecordTypeIdByDevNameAndObjName('SALESRETURNDETAILS','Custom_Approval_Managed_Item__c');
         System.debug(LoggingLevel.INFO, '*** recTypeDetailId1: ' + recTypeDetailId);
         list1Row = 0;
         amId = con.getId();
@@ -21,100 +18,57 @@ public Approval_Managed__c am {get; set;}
         System.debug(LoggingLevel.INFO, '*** amId: ' + amId);
         
         if (isInsert()) {
-            am = new Approval_Managed__c();
-            am.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.LEAVE, 'Approval_Managed__c');
-            list1 = new List<Approval_Managed_Item__c>();
+            am = new Custom_Approval_Managed__c();
+            am.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.SALESRETURN, 'Custom_Approval_Managed__c');
+            list1 = new List<Custom_Approval_Managed_Item__c>();
             return;
         }
 
         //获取到当前记录信息，目标获取后跳转到自定义PAGE里面有这条数据
-        String sql = Utils.getApprovalSQL(SapApprovalEnum.LEAVE, true);
+        String sql = Utils.getApprovalSQL(SapApprovalEnum.SALESRETURN, true);
         sql = sql + ' WHERE Id = \'' + amId + '\'';
         am = Database.query(sql);
 
-        list1 = [SELECT RecordTypeId,LeaveManage__c,Leave_type__c,Leave_reason__c,Start_date__c,End_date__c,Start_time__c,End_time__c,Time_number__c FROM Approval_Managed_Item__c 
-                  WHERE LeaveManage__c = :amid AND RecordType.DeveloperName = 'LeaveDetails'];
+        list1 = [SELECT RecordTypeId,SALESRETURN_DETAILS__c,Index_Item__c,Material_Number__c,Material_Description__c,Qty__c,Batch__c,Unit__c,IS_GOODS__c,FIX_NO__c,FIX_NUMBER__c,IS_SCRAP__c,SCRAP_NUMBER__c FROM Custom_Approval_Managed_Item__c 
+                  WHERE SALESRETURN_DETAILS__c = :amid AND RecordType.DeveloperName = 'SALESRETURNDETAILS'];
 
-        preDeletelist1 = new List<Approval_Managed_Item__c>();
-        if (am.Name != null) {
-            displayQueryResult = null;
-        }
     }
 
     public PageReference save() {
-    	/*
-        if (String.isNotBlank(am.Employee__c) ) {
-            List<Contact> lstCon = [SELECT Name, Number__c FROM Contact WHERE Id = :am.Employee__c AND RecordType.DeveloperName = 'Staff'];
-            if (lstCon.size()>0) {
-                am.Employee_Code__c = lstCon[0].Number__c;
-                am.Employee_Name__c = lstCon[0].Name;
-            }
-        }else{
-                am.Employee_Code__c = null;
-                am.Employee_Name__c = null;
-                am.Employee__c = null;
-        }
+
         try {
 
+            if (am.SAP_STATUS__c <> 'X') {
+                ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING,'对应销售订单尚未审批'));    
+                return null;
+            }
+
+            if (string.isBlank(am.Approval_User2__c)) {
+                am.Approval_User2__c = am.Approval_User1__c;
+            }
+
+            if (string.isBlank(am.Approval_User4__c)) {
+                am.Approval_User4__c = am.Approval_User3__c;
+            }
+
+            if (string.isBlank(am.Approval_User5__c)) {
+                am.Approval_User5__c = am.Approval_User3__c;
+            }
+
+            if (string.isBlank(am.Approval_User6__c)) {
+                am.Approval_User6__c = am.Approval_User3__c;
+            }
 
             upsert am;
-            DELETE preDeletelist1;
-            am.Sum_Vacation__c = 0;
-
-            Decimal sum1;
-            Decimal sum2;
-            sum1 = 0;
-            sum2 = 0;
-            //am.Annual_leave__c = am.Annual_leave__c.replace(' ', '');
-            //am.Adjustable_vacation__c = am.Adjustable_vacation__c.replace(' ', '');
-
-            if (am.Annual_leave__c != null) {
-               sum1 = Decimal.valueOf(am.Annual_leave__c.replace(' ', ''));  
-            }
-            
-            if (am.Adjustable_vacation__c != null) {
-               sum2 = Decimal.valueOf(am.Adjustable_vacation__c.replace(' ', ''));  
-            }
-
-            System.debug('*** listRowInfo: ' + list1 + '');
-            //更新详细记录
-            if (list1.size()>0) {
-
-                for (Approval_Managed_Item__c ami : list1) {
-
-                    if (ami.Start_date__c > ami.End_date__c) {
-                        ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING,'开始日期不能大于结束日期'));    
-                        return null;
-                    }
-
-                    ami.RecordTypeId = recTypeDetailId;
-                    ami.LeaveManage__c = am.Id;
-                    am.Sum_Vacation__c += Decimal.valueOf(ami.time_number__c);
-
-                    //计算年休和
-                    if (ami.Leave_type__c == '0100' && Decimal.valueOf(ami.time_number__c) != null) {
-                        sum1 -= Decimal.valueOf(ami.time_number__c);
-                    }
-                    
-                    //计算调休和
-                    if (ami.Leave_type__c == '1100' && Decimal.valueOf(ami.time_number__c) != null) {
-                        sum2 -= Decimal.valueOf(ami.time_number__c);
-                    }
+            am.IS_SCRAP__c = false;
+            System.debug(LoggingLevel.INFO, '*** am: ' + am);
+            for (Custom_Approval_Managed_Item__c ami : list1) {
+                ami.RecordTypeId = recTypeDetailId;
+                ami.SALESRETURN_DETAILS__c = am.Id;
+                if (ami.IS_SCRAP__c) {
+                    am.IS_SCRAP__c = true;
                 }
             }
-
-            //年休和>剩余年休||调休和>剩余调休 ->报错
-            if (am.Sum_Vacation__c == 0) {
-                ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING,'请假时数为0'));    
-                return null;
-            }
-
-            //年休和>剩余年休||调休和>剩余调休 ->报错
-            if (sum1 < 0  || sum2 < 0) {
-                ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING,'年/调休假总和大于剩余年/调休假时数'));    
-                return null;
-            }
-
             upsert list1;
             upsert am;
         }
@@ -122,60 +76,45 @@ public Approval_Managed__c am {get; set;}
             System.debug('The following exception has occurred: ' + e.getMessage());
             ApexPages.addMessages(e);
             return null;
-        }*/
+        }
+        System.debug(LoggingLevel.INFO, '*** am.Id: ' + am.Id);
         return new PageReference('/' + am.Id);
+
 	
     } 
-
 
     public PageReference cancel() {
         return new PageReference('/apex/ApprovalHome?sfdc.tabName=01rO0000000Dz6T');
     }
     
-    public PageReference newlist1() {
-        Approval_Managed_Item__c ami = new Approval_Managed_Item__c();
-        ami.RecordTypeId = recTypeDetailId;
-        list1.add(ami);
-        return null;
-    }
-
-    public PageReference deletelist1() {
-        if (list1[list1Row].Id != null) {
-            preDeletelist1.add(list1[list1Row]);
-        }
-        list1.remove(list1Row);
-        return null;
-    }
-
-    public String displayQueryResult {get; set;}
-
     public Boolean isInsert() {
         return amId == null;
     }
 
-    public PageReference queryVacation() {
-        System.debug(LoggingLevel.INFO, '*** 进入查询: '+am);/*
-        if (String.isBlank(am.Employee__c)) {
-            ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING,'请输入员工名称'));    
+    public PageReference querySalesReturn() {
+        System.debug(LoggingLevel.INFO, '*** 进入查询: '+am);
+        if (String.isBlank(am.Bill_No__c)) {
+            ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING,'请输入交货单号'));    
             return null;
         }
-        Contact con = [SELECT Name, Number__c FROM Contact WHERE Id = :am.Employee__c AND RecordType.DeveloperName = 'Staff'LIMIT 1];
         try{
-            String str1 = SapQueryArgCreate.createVacationQuery(con.Number__c);
-            
-            System.debug(str1);
-            String str2 = Utils.postToSAP(str1);
+            //拼接对应的JSON数据
+            String strJson = '{\"approval\":\"ZSALESFORCE_SD_RETURN_QUERY\",\"VBELN\":\"' +
+                              am.Bill_No__c + '\",\"STATUS\":\"' + am.SAP_STATUS__c + '\"}';
+            //获取对应的SAP异常信息
+            HttpRest httprest = new HttpRest();
+            String str2 = httprest.HttpPostSap(strJson);  
             SapWebServiceReturnArgs args = (SapWebServiceReturnArgs)JSON.deserialize(str2, SapWebServiceReturnArgs.class);
             System.debug(LoggingLevel.INFO, '*** args: ' + args);
-            Approval_Managed__c amget = (Approval_Managed__c)JSON.deserialize(JSON.serialize(args.content[0].main), Approval_Managed__c.class);
-            am.Employee_Code__c = amget.Employee_Code__c;
-            am.Annual_leave__c  = amget.Annual_leave__c;
-            am.Adjustable_vacation__c  = amget.Adjustable_vacation__c;
+
+            Custom_Approval_Managed__c amget = (Custom_Approval_Managed__c)JSON.deserialize(JSON.serialize(args.content[0].main), Custom_Approval_Managed__c.class);
+            am.SAP_STATUS__c  = amget.SAP_STATUS__c;
+
+            list1 = (list<Custom_Approval_Managed_Item__c>)JSON.deserialize(JSON.serialize(args.content[0].details.get('lips')), list<Custom_Approval_Managed_Item__c>.class);
+
         }catch(Exception ex){
             ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.ERROR,ex.getMessage() + '\n' + ex.getStackTraceString()));    
         }
-        */
-        displayQueryResult = null;
         return null;
     }
 

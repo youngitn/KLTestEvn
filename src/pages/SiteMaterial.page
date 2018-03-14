@@ -17,6 +17,7 @@
         </div> 
       -->
        
+
         <!-- 搜索条件-->
         <div class="slds-grid slds-grid_align-space">
           <!-- 
@@ -44,6 +45,7 @@
                   </div>
                 </div>
             </div>
+          -->
             <div class="slds-col">
                 <div class="slds-form-element">
                   <label class="slds-form-element__label" for="text-input-id-3">
@@ -56,7 +58,7 @@
                   </div>
                 </div>
             </div>
-            -->
+  
             <div class="slds-col">
                 <div class="slds-form-element">
                   <label class="slds-form-element__label" for="text-input-id-4">
@@ -64,11 +66,12 @@
                   </label>
                   <div class="slds-form-element__control">
                   <font size="3" >
-                    <input type="text" id="text-input-id-4" class="slds-input" ng-model="contractNO" />
+                    <input type="text" id="text-input-id-4" class="slds-input" ng-model="contractNO"/>
                   </font>
                   </div>
                 </div>
             </div>
+
 
             <div class="slds-col">
                 <div class="slds-form-element">
@@ -82,6 +85,8 @@
                   </div>
                 </div>
             </div>    
+
+
         </div>
      
      

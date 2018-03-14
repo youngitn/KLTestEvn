@@ -111,7 +111,8 @@
                     </apex:outputText>
                 </td>
                 <td>
-                    <div>Width of Gage length</div>
+                    <div>Width of</div>
+                    <div>Gage length</div>
                     <apex:outputText rendered="{!langu='EL'||langu='ZH'}">
                         <div>标距宽度</div>
                     </apex:outputText>
@@ -123,7 +124,8 @@
                     </apex:outputText>
                 </td>
                 <td>
-                    <div>Reduction of Area</div>
+                    <div>Reduction </div>
+                    <div>of Area</div>
                     <apex:outputText rendered="{!langu='EL'||langu='ZH'}">
                         <div>断面收缩率</div>
                     </apex:outputText>

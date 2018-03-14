@@ -56,32 +56,28 @@
     }
 
  	public Id specialCal1(Custom_Approval_Managed__c cam){
- 		//	林 文昌-30210010
- 		if (cam.Applicant_Corp_Code__c == '3000'  ) { 			
- 			return utils.getUserByEmployeeCode('30210010');
- 		}
- 		// 	颛 孙慧-10210265
- 		else if(cam.Applicant_Corp_Code__c != '3000'  && 
- 			cam.Kind_of_Material__c == 'F'){
- 			return utils.getUserByEmployeeCode('10210265');
- 		// 谢 飞-10211037
- 	    }else if(cam.Applicant_Corp_Code__c != '3000'  && 
-	 		cam.Kind_of_Material__c != 'F'        &&
-	 		cam.Applicant_Code__c == '10210940'){
-	 		return utils.getUserByEmployeeCode('10211961');
-	 	//张 伟-10210919
-		 }else if(cam.Applicant_Corp_Code__c != '3000'  && 
-	 		cam.Kind_of_Material__c == 'A'        &&
-	 		cam.Applicant_Code__c != '10210940'){
-	 		return utils.getUserByEmployeeCode('10210919');
-	 	//王 丽珍-10210727
-		 }else if(cam.Applicant_Corp_Code__c != '3000'  && 
-	 		cam.Kind_of_Material__c != 'A'        &&
-	 		cam.Kind_of_Material__c != 'F'        &&
-	 		cam.Applicant_Code__c != '10210940'){
-	 		return utils.getUserByEmployeeCode('10210727');
-		 }else{
-		 	return null;
-		 }
+		//	林 文昌-30210010
+		if (cam.Applicant_Corp_Code__c == '3000'  ) { 			
+			return utils.getUserByEmployeeCode('30210010');
+		}else{
+		//非台湾
+			if (cam.Kind_of_Material__c == 'F') {
+				return utils.getUserByEmployeeCode('10210265');//颛 孙慧-10210265
+
+			}else if(cam.Kind_of_Material__c == 'Z'){
+				return utils.getUserByEmployeeCode('10210727');//财务-
+
+			}else if(cam.Kind_of_Material__c == 'A' && cam.Applicant_Code__c != '10210940'){
+ 				return utils.getUserByEmployeeCode('10210919');//张 伟-10210919
+
+			}else if(cam.Kind_of_Material__c != 'F' && cam.Applicant_Code__c == '10210940'){
+ 				return utils.getUserByEmployeeCode('10211961');//倪 松申-10211961
+ 				
+			}else if(cam.Kind_of_Material__c != 'O' && cam.Applicant_Code__c != '10210940'){
+ 				return utils.getUserByEmployeeCode('10210727');//王 丽珍-10210727
+			}else{
+	 			return utils.getUserByEmployeeCode('10210727');//王 丽珍-10210727;
+			}
+		}
 	}
 }

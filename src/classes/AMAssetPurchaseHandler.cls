@@ -69,18 +69,26 @@ public without sharing class AMAssetPurchaseHandler implements Triggers.Handler 
           cam.Approval_User2__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2),cam.Applicant__c),0);
           //节点三 特殊计算
           List<Id> lstID = specialCal1(cam);
-          if (lstID!=null && lstID.size()==3) {
+          if (lstID!=null && lstID.size()==4) {
           cam.Approval_User3__c  = lstID[0];
           cam.Approval_User11__c = lstID[1];
           cam.Approval_User20__c = lstID[2];
+          cam.Approval_User7__c  = lstID[3];
+          }else if(lstID!=null && lstID.size()==3) {
+          cam.Approval_User3__c  = lstID[0];
+          cam.Approval_User11__c = lstID[1];
+          cam.Approval_User20__c = lstID[2];
+          cam.Approval_User7__c  = lstID[2];
           }else if(lstID!=null && lstID.size()==2) {
           cam.Approval_User3__c  = lstID[0];
           cam.Approval_User11__c = lstID[1];
           cam.Approval_User20__c = lstID[1];
+          cam.Approval_User7__c  = lstID[1];
           }else if(lstID!=null && lstID.size()==1){
           cam.Approval_User3__c  = lstID[0];
           cam.Approval_User11__c = lstID[0];
           cam.Approval_User20__c = lstID[0];
+          cam.Approval_User7__c  = lstID[0];
           }
           //节点四
           cam.Approval_User4__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4),null),0);
@@ -89,7 +97,7 @@ public without sharing class AMAssetPurchaseHandler implements Triggers.Handler 
           //节点六
           cam.Approval_User6__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(6),null),0);
           //节点七
-          cam.Approval_User7__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(7),null),0);
+          //cam.Approval_User7__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(7),null),0);
           //节点八
           if (cam.Asset_Type__c  == '03' ) {
             //cam.Approval_User8__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8),null),0);
@@ -173,6 +181,7 @@ public without sharing class AMAssetPurchaseHandler implements Triggers.Handler 
           lstID.add(utils.getUserByEmployeeCode('10210350'));
           lstID.add(utils.getUserByEmployeeCode('10211101'));
           lstID.add(utils.getUserByEmployeeCode('10210841'));
+          lstID.add(utils.getUserByEmployeeCode('10211573'));
         }
 
         //类型为04 资讯办公设备

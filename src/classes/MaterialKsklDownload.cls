@@ -8,6 +8,7 @@ global class  MaterialKsklDownload {
     public String is_stamp {get; set;}   //是否有图章
     public String is_quan {get; set;}    //是否带数量
     public String is_order {get; set;}   //是否从工单出
+    public String spage {get; set;}   //页面纸张类型
     public SapMaterialCertificate.MaterialCertificate mc {get; set;}
 
     public MaterialKsklDownload() {
@@ -22,7 +23,7 @@ global class  MaterialKsklDownload {
         System.debug(LoggingLevel.INFO, '*** mc: ' + mc);
         tableType = '1';
         header = '2';
-
+       
            
         str2 = mc.json_controller.replace('\\\"', '\"');
         //将SAP的非标准JSON格式替换为能识别的格式
@@ -62,6 +63,11 @@ global class  MaterialKsklDownload {
             tableType = '1';
         }
         */
-
+        
+        //变更纸张
+        spage = 'a4';
+        if(mc.kunnr == '0002000037'){
+           spage = 'letter';
+        }
     }
 }

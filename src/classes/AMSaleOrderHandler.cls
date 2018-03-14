@@ -82,6 +82,8 @@ public without sharing class AMSaleOrderHandler implements Triggers.Handler {
         cam.Approval_User17__c = specialCal7(cam);
 
         cam.Approval_User20__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(20),null),0);
+
+        cam.Approval_User21__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(21),null),0);
     } 
     public Id specialCal7(Custom_Approval_Managed__c cam){
         if(cam.Applicant_Corp_Code__c == '3000'){

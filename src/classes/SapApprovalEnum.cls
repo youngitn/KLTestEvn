@@ -152,7 +152,7 @@ public without sharing class SapApprovalEnum {
 	//PM通知单
 	public static final String PMTICKET = 'PMTicket';
 	//退货申请流程
-	public static final String SALESRETURN = 'SalesReturn';
+	public static final String SALESRETURN = 'SALESRETURN';
 	//盘盈盘亏申请流程
 	public static final String INVENTORYKINGLAI = 'InventoryKinglai';  
 	//销售定价业务流程 
@@ -169,7 +169,7 @@ public without sharing class SapApprovalEnum {
 	public static final String QCC = 'Qcc';
 	//SCC供应商索赔申请流程
 	public static final String SCCSUPPLIERCLAIM = 'SCCSupplierClaim';
-	
-
+	//样品申请流程
+	public static final String SAMPLEREQUEST = 'SampleRequest';
 
 }

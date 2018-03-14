@@ -74,6 +74,7 @@ public with sharing class AMAbnormalQualityExtension {
 
         //执行失败回滚所有操作
         System.Savepoint savepoint = Database.setSavepoint();
+        am.Head_description__c = am.Approval_Name__c;
         try {
             update am;
             System.debug('*** rectifyList: ' + rectifyList + '');

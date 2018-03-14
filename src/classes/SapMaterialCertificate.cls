@@ -36,6 +36,8 @@ public without sharing class SapMaterialCertificate {
         public String json_controller {get; set;}  //json_controller
         public String charzsd003 {get; set;} 
         public String zdddd {get; set;} 
+        public String ename {get; set;} 
+        public String kunnr {get; set;} 
         public String Material_Description_EN {get; set;} //英文物料描述
         public List<HeatAnalyzeAndSpecification> heats {GET; SET;} //原材料成分
         public List<MechanicalTest> mechanicals {GET; SET;} //机械性能测试

@@ -9,7 +9,8 @@ public with sharing class AMEXP_ApplicationFeeExtension {
     }
      public PageReference save(){
     	am.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName('EXP_ApplicationFee','Approval_Managed2__c');
-    	Upsert am;
+        am.Head_description__c = am.Approval_Name__c;
+        Upsert am;
     	ApexPages.addMessage(new ApexPages.Message (ApexPages.Severity.INFO,'数据保存成功！'));
     	return new PageReference('/'+am.Id);
     }

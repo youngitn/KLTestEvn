@@ -149,7 +149,7 @@ global without sharing class HLYSyncEntertaineCost {
                     am.Staff_of_Both__c = header.note; //双方人员及应酬内容
                     am.Arrangement__c = header.arrangement; //安排方式
                     am.Approval_DeptName__c = header.unit; //部门
-
+                    
                     amList.add(am);
                 }
             }

