@@ -39,8 +39,8 @@
         else if ('{!Status}' === 'PROCESS') {
            inApprovalProcess(btnEdit,btnSave,btnCancel,btnCancelEdit,lkwgt);
                                    
-        }//草稿
-        else if ('{!Status}' === 'SKETCH'){
+        }//草稿&已拒絕(開放當單據被拒絕後可編輯員單據並送審,否則不太合理)
+        else if ('{!Status}' === 'SKETCH' || '{!Status}' === 'RejectedOrApproved'){
             btnSave.show();
             //btnCancel.show();
             lkwgt.show();
