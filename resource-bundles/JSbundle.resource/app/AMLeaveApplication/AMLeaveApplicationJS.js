@@ -27,6 +27,18 @@
      //     }
      //     openLookupPage = window.open('/_ui/common/data/LookupPage?lkfm=j_id0:j_id13:form&lknm=j_id0:j_id13:form:Employee&lktp=' + getElementByIdCS('j_id0:j_id13:form:Employee_lktp').value + '&lksrch=' + escapeUTF(getElementByIdCS('j_id0:j_id3:form:Employee').value.substring(0, 80)), "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400");
      // });
+     j$("input[id $= Employee]").on('click', function(event) {
+         let a = j$("a[id $= Employee_lkwgt]");
+         if (a.css('display') != 'none') {
+             a.find('img').trigger('click');
+         }
+     });
+     j$("input[id $= Agent]").on("click", function() {
+         let a = j$("a[id $= Agent_lkwgt]");
+         if (a.css('display') != 'none') {
+             a.find('img').trigger('click');
+         }
+     });
      //當請假人input VALUE改變時 關閉人員選擇視窗  
      j$("input[id $= Employee]").on('change', function() {
          if (openLookupPage != null) {
@@ -138,19 +150,19 @@
  }
  //從SAP取請假狀態
  let queryTable_SAP;
+
  function queryVacationTW(cId) {
      //let empId = j$('input[id $= Name]').val();
      //alert(empId);
      AMLeaveApplicationExtension.queryVacationTW(cId, function(result, event) {
          if (event.status && result != null) {
-
              //console.log(JSON.parse(j$.parseHTML(result)[0].data).content);
-             if ( j$.fn.dataTable.isDataTable( '#queryTable_SAP' ) ) {
-                                    queryTable_SAP.destroy();
-                                }
-                queryTable_SAP = j$('#queryTable_SAP').DataTable({
+             if (j$.fn.dataTable.isDataTable('#queryTable_SAP')) {
+                 queryTable_SAP.destroy();
+             }
+             queryTable_SAP = j$('#queryTable_SAP').DataTable({
                  responsive: true,
-                 "language":languageConf,
+                 "language": languageConf,
                  "data": JSON.parse(j$.parseHTML(result)[0].data).content,
                  "columns": [{
                      "data": "main.typesofleave__c",
