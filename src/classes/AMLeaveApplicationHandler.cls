@@ -72,7 +72,8 @@ public with sharing class AMLeaveApplicationHandler  implements Triggers.Handler
 
         // 主管簽核(請假人主管)
         cam.Approval_User1__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(1), cam.Employee__c), 0);
-
+        System.debug('Handler==>'+ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(1), cam.Employee__c));
+        System.debug('Handler cam.Approval_User1__c==>'+cam.Approval_User1__c);
         //大於三天總經理簽核
         cam.Approval_User2__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(2), null), 0);
 
@@ -86,20 +87,25 @@ public with sharing class AMLeaveApplicationHandler  implements Triggers.Handler
         System.debug('In setApprovalUser------->'+cam.Employee_code__c);
         //請假人 
         Contact c = Peoples.getInstance().KlAllContactMapGetById.get(cam.Employee__c);
+        
+        cam.Approval_User5__c = mustNeedUserToNatify(c,cam);
+        c = null;
+        c = Peoples.getInstance().KlAllContactMapGetById.get(cam.Operator_Abnormal__c);
+        cam.Approval_User6__c = mustNeedUserToNatify(c,cam);
+    }
+    public Id mustNeedUserToNatify(Contact c,Approval_Managed__c cam){
         //情況一 可以從聯絡人關聯到User 間接人員
         if (c != null && c.SF_user__r.Id != null ){
-            cam.Approval_User5__c = c.SF_user__r.Id;
+            return c.SF_user__r.Id;
 
         }//情況二 無法從聯絡人關聯到User 須拿工號關聯才有資料 部分現場人員(chatter free user)
         else if(c != null && Peoples.getInstance().KlAllUserMapGetByNum.get(c.Number__c) !=null){
-            cam.Approval_User5__c = Peoples.getInstance().KlAllUserMapGetByNum.get(c.Number__c).Id;
+            return Peoples.getInstance().KlAllUserMapGetByNum.get(c.Number__c).Id;
             
         }//確定完全沒User帳號 將通知人設為主管
         else{
-            cam.Approval_User5__c = cam.Approval_User1__c;
+            return cam.Approval_User1__c;
         }
-        
-        
     }
 
 }
