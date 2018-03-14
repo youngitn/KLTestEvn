@@ -118,7 +118,9 @@ public without sharing class ApproverUtils
          */
         if (con != null && (setSFID.size() == 0 || setSFID.get(0) == null) && con.Corp_Code__c == '3000' && (con.SF_User__r.Is_First_Manager__c || con.SAP_Dept_Number__c == '10000927'))
         {
-            setSFID.add(Id.valueOf('00528000006nvgB'));
+            System.debug('當申請人(目標對象)=主管職&&公司別=台灣新萊&&審批人找不到 * 審批人一律設為總經理.');
+            setSFID.set(0, Peoples.getInstance().KlAllUserMapGetByNum.get('30210002').Id);
+            
         }
         return setSFID;
     }
