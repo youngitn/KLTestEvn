@@ -27,6 +27,8 @@
  **********************************************************************/
 public without sharing class AMEducationTrainingHandler implements Triggers.Handler
 {
+
+
     public void handle()
     {
 
@@ -104,7 +106,20 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
                     String nonEmp = '';
                     for(String p : pList)
                     {
-                        empidList.add(p.substring(0,8));
+                        //empidList.add(p);
+                        //if(p.length()>=8)
+                        //{
+                        if(p.length()<8)
+                        {
+                            empidList.add('10211222');
+                        }
+                        else
+                        {
+                             empidList.add(p.substring(0,8));
+                        }
+                            
+                            //empidList.add(cam.InternalEducationParticipants__c);
+                        //}
 
                     }
                     if (cam.EducationTrainingInHouseLecturerName__c != null && !String.IsBlank(cam.EducationTrainingInHouseLecturerName__c))
@@ -202,7 +217,6 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
                     Delete le;
                 }
                 
-
             }
 
         }
@@ -311,13 +325,23 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
             Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
 
 
-        
         mail.setHtmlBody('您所參與的教育訓練申請流程已批准. <br> 單號:' + am.Name + '<br> 申請人:' + ApplicantName +' '+ ApplicantNum +'<br>參訓名單:<br>'+am.InternalEducationParticipants__c+' <br>表單詳情請至連結檢視:<a href="https://kinglai.my.salesforce.com/'+am.id+'">https://kinglai.my.salesforce.com/'+am.id+'</a>');
         mail.setToAddresses(toAddresses);
         mail.setCcAddresses(ccAddresses);
         // Send the email you have created.
         if (!Test.isRunningTest())
-            Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+        {
+            try
+            {
+                Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+            }
+            catch(Exception e)
+            {
+
+            }
+        }
+            
+
   
     }
 }
