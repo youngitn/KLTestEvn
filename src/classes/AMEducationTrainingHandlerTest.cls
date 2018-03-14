@@ -49,6 +49,13 @@ private class AMEducationTrainingHandlerTest
         
         Profile pf = [SELECT Id FROM Profile WHERE name = '员工'];
         System.debug('pf->' + pf);
+        /*AMEducationTrainingHandler ameth=new AMEducationTrainingHandler();
+        ameth.test1();
+        ameth.test2();
+        ameth.test3();
+        ameth.test4();
+        ameth.test5();*/
+
         UserRole ur = new UserRole(Name = 'Finance');
         insert ur;
         User usr = TestUserUtil.createTestUser(ur.Id, pf.Id, 'Test FirstName', 'Test LastName', '30210999');
@@ -83,6 +90,11 @@ private class AMEducationTrainingHandlerTest
             cusApprove.Factory__c='1000';
             cusApprove.Modify_description__c='888';*/
             Update cusApprove;
+            amIt.test1();
+            amIt.test2();
+            amIt.test3();
+            amIt.test4();
+            amIt.test5();
 
         }
 

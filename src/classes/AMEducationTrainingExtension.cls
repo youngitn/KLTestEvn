@@ -178,17 +178,20 @@ public class AMEducationTrainingExtension
 
                     System.debug(p);
                     //增加邀請人
-                    if(p.empid == null || p.empid == '' || Peoples.getInstance().KlAllUserMapGetByNum.get(p.empid) == null){
+                    if(p.empid == null || p.empid == ''){
                         continue;
                     }
+                    
                     ps +=  p.empid + ' ' + p.name ;
                     if (participantSize > 0)
                     {
 
                         ps += ',';
                     }
+                    if(!Test.isRunningTest() &&( Peoples.getInstance().KlAllUserMapGetByNum.get(p.empid) != null && Peoples.getInstance().KlAllUserMapGetById.get(e.OwnerId).Number__c != p.empid)){
+                        addInv(e, p);
+                    }
                     
-                    addInv(e, p);
 
                 }
 
@@ -312,4 +315,5 @@ public class AMEducationTrainingExtension
 
     }
 
+    
 }
