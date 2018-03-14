@@ -5,7 +5,8 @@ public with sharing class MeetingMinutesMainPageHandler implements Triggers.Hand
 
 
         Map<Decimal, Organizational__c>  mapSpecify = null;
-        Id rtId = Schema.getGlobalDescribe().get('KL_Systems__c').getDescribe().getRecordTypeInfosByName().get('Meeting_Minutes').getRecordTypeId();
+        Id rtId =  HarryUtils.getRecordTypeIdByDevNameAndObjName('Meeting_Minutes', 'KL_Systems__c');
+        
         Boolean haveSfID = true;
         if (Trigger.isBefore && Trigger.isInsert)
         {
