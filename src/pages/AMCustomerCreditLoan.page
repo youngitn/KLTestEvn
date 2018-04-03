@@ -88,6 +88,10 @@
                 <apex:inputField value="{!am.Application_credit_limit__c}" required="true"></apex:inputField>
                 <!-- 付款条件-->
                 <apex:inputField value="{!am.Term_of_Payment_account__c}" style="width: 300px"></apex:inputField>
+                <!-- 工厂 -->
+                <apex:inputField value="{!am.Factory__c}" required="true"></apex:inputField>
+                <!-- 销售组织 -->
+                <apex:inputField value="{!am.Sales_Org__c}" required="true"></apex:inputField>
                 <!-- 付款条件描述-->
                 <!-- <apex:inputField value="{!am.payment_terms_describe__c}"></apex:inputField> -->
                 <apex:pageBlockSection >
