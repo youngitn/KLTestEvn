@@ -71,29 +71,24 @@ public with sharing class AMLeaveApplicationHandler  implements Triggers.Handler
     {
 
         // 主管簽核(請假人主管)
-        cam.Approval_User1__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(1), cam.Employee__c), 0);
-        System.debug('Handler==>'+ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(1), cam.Employee__c));
-        System.debug('Handler cam.Approval_User1__c==>'+cam.Approval_User1__c);
+        cam.Approval_User1__c = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(1), cam.Employee__c), 0);
         //大於三天總經理簽核
-        cam.Approval_User2__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(2), null), 0);
+        cam.Approval_User2__c = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(2), null), 0);
 
         //HR經辦
-        cam.Approval_User3__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(3), null), 0);
+        cam.Approval_User3__c = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(3), null), 0);
 
         //-----以下為抓通知人用-----------
         
         //HR主管
-        cam.Approval_User4__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(4), null), 0);
-        System.debug('In setApprovalUser------->'+cam.Employee_code__c);
-        //請假人 
-        Contact c = Peoples.getInstance().KlAllContactMapGetById.get(cam.Employee__c);
-        
-        cam.Approval_User5__c = mustNeedUserToNatify(c,cam);
-        c = null;
-        c = Peoples.getInstance().KlAllContactMapGetById.get(cam.Operator_Abnormal__c);
-        cam.Approval_User6__c = mustNeedUserToNatify(c,cam);
+        cam.Approval_User4__c = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(4), null), 0);
+        cam.Approval_User5__c = mustNeedUserToNatify(cam.Employee__c,cam);
+        cam.Approval_User6__c = mustNeedUserToNatify(cam.Operator_Abnormal__c,cam);
     }
-    public Id mustNeedUserToNatify(Contact c,Approval_Managed__c cam){
+    public Id mustNeedUserToNatify(Id cId,Approval_Managed__c cam){
+        //請假人 
+        Contact c = Peoples.getInstance().KlAllContactMapGetById.get(cId);
+
         //情況一 可以從聯絡人關聯到User 間接人員
         if (c != null && c.SF_user__r.Id != null ){
             return c.SF_user__r.Id;
