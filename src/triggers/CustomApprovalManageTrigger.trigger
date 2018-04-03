@@ -64,5 +64,6 @@ trigger CustomApprovalManageTrigger on Custom_Approval_Managed__c(before insert,
     //设置记录共享
     .bind (Triggers.Evt.afterinsert,new ApprovalManualShareHandler())
     .bind (Triggers.Evt.afterupdate,new ApprovalManualShareHandler())
+
     .manage();      
 }
