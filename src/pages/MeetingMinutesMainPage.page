@@ -22,12 +22,12 @@
             <script>
                 const recordTypeId = '{!recordTypeId}';
                 j$(function() {
-					if('{!kls.Id}'){
-                		j$('#MeetingResolutions').hide();
-                	}
+                    if('{!kls.Id}'){
+                        j$('#MeetingResolutions').hide();
+                    }
 
-                	j$('input[id$=__c],input[id$=Toastmaster],input[id$=Note_Taker]').attr('required','required');
-            	});
+                    j$('input[id$=__c],input[id$=Toastmaster],input[id$=Note_Taker]').attr('required','required');
+                });
             </script>
         </head>
         <body>
@@ -124,9 +124,8 @@
                                     </apex:inputfield>
                                 </div>
                             </div>
-                            <c:ApprovalProcessButtonSwitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
-                            </c:ApprovalProcessButtonSwitcher>
-                            <apex:messages />
+                            <apex:messages>
+                            </apex:messages>
                             <br/>
                             <br/>
                             <div id="MeetingResolutions">
@@ -191,9 +190,9 @@
                                                         <script>
                                                             createLookUpFiled(null, 'ResponsiblePerson_{!listIndex}', 'ResponsiblePersonLookupInput_{!listIndex}');
                                                         j$( "#ResponsiblePerson_{!listIndex}_lookupIcon" ).on( "click", function() {
-											                addEventOnDatable('ResponsiblePerson_{!listIndex}','input',false,true);
-											               
-											            });
+                                                            addEventOnDatable('ResponsiblePerson_{!listIndex}','input',false,true);
+                                                           
+                                                        });
                                                         </script>
                                                     </td>
                                                     <td data-th="主題">
@@ -211,6 +210,10 @@
                                 </apex:outputpanel>
                             </div>
                         </fieldset>
+                        <br/>
+                        <br/>
+                        <c:approvalprocessbuttonswitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
+                        </c:approvalprocessbuttonswitcher>
                     </apex:form>
                 </div>
             </div>
