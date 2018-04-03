@@ -90,11 +90,11 @@ private class AMEducationTrainingHandlerTest
             cusApprove.Factory__c='1000';
             cusApprove.Modify_description__c='888';*/
             Update cusApprove;
-            amIt.test1();
-            amIt.test2();
-            amIt.test3();
-            amIt.test4();
-            amIt.test5();
+            //amIt.test1();
+            //amIt.test2();
+            //amIt.test3();
+            //amIt.test4();
+            //amIt.test5();
 
         }
 
