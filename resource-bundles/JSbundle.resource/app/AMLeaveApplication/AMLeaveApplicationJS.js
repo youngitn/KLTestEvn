@@ -12,7 +12,11 @@
      let Take_Office_Date = j$('span[id $= Take_Office_Date]').children();
      if (Take_Office_Date.html().trim() != '') {
          let d = new Date(Take_Office_Date.html().trim());
-         j$('#Take_Office_Date_box').val(d.getMonth() + '/' + d.getDate());
+         let mm = d.getMonth();
+         if (mm == 12) {
+             mm = 0;
+         }
+         j$('#Take_Office_Date_box').val(mm + 1 + '/' + d.getDate());
          Take_Office_Date.hide();
      }
      addButtonClass();
@@ -191,13 +195,25 @@
                      "targets": 1
                  }, {
                      "title": "開始時間",
-                     "targets": 2
+                     "targets": 2,
+                     "render": function(data, type, row, meta) {
+                        if(data != null)
+                            return ("" + data).substring(0, 4) + "";
+                        else
+                            return "空";
+                     }
                  }, {
                      "title": "結束日期",
                      "targets": 3
                  }, {
                      "title": "結束時間",
-                     "targets": 4
+                     "targets": 4,
+                     "render": function(data, type, row, meta)  {
+                        if(data != null)
+                            return ("" + data).substring(0, 4) + "";
+                        else
+                            return "空";
+                     }
                  }, {
                      "title": "時數",
                      "targets": 5
