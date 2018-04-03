@@ -12,6 +12,13 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         super('KL_Systems__c', 'Meeting_Minutes', con, null, null, null);
         participantList = new List<ParticipantRow>();
         kls = (KL_Systems__c)this.sobj;
+        if(con.getId() != null)
+        {
+            //因為沒有狀態欄位
+            //禁止編輯的判斷要在這邊做
+            this.isEditable = false;//無可編輯欄位設置
+            this.nowStatus = 'PROCESS';//審批中狀態
+        }
     }
 
     public PageReference addParticipant()
@@ -38,22 +45,28 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         String inputType = Apexpages.currentPage().getParameters().get('inputType');
         String inputValue  = Apexpages.currentPage().getParameters().get('inputValue');
         Integer rowId = integer.valueof(Apexpages.currentPage().getParameters().get('rowId')) - 1;
-       
-        if (inputType.equals('name') && !String.isBlank(inputValue))
-        {
-            participantList.get(rowId).name = inputValue;
-        }
-        else if (inputType.equals('subject') && !String.isBlank(inputValue))
-        {
-            participantList.get(rowId).subject = inputValue;
-        }
-        else if (inputType.equals('duedate') && !String.isBlank(inputValue))
-        {
-            participantList.get(rowId).duedate = inputValue;
-        }
+        ParticipantRow pr = participantList.get(rowId);
+        pr.name = getValue('name',inputType,inputValue, pr.name);
+
+        pr.subject =  getValue('subject',inputType,inputValue, pr.subject);
+
+        pr.duedate =  getValue('duedate',inputType,inputValue, pr.duedate);
 
         return null;
     }
+
+    public String getValue( String myKey,String nowKey,String inputValue ,String oldValue)
+    {
+        
+        if (!String.isBlank(inputValue) && !inputValue.equals(oldValue) && myKey.equals(nowKey))
+        {
+            return  inputValue;
+        }else{
+            return oldValue;
+        }
+        return null;
+    }
+
 
     public class ParticipantRow
     {
@@ -71,49 +84,62 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         String persons = '';
         integer count = participantList.size();
         List<String> emails = new List<String>();
-        //決議事項 
+        //決議事項
         //正常用新建TASK方式,則指派對象會自動收到mail
         //但是用Apex新增TASK則要寫程式來做email寄送
         if (count > 0)
         {
             for (ParticipantRow row : participantList)
             {
-                String empid = row.name.substringAfter('-');
-                User u = Peoples.getInstance().KlAllUserMapGetByNum.get(empid);
-                Task task = new Task();
-                task.WhatId = kls.Id;
-                task.OwnerId = u.Id;
-                task.Subject = row.subject;
-                task.priority = 'Normal';
-                task.status = 'Not Started';
-                task.ActivityDate = Date.valueOf(row.duedate);
-                //task.description = 'New  Work';
-                insert task;
+                insertTask( kls.Id, row);
                 emails.add('young_cheng@kinglai-hm.com');
-               
-               
             }
-            
+
         }
-        //主席&紀錄加到參與者 取得email.
-        kls.Participant__c = kls.Participant__c+','+kls.Toastmaster__c+','+kls.Note_Taker__c;
+
+        /**
+         * 這裡還需送信件給決議事項的指派對象
+         * 另一個類似 sendMailToParticipants(emails, kls) 的方法;
+         */
+        //主席&紀錄加到參與者 取得email emails list需清空
+        //先定義決議事項指派對象不等於會議參與者.
+        kls.Participant__c = kls.Participant__c + ',' + kls.Toastmaster__c + ',' + kls.Note_Taker__c;
         if (kls.Participant__c != null)
         {
             List<String> pList = kls.Participant__c.split(',');
             for(String p : pList)
             {
-
-            	String empid = p.substringAfter('-');
-            	User u = Peoples.getInstance().KlAllUserMapGetByNum.get(empid);
-            	emails.add('young_cheng@kinglai-hm.com');
+                User u = getUser(p);
+                emails.add('young_cheng@kinglai-hm.com');
             }
         }
 
-        sendMailToParticipants(emails,kls);
+        sendMailToParticipants(emails, kls);
         return this.goPage(kls.Id);
     }
 
-    public void sendMailToParticipants(List<String> commAddresses,KL_Systems__c kls)
+    public void insertTask(Id billId, ParticipantRow row)
+    {
+        User u = getUser(row.name);
+        Task task = new Task();
+        task.WhatId = billId;
+        task.OwnerId = u.Id;
+        task.Subject = row.subject;
+        // task.priority = 'Normal';
+        // task.status = 'Not Started';
+        task.recordTypeId = '012O0000000Aa6v';
+        task.ActivityDate = Date.valueOf(row.duedate);
+        //task.description = 'New  Work';
+        insert task;
+    }
+
+    public User getUser(String nameAndNumber)
+    {
+        String empid = nameAndNumber.substringAfter('-');
+        User u = Peoples.getInstance().KlAllUserMapGetByNum.get(empid);
+        return u;
+    }
+    public void sendMailToParticipants(List<String> commAddresses, KL_Systems__c kls)
     {
 
         Messaging.reserveSingleEmailCapacity(2);
@@ -124,7 +150,7 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         // Strings to hold the email addresses to which you are sending the email.
         String[] toAddresses = commAddresses;
         System.debug(toAddresses);
-      
+
         mail.setCharset('UTF-8');
 
         // Specify the address used when the recipients reply to the email.
@@ -138,8 +164,8 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         mail.setUseSignature(false);
 
         mail.setSubject('Salesforce 會議記錄創建完成');
-        
-        mail.setHtmlBody('您所參與的會議記錄已創建完成. <br> 會議日期:' + kls.Meeting_Date__c + '<br> 會議時間:' +kls.BegingTime__c+'~'+kls.EndTime__c + '<br>會議地點:'+kls.Meeting_Place__c+'<br>會議主題:'+kls.Meeting_Subject__c+'<br> 會議主席:' + kls.Toastmaster__c + '<br>會議紀錄:'+kls.Note_Taker__c+'<br><br>表單詳情請至連結檢視:<a href="https://kinglai.my.salesforce.com/' + kls.id + '">開啟連結</a>');
+
+        mail.setHtmlBody('您所參與的會議記錄已創建完成. <br> 會議日期:' + ('' + kls.Meeting_Date__c).left(10) + '<br> 會議時間:' + kls.BegingTime__c + '~' + kls.EndTime__c + '<br>會議地點:' + kls.Meeting_Place__c + '<br>會議主題:' + kls.Meeting_Subject__c + '<br> 會議主席:' + kls.Toastmaster__c + '<br>會議紀錄:' + kls.Note_Taker__c + '<br><br>表單詳情請至連結檢視:<a href="https://kinglai.my.salesforce.com/' + kls.id + '">開啟連結</a>');
         mail.setToAddresses(commAddresses);
         mail.setWhatId(kls.Id);
         System.debug(commAddresses);
