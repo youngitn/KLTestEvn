@@ -33,7 +33,7 @@
     <!-- 页面信息提示区 -->
     <apex:pagemessages escape="true">
     </apex:pagemessages>
-    <apex:form>
+    <apex:form >
         <!-- 子表删除行数调用function -->
         <apex:actionfunction action="{!deleteDetail}" id="deleteDetail" name="deleteDetail" rerender="output1">
             <apex:param assignto="{!rowID}" name="rowID" value="">
@@ -48,8 +48,8 @@
             <apex:param assignto="{!resultRowID}" name="rowID" value="rowID">
             </apex:param>
         </apex:actionfunction>
-        <apex:pageblock>
-            <apex:pageblockbuttons>
+        <apex:pageblock >
+            <apex:pageblockbuttons >
                 <apex:commandbutton action="{!save}" style="padding:3px 5px;" value="保存">
                 </apex:commandbutton>
                 <apex:commandbutton action="{!cancel}" immediate="true" style="padding:3px 5px;" value="取消">
