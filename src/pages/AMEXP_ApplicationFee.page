@@ -46,14 +46,14 @@
                 
                 <apex:inputField value="{!am.Applicationcode__c}"></apex:inputField>
                 <apex:inputField value="{!am.factory__c}"></apex:inputField>
-                <apex:inputTextarea value="{!am.Number__c}" cols="3" rows="1" ></apex:inputTextarea>
-                <apex:inputTextarea value="{!am.Purchase_price__c}"  ></apex:inputTextarea>
-                <apex:inputTextarea value="{!am.SAP_requisition_number__c}"  ></apex:inputTextarea>
-                <apex:inputTextarea value="{!am.SAP_Purchase_number_c__c}"  ></apex:inputTextarea>
-                <apex:inputTextarea value="{!am.Item_number__c}"  ></apex:inputTextarea>
-                <apex:inputTextarea value="{!am.Demand_date__c}"  ></apex:inputTextarea>
-                <apex:inputTextarea value="{!am.Trade_Name__c}"  ></apex:inputTextarea>
-                <apex:inputTextarea value="{!am.Reason_for_purchase__c}"  ></apex:inputTextarea>
+                <apex:inputField value="{!am.Number__c}" ></apex:inputField>
+                <apex:inputField value="{!am.Purchase_price__c}"  ></apex:inputField>
+                <apex:inputField value="{!am.SAP_requisition_number__c}"  ></apex:inputField>
+                <apex:inputField value="{!am.SAP_Purchase_number_c__c}"  ></apex:inputField>
+                <apex:inputField value="{!am.Item_number__c}"  ></apex:inputField>
+                <apex:inputField value="{!am.Demand_date__c}"  ></apex:inputField>
+                <apex:inputField value="{!am.Trade_Name__c}"  ></apex:inputField>
+                <apex:inputField value="{!am.Reason_for_purchase__c}"  ></apex:inputField>
                                          
                                                                                            
  </apex:pageBlockSection>
