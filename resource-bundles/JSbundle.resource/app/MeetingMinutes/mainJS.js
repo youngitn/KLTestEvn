@@ -148,6 +148,7 @@ function addEventOnDatable(targetInputname, tagName, isMultiEmp, doTrigger) {
             targetDom.change();
         }
     });
+    j$("#dialog-confirm").dialog( "option", "position", { my: "right", at: "left bottom", of: targetDom } );
     j$("#dialog-confirm").dialog("open");
 }
 
@@ -166,15 +167,18 @@ function buildDialogEmpLookUp() {
     }
     let t = j$('#lookupTable').DataTable({
         "data": objList,
+        "language":languageConf,
         "columns": [{
             "data": "Contact_Name"
         }, {
             "data": "Contact_Code"
         }, {
             "data": "Department"
-        }, {
-            "data": "profileImageUrl"
-        }, {
+        }
+        // , {
+        //     "data": "profileImageUrl"
+        // }
+        , {
             "data": "id"
         }],
         "columnDefs": [{
@@ -194,15 +198,17 @@ function buildDialogEmpLookUp() {
         }, {
             "title": "部門",
             "targets": 2
-        }, {
-            "title": "大頭貼",
+        } 
+        // ,{
+        //     "title": "大頭貼",
+        //     "targets": 3,
+        //     "data": "profileImageUrl",
+        //     "render": function(data, type, row, meta) {
+        //         return "<img src=" + data + "></img>";
+        //     }
+        // }
+        , {
             "targets": 3,
-            "data": "profileImageUrl",
-            "render": function(data, type, row, meta) {
-                return "<img src=" + data + "></img>";
-            }
-        }, {
-            "targets": 4,
             "visible": false
         }]
     });
