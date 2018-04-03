@@ -51,6 +51,9 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
             sql += 'Select ' + SObjectUtils.getAllFields(sobjName).get(sobjName) + ' from ' + sobjName;
             sql += ' WHERE Id = \'' + stdController.getId() + '\'';
             this.sobj = Database.query(sql);
+            //try catch是要讓子系統紀錄物件不因例外而停擺
+            //因為子系統紀錄物件沒有狀態(草稿,審批中,拒絕..)欄位
+            //所以在作可編輯的判斷上會發生例外(使用不存在的欄位導致)
             try
             {
                 if ((String)this.sobj.get('Approval_Status__c') == 'S'){
@@ -73,11 +76,13 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
             }
             finally
             {
-                isEditable = true;
-                nowStatus = 'SKETCH';
+                
                 System.debug('finally');  
             }
-            //這筆資料已存在紀錄 
+
+            //這筆資料已存在,
+            //true表示編輯
+            //false表示創建 
             //給 goPage(Id recordId)判斷用
             isOld = true;
              
