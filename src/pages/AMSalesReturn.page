@@ -8,7 +8,7 @@
  备    注：
 
 <-->
-<apex:page standardController="Custom_Approval_Managed__c" extensions="AMSalesReturnExtension">  
+<apex:page standardController="Custom_Approval_Managed__c" extensions="AMSalesReturnExtension" sidebar="false">  
 <!-- 请假管理流程 -->
 <html>
     <head>
@@ -82,6 +82,7 @@
                         <th>返修数量</th>
                         <th>是否报废</th>
                         <th>报废数量</th>
+                        <th>调拨单号</th>
                     </thead>
                     <tbody>
                 <apex:variable var="list1Index" value="{!0}"/>
@@ -100,6 +101,7 @@
                         <td><apex:inputField value="{!item.FIX_NUMBER__c}" style="width: 60px" /></td>
                         <td><apex:inputField value="{!item.IS_SCRAP__c}" style="width: 20px" /></td>
                         <td><apex:inputField value="{!item.SCRAP_NUMBER__c}" style="width: 60px" /></td>
+                        <td><apex:inputField value="{!item.ALLOCATE_NO__c}" style="width: 100px" /></td>
 
                     </tr>
                     <apex:variable var="list1Index" value="{!list1Index+1}"/>
