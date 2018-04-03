@@ -79,10 +79,10 @@
                 <div id="tabs-1">
                     <apex:sectionheader title="請假申請流程">
                     </apex:sectionheader>
-                    <apex:pageblock>
+                    <apex:pageblock >
                         <apex:form id="form" styleclass="pure-form pure-form-stacked">
-                            <c:baseforminfo inputobject="{!am}">
-                            </c:baseforminfo>
+                            <c:baseFormInfo inputobject="{!am}">
+                            </c:baseFormInfo>
                             <fieldset>
                                 <legend>
                                     <apex:pageblocksection title="請假資訊">
@@ -287,8 +287,8 @@
                             
                             <br/>
                             <br/>
-                            <c:approvalprocessbuttonswitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
-                            </c:approvalprocessbuttonswitcher>
+                            <c:ApprovalProcessButtonSwitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
+                            </c:ApprovalProcessButtonSwitcher>
                         </apex:form>
                     </apex:pageblock>
                 </div>

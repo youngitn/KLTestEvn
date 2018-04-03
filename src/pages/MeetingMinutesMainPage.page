@@ -124,7 +124,7 @@
                                     </apex:inputfield>
                                 </div>
                             </div>
-                            <apex:messages>
+                            <apex:messages >
                             </apex:messages>
                             <br/>
                             <br/>
@@ -212,8 +212,8 @@
                         </fieldset>
                         <br/>
                         <br/>
-                        <c:approvalprocessbuttonswitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
-                        </c:approvalprocessbuttonswitcher>
+                        <c:ApprovalProcessButtonSwitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
+                        </c:ApprovalProcessButtonSwitcher>
                     </apex:form>
                 </div>
             </div>
