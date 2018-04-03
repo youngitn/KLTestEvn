@@ -1,2 +1,83 @@
-<apex:page >
+<!--> 
+ 名    称：资产转移报废停用申请流程
+ 作    者：刘忠林
+ 创建日期：2018-3-7
+<-->
+
+<apex:page standardController="Approval_Managed__c" extensions="AMAssetsTransferExtension">
+<html>
+<body>
+<apex:sectionHeader title="资产转移报废停用申请流程" subtitle="新建/资产转移报废停用申请流程"></apex:sectionHeader>
+    <apex:pageMessages escape="true"></apex:pageMessages> 
+    <apex:form >
+
+        <apex:actionFunction action="{!queryAccountInfo}" id="queryAccountInfo" name="queryAccountInfo" reRender="creditloan" immediate="true" status="loading">
+        </apex:actionFunction>
+
+        <apex:pageBlock > 
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" collapsible="false">
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人 -->
+                <apex:outputField value="{!am.Applicant__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 审核状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+
+            </apex:pageBlockSection>  
+ 
+            <apex:pageBlockSection title="头信息" collapsible="false">
+            	<!-- 变更类型 -->
+            	<apex:inputField value="{!am.ChangeType__c}" required="true"></apex:inputField>
+            	<!-- 公司代码 -->
+            	<apex:inputField value="{!am.Corporation__c}" required="true"></apex:inputField>
+                <!-- 资产编号 -->
+                <apex:inputField value="{!am.Asset_Code__c}" required="true"></apex:inputField>
+                <!-- 查询 -->
+                <apex:commandButton value="查询" action="{!queryAccountInfo}"/>
+                <!-- 资产名称-->
+                <apex:outputField value="{!am.Asset_Name__c}" ></apex:outputField> 	
+                <!-- 资产类型 -->
+                <apex:outputField value="{!am.Asset_Type__c}"></apex:outputField>
+            	<!-- 资产原值 -->
+            	<apex:outputField value="{!am.Asset_initial_value__c}"></apex:outputField>
+                <!-- 资产化日期 -->
+                <apex:outputField value="{!am.Asset_date__c}" ></apex:outputField>
+            	<!-- 累计折旧 -->
+            	<apex:outputField value="{!am.Accumulated_depreciation__c}"></apex:outputField>
+            	<!-- 残值 -->
+            	<apex:outputField value="{!am.Residual_value__c}"></apex:outputField>
+                <!-- 使用年限（年） -->
+                <apex:outputField value="{!am.Durable_years__c}"></apex:outputField>
+            	<!-- 成本中心-->
+            	<apex:outputField value="{!am.Dept_of_CostCenter__c}" ></apex:outputField>
+            	<!-- 实物资产分类 -->
+            	<apex:inputField value="{!am.Entity_asset_type__c}" ></apex:inputField>
+            	<!-- 变更成本中心 -->
+            	<apex:inputField value="{!am.ChangeCostCenter__c}" ></apex:inputField>
+            	<!-- 报废/停用日期 -->
+            	<apex:inputField value="{!am.ScrapOutage_date__c}" ></apex:inputField>
+            	<!-- 转移后地点 -->
+            	<apex:inputField value="{!am.Post_transfer_site__c}" ></apex:inputField>
+            	<!-- 供应商编号 -->
+            	<apex:outputField value="{!am.Vendor_Number__c}" ></apex:outputField>
+            	<!-- 备注信息（文本） -->
+            	<apex:inputField value="{!am.Remark__c}" style="width: 200%"></apex:inputField>
+
+            </apex:pageBlockSection> 
+        </apex:pageBlock>
+    </apex:form>>
+</body>
+</html>
 </apex:page>

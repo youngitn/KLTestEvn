@@ -41,6 +41,10 @@ trigger ApprovalManageTrigger on Approval_Managed__c(before insert, after update
     .bind (Triggers.Evt.beforeinsert,new AMAssetPurchaseHandler())
     .bind (Triggers.Evt.beforeupdate,new AMAssetPurchaseHandler())
 
+    //设置资产转移报废停用申请流程各节点审批人
+    .bind (Triggers.Evt.beforeinsert,new AMAssetsTransferHandler())
+    .bind (Triggers.Evt.beforeupdate,new AMAssetsTransferHandler())
+
     //设置交际应酬审批流程各节点审批人
     .bind (Triggers.Evt.beforeinsert,new AMEntertaineCostHandler())
     .bind (Triggers.Evt.beforeupdate,new AMEntertaineCostHandler())
