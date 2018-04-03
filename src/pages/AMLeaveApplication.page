@@ -22,7 +22,8 @@
             </script>
             <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/AMLeaveApplication/AMLeaveApplicationJS.js')}">
             </script>
-            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/dataTableConfigObj.js')}" />
+            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/dataTableConfigObj.js')}">
+            </script>
             <script type="text/javascript">
                 j$( function() {
                     //隱藏新增刪除請假明細按鈕  
@@ -41,7 +42,10 @@
 
                     //搜尋tab只有在草稿和新建狀態顯示
                     if ('{!NowStatus}' == 'SKETCH' || '{!NowStatus}' == 'NEW') { 
-                        j$('#ui-id-2').show();              
+                        j$('#ui-id-2').show();
+                        // j$("input[id$=Employee]").attr('placeholder','請點下方的放大鏡圖示做輸入');
+                        // j$("input[id$=Agent]").attr('placeholder','請點下方的放大鏡圖示做輸入');
+                           
                     }
                     //只有在草稿和新建狀態或者該關卡有可編輯欄位
                     //顯示新增刪除請假明細按鈕 
@@ -75,10 +79,10 @@
                 <div id="tabs-1">
                     <apex:sectionheader title="請假申請流程">
                     </apex:sectionheader>
-                    <apex:pageblock >
+                    <apex:pageblock>
                         <apex:form id="form" styleclass="pure-form pure-form-stacked">
-                            <c:baseFormInfo inputobject="{!am}">
-                            </c:baseFormInfo>
+                            <c:baseforminfo inputobject="{!am}">
+                            </c:baseforminfo>
                             <fieldset>
                                 <legend>
                                     <apex:pageblocksection title="請假資訊">
@@ -166,13 +170,6 @@
                                 <div>
                                 </div>
                             </fieldset>
-                            <br/>
-                            <br/>
-                            <c:ApprovalProcessButtonSwitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
-                            </c:ApprovalProcessButtonSwitcher>
-                            <br/>
-                            <br/>
-                            <br/>
                             <apex:pageblocksection title="請假明細">
                             </apex:pageblocksection>
                             <div id="detail">
@@ -281,11 +278,18 @@
                                     </table>
                                 </apex:outputpanel>
                             </div>
+                            <!-- 待代理人通知一併上正式區 -->
+                            
+                                <div id="queryVacTw">
+                                    <table class="display" id="queryTable_SAP" width="100%">
+                                    </table>
+                                </div>
+                            
+                            <br/>
+                            <br/>
+                            <c:approvalprocessbuttonswitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
+                            </c:approvalprocessbuttonswitcher>
                         </apex:form>
-                        
-                        <div id="queryVacTw">
-                            <table id="queryTable_SAP" class="display" width="100%"></table>
-                        </div>
                     </apex:pageblock>
                 </div>
             </div>
