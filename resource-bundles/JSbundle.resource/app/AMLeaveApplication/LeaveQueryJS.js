@@ -49,7 +49,8 @@
                                               { "data": "Leave_reason__c" , "defaultContent": "<i>空</i>"},
                                               { "data": "Start_date__c" , "defaultContent": "<i>空</i>"},
                                               { "data": "End_date__c" , "defaultContent": "<i>空</i>"},
-                                              { "data": "LeaveManage__r.Approval_Status__c" , "defaultContent": "<i>空</i>"}
+                                              { "data": "LeaveManage__r.Approval_Status__c" , "defaultContent": "<i>空</i>"},
+                                              { "data": "time_number__c" , "defaultContent": "<i>空</i>"},
                                             ],
                                             "columnDefs": [
                                               { "title": "單號", "targets": 0 ,
@@ -63,7 +64,8 @@
                                               { "title": "起日", "targets": 3 },
                                               { "title": "訖日", "targets": 4 },
                                               { "title": "審批狀態", "targets": 5  , "render": function ( data, type, row, meta )
-                                                            {return Approval_StatusMap.get(data);} }
+                                                            {return Approval_StatusMap.get(data);} },
+                                              { "title": "時數", "targets": 6 },
                                             ]
                                   
                               } );
