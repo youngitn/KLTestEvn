@@ -107,7 +107,7 @@ public class AMCustomerCreditLoanExtension {
         } 
         Account con = [SELECT Name, AccountNumber FROM Account WHERE Id = :am.Account__c ];
         try{
-            String str1 = SapQueryArgCreate.createSapCreditLoanQueryDesc(con.AccountNumber,am.CreditArea__c);
+            String str1 = SapQueryArgCreate.createSapCreditLoanQueryDesc(con.AccountNumber,am.CreditArea__c,am.Factory__c,am.Sales_Org__c);
             
             System.debug(str1);  
             String str2 = Utils.postToSAP(str1);

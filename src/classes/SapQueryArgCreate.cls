@@ -271,7 +271,7 @@ public with sharing class SapQueryArgCreate {
     
 
 //销售定价
-        public static String createSapSalesPriceQueryDesc(String Factory,String Material_Number){
+    public static String createSapSalesPriceQueryDesc(String Factory,String Material_Number){
         return createSapSalesPriceQueryDesc(Factory,Material_Number,'');
     }
 
@@ -296,6 +296,87 @@ public with sharing class SapQueryArgCreate {
         }
        
         return JSON.serialize(createQueryArg('SALESPRICEQUERY',lstCon));    
+    }
+
+
+//资产转移报废停用申请流程
+    public static String createSapAssetsTransferQueryDesc(String Corporation,String Asset_Code){
+        return createSapAssetsTransferQueryDesc(Corporation,Asset_Code,'','','','','','','','','','','');
+    }
+
+    public static String createSapAssetsTransferQueryDesc(String Corporation,String Asset_Code,String ChangeCostCenter,String ScrapOutage_date,
+        String Asset_Name,String Asset_Type,String Asset_initial_value,String Asset_date,
+        String Accumulated_depreciation,String Residual_value,String Durable_years,
+        String Dept_of_CostCenter,String Vendor_Number){
+        List<Map<String,String>> lstCon = new List<Map<String,String>>();
+        Integer index = 1;
+        Map<String,String> con1 = new Map<String,String>();
+        //司代码
+        if (!String.isBlank(Corporation)) {
+            lstCon.add(createCondition(index,'Corporation__c','String','=',Corporation));
+        index = index + 1;
+        }
+        //资产编号
+        if(!String.isBlank(Asset_Code)){
+            lstCon.add(createCondition(index,'Asset_Code__c','String','LIKE',Asset_Code));
+            index = index + 1;
+        }
+        //变更成本中心
+        if(!String.isBlank(ChangeCostCenter)){
+            lstCon.add(createCondition(index,'ChangeCostCenter__c','String','LIKE',ChangeCostCenter));
+            index = index + 1;
+        }
+        //报废/停用日期
+        if(!String.isBlank(ScrapOutage_date)){
+            lstCon.add(createCondition(index,'ScrapOutage_date__c','String','LIKE',ScrapOutage_date));
+            index = index + 1;
+        }
+        //资产名称
+        if(!String.isBlank(Asset_Name)){
+            lstCon.add(createCondition(index,'Asset_Name__c','String','LIKE',Asset_Name));
+            index = index + 1;
+        }
+        //资产类型
+        if(!String.isBlank(Asset_Type)){
+            lstCon.add(createCondition(index,'Asset_Type__c','String','LIKE',Asset_Type));
+            index = index + 1;
+        }
+        //资产原值
+        if(!String.isBlank(Asset_initial_value)){
+            lstCon.add(createCondition(index,'Asset_initial_value__c','String','LIKE',Asset_initial_value));
+            index = index + 1;
+        }
+        //资产化日期
+        if(!String.isBlank(Asset_date)){
+            lstCon.add(createCondition(index,'Asset_date__c','String','LIKE',Asset_date));
+            index = index + 1;
+        }
+        //累计折旧
+        if(!String.isBlank(Accumulated_depreciation)){
+            lstCon.add(createCondition(index,'Accumulated_depreciation__c','String','LIKE',Accumulated_depreciation));
+            index = index + 1;
+        }
+        //残值
+        if(!String.isBlank(Residual_value)){
+            lstCon.add(createCondition(index,'Residual_value__c','String','LIKE',Residual_value));
+            index = index + 1;
+        }
+        //使用年限（年）
+        if(!String.isBlank(Durable_years)){
+            lstCon.add(createCondition(index,'Durable_years__c','String','LIKE',Durable_years));
+            index = index + 1;
+        }
+        //成本中心
+        if(!String.isBlank(Dept_of_CostCenter)){
+            lstCon.add(createCondition(index,'Dept_of_CostCenter__c','String','LIKE',Dept_of_CostCenter));
+            index = index + 1;
+        }
+        //供应商编号
+        if(!String.isBlank(Vendor_Number)){
+            lstCon.add(createCondition(index,'Vendor_Number__c','String','LIKE',Vendor_Number));
+            index = index + 1;
+        }
+        return JSON.serialize(createQueryArg('ASSETSTRANSFER',lstCon));    
     }
 
 
@@ -906,7 +987,7 @@ public with sharing class SapQueryArgCreate {
 
 
 //客户信用贷款主数据申请
-     public static String createSapCreditLoanQueryDesc(String Account,String CreditArea){
+     public static String createSapCreditLoanQueryDesc(String Account,String CreditArea,String Factory,String Sales_Org){
         return createSapCreditLoanQueryDesc(Account,CreditArea,'','','','','','','','','','','','','');
     }
 

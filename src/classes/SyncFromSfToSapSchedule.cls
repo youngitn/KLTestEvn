@@ -168,8 +168,12 @@ global class SyncFromSfToSapSchedule implements Schedulable {
 
             }else if(job.Approval_Name__c == SapApprovalEnum.PURCHASEORDER){
                 //标准采购订单
-                returnJson = Utils.postToSAP(SapInputArgCreate.createSapPurchaseOrderInputArgs(job.ApprovalID__c));
-                
+                returnJson = Utils.postToSAP(SapInputArgCreate.createSapPurchaseOrderInputArgs(job.ApprovalID__c));             
+            }
+            else if(job.Approval_Name__c == SapApprovalEnum.ASSETSTRANSFER){
+                //资产转移报废停用申请流程
+                returnJson = Utils.postToSAP(SapInputArgCreate.createSapAssetsTransferInputArgs(job.ApprovalID__c));
+                                
             }else if(job.Approval_Name__c == SapApprovalEnum.RFQ){
                 //RFQ作业流程(新莱IT人员处理)
                 //returnJson = Utils.postToSAP(SapInputArgCreate.你的函数名(job.ApprovalID__c));

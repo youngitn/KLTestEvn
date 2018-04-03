@@ -101,8 +101,6 @@ public without sharing class SapApprovalEnum {
 	public static final String STOCKALLOCATION = 'StockAllocation';
 	//成本要素主数据维护流程																											
 	public static final String PRIMECOST = 'PrimeCost';
-	//资产转移报废停用申请流程																												
-	public static final String ASSETSTRANSFER = 'AssetsTransfer';
 	//资产清理出售流程																													
 	public static final String ASSETLIQUIDATIONSALE = 'AssetLiquidationSale';
 	//资产出售流程																														
@@ -171,5 +169,7 @@ public without sharing class SapApprovalEnum {
 	public static final String SCCSUPPLIERCLAIM = 'SCCSupplierClaim';
 	//样品申请流程
 	public static final String SAMPLEREQUEST = 'SampleRequest';
+	//资产转移报废停用申请流程																												
+	public static final String ASSETSTRANSFER = 'AssetsTransfer';
 
 }

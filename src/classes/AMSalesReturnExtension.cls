@@ -29,7 +29,7 @@ public Custom_Approval_Managed__c am {get; set;}
         sql = sql + ' WHERE Id = \'' + amId + '\'';
         am = Database.query(sql);
 
-        list1 = [SELECT RecordTypeId,SALESRETURN_DETAILS__c,Index_Item__c,Material_Number__c,Material_Description__c,Qty__c,Batch__c,Unit__c,IS_GOODS__c,FIX_NO__c,FIX_NUMBER__c,IS_SCRAP__c,SCRAP_NUMBER__c FROM Custom_Approval_Managed_Item__c 
+        list1 = [SELECT RecordTypeId,SALESRETURN_DETAILS__c,Index_Item__c,Material_Number__c,Material_Description__c,Qty__c,Batch__c,Unit__c,IS_GOODS__c,FIX_NO__c,FIX_NUMBER__c,IS_SCRAP__c,SCRAP_NUMBER__c,ALLOCATE_NO__c  FROM Custom_Approval_Managed_Item__c 
                   WHERE SALESRETURN_DETAILS__c = :amid AND RecordType.DeveloperName = 'SALESRETURNDETAILS'];
 
     }
@@ -95,6 +95,10 @@ public Custom_Approval_Managed__c am {get; set;}
         System.debug(LoggingLevel.INFO, '*** 进入查询: '+am);
         if (String.isBlank(am.Bill_No__c)) {
             ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING,'请输入交货单号'));    
+            return null;
+        }
+        if (am.Approval_Status__c == 'A') {
+            ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING,'已通过的单据不允许再次查询'));    
             return null;
         }
         try{

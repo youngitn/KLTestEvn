@@ -2285,4 +2285,51 @@ public without sharing class SapInputArgCreate {
     }
 
 
+//资产转移报废停用申请流程 
+   //创建传送给SAP Web Service的资产转移报废停用申请参数STEP1
+    public static String createSapAssetsTransferInputArgs(String AssetsTransferId){
+        String sql = Utils.getApprovalSQL(SapApprovalEnum.ASSETSTRANSFER,true);
+        sql = sql + ' WHERE Id = \'' + AssetsTransferId + '\'';
+        List<Approval_Managed__c> lstItems = Database.query(sql);
+        
+        if(lstItems.size() > 0){
+            return createSapAssetsTransferInputArgs(lstItems.get(0));
+        }else{
+            return '';
+        }
+    }
+    //创建传送给SAP Web Service的请假参数STEP2
+    public static String createSapAssetsTransferInputArgs(Approval_Managed__c amAssetsTransfer){
+        List<Approval_Managed_Item__c> items = new List<Approval_Managed_Item__c>();
+        
+            System.debug('*** xxxxxxxxxxx：' + amAssetsTransfer.Id);
+            System.debug(LoggingLevel.INFO, '*** items: ' + items); 
+        return createSapAssetsTransferInputArgs(amAssetsTransfer,items);
+    }
+    //创建传送给SAP Web Service的请假参数STEP3 
+    public static String createSapAssetsTransferInputArgs(Approval_Managed__c amAssetsTransfer,List<Approval_Managed_Item__c> items){
+        String strArgs = '';
+        try{
+            Map<String,String> main = Utils.convertSObjectToMap(amAssetsTransfer);
+            System.debug('*** main' + main);
+            Map<String,List<Map<String,String>>> details = new Map<String,List<Map<String,String>>>();
+
+            if(items != null){
+                List<Map<String,String>> lstItems = new List<Map<String,String>>();
+                for(Approval_Managed_Item__c item : items){
+                    lstItems.add(Utils.convertSObjectToMap(item));
+                }
+                details.put('items', lstItems);
+            }
+
+            System.debug(LoggingLevel.INFO, '*** step3: ');
+            String operate = 'INSERT';
+            strArgs = Utils.serializeToJson(operate,SapApprovalEnum.ASSETSTRANSFER,main,details);
+        }catch(Exception ex){
+            System.debug('*** 资产转移报废停用申请流程回写参数错误：' + ex.getMessage() + '\n' + ex.getStackTraceString());
+        }
+
+        return strArgs; 
+    }
+
 }

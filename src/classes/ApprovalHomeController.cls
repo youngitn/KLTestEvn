@@ -80,6 +80,7 @@ public with sharing class ApprovalHomeController
         canCreateApproval.add(SapApprovalEnum.LEAVEAPPLICATION);//台灣 請假申請流程
         canCreateApproval.add(SapApprovalEnum.QCC);//QCC客诉申请流程
         canCreateApproval.add(SapApprovalEnum.SCCSUPPLIERCLAIM);//SCC供应商索赔申请流程流程
+        canCreateApproval.add(SapApprovalEnum.ASSETSTRANSFER);//资产转移报废停用申请流程
         canCreateApproval.add(SapApprovalEnum.SAMPLEREQUEST);//样品申请流程
         canCreateApproval.add(SapApprovalEnum.SALESRETURN);//退货申请流程
         //Object = Custom_Approval_Managed__c, approval counts = 16
@@ -321,6 +322,10 @@ public with sharing class ApprovalHomeController
             else if(selectedApprovalValue == SapApprovalEnum.SCCSUPPLIERCLAIM){
                 //SCC供应商索赔申请流程流程
                 pageName = '/apex/AMSCCSupplierClaim';
+            }
+            else if(selectedApprovalValue == SapApprovalEnum.ASSETSTRANSFER){
+                //资产转移报废停用申请流程
+                pageName = '/apex/AMAssetsTransfer';
             }
             else if(selectedApprovalValue == SapApprovalEnum.FREIGHT_VEHICLES)
             {

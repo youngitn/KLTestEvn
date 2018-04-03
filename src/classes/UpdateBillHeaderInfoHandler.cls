@@ -149,9 +149,7 @@ public without sharing class UpdateBillHeaderInfoHandler implements Triggers.Han
 						cam.Approval_Name__c = '请假管理流程'; //流程名称
 					} else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.ENTERTAINECOST, 'Approval_Managed__c')) {
 						cam.Approval_Name__c = '费用申请流程'; //流程名称
-					} else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.ASSETSTRANSFER, 'Approval_Managed__c')) {
-						cam.Approval_Name__c = '资产转移报废停用申请流程'; //流程名称
-					} else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.ASSETLIQUIDATIONSALE, 'Approval_Managed__c')) {
+					}  else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.ASSETLIQUIDATIONSALE, 'Approval_Managed__c')) {
 						cam.Approval_Name__c = '资产清理出售流程'; //流程名称
 					} else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.ASSETSALE, 'Approval_Managed__c')) {
 						cam.Approval_Name__c = '资产出售流程'; //流程名称
@@ -177,7 +175,9 @@ public without sharing class UpdateBillHeaderInfoHandler implements Triggers.Han
 						cam.Approval_Name__c = 'MR模具申请流程'; //流程名称
 					}else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.CUSTOMERCREDITLOAN, 'Approval_Managed__c')) {
 						cam.Approval_Name__c = '客户信用贷款主数据申请'; //流程名称
-					}  
+					}else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.ASSETSTRANSFER, 'Approval_Managed__c')) {
+						cam.Approval_Name__c = '资产转移报废停用申请流程'; //流程名称
+					}    
 
 				} else if (HarryUtils.compareObjtype(obj, 'Approval_Managed1__c')) {
 					Approval_Managed1__c cam = (Approval_Managed1__c)obj;
