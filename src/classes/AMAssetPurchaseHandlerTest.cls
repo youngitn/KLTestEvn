@@ -2,7 +2,7 @@
 private class AMAssetPurchaseHandlerTest {
     static testMethod void testMethod1() {
         RecordType rc = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Approval_Managed__c' AND  DeveloperName = 'AssetPurchase'];
-        
+         
     	Contact con = new Contact(LastName = '测试人员',number__c = '123');
         insert con;
 

@@ -110,7 +110,7 @@ public without sharing class AMAssetPurchaseHandler implements Triggers.Handler 
             cam.Approval_User8__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8),null),0);
             cam.Approval_User18__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8),null),0);
           }
-          //节点九
+          //节点九 
           //cam.Approval_User9__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(9),null),0); 
           List<Id> lstID3 = specialCal3(cam); 
           if (lstID3!=null) {
@@ -132,7 +132,7 @@ public without sharing class AMAssetPurchaseHandler implements Triggers.Handler 
           cam.Approval_User22__c = lstID2[0];
           }
 
-          //节点十四
+          //节点十四 
           //cam.Approval_User12__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(14),null),0);
           //节点十五
           cam.Approval_User13__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(15),null),0);
@@ -144,8 +144,12 @@ public without sharing class AMAssetPurchaseHandler implements Triggers.Handler 
           cam.Approval_User16__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(18),null),0);
           cam.Approval_User17__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(19),null),0);
           //节点十九
-            //审批用户同节点2
+            //审批用户同节点2 
           //节点二十
+           // cam.Approval_User24__c  = utils.getUserByEmployeeCode('10212251');
+          // Set<String> userIds = new Set<String>(); 
+          // userIds.add('00528000006p2Jc');
+          // Utils.ManualShareRecordToUsers(userIds, 'Approval_Managed__c', id.valueOf('a010I00001hR2gPQAS'));
           //节点二十一 两个审批用户
           
           //节点二十二
@@ -282,4 +286,8 @@ public without sharing class AMAssetPurchaseHandler implements Triggers.Handler 
         }
         return lstID3;
     }
+
+    
+
+
 }
