@@ -62,6 +62,7 @@ global with sharing class QueryController
 
 
     //内部类
+    //員工lookup名單資料結構
     public class AllApprovalData
     {
         public String id {GET; SET;}
@@ -84,6 +85,7 @@ global with sharing class QueryController
         public String Klphone {GET; SET;}
     }
 
+    //員工lookup名單資料來源
     public PageReference query()
     {
         allApproval = new List<AllApprovalData>();
