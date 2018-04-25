@@ -124,6 +124,15 @@
  function addButtonClass() {
      j$("input[id$=btnDel],input[id$=btnAdd]").removeAttr('class').addClass("pure-button pure-button-primary pure-u-1-1");
  }
+
+ function setTip() {
+     j$("input[id$=btnDel]").tooltip({
+         show: {
+             effect: "slideDown",
+             delay: 0
+         }
+     });
+ }
  //從SAP取請假資料
  function queryVacation(cId) {
      //let empId = j$('input[id $= Name]').val();
@@ -197,10 +206,8 @@
                      "title": "開始時間",
                      "targets": 2,
                      "render": function(data, type, row, meta) {
-                        if(data != null)
-                            return ("" + data).substring(0, 4) + "";
-                        else
-                            return "空";
+                         if (data != null) return ("" + data).substring(0, 4) + "";
+                         else return "空";
                      }
                  }, {
                      "title": "結束日期",
@@ -208,11 +215,9 @@
                  }, {
                      "title": "結束時間",
                      "targets": 4,
-                     "render": function(data, type, row, meta)  {
-                        if(data != null)
-                            return ("" + data).substring(0, 4) + "";
-                        else
-                            return "空";
+                     "render": function(data, type, row, meta) {
+                         if (data != null) return ("" + data).substring(0, 4) + "";
+                         else return "空";
                      }
                  }, {
                      "title": "時數",
