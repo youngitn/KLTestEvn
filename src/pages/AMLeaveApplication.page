@@ -6,15 +6,17 @@
 <apex:page applyhtmltag="true" doctype="html-5.0" extensions="AMLeaveApplicationExtension" standardcontroller="Approval_Managed__c">
     <!-- 請假申請流程 -->
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
+   
     <html>
         <head>
+            
             <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"/>
             <link crossorigin="anonymous" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" rel="stylesheet"/>
             <link href="https://unpkg.com/purecss@1.0.0/build/base-min.css" rel="stylesheet"/>
             <link href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css" rel="stylesheet"/>
             <link href="{!URLFOR($Resource.JSbundle, '/app/RWD-Table.css')}" rel="stylesheet"/>
             <link href="{!URLFOR($Resource.JSbundle, '/app/AMLeaveApplication/requireRedBarSetting.css')}" rel="stylesheet"/>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+            <script src="{!URLFOR($Resource.jqueryMin331)}">
             </script>
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js">
             </script>
@@ -52,8 +54,21 @@
                     if("{!NowStatus}" === 'NEW' || "{!NowStatus}" === 'SKETCH' || "{!isEditable}" == 'true'){
                        j$("input[id$=btnAdd],input[id$=btnDel]").show();
                      }
-                    
-                      
+
+                    j$.ajax({
+                              method: "POST",
+                              url: "//59.120.231.206:8000/sap/bc/zhttp_rest",
+                              data: { approval: "SF_SYNC_PT60", userid: "10210224" }
+                            })
+                              .done(function( msg ) {
+                                alert( "Data Saved: " + msg );
+                              }) .fail(function( xhr, status, errorThrown ) {
+    console.log( '出現錯誤，無法完成!' )
+    console.log( 'Error: ' + errorThrown )
+    console.log( 'Status: ' + status )
+    console.dir( xhr )
+  });
+                   
 
               });
             </script>
@@ -79,10 +94,10 @@
                 <div id="tabs-1">
                     <apex:sectionheader title="請假申請流程">
                     </apex:sectionheader>
-                    <apex:pageblock >
+                    <apex:pageblock>
                         <apex:form id="form" styleclass="pure-form pure-form-stacked">
-                            <c:baseFormInfo inputobject="{!am}">
-                            </c:baseFormInfo>
+                            <c:baseforminfo inputobject="{!am}">
+                            </c:baseforminfo>
                             <fieldset>
                                 <legend>
                                     <apex:pageblocksection title="請假資訊">
@@ -170,6 +185,8 @@
                                 <div>
                                 </div>
                             </fieldset>
+                            <c:approvalprocessbuttonswitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
+                            </c:approvalprocessbuttonswitcher>
                             <apex:pageblocksection title="請假明細">
                             </apex:pageblocksection>
                             <div id="detail">
@@ -226,8 +243,9 @@
                                                     <td data-th="刪除">
                                                         <script>
                                                             addButtonClass();
+                                                            setTip();
                                                         </script>
-                                                        <apex:commandbutton action="{!deletelist1}" id="btnDel" immediate="true" rerender="list1" value="删除">
+                                                        <apex:commandbutton action="{!deletelist1}" id="btnDel" immediate="true" rerender="list1" title="在草稿狀態刪除明細後,請按下儲存鈕以刷新頁面." value="删除">
                                                             <apex:param assignto="{!list1Row}" name="list1Row" value="{!list1Index}">
                                                             </apex:param>
                                                         </apex:commandbutton>
@@ -279,16 +297,12 @@
                                 </apex:outputpanel>
                             </div>
                             <!-- 待代理人通知一併上正式區 -->
-                            
-                                <div id="queryVacTw">
+                            <!-- <div id="queryVacTw">
                                     <table class="display" id="queryTable_SAP" width="100%">
                                     </table>
-                                </div>
-                            
+                                </div> -->
                             <br/>
                             <br/>
-                            <c:ApprovalProcessButtonSwitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
-                            </c:ApprovalProcessButtonSwitcher>
                         </apex:form>
                     </apex:pageblock>
                 </div>
