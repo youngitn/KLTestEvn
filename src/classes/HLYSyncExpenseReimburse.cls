@@ -213,6 +213,7 @@ global without sharing class HLYSyncExpenseReimburse {
                     am.Corporation__c = header.company_code; //公司代码
                     am.Dept_of_CostCenter__c = header.cost_center; //成本中心
                     am.Currency__c = header.currencies; //币种
+                    am.Description__c = header.activity_id;//活动任务ID
                     //个人报销      01
                     //供应商报销    02
                     am.Expense_Type_Cost__c = '01';//header.report_type; //报销单类型

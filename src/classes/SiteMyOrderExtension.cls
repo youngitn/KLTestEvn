@@ -1,7 +1,15 @@
 global without sharing class SiteMyOrderExtension {
     public String url_Customer {Get; Set;}
+    public String userName {Get; Set;}
     public SiteMyOrderExtension() {
-        Cookie un = ApexPages.currentPage().getCookies().get('un');
+        
+        Cookie un = null;
+        try{
+            un = ApexPages.currentPage().getCookies().get('un');
+            userName = un.getValue();
+        }catch(Exception e){
+            userName = '000';
+        }
 
     }
     public PageReference check(){

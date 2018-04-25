@@ -171,5 +171,6 @@ public without sharing class SapApprovalEnum {
 	public static final String SAMPLEREQUEST = 'SampleRequest';
 	//资产转移报废停用申请流程																												
 	public static final String ASSETSTRANSFER = 'AssetsTransfer';
-
+    //岗位变更流程
+    public static final String  CHANGEJOBS='changejobs';
 }

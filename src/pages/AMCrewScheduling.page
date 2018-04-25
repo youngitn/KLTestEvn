@@ -1,0 +1,52 @@
+<!--> 
+ 名    称：排班管理流程 
+ 作    者：刘忠林 
+ 创建日期：2018-4-10
+<-->
+
+<apex:page standardController="Approval_Managed1__c" extensions="AMCrewSchedulingExtension">
+<html>
+<body>
+<apex:sectionHeader title="排班管理流程" subtitle="新建/排班管理流程"></apex:sectionHeader>
+    <apex:pageMessages escape="true"></apex:pageMessages> 
+    <apex:form > 
+        <apex:pageBlock > 
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" collapsible="false">
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人姓名 -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 申请人公司代码 -->
+                <apex:outputField value="{!am.Applicant_Corp_Code__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Status__c}"></apex:outputField>
+
+            </apex:pageBlockSection>  
+ 
+            <apex:pageBlockSection title="头信息" collapsible="false">
+            	<!-- 排班说明 -->
+            	<apex:inputField value="{!am.SchedulingInstructions__c}" style="width: 200%"></apex:inputField>
+            </apex:pageBlockSection> 
+
+            <apex:pageBlockSection collapsible="true">
+            	<!-- 备注信息（文本） -->
+            	<apex:outputField id="Remark" value="{!am.Remark__c}" style="width: 200%">员工排班申请由部门主管完成，具体排班内容需要以附件形式上传</apex:outputField>
+            </apex:pageBlockSection>
+
+        </apex:pageBlock>
+    </apex:form>>
+</body>
+</html>
+</apex:page>

@@ -222,15 +222,19 @@ public without sharing class UpdateBillHeaderInfoHandler implements Triggers.Han
 					  cam.Approval_Name__c = '来宾接待流程';//流程名称
 					  } else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.IRS_InformationService, 'Approval_Managed1__c')) {
 						cam.Approval_Name__c = 'IT服务申请流程'; //流程名称
-					}else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.INTERNALMEMO, 'Approval_Managed1__c')) {
+					 }else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.INTERNALMEMO, 'Approval_Managed1__c')) {
 					 	cam.Approval_Name__c = '內部联络申请流程'; //流程名称
 					 }else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.CREDITAUDITING, 'Approval_Managed1__c')) {
 				    	cam.Approval_Name__c = '客户单笔信货核发申请流程'; //流程名称
 					 }else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.CREDITLOAN, 'Approval_Managed1__c')) {
 					 	cam.Approval_Name__c = '客戶信用贷款主数据申请流程'; //流程名称
-					 }  else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.POSTSALESERVICE, 'Approval_Managed1__c')) {
+					 }else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.POSTSALESERVICE, 'Approval_Managed1__c')) {
 						cam.Approval_Name__c = '售后服务申请流程'; //流程名称
-					}
+					 }else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.CREWSCHEDULING, 'Approval_Managed1__c')) {
+					 	cam.Approval_Name__c = '排班管理流程'; //流程名称
+					 } else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.CHANGEJOBS, 'Approval_Managed1__c')) {
+					 	cam.Approval_Name__c = '岗位变更流程'; //流程名称
+					 } 
 					// else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.EXPORTAPPLICATION, 'Approval_Managed1__c')) {
 					// 	cam.Approval_Name__c = '出口申请流程'; //流程名称
 					// } else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.RETURNHOME, 'Approval_Managed1__c')) {

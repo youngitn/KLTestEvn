@@ -1,7 +1,7 @@
 <!--
     目的：订单信息界面
     作者：luoxin
-    创建时间：2017-03-28
+    创建时间：2017-03-28 
 -->
 <apex:page showHeader="false" controller="SiteMyOrderExtension" action="{!check}">
 <apex:includeScript value="{!URLFOR($Resource.angularjs,'')}" />
@@ -23,13 +23,18 @@
 <body>
 
     <div ng-app="app" ng-controller="ctrl" class="slds" name="form">
+        <div data-ng-init="query()" ></div> <!-- 初始化时调用-->
         <div class="slds-grid slds-grid_align-space">
             <div class="slds-col">
                 <div class="slds-form-element">
                   <label class="slds-form-element__label" for="text-input-id-1">{!$Label.OrderNo}</label>
                   <div class="slds-form-element__control">
-                    <input type="text" id="text-input-id-1" class="slds-input" ng-model="OrderNo" placeholder="2100057336" />
-               
+                    <!--
+                    <input type="text" id="text-input-id-1" class="slds-input" ng-model="OrderNo"
+                    placeholder="2100057336"/>
+                    -->
+                    <input type="text" id="text-input-id-1" class="slds-input" ng-model="OrderNo"/>
+
                   </div>
                 </div>
             </div>
@@ -50,7 +55,7 @@
                 </div>
             </div>
             <div class="slds-col" style="text-align: center;margin: auto;">
-                <button class="slds-button slds-button--brand" ng-click="query()" ng-disabled="loading">{!$Label.Search}</button>
+                <button id="sea" class="slds-button slds-button--brand" ng-click="query()" ng-disabled="loading">{!$Label.Search}</button>
             </div>
         </div>
         <table  class="slds-table slds-table--bordered slds-table--cell-buffer ">
@@ -66,6 +71,8 @@
                     <td class="slds-truncate">
                     <a href='{!url_Customer}/SiteMyOrderDetail?id={{item.order_code__c}}'>{{item.order_code__c}}</a>
                     </td>
+
+
                     <td class="slds-truncate">
                         <div ng-class="statusColor(item.order_status__c)">{{item.order_status__c}}</div>
                     </td>
@@ -80,12 +87,14 @@
             <div class="slds-spinner__dot-a"></div>
             <div class="slds-spinner__dot-b"></div>
           </div>
-        </div>
+        </div> 
     </div>
 <script>
 
 var app = angular.module('app', []);
 app.controller('ctrl',function($scope,$q){
+    sc=$scope;
+    qq=$q;
     $scope.OrderNo='';
     $scope.CreateDate='';
     $scope.OrderLeadTime='';
@@ -96,7 +105,7 @@ app.controller('ctrl',function($scope,$q){
     $scope.query = function(){
         $scope.loading= true;
         var promise = $q(function(resolve,reject){
-            SiteMyOrderExtension.queryCustomerOrder('','',$scope.OrderNo,$scope.CreateDate,$scope.OrderLeadTime,function(res,event){
+            SiteMyOrderExtension.queryCustomerOrder('{!userName}','',$scope.OrderNo,$scope.CreateDate,$scope.OrderLeadTime,function(res,event){
                 if(res.status=='1'){
                     resolve(res.orders);
                 }else{
@@ -121,6 +130,10 @@ app.controller('ctrl',function($scope,$q){
         }
     }
 });
+
+
+
+
 </script>
 </body>
 </apex:page>

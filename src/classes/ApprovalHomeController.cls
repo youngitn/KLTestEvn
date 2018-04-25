@@ -81,8 +81,10 @@ public with sharing class ApprovalHomeController
         canCreateApproval.add(SapApprovalEnum.QCC);//QCC客诉申请流程
         canCreateApproval.add(SapApprovalEnum.SCCSUPPLIERCLAIM);//SCC供应商索赔申请流程流程
         canCreateApproval.add(SapApprovalEnum.ASSETSTRANSFER);//资产转移报废停用申请流程
+        canCreateApproval.add(SapApprovalEnum.CREWSCHEDULING);//排班管理流程
         canCreateApproval.add(SapApprovalEnum.SAMPLEREQUEST);//样品申请流程
         canCreateApproval.add(SapApprovalEnum.SALESRETURN);//退货申请流程
+        canCreateApproval.add(SapApprovalEnum.CHANGEJOBS);//岗位变更流程
         //Object = Custom_Approval_Managed__c, approval counts = 16
         approval_Custom = Utils.getCAMApprovalName();
         //Object = Approval_Managed__c, approval counts = 16
@@ -236,12 +238,13 @@ public with sharing class ApprovalHomeController
                 //员工主动离职流程
                 pageName = '/apex/AMStaffLeaveOffice';
             }
-            else if(selectedApprovalValue == SapApprovalEnum.ASSETPURCHASE)
+            else if(selectedApprovalValue == SapApprovalEnum.ASSETPURCHASE) 
             {
                 //资产购置流程(使用标准页面)
                 String prefix = SobjectType.Approval_Managed__c.getKeyPrefix();
                 String rId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.ASSETPURCHASE, 'Approval_Managed__c');
-                pageName = '/' + prefix + '/e?RecordType=' + rid ;//'/apex/AMStaffTransfer';
+                pageName = '/' + prefix + '/e?RecordType=' + rid ;
+                //pageName = '/apex/AMStaffTransfer';
             }
             else if(selectedApprovalValue == SapApprovalEnum.ADVANCECHARGE)
             {
@@ -326,6 +329,10 @@ public with sharing class ApprovalHomeController
             else if(selectedApprovalValue == SapApprovalEnum.ASSETSTRANSFER){
                 //资产转移报废停用申请流程
                 pageName = '/apex/AMAssetsTransfer';
+            }
+            else if(selectedApprovalValue == SapApprovalEnum.CREWSCHEDULING){
+                //排班管理流程
+                pageName = '/apex/AMCrewScheduling';
             }
             else if(selectedApprovalValue == SapApprovalEnum.FREIGHT_VEHICLES)
             {
@@ -436,6 +443,12 @@ public with sharing class ApprovalHomeController
                 //請假申請流程
 
                 pageName = '/apex/AMLeaveApplication';
+
+            } else if(selectedApprovalValue == SapApprovalEnum.CHANGEJOBS)
+            {
+                //岗位变更流程
+
+                pageName = '/apex/AMChangeJobs';
 
             }
             else

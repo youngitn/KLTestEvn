@@ -305,7 +305,7 @@ public with sharing class SapQueryArgCreate {
     }
 
     public static String createSapAssetsTransferQueryDesc(String Corporation,String Asset_Code,String ChangeCostCenter,String ScrapOutage_date,
-        String Asset_Name,String Asset_Type,String Asset_initial_value,String Asset_date,
+        String Asset_Name,String Kind_of_Asset,String Asset_initial_value,String Asset_date,
         String Accumulated_depreciation,String Residual_value,String Durable_years,
         String Dept_of_CostCenter,String Vendor_Number){
         List<Map<String,String>> lstCon = new List<Map<String,String>>();
@@ -318,7 +318,7 @@ public with sharing class SapQueryArgCreate {
         }
         //资产编号
         if(!String.isBlank(Asset_Code)){
-            lstCon.add(createCondition(index,'Asset_Code__c','String','LIKE',Asset_Code));
+            lstCon.add(createCondition(index,'Asset_Code__c','String','=',Asset_Code));
             index = index + 1;
         }
         //变更成本中心
@@ -337,8 +337,8 @@ public with sharing class SapQueryArgCreate {
             index = index + 1;
         }
         //资产类型
-        if(!String.isBlank(Asset_Type)){
-            lstCon.add(createCondition(index,'Asset_Type__c','String','LIKE',Asset_Type));
+        if(!String.isBlank(Kind_of_Asset)){
+            lstCon.add(createCondition(index,'Kind_of_Asset__c','String','LIKE',Kind_of_Asset));
             index = index + 1;
         }
         //资产原值
@@ -987,7 +987,7 @@ public with sharing class SapQueryArgCreate {
 
 
 //客户信用贷款主数据申请
-     public static String createSapCreditLoanQueryDesc(String Account,String CreditArea,String Factory,String Sales_Org){
+     public static String createSapCreditLoanQueryDesc(String Account,String CreditArea){
         return createSapCreditLoanQueryDesc(Account,CreditArea,'','','','','','','','','','','','','');
     }
 

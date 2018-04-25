@@ -85,7 +85,7 @@
                 </div>
             </apex:facet>
         </apex:actionstatus>
-    </apex:outputpanel>
+    </apex:outputpanel> 
 	<apex:form >
 		 <!-- 刷新选择流程数据 -->
         <apex:actionFunction action="{!query}" id="QueryApprovalData" name="QueryApprovalData" reRender="lstApproval" status="retrieveStatus">
@@ -97,58 +97,63 @@
 		<apex:pageBlock title="流程查询">
 			<!--第一行-->
 			<div style="width:1000%;float:left;padding:10px 0px; vertical-align: middle;">
-				<div style="float:left;width:100px;">
-					模组:
+				<div style="float:left;width:180px;"> 
+					<!-- {!$Label.lbl_Model_Group} -->
+					<!-- <apex:outputlabel value="{!$Label.Model_Group__c}" /> -->
+					模组/Model Group:
 					<apex:inputField id="cmbModelGroup" value="{!meta.Model_Group__c}" label=""></apex:inputField>
+					
 				</div>
 				<div style="float:left;margin-left:10px;">
-					流程名称:
+					流程名称/Approval Name:    
 					<apex:inputField style="width: 180px;" id="cmbApproval" value="{!meta.Approval_Name__c}" label="" ></apex:inputField>
 				</div>
 				<div style="float:left;margin-left:10px;">
-					审批状态:
+					审批状态/Approval Status:
 					<apex:inputField style="width: 80px;" id="cmbStatus" value="{!standardApproval.Approval_Status__c}" label=""></apex:inputField>
 				</div>
 			</div>
 			<!--第二行-->
 			<div style="width:100%;float:left;padding:10px 0px; vertical-align: middle;">
 				<div style="float:left;">		
-					流程编号:　
+					流程编号/Approval Number:　
 					<apex:inputField style="width:150px;" value="{!standardApproval.Same_Sample__c}" ></apex:inputField>
 				</div>
 				<div style="float:left;margin-left:10px;">
-					SAP/HLY单号：　
+					SAP/HLY单号/ SAP/HLY Number：　
 					<apex:inputField style="width:120px;" value="{!standardApproval.SAPID__c}" ></apex:inputField>
 				</div>
 				<div style="float:left;margin-left:10px;">
-					当前审批人：　
+					当前审批人/Approval Approver：　
 					<apex:inputField style="width:100px;" value="{!standardApproval.Keeper_Reserved__c}" ></apex:inputField>
 				</div>
 				<div style="float:left;margin-left:10px;">
-					申请人：　
+					申请人/Approval Applicant：　
 					<apex:inputField style="width:100px;" value="{!standardApproval.Employee__c}" ></apex:inputField>
 				</div>
 			</div>
-			<!--第三行-->
+			<!--第三行--> 
 			<div style="width:100%;float:left;padding:10px 0px; vertical-align: middle;">
 				<div style="float:left;">
-					单据日期：从
+					单据日期/BillDate：从/start
+					<!-- BillDate:start -->
 					<input type="date" value="" id="startTime"/>
-					&nbsp;到&nbsp;
+					&nbsp;到/end&nbsp;
 					<input type="date" value="" id='endTime'/>
 				</div>
 				<div style="float:left;margin-left:10px;">
-					我参于审批的：　
+
+					我参于审批的/I participated：　
 					<apex:inputField value="{!standardApproval.Is_Print__c}" ></apex:inputField>
 				</div>
 				<div style="float:left;margin-left:10px;">
-					我创建的：　
+					我创建的/I created：　
 					<apex:inputField value="{!standardApproval.Is_Withhold__c}" ></apex:inputField>
 				</div>
 				<div style="left;margin-left:50px;">
 					<input type="button" value="{!$Label.Query}" onclick="queryApproval()" style="padding:2px 10px;" class="btn" />
 
-					<apex:commandButton action="{!importExcel}" value="导出"  style="padding:2px 10px;">
+					<apex:commandButton action="{!importExcel}" value="导出/export"  style="padding:2px 10px;">
 					</apex:commandButton>
 				</div>
 

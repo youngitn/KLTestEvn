@@ -169,9 +169,18 @@ dropdown input:checked ~ ul{
 
             <li class="animate" onclick="change(this,'{!URL_Customer}/SiteMyOrder?username={!username}&language={!language}')">{!$Label.MyOrder}<i class="fa fa-arrows-alt float-right"></i>
             </li>
+            <!-- 自助下单 注销          
             <li class="animate" onclick="change(this,'{!URL_Customer}/SiteTakeOrder?username={!username}&language={!language}')">{!$Label.SelfhelpOrder}<i class="fa fa-cog float-right"></i></li>
+            !-->
+
+            <!-- 我的账单 !-->
             <li class="animate" onclick="change(this,'{!URL_Customer}/SiteMyBill?username={!username}&language={!language}')" >{!$Label.MyBill}<i class="fa fa-cog float-right"></i></li>
+            
+            <!-- 我的下载 
             <li class="animate" onclick="change(this,'{!URL_Customer}/SiteFile?username={!username}&language={!language}')">{!$Label.DataDownload}<i class="fa fa-cog float-right"></i></li>
+            !-->
+
+            <!-- 材质证明-->
             <li class="animate" onclick="change(this,'{!URL_Customer}/SiteMaterial?username={!username}&language={!language}')">{!$Label.FinanceDownload}<i class="fa fa-cog float-right"></i></li>
 
 

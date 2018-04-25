@@ -74,6 +74,8 @@
                 <!-- 生效日期 -->
                 <apex:inputField value="{!am.Validate_Date__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Validate_Date__c'))}"></apex:inputField>
                 <apex:outputField value="{!am.Validate_Date__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Validate_Date__c'))}"></apex:outputField>
+                <!-- 成本中心 -->
+                <apex:inputField value="{!am.Dept_of_CostCenter__c}" required="true"></apex:inputField>
             </apex:pageBlockSection>
             <apex:pageBlockSection columns="1">
                 <!-- 说明 -->

@@ -1,6 +1,6 @@
 <!--> 
  名    称：资产转移报废停用申请流程
- 作    者：刘忠林
+ 作    者：刘忠林 
  创建日期：2018-3-7
 <-->
 
@@ -49,7 +49,9 @@
                 <!-- 资产名称-->
                 <apex:outputField value="{!am.Asset_Name__c}" ></apex:outputField> 	
                 <!-- 资产类型 -->
-                <apex:outputField value="{!am.Asset_Type__c}"></apex:outputField>
+                <!-- <apex:outputField value="{!am.Asset_Type__c}"></apex:outputField> -->
+                <!-- 资产分类 -->
+                <apex:outputField value="{!am.Kind_of_Asset__c}"></apex:outputField>
             	<!-- 资产原值 -->
             	<apex:outputField value="{!am.Asset_initial_value__c}"></apex:outputField>
                 <!-- 资产化日期 -->
@@ -73,7 +75,7 @@
             	<!-- 供应商编号 -->
             	<apex:outputField value="{!am.Vendor_Number__c}" ></apex:outputField>
             	<!-- 备注信息（文本） -->
-            	<apex:inputField value="{!am.Remark__c}" style="width: 200%"></apex:inputField>
+            	<apex:inputField value="{!am.Remark__c}" style="width: 100%"></apex:inputField>
 
             </apex:pageBlockSection> 
         </apex:pageBlock>

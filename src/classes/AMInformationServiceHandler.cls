@@ -254,7 +254,7 @@ public without sharing class AMInformationServiceHandler implements Triggers.Han
 
          if (cam.Factory__c != '3000' && (cam.ServiceCategory__c == '190' || cam.ServiceCategory__c == '200'
           || cam.ServiceCategory__c == '210' || cam.ServiceCategory__c == '150')) {
-          lstID.add(utils.getUserByEmployeeCode('10210911')); //丁鹏
+          lstID.add(utils.getUserByEmployeeCode('10212257')); //刘忠林
         }
 
          if (cam.Factory__c != '3000' && (cam.ServiceCategory__c == '170' || cam.ServiceCategory__c == '181'

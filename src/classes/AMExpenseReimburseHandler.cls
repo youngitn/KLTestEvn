@@ -49,10 +49,10 @@ public without sharing class AMExpenseReimburseHandler implements Triggers.Handl
                         //供应商报销    02
                         if(type == '01'){
                             if(String.isBlank(u.CompanyName) || !corpCode.contains(u.CompanyName) ){
-                                if(!pernr.contains(u.Number__c) && !pernr.contains(cam.Employee_Code__c) ){
-                                    cam.addError('非'+corpCode+'工厂员工或特定员工，不能创建个人报销！');
-                                    return ;
-                                }
+                                // if(!pernr.contains(u.Number__c) && !pernr.contains(cam.Employee_Code__c) ){
+                                //     cam.addError('非'+corpCode+'工厂员工或特定员工，不能创建个人报销！');
+                                //     return ;
+                                // }
                             }
                         }else if (type == '02') {
                             if (String.isNotBlank(cam.Employee__c) || String.isBlank(cam.Supplier__c)) {
@@ -162,8 +162,25 @@ public without sharing class AMExpenseReimburseHandler implements Triggers.Handl
 
         cam.Approval_User9__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(9),null),0);
 
-        cam.Approval_User10__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(10),null),0);
+        cam.Approval_User10__c  = specialCall(cam);
 
         cam.Approval_User11__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(11),cam.Applicant__c),0);
     }
+
+
+     public Id specialCall(Approval_Managed__c cam){
+        //公司代码不为6000
+        if (cam.Corporation__c !='6000' && cam.Corporation__c !='3000') {
+            return utils.getUserByEmployeeCode('10210971');  //殷正宇
+        }
+        //生产及辅助设备
+        else if (cam.Corporation__c =='6000') {
+            return utils.getUserByEmployeeCode('10212299');  //秦冬琴
+        }
+        else{
+            return null;
+        }
+    }
+
+
 }

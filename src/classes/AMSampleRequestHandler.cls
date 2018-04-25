@@ -47,8 +47,9 @@ public without sharing class AMSampleRequestHandler implements Triggers.Handler 
             	}
             	else
             	{
-            		cam.Approval_User2__c  = utils.getUserByEmployeeCode('10210452');//陈 丹华
+            		cam.Approval_User2__c  = utils.getUserByEmployeeCode('10210452');//陈 丹华 
             	}
+                
             }
           
     

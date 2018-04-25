@@ -1,0 +1,162 @@
+<!--
+    目的：工单条码报工
+    作者：许晓峰
+    创建时间：2018-04-11
+    从SAP的工单条码报工转移过来；
+-->
+<apex:page showHeader="false" controller="BarCodeController">
+    
+<body>
+	<title>新莱条码-工单报工</title>
+<apex:form >
+<apex:actionFunction action="{!getPernr}" status="LoadingStatusSpinner" name="afPernr" />
+<apex:actionFunction action="{!getEqunr}" status="LoadingStatusSpinner" name="afEqunr" />
+<apex:actionFunction action="{!getAufnr}" status="LoadingStatusSpinner" name="afAufnr" />            
+	<table>
+		<tr>
+			<td width="100">
+				主报工人员2 
+            </td>
+            <td width="200">
+            	<apex:inputText id="TPernrFirst" value="{!wa_bg.pernr}"
+            	 tabIndex="1" onkeyup="keyupPernr()" />	  
+            </td>
+            <td>
+            	&nbsp; {!wa_bg.enamrFirst}
+            </td>
+		</tr>
+		<tr>				
+            <td width="100">
+            	设备编号	            
+            </td>
+            <td width="200">
+            	<apex:inputText id="TEqunr" value="{!wa_bg.zequnr}"
+            	 tabIndex="2" onkeyup="keyupEqunr()" />	           
+            </td>
+            <td>
+            	&nbsp; {!wa_bg.eqktx}
+            </td>
+		</tr>
+		<tr>
+			<td width="100">
+				确认号
+            </td>
+            <td width="200">
+            	<apex:inputText id="TRueck" value="{!wa_bg.rueck}"
+            	 tabIndex="3" onkeyup="keyupRueck()" />	        
+            </td>
+            <td>	            	
+            	&nbsp; 类型：{!wa_bg.active}
+            	&nbsp; {!wa_bg.active_txt}
+            	&nbsp; {!wa_bg.work_step}
+            </td>
+		</tr>
+	</table>
+
+	<br/>
+	工单信息
+	<table>
+		<tr>
+			<td>
+				<p>工单 {!wa_bg.aufnr} 
+				   &nbsp; {!wa_bg.werks}
+				   &nbsp; {!wa_bg.vornr} 
+				   &nbsp; {!wa_bg.ktsch} 
+				   &nbsp; {!wa_bg.ltxa1}
+				   &nbsp; 数量 
+				   &nbsp; {!wa_bg.psmng}
+				   &nbsp; {!wa_bg.amein} 
+				</p>
+				<p>
+				  物料{!wa_bg.matnr}     
+				   &nbsp; {!wa_bg.meinh}  
+				   &nbsp; {!wa_bg.maktx}
+				</p>
+				<p>
+					开始时间{!wa_bg.isdd}
+				   &nbsp; {!wa_bg.isdz}
+				   &nbsp; 结束时间
+				   &nbsp; {!wa_bg.iedd}
+				   &nbsp; {!wa_bg.iedz}
+				</p>
+				<p>
+					作业时间(S)
+				   &nbsp; {!wa_bg.ism99}
+			    </p>
+			    <p>
+			    	可报工 &nbsp; {!wa_bg.lmnga_ky}
+				   &nbsp; 已报工 &nbsp; {!wa_bg.lmnga_yb}
+				   &nbsp; 已报废 &nbsp; {!wa_bg.xmnga_yb}
+			    </p>
+			    <p>
+            	  差异原因&nbsp; 
+            	  <apex:inputText id="TGrund" value="{!wa_bg.grund}" tabIndex="4" />
+			       &nbsp; {!wa_bg.grdtx}
+			    </p> 
+			    <p>
+			    	过账日期&nbsp; 
+            	  <apex:inputText id="TBudat" value="{!wa_bg.budat}" tabIndex="5" />
+			       &nbsp; {!wa_bg.grdtx}	
+			    </p>
+			    <p>
+			    	工作中心&nbsp; 
+            	  <apex:inputText id="TArbpl" value="{!wa_bg.arbpl}" tabIndex="6" />
+			    </p>
+			    <p>
+			    	产&emsp;&emsp;量&nbsp; 
+            	  <apex:inputText id="TLmnga" value="{!wa_bg.lmnga}" tabIndex="7" />
+			    </p>
+			    <p> 
+			    	报&emsp;&emsp;废&nbsp; 			    	
+            	  <apex:inputText id="TXmnga" value="{!wa_bg.xmnga}" tabIndex="8" />
+			    </p>				    
+			    <p> 
+			    	返&emsp;&emsp;工&nbsp;
+            	  <apex:inputText id="TRmnga" value="{!wa_bg.rmnga}" tabIndex="9" />
+			    </p>
+			    <p>
+			    	内&emsp;&emsp;文&nbsp; 
+            	  <apex:inputText id="TRemark" value="{!wa_bg.remark}" tabIndex="10" />
+			    </p>
+			</td>
+			<td>
+				<!-- 数字键盘-->
+			</td>
+	    </tr>			
+	</table>
+    <br/>
+
+</apex:form>
+
+<script>
+function keyupPernr(){
+	    document.onkeyup = function (e) {//按键信息对象以函数参数的形式传递进来了，就是那个e  
+	    var code = e.charCode || e.keyCode;  //取出按键信息中的按键代码(大部分浏览器通过keyCode属性获取按键代码，但少部分浏览器使用的却是charCode)  
+	    if (code == 13) {  
+	        //此处编写用户敲回车后的代码          
+
+           afPernr();
+	    } 
+    }
+}
+
+function keyupEqunr(){
+		document.onkeyup = function (e) {
+	    var code = e.charCode || e.keyCode;  
+	    if (code == 13) {   
+	      afEqunr();
+	    } 
+}
+
+function keyupRueck(){
+		document.onkeyup = function (e) {
+	    var code = e.charCode || e.keyCode; 
+	    if (code == 13) {   
+			afAufnr();
+	    } 
+}
+</script>
+
+
+</body>
+</apex:page>
