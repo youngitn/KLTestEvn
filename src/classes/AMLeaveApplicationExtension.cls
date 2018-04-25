@@ -7,6 +7,7 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
 
     public  Transient Integer list1Row {get; set;}
     public Transient Integer hasError {get; set;}
+    public Transient Date take_Office_Date {get; set;}
     public AMLeaveApplicationExtension(ApexPages.StandardController con)
     {
         super('Approval_Managed__c', '請假申請流程', con, 'Approval_Managed_Item__c', '请假明细表', 'LeaveManage__c');
@@ -15,21 +16,46 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
         list1Row = 0;
         list1 = (List<Approval_Managed_Item__c>)this.detailSObjList;
         am = (Approval_Managed__c)this.sobj;
+
+
         if (con.getId() == null)
         {
             am = (Approval_Managed__c)SObjectUtils.init(am);
-            newlist1();
 
         }
 
-
     }
+
+
 
     public override PageReference saveAction()
     {
+        //測試組給SAP的參數,先將存檔功能駐解掉
+        //System.debug(RemoteActionsOfLeave.createSapLeaveApplicationInsertArgs(am,list1));
+        String str2 = Utils.postToSAP(RemoteActionsOfLeave.createSapLeaveApplicationInsertArgs(am, list1));
+        Map<String, Object> m =
+            (Map<String, Object>)
+            JSON.deserializeUntyped(str2);
+        List<Object> detailList = (List<Object>)m.get('leave_data');
+        for (Object detail : detailList)
+        {
+            Map<String, Object> mmm = (Map<String, Object>)detail;
+            System.debug(mmm.get('no'));
+            System.debug(mmm.get('time_number__c'));
+        }
+
+
+        //success to get first item
+        //System.debug(((Map)(detail.get(0))).get('end_date__c'));
+        return null;
+
+        /***********************************************************************************
         hasError = 0;
+
         //取得請假人的聯絡人物件
         Contact c = Peoples.getInstance().KlAllContactMapGetById.get(am.Employee__c);
+        take_Office_Date = c.Take_Office_Date__c;
+
         if (c != null)
         {
             am.Employee_Code__c = c.Number__c;
@@ -42,22 +68,32 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
         }
 
         //檢查輸入日期是否合法&假別時數是否可休&超過三天是否有勾選checkBox
-        validateDetailList(list1, c.Take_Office_Date__c);
+        validateDetailList(list1);
+
         if (hasError == 0)
         {
+            // LeaveData ld = new LeaveData();
+            // ld.empNumber = am.Employee_Code__c;
+            // ld.amiList = list1;
+
             //儲存表頭(master)
             upsert am;
-            //設置每一筆明細(detail)的 fk=表頭(master) Id           
-            setRelationOfDetailWithMaster(list1, am.Id);
+            //設置每一筆明細(detail)的 fk=表頭(master) Id
+
+
             //儲存明細(detail)
+            list1 = setRelationOfDetailWithMaster(list1, am.Id);
+            System.debug(list1);
             upsert list1;
             System.debug('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
-            return this.goPage(am.Id); 
-        }else{
-            System.debug('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&>>>>>>>>>>'+hasError);          
+            return this.goPage(am.Id);
+        }
+        else
+        {
+            System.debug('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&>>>>>>>>>>' + hasError);
             return null;
         }
-        
+        ***********************************************************************************/
     }
 
     /**
@@ -82,7 +118,7 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
      * @param  Take_Office_Date [到職日]
      * @return                  [description]
      */
-    public List<Approval_Managed_Item__c> validateDetailList(List<Approval_Managed_Item__c> list1, Date Take_Office_Date)
+    public List<Approval_Managed_Item__c> validateDetailList(List<Approval_Managed_Item__c> list1)
     {
         //休假時數總和預設給0
         am.Sum_Vacation__c = 0;
@@ -112,7 +148,7 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
 
                 //新特休生效日
                 //假設 起單日 2010/5/1 到職日7/1 所以新年度特休生效日為2010/7/1(日期皆為2010年)
-                Date dd = getResetDateOfNextYearAnnualLeaveHour(Date.today(), Take_Office_Date);
+                Date dd = getResetDateOfNextYearAnnualLeaveHour(Date.today());
 
                 if(Date.valueOf(ami.Start_date__c) > dd && Date.valueOf(ami.Start_date__c).year() > dd.year())
                 {
@@ -167,9 +203,9 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
      * @param  Take_Office_Date [description]
      * @return                  [description]
      */
-    public Date getResetDateOfNextYearAnnualLeaveHour(Date today, Date Take_Office_Date)
+    public Date getResetDateOfNextYearAnnualLeaveHour(Date today)
     {
-        String day = '-' + Take_Office_Date.month() + '-' + Take_Office_Date.day();
+        String day = '-' + take_Office_Date.month() + '-' + take_Office_Date.day();
         Date dd = Date.valueOf(String.valueOf(today.year()) + day);
         System.debug('下次重置日期----------------->' + dd);
         //如起單日期 >= 生效日: 2010/7/2起單 2010的特休已正式生效
@@ -277,7 +313,14 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
     {
         if (list1[list1Row].Id != null)
         {
-            //preDeletelist1.add(list1[list1Row]);
+            Delete list1[list1Row];
+            list1.remove(list1Row);
+            take_Office_Date = Peoples.getInstance().KlAllContactMapGetById.get(am.Employee__c).Take_Office_Date__c;
+            //表頭和請假明細相關的欄位需一併更新
+            //如請假總時數
+            saveAction();
+
+            return null;
         }
         list1.remove(list1Row);
         return null;
@@ -306,15 +349,23 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
     //RemoteActionsOfLeave.queryVacation 靜態方法
     //用來查詢SAP的特休&補休資料<-此方法只回傳這兩個假別資訊
     @RemoteAction
-    global static String queryVacation(String empId)
+    global static String queryVacation(String cid)
     {
-        return RemoteActionsOfLeave.queryVacation(empId);
+        return RemoteActionsOfLeave.queryVacation(cid);
     }
 
     @RemoteAction
-    global static String queryVacationTW(String empId)
+    global static String queryVacationTW(String cid)
     {
-        return RemoteActionsOfLeave.queryVacationTW(empId);
+        return RemoteActionsOfLeave.queryVacationTW(cid);
     }
+    // public class LeaveData{
+    //     String empNumber;
+    //     List<Approval_Managed_Item__c> amiList;
+    //     public JSON jsonBuilder(){
+    //         SapQueryArgCreate.createQueryArg('代定',lstCon);
+    //         return JSON.serialize();
+    //     }
+    // }
 
 }
