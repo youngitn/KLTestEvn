@@ -79,4 +79,79 @@ public with sharing class RemoteActionsOfLeave {
         System.debug(LoggingLevel.INFO, '*** lstCon[0]: ' + lstCon[0]);
         return JSON.serialize(SapQueryArgCreate.createQueryArg(callSAPFuncName,lstCon));
     }
+
+    public static String createSapLeaveApplicationInsertArgs(Approval_Managed__c master,List<Approval_Managed_Item__c> details){
+        String strArgs = '';
+        try{
+            //請假單表頭
+            Map<String,String> main = convertSObjectToMap(master);
+            System.debug('*** main' + main);
+            Integer i = 0;
+            //請假明細
+            Map<String,List<Map<String,String>>> detailMap = new Map<String,List<Map<String,String>>>();
+            //银行
+            if(details != null){
+                List<Map<String,String>> lstDetail = new List<Map<String,String>>();
+
+                for(Approval_Managed_Item__c detail : details){
+                   
+                    lstDetail.add(convertSObjectToMap(detail,i));
+                    i++;
+                }
+                detailMap.put('leaveItem', lstDetail);
+            }
+           
+
+            //String operate = (master.Status__c == '新建' ? SapOperateEnum.INSERTED : SapOperateEnum.UPDATED);
+            String operate = SapOperateEnum.INSERTED;
+            strArgs = Utils.serializeToJson(operate,'LEAVE_TW',main,detailMap);
+        }catch(Exception ex){
+            System.debug('*** 生成請假單參數錯誤：' + ex.getMessage() + '\n' + ex.getStackTraceString());
+        }
+        return strArgs;
+    }
+    
+    public static Map<String, String> convertSObjectToMap(SObject obj)
+    {
+        Map<String, String> mapFieldValue = new Map<String, String>();
+        System.debug('*** 序列化后数据：' + JSON.serialize(obj));
+        JSONParser parse = JSON.createParser(JSON.serialize(obj));
+        while(parse.nextToken() != null)
+        {
+            parse.nextValue();
+            String name = parse.getCurrentName();
+            if(String.isBlank(name) || name == 'attributes')
+            {
+                parse.skipChildren();
+            }
+            else
+            {
+                mapFieldValue.put(name, parse.getText());
+            }
+        }
+        return mapFieldValue;
+    }
+    //增加序號參數
+    public static Map<String, String> convertSObjectToMap(SObject obj,Integer i)
+    {
+        Map<String, String> mapFieldValue = new Map<String, String>();
+        System.debug('*** 序列化后数据：' + JSON.serialize(obj));
+        JSONParser parse = JSON.createParser(JSON.serialize(obj));
+        while(parse.nextToken() != null)
+        {
+            mapFieldValue.put('No', String.valueOf(i));
+            parse.nextValue();
+            String name = parse.getCurrentName();
+            if(String.isBlank(name) || name == 'attributes')
+            {
+                parse.skipChildren();
+            }
+            else
+            {
+                mapFieldValue.put(name, parse.getText());
+            }
+        }
+        return mapFieldValue;
+    }
+
 }
