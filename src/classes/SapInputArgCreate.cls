@@ -2089,9 +2089,10 @@ public without sharing class SapInputArgCreate {
         }
     }
     //创建传送给SAP Web Service的请假参数STEP2
+    //20180420 select 增加 TypesOfLeave__c 台灣假別代碼欄位
     public static String createSapAmleaveInputArgs(Approval_Managed__c amleave){
         List<Approval_Managed_Item__c> items = 
-       [SELECT Id,SAPID__c,Leave_type__c,Leave_reason__c,Start_date__c,Start_Time__c,End_date__c,End_Time__c
+       [SELECT Id,SAPID__c,Leave_type__c,TypesOfLeave__c,Leave_reason__c,Start_date__c,Start_Time__c,End_date__c,End_Time__c
         FROM Approval_Managed_Item__c 
              WHERE LeaveManage__c = :amleave.Id];
         
