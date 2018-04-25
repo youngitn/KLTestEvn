@@ -42,6 +42,15 @@ trigger ApprovalManage1Trigger on Approval_Managed1__c (before insert,before upd
     .bind (Triggers.Evt.beforeinsert,new AMSampleRequestHandler())
     .bind (Triggers.Evt.beforeupdate,new AMSampleRequestHandler())
 
+    //排班管理流程
+    .bind (Triggers.Evt.beforeinsert,new AMCrewSchedulingHandler())
+    .bind (Triggers.Evt.beforeupdate,new AMCrewSchedulingHandler())
+
+     //岗位变更流程
+    .bind (Triggers.Evt.beforeinsert,new AMChangeJobsHandler())
+    .bind (Triggers.Evt.beforeupdate,new AMChangeJobsHandler())
+
+
 
     //设置记录共享
     .bind (Triggers.Evt.afterinsert,new ApprovalManualShareHandler())
