@@ -21,9 +21,29 @@
             </script>
             <script>
                 const recordTypeId = '{!recordTypeId}';
+
                 j$(function() {
+                    //會議地點欄位控制-->
+                    //初始將 id$=Meeting_Place 欄位隱藏,此為實際儲存紀錄的欄位
+                    j$('input[id$=Meeting_Place]').hide();
+                    //下拉選單picklistMeetingRoom change事件,當選擇項目=else 則顯示Meeting_Place欄位讓user輸入
+                    //在controller會判斷如果picklistMeetingRoom的值不是else,才會將picklistMeetingRoom的值置入Meeting_Place
+                    j$('select[id$=picklistMeetingRoom]').change(function(event) {
+                        if (j$(this).val() == 'else'){
+                            alert('請自行輸入會議地點!')
+                            j$('input[id$=Meeting_Place]').show();
+                        }else{
+                             j$('input[id$=Meeting_Place]').hide();
+                        }
+                    });
+                    //如果這個紀錄有id,代表這筆記錄是儲存後的表單
                     if('{!kls.Id}'){
+                        //隱藏決議事項創建元件
                         j$('#MeetingResolutions').hide();
+                        //隱藏MeetingRoom picklist欄位
+                        j$('select[id$=picklistMeetingRoom]').hide();
+                        //顯示會議地點 Meeting_Place 實際儲存資料
+                        j$('input[id$=Meeting_Place]').show();
                     }
 
                     j$('input[id$=__c],input[id$=Toastmaster],input[id$=Note_Taker]').attr('required','required');
@@ -104,7 +124,11 @@
                                     <label>
                                         會議地點
                                     </label>
-                                    <apex:inputfield styleclass="pure-u-1 pure-u-md-2-3" value="{!kls.Meeting_Place__c}">
+                                    <apex:selectlist id="picklistMeetingRoom" styleclass="pure-u-1 pure-u-md-2-3" multiselect="false" size="1" value="{!selectedMeetingRoom}">
+                                        <apex:selectoptions value="{!meetingRoomOptions}">
+                                        </apex:selectoptions>
+                                    </apex:selectlist>
+                                    <apex:inputfield id="Meeting_Place" styleclass="pure-u-1 pure-u-md-2-3" value="{!kls.Meeting_Place__c}">
                                     </apex:inputfield>
                                 </div>
                                 <div class="pure-u-1 pure-u-md-1-3">
@@ -124,8 +148,8 @@
                                     </apex:inputfield>
                                 </div>
                             </div>
-                            <apex:messages >
-                            </apex:messages>
+                            <apex:pagemessages escape="true" id="message">
+                            </apex:pagemessages>
                             <br/>
                             <br/>
                             <div id="MeetingResolutions">
