@@ -4,6 +4,50 @@
 		"selected_items":
 		[
 			[
+				"js",
+				"JSON\tSystem"
+			],
+			[
+				"in",
+				"Integer\tSystem"
+			],
+			[
+				"get",
+				"getInstance"
+			],
+			[
+				"ap",
+				"Applicant__c"
+			],
+			[
+				"De",
+				"Delete"
+			],
+			[
+				"si",
+				"size()\tInteger"
+			],
+			[
+				"Sys",
+				"System\tSystem"
+			],
+			[
+				"a",
+				"add(ANY element)\tObject"
+			],
+			[
+				"String",
+				"String\tSystem"
+			],
+			[
+				"add",
+				"addAll(List elements)\tvoid"
+			],
+			[
+				"setc",
+				"setCcAddresses(List<String> param1)\tvoid"
+			],
+			[
 				"error",
 				"DuplicateError\tDatabase"
 			],
@@ -22,10 +66,6 @@
 			[
 				"e",
 				"equals(Object other)\tBoolean"
-			],
-			[
-				"add",
-				"Address\tSystem"
 			],
 			[
 				"Sob",
@@ -76,16 +116,8 @@
 				"focus\t.focus()"
 			],
 			[
-				"get",
-				"PUBLIC get(ANY key) \tString"
-			],
-			[
 				"s",
 				"script\thtml"
-			],
-			[
-				"in",
-				"input\tTag"
 			],
 			[
 				"is",
@@ -122,10 +154,6 @@
 			[
 				"date",
 				"Date"
-			],
-			[
-				"a",
-				"am"
 			],
 			[
 				"bt",
@@ -244,10 +272,6 @@
 				"ApproverGroup"
 			],
 			[
-				"Sys",
-				"System\tSystem"
-			],
-			[
 				"de",
 				"debug"
 			],
@@ -274,10 +298,6 @@
 			[
 				"f",
 				"form\tapex"
-			],
-			[
-				"ap",
-				"apex:attribute\tvisualforce"
 			],
 			[
 				"n",
@@ -308,10 +328,6 @@
 				"object"
 			],
 			[
-				"si",
-				"PUBLIC size() \tInteger"
-			],
-			[
 				"educ",
 				"EducationTrainingName__c(課程名稱)\tString(120)"
 			],
@@ -334,10 +350,6 @@
 			[
 				"St",
 				"Start_Time__c"
-			],
-			[
-				"De",
-				"debug(ANY o)\tvoid"
 			],
 			[
 				"og",
@@ -416,48 +428,6 @@
 	"buffers":
 	[
 		{
-			"contents": " \nset<String>  setSFID = new set<String>();\nsetSFID.add('00528000006nvfH');\nUtils.ManualShareRecordToUsers(setSFID, 'Approval_Managed__c', 'a010I00001f9faCQAQ');\n\n\nList<Id>  setSFID = new List<Id>();\nsetSFID.add(Peoples.getInstance().KlAllUserMapGetByNum.get('30210002').Id);\nSystem.debug(Utils.getByIndex(setSFID,0));\n\nApproval_Managed_Item__c ami = [select End_date__c from Approval_Managed_Item__c where LeaveManage__c = 'a010I00001hQrV9QAK'];\n\nami.End_date__c = Date.newInstance(2018,3,20);\n\nupdate ami;\n\n\n\n Set<String> userIds = new Set<String>();\n userIds.add('005O0000004DhiD');\n Utils.ManualShareRecordToUsers(userIds, 'KL_Systems__c', id.valueOf('a08O000000TJWbGIAX'));\n 00528000005lirp\n\n\n\n\n Task task = new Task();\n// task.WhatId = 'a08O000000TJXY0IAP';\ntask.OwnerId = '00528000007yJIW';\ntask.Subject = 'Other';\ntask.priority= 'tetetetetete';\ntask.status = 'Not Started';\ntask.description = 'New  Work';\ninsert task;\n\n\n\n\n\n\n\n\n\nApproval_Managed1__c cam = [select Name,Applicant__c,EducationTrainingInHouseLecturerName__c, InternalEducationParticipants__c from Approval_Managed1__c where name = 'AN1-180315-00004340'].get(0);\n//System.debug(cam);\n\nList<String> pList = cam.InternalEducationParticipants__c.split(',');\n                    List<String> empidList = new List<String>();\n                    //一般間接員工 有SF帳號 email資訊\n                    List<String> commAddresses = new List<String>();\n                    //主管email\n                    List<String> bossAddresses = new List<String>();\n                    //直接員工 通常沒有SF帳號 email資訊\n                    List<String> nonAddresses = new List<String>();\n                    //直接員工 通常沒有SF帳號 email資訊\n                    String nonEmp = '';\n                    for(String p : pList)\n                    {\n                        empidList.add(p.substring(0,8));\n\n                    }\n                    if (cam.EducationTrainingInHouseLecturerName__c != null && !String.IsBlank(cam.EducationTrainingInHouseLecturerName__c))\n                    {\n                        List<User> u = [SELECT Name, Number__c FROM User WHERE id = :cam.EducationTrainingInHouseLecturerName__c];\n                        //u.get(0).Number__c;\n                        //u.get(0).Name;\n                        empidList.add(u.get(0).Number__c);\n                    }\n                    //for(User ps :[SELECT Id, Email, Name FROM User WHERE Number__c IN : empidList]){\n                    //    sendMailToParticipants(ps.Name, ps.email, cam);\n                    //}\n                    Organizational__c o = new Organizational__c();\n                    o.Approval_Rule__c  = '指定人部门主管';\n                    Contact toCon = new Contact();\n                    Id bossId = null;\n                    \n                    //取得主管email並寄出通知\n                    for(String num : empidList)\n                    {\n                        //從VF過來的都是聯絡人\n                        System.debug(num);\n                        toCon               = Peoples.getInstance().KlAllContactMapGetByNum.get(num);\n\n                        System.debug(toCon);\n                        String bossEmail  = 'SF@SF.com';\n                        Boolean noContactEmail = false;\n                        Boolean noBoss = false;\n                        //SF_USER已啟用的條件下 聯絡人沒有此人資料\n                        //有資料但是email是空的\n                        //收信設為申請人 設定 noContactEmail = true; noBoss = true;\n                        \n                        if (toCon == null || toCon.email == null || toCon.email == ''){\n                            System.debug('toCon == null 2');\n                            noContactEmail = true;\n                            noBoss = true;\n                            System.debug(cam.Applicant__c);\n                            toCon    = Peoples.getInstance().KlAllContactMapGetById.get(cam.Applicant__c);\n                            System.debug('55->'+toCon);\n                            //無SF帳號或email 寄給申請人\n                            nonAddresses.add(toCon.Email);\n                            nonEmp += num+'-'+[select Name from Contact where Number__c =: num].Name;\n                            System.debug('nonEmp1-->'+nonEmp);\n                            //sendMailToParticipants(toCon.Name , toCon.Email , bossEmail , cam ,noBoss , noContactEmail);\n                            continue;\n                        }\n                        \n                        String toEmail = toCon.email;            \n                        if(!Test.isRunningTest() )\n                        {\n                            //因為審批人必須是USER 所以使用ApproverUtils回傳的是USER.\n                            //如果此員工有找到主管 則設置主管相關資料到變數中\n                            bossId = ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(o, toCon.Id).get(0);\n                            if (bossId != null){\n                                System.debug('approvalSearchApprrovalerByRuleWithOutSOQL != null');\n                                bossEmail    = Peoples.getInstance().KlAllUserMapGetById.get(bossId).email;\n                            }//如果找不到主管 則收件人為申請人寄出通知\n                            else{\n                                noBoss = true;\n                                //無SF帳號或email 寄給申請人\n                                nonAddresses.add(toCon.Email);\n                                System.debug('nonEmp2-->'+nonEmp);\n                                 nonEmp += num+'-'+Peoples.getInstance().KlAllContactMapGetByNum.get(num).Name;\n                                //sendMailToParticipants(toCon.Name , toEmail , bossEmail , cam ,noBoss , noContactEmail);\n                                continue;\n                            }\n\n                            \n                        }\n                        //將有SF&EAMIL資料的員工email addr集中放置\n                        commAddresses.add(toEmail);\n                        bossAddresses.add(bossEmail);\n                        \n\n                    }\n\n\n                    sendMailToParticipants(commAddresses , bossAddresses ,nonAddresses,nonEmp, cam );\n                \nSystem.debug('aaaaa-kkkk@hhhh'.substringBetween('-','@'));\n\n public void sendMailToParticipants(List<String> commAddresses,List<String> bossAddresses,List<String> nonAddresses,String nonEmp,Approval_Managed1__c am)\n    {\n\n        Messaging.reserveSingleEmailCapacity(2);\n\n\n        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();\n\n        // Strings to hold the email addresses to which you are sending the email.\n        String[] toAddresses = commAddresses;\n        System.debug('toAddresses-->'+toAddresses);\n        String[] ccAddresses = bossAddresses;\n        System.debug('ccAddresses-->'+ccAddresses);\n        String[] nnAddresses = nonAddresses;\n        System.debug('nnAddresses-->'+nnAddresses);\n        \n\n        mail.setCharset('UTF-8');\n        // Assign the addresses for the To and CC lists to the mail object.\n        \n\n        // Specify the address used when the recipients reply to the email.\n        mail.setReplyTo('support@acme.com');\n\n        // Specify the name used as the display name.\n        mail.setSenderDisplayName('Salesforce');\n        String ApplicantName = '';\n        String ApplicantNum = '';\n        if (!Test.isRunningTest()){\n            Contact Applicant = Peoples.getInstance().KlAllContactMapGetById.get(am.Applicant__c);\n            ApplicantName = Applicant.Name;\n            ApplicantNum = Applicant.Number__c;\n        }\n\n        \n        \n        // Set to True if you want to BCC yourself on the email.\n        mail.setBccSender(false);\n        // Optionally append the salesforce.com email signature to the email.\n        // The email address of the user executing the Apex Code will be used.\n        mail.setUseSignature(false);\n\n        mail.setSubject('Salesforce 教育訓練申請單 已批准');\n         nonEmp = '系統無法自動通知以下的人員與其主管,煩請手動通知:'+ nonEmp;\n        mail.setHtmlBody('您所參與的教育訓練申請流程已批准. <br> 單號:' + am.Name + '<br> 申請人:' + ApplicantName +' '+ ApplicantNum +'<br>參訓名單:<br>'+am.InternalEducationParticipants__c+' <br>表單詳情請至連結檢視:<a href=\"https://kinglai.my.salesforce.com/'+am.id+'\">https://kinglai.my.salesforce.com/'+am.id+'</a>');\n        mail.setToAddresses(nnAddresses);\n        \n        if (!Test.isRunningTest() && nnAddresses.size() > 0){\n            System.debug('++++++++++++++++++++++++++++++++++++++++++++++'+mail);\n           //Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });\n        }\n\n\n        mail.setHtmlBody('您所參與的教育訓練申請流程已批准. <br> 單號:' + am.Name + '<br> 申請人:' + ApplicantName +' '+ ApplicantNum +'<br>參訓名單:<br>'+am.InternalEducationParticipants__c+' <br>表單詳情請至連結檢視:<a href=\"https://kinglai.my.salesforce.com/'+am.id+'\">https://kinglai.my.salesforce.com/'+am.id+'</a>');\n        mail.setToAddresses(toAddresses);\n        mail.setCcAddresses(ccAddresses);\n        \n        // Send the email you have created.\n        if (!Test.isRunningTest())\n        {\n            try\n            {\n                System.debug('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'+mail);\n                //Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });\n            }\n            catch(Exception e)\n            {\n\n            }\n        }\n            \n\n  \n    }\n/***************************************************************************************************************************************/\npublic void createMailHtmlBody(String body){\n\n}\n\n/****************************************************************************************************************************************/\n    System.debug(Peoples.getInstance().KlAllContactMapGetByNum.get('30210035').Id);\n    System.debug( Peoples.getInstance().KlAllUserMapGetByContactId.get('003O0000012IDkAIAW'));\n    System.debug( Utils.getUserIdByContactID(Peoples.getInstance().KlAllContactMapGetByNum.get('30210345').Id));\n    System.debug( Peoples.getInstance().getUserByContactId(Peoples.getInstance().KlAllContactMapGetByNum.get('30210345').Id));\n    Utils.getUserByEmployeeCode(szApprover);\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210009');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');//so i say a littel pray, and hole my dream's take me there 0\n    //where the sky's are blue,so see you once agin\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Peoples.getInstance().KlAllContactMapGetByNum.get('30210378');\n    Set<String> userIds = new Set<String>();\n    userIds.add( Peoples.getInstance().KlAllUserMapGetByNum.get('30210009').id);\n    // userIds.add( Peoples.getInstance().KlAllUserMapGetByNum.get('30210165').id);\n    \n    // userIds.add( Peoples.getInstance().KlAllUserMapGetByNum.get('30210259').id);\n    // userIds.add( Peoples.getInstance().KlAllUserMapGetByNum.get('30210016').id);\n   \n    Utils.ManualShareRecordToUsers(userIds, 'Approval_Managed1__c', 'a070I00000berpjQAA');\n\n\n     Id c =    Peoples.getInstance().KlAllContactMapGetByNum.get('30210066').Id;\n     Id u =    Peoples.getInstance().KlAllContactMapGetById.get(c).SF_user__r.Id;\n     Id u2 =    Peoples.getInstance().KlAllUserMapGetByNum.get('30210066').Id;\n     System.debug(c);\n     System.debug(u);\n      System.debug(u2);\n\n      System.debug(Peoples.getInstance().KlAllContactMapGetById.get(c).SF_user__r);\n    if (Peoples.getInstance().KlAllContactMapGetById.get(c).SF_user__r.Id == null){\n            System.debug('Peoples.getInstance().KlAllContactMapGetById.get(c).SF_user__r.Id == null');\n        }else{\n            //請假人\n             System.debug('got this ======>'+Peoples.getInstance().KlAllContactMapGetById.get(c).SF_user__r.Id);\n              System.debug('got this ======>'+Peoples.getInstance().KlAllContactMapGetById.get(c).SF_user__r.Id);\n               System.debug('got this ======>'+Peoples.getInstance().KlAllContactMapGetById.get(c).SF_user__r.Id);\n                System.debug('got this ======>'+Peoples.getInstance().KlAllContactMapGetById.get(c).SF_user__r.Id);\n                 System.debug('got this ======>'+Peoples.getInstance().KlAllContactMapGetById.get(c).SF_user__r.Id);\n                  System.debug('got this ======>'+Peoples.getInstance().KlAllContactMapGetById.get(c).SF_user__r.Id);\n                   System.debug('got this ======>'+Peoples.getInstance().KlAllContactMapGetById.get(c).SF_user__r.Id);\n        }\n        System.debug('go finish!');\n\n\n\n//供應商主數據\n //供应商代码 \n        String szVendorCode = '';\n        //供应商名称\n        String szVendorName = 'corning';\n        //公司代码\n        String szCorpCode =  '3000';\n        //采购组织 \n        String szPurchaseOrg =  '3000';\n        // 账户组  \n        String szAccountGroup   =  '';\n\n        String str1 = SapQueryArgCreate.createSapVendorArgs(szVendorCode,szVendorName,szCorpCode,szPurchaseOrg,szAccountGroup);\n        System.debug(str1);\n        String str2 = Utils.postToSAP(str1);\n        SapWebServiceReturnArgs args = (SapWebServiceReturnArgs)JSON.deserialize(str2, SapWebServiceReturnArgs.class);\n        System.debug(LoggingLevel.INFO, '*** args: ' + args);\n        //camList = new List<Custom_Approval_Managed__c>();\n        //contentList = args.content;\n       // for(SapContentOfReturnArgs arg : contentList){\n       //     Custom_Approval_Managed__c vendor = (Custom_Approval_Managed__c)JSON.deserialize(JSON.serialize(arg.main), Custom_Approval_Managed__c.class);\n       //     //camList.add(vendor);\n       // }\n\n        //displayQueryResult=true;\n        return  null;\n\n\n",
-			"settings":
-			{
-				"buffer_size": 13855,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: Approval_Managed1__c cam = [select Name,Applicant__c,EducationTrainingInHouseLecturerName__c, InternalEducationParticipants__c from Approval_Managed1__c where name = 'AN1-180315-00004340'].get(0);\nExecute Anonymous: //System.debug(cam);\nExecute Anonymous: \nExecute Anonymous: List<String> pList = cam.InternalEducationParticipants__c.split(',');\nExecute Anonymous:                     List<String> empidList = new List<String>();\nExecute Anonymous:                     //一般間接員工 有SF帳號 email資訊\nExecute Anonymous:                     List<String> commAddresses = new List<String>();\nExecute Anonymous:                     //主管email\nExecute Anonymous:                     List<String> bossAddresses = new List<String>();\nExecute Anonymous:                     //直接員工 通常沒有SF帳號 email資訊\nExecute Anonymous:                     List<String> nonAddresses = new List<String>();\nExecute Anonymous:                     //直接員工 通常沒有SF帳號 email資訊\nExecute Anonymous:                     String nonEmp = '';\nExecute Anonymous:                     for(String p : pList)\nExecute Anonymous:                     {\nExecute Anonymous:                         empidList.add(p.substring(0,8));\nExecute Anonymous: \nExecute Anonymous:                     }\nExecute Anonymous:                     if (cam.EducationTrainingInHouseLecturerName__c != null && !String.IsBlank(cam.EducationTrainingInHouseLecturerName__c))\nExecute Anonymous:                     {\nExecute Anonymous:                         List<User> u = [SELECT Name, Number__c FROM User WHERE id = :cam.EducationTrainingInHouseLecturerName__c];\nExecute Anonymous:                         //u.get(0).Number__c;\nExecute Anonymous:                         //u.get(0).Name;\nExecute Anonymous:                         empidList.add(u.get(0).Number__c);\nExecute Anonymous:                     }\nExecute Anonymous:                     //for(User ps :[SELECT Id, Email, Name FROM User WHERE Number__c IN : empidList]){\nExecute Anonymous:                     //    sendMailToParticipants(ps.Name, ps.email, cam);\nExecute Anonymous:                     //}\nExecute Anonymous:                     Organizational__c o = new Organizational__c();\nExecute Anonymous:                     o.Approval_Rule__c  = '指定人部门主管';\nExecute Anonymous:                     Contact toCon = new Contact();\nExecute Anonymous:                     Id bossId = null;\nExecute Anonymous:                     \nExecute Anonymous:                     //取得主管email並寄出通知\nExecute Anonymous:                     for(String num : empidList)\nExecute Anonymous:                     {\nExecute Anonymous:                         //從VF過來的都是聯絡人\nExecute Anonymous:                         System.debug(num);\nExecute Anonymous:                         toCon               = Peoples.getInstance().KlAllContactMapGetByNum.get(num);\nExecute Anonymous: \nExecute Anonymous:                         System.debug(toCon);\nExecute Anonymous:                         String bossEmail  = 'SF@SF.com';\nExecute Anonymous:                         Boolean noContactEmail = false;\nExecute Anonymous:                         Boolean noBoss = false;\nExecute Anonymous:                         //SF_USER已啟用的條件下 聯絡人沒有此人資料\nExecute Anonymous:                         //有資料但是email是空的\nExecute Anonymous:                         //收信設為申請人 設定 noContactEmail = true; noBoss = true;\nExecute Anonymous:                         \nExecute Anonymous:                         if (toCon == null || toCon.email == null || toCon.email == ''){\nExecute Anonymous:                             System.debug('toCon == null 2');\nExecute Anonymous:                             noContactEmail = true;\nExecute Anonymous:                             noBoss = true;\nExecute Anonymous:                             System.debug(cam.Applicant__c);\nExecute Anonymous:                             toCon    = Peoples.getInstance().KlAllContactMapGetById.get(cam.Applicant__c);\nExecute Anonymous:                             System.debug('55->'+toCon);\nExecute Anonymous:                             //無SF帳號或email 寄給申請人\nExecute Anonymous:                             nonAddresses.add(toCon.Email);\nExecute Anonymous:                             nonEmp += num+'-'+[select Name from Contact where Number__c =: num].Name;\nExecute Anonymous:                             System.debug('nonEmp1-->'+nonEmp);\nExecute Anonymous:                             //sendMailToParticipants(toCon.Name , toCon.Email , bossEmail , cam ,noBoss , noContactEmail);\nExecute Anonymous:                             continue;\nExecute Anonymous:                         }\nExecute Anonymous:                         \nExecute Anonymous:                         String toEmail = toCon.email;            \nExecute Anonymous:                         if(!Test.isRunningTest() )\nExecute Anonymous:                         {\nExecute Anonymous:                             //因為審批人必須是USER 所以使用ApproverUtils回傳的是USER.\nExecute Anonymous:                             //如果此員工有找到主管 則設置主管相關資料到變數中\nExecute Anonymous:                             bossId = ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(o, toCon.Id).get(0);\nExecute Anonymous:                             if (bossId != null){\nExecute Anonymous:                                 System.debug('approvalSearchApprrovalerByRuleWithOutSOQL != null');\nExecute Anonymous:                                 bossEmail    = Peoples.getInstance().KlAllUserMapGetById.get(bossId).email;\nExecute Anonymous:                             }//如果找不到主管 則收件人為申請人寄出通知\nExecute Anonymous:                             else{\nExecute Anonymous:                                 noBoss = true;\nExecute Anonymous:                                 //無SF帳號或email 寄給申請人\nExecute Anonymous:                                 nonAddresses.add(toCon.Email);\nExecute Anonymous:                                 System.debug('nonEmp2-->'+nonEmp);\nExecute Anonymous:                                  nonEmp += num+'-'+Peoples.getInstance().KlAllContactMapGetByNum.get(num).Name;\nExecute Anonymous:                                 //sendMailToParticipants(toCon.Name , toEmail , bossEmail , cam ,noBoss , noContactEmail);\nExecute Anonymous:                                 continue;\nExecute Anonymous:                             }\nExecute Anonymous: \nExecute Anonymous:                             \nExecute Anonymous:                         }\nExecute Anonymous:                         //將有SF&EAMIL資料的員工email addr集中放置\nExecute Anonymous:                         commAddresses.add(toEmail);\nExecute Anonymous:                         bossAddresses.add(bossEmail);\nExecute Anonymous:                         \nExecute Anonymous: \nExecute Anonymous:                     }\nExecute Anonymous: \nExecute Anonymous: \nExecute Anonymous:                     sendMailToParticipants(commAddresses , bossAddresses ,nonAddresses,nonEmp, cam );\nExecute Anonymous:                 \nExecute Anonymous: System.debug('aaaaa-kkkk@hhhh'.substringBetween('-','@'));\nExecute Anonymous: \nExecute Anonymous:  public void sendMailToParticipants(List<String> commAddresses,List<String> bossAddresses,List<String> nonAddresses,String nonEmp,Approval_Managed1__c am)\nExecute Anonymous:     {\nExecute Anonymous: \nExecute Anonymous:         Messaging.reserveSingleEmailCapacity(2);\nExecute Anonymous: \nExecute Anonymous: \nExecute Anonymous:         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();\nExecute Anonymous: \nExecute Anonymous:         // Strings to hold the email addresses to which you are sending the email.\nExecute Anonymous:         String[] toAddresses = commAddresses;\nExecute Anonymous:         System.debug('toAddresses-->'+toAddresses);\nExecute Anonymous:         String[] ccAddresses = bossAddresses;\nExecute Anonymous:         System.debug('ccAddresses-->'+ccAddresses);\nExecute Anonymous:         String[] nnAddresses = nonAddresses;\nExecute Anonymous:         System.debug('nnAddresses-->'+nnAddresses);\nExecute Anonymous:         \nExecute Anonymous: \nExecute Anonymous:         mail.setCharset('UTF-8');\nExecute Anonymous:         // Assign the addresses for the To and CC lists to the mail object.\nExecute Anonymous:         \nExecute Anonymous: \nExecute Anonymous:         // Specify the address used when the recipients reply to the email.\nExecute Anonymous:         mail.setReplyTo('support@acme.com');\nExecute Anonymous: \nExecute Anonymous:         // Specify the name used as the display name.\nExecute Anonymous:         mail.setSenderDisplayName('Salesforce');\nExecute Anonymous:         String ApplicantName = '';\nExecute Anonymous:         String ApplicantNum = '';\nExecute Anonymous:         if (!Test.isRunningTest()){\nExecute Anonymous:             Contact Applicant = Peoples.getInstance().KlAllContactMapGetById.get(am.Applicant__c);\nExecute Anonymous:             ApplicantName = Applicant.Name;\nExecute Anonymous:             ApplicantNum = Applicant.Number__c;\nExecute Anonymous:         }\nExecute Anonymous: \nExecute Anonymous:         \nExecute Anonymous:         \nExecute Anonymous:         // Set to True if you want to BCC yourself on the email.\nExecute Anonymous:         mail.setBccSender(false);\nExecute Anonymous:         // Optionally append the salesforce.com email signature to the email.\nExecute Anonymous:         // The email address of the user executing the Apex Code will be used.\nExecute Anonymous:         mail.setUseSignature(false);\nExecute Anonymous: \nExecute Anonymous:         mail.setSubject('Salesforce 教育訓練申請單 已批准');\nExecute Anonymous:          nonEmp = '系統無法自動通知以下的人員與其主管,煩請手動通知:'+ nonEmp;\nExecute Anonymous:         mail.setHtmlBody('您所參與的教育訓練申請流程已批准. <br> 單號:' + am.Name + '<br> 申請人:' + ApplicantName +' '+ ApplicantNum +'<br>參訓名單:<br>'+am.InternalEducationParticipants__c+' <br>表單詳情請至連結檢視:<a href=\"https://kinglai.my.salesforce.com/'+am.id+'\">https://kinglai.my.salesforce.com/'+am.id+'</a>');\nExecute Anonymous:         mail.setToAddresses(nnAddresses);\nExecute Anonymous:         \nExecute Anonymous:         if (!Test.isRunningTest() && nnAddresses.size() > 0){\nExecute Anonymous:             System.debug('++++++++++++++++++++++++++++++++++++++++++++++'+mail);\nExecute Anonymous:            //Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });\nExecute Anonymous:         }\nExecute Anonymous: \nExecute Anonymous: \nExecute Anonymous:         mail.setHtmlBody('您所參與的教育訓練申請流程已批准. <br> 單號:' + am.Name + '<br> 申請人:' + ApplicantName +' '+ ApplicantNum +'<br>參訓名單:<br>'+am.InternalEducationParticipants__c+' <br>表單詳情請至連結檢視:<a href=\"https://kinglai.my.salesforce.com/'+am.id+'\">https://kinglai.my.salesforce.com/'+am.id+'</a>');\nExecute Anonymous:         mail.setToAddresses(toAddresses);\nExecute Anonymous:         mail.setCcAddresses(ccAddresses);\nExecute Anonymous:         \nExecute Anonymous:         // Send the email you have created.\nExecute Anonymous:         if (!Test.isRunningTest())\nExecute Anonymous:         {\nExecute Anonymous:             try\nExecute Anonymous:             {\nExecute Anonymous:                 System.debug('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'+mail);\nExecute Anonymous:                 //Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });\nExecute Anonymous:             }\nExecute Anonymous:             catch(Exception e)\nExecute Anonymous:             {\nExecute Anonymous: \nExecute Anonymous:             }\nExecute Anonymous:         }\nExecute Anonymous:             \nExecute Anonymous: \nExecute Anonymous:   \nExecute Anonymous:     }\n11:35:33.314 (314330131)|USER_INFO|[EXTERNAL]|00528000005lirp|martinlee-jfx3@force.com|中国标准时间|GMT+08:00\n11:35:33.314 (314359542)|EXECUTION_STARTED\n11:35:33.314 (314364171)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n11:35:33.314 (315755239)|SOQL_EXECUTE_BEGIN|[1]|Aggregations:0|SELECT Name, Applicant__c, EducationTrainingInHouseLecturerName__c, InternalEducationParticipants__c FROM Approval_Managed1__c WHERE name = 'AN1-180315-00004340'\n11:35:33.314 (318989893)|SOQL_EXECUTE_END|[1]|Rows:1\n11:35:33.314 (319788983)|USER_DEBUG|[38]|DEBUG|30210131\n11:35:33.314 (321209890)|USER_DEBUG|[18]|DEBUG|create Peoples instance...\n11:35:33.314 (322119471)|SOQL_EXECUTE_BEGIN|[28]|Aggregations:0|SELECT Id, Phone, SF_User__r.Id, SF_User__r.isActive, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c, Email, Number__c, Name, Is_Manager__c, SF_User__c, Dept_Number__c, SAP_Dept_Number__c, Dept_Number__r.Parent_Number__c, Dept_Number__r.Name, Corp_Code__c, Take_Office_Date__c, Job_Title_Level__c, Title, Post_Number__r.Post_Description__c FROM Contact WHERE (RecordType.DeveloperName = 'Staff' OR RecordType.DeveloperName = '员工')\n11:35:33.314 (396353134)|SOQL_EXECUTE_END|[28]|Rows:1594\n11:35:33.314 (427454084)|SOQL_EXECUTE_BEGIN|[40]|Aggregations:0|SELECT Id, AboutMe, AccountId, Alias, CompanyName, ContactId, Country, DelegatedApproverId, Department, Dept_Number__c, DigestFrequency, Division, Email, EmployeeNumber, Extension, Fax, FederationIdentifier, FirstName, ForecastEnabled, FullPhotoUrl, Is_First_Manager__c, Is_Manager__c, Is_System_Account__c, IsActive, IsExtIndicatorVisible, IsProfilePhotoActive, Job_Title_Number__c, LastModifiedDate, LastName, Latitude, ManagerId, MobilePhone, Name, Number__c, Phone, ProfileId, ReceivesAdminInfoEmails, ReceivesInfoEmails, SenderEmail, SenderName, Signature, Title, Username, UserRoleId, UserType FROM User \n11:35:33.314 (492915725)|SOQL_EXECUTE_END|[40]|Rows:424\n11:35:33.314 (532835098)|USER_DEBUG|[41]|DEBUG|Contact:{Id=00328000014shOpAAI, Phone=13199, SF_User__c=00528000006nvgCAAQ, Email=ayumi_liao@kinglai-hm.com, Number__c=30210131, Name=廖 淑雲, Is_Manager__c=false, Dept_Number__c=a042800000sg4oTAAQ, SAP_Dept_Number__c=20000039, Corp_Code__c=3000, Take_Office_Date__c=2014-03-03 00:00:00, Post_Number__c=a042800000sg4tTAAQ, RecordTypeId=01228000000XcVmAAK}\n11:35:33.314 (535421113)|USER_DEBUG|[32]|INFO|*** org : Organizational__c:{Approval_Rule__c=指定人部门主管}contactID:00328000014shOpAAI\n11:35:33.314 (536502786)|USER_DEBUG|[211]|DEBUG|*** applicationID: 00328000014shOpAAI\n11:35:33.314 (536946840)|SOQL_EXECUTE_BEGIN|[427]|Aggregations:0|SELECT Id, Dept_Post_Number__c, Dept_Level__c, Dept_Number__c, Parent_Number__c FROM Organizational__c WHERE Id = :tmpVar1\n11:35:33.314 (539650788)|SOQL_EXECUTE_END|[427]|Rows:1\n11:35:33.314 (539896899)|USER_DEBUG|[431]|DEBUG|*** This org: Organizational__c:{Id=a042800000sg4oTAAQ, Dept_Level__c=4, Dept_Number__c=20000039, Parent_Number__c=a042800000sg4mmAAA}\n11:35:33.314 (540608409)|SOQL_EXECUTE_BEGIN|[440]|Aggregations:0|SELECT Id, Post_Manager__c, Post_Dept_Number__c, Post_Manager__r.SF_User__c FROM Organizational__c WHERE (Post_Number__c = :tmpVar1 AND RecordType.SObjectType = 'Organizational__c' AND RecordType.DeveloperName = 'Job_Title') LIMIT 1\n11:35:33.314 (552676452)|SOQL_EXECUTE_END|[440]|Rows:0\n11:35:33.314 (552945106)|USER_DEBUG|[87]|INFO|*** 指定人部门主管为空，找一阶主管: \n11:35:33.314 (553023643)|USER_DEBUG|[211]|DEBUG|*** applicationID: 00328000014shOpAAI\n11:35:33.314 (553399272)|SOQL_EXECUTE_BEGIN|[427]|Aggregations:0|SELECT Id, Dept_Post_Number__c, Dept_Level__c, Dept_Number__c, Parent_Number__c FROM Organizational__c WHERE Id = :tmpVar1\n11:35:33.314 (555637999)|SOQL_EXECUTE_END|[427]|Rows:1\n11:35:33.314 (555808788)|USER_DEBUG|[431]|DEBUG|*** This org: Organizational__c:{Id=a042800000sg4oTAAQ, Dept_Level__c=4, Dept_Number__c=20000039, Parent_Number__c=a042800000sg4mmAAA}\n11:35:33.314 (556246825)|SOQL_EXECUTE_BEGIN|[427]|Aggregations:0|SELECT Id, Dept_Post_Number__c, Dept_Level__c, Dept_Number__c, Parent_Number__c FROM Organizational__c WHERE Id = :tmpVar1\n11:35:33.314 (557846851)|SOQL_EXECUTE_END|[427]|Rows:1\n11:35:33.314 (557966269)|USER_DEBUG|[431]|DEBUG|*** This org: Organizational__c:{Id=a042800000sg4mmAAA, Dept_Post_Number__c=20000083, Dept_Level__c=3, Dept_Number__c=20000010, Parent_Number__c=a042800000sg4luAAA}\n11:35:33.314 (558350685)|SOQL_EXECUTE_BEGIN|[440]|Aggregations:0|SELECT Id, Post_Manager__c, Post_Dept_Number__c, Post_Manager__r.SF_User__c FROM Organizational__c WHERE (Post_Number__c = :tmpVar1 AND RecordType.SObjectType = 'Organizational__c' AND RecordType.DeveloperName = 'Job_Title') LIMIT 1\n11:35:33.314 (563145018)|SOQL_EXECUTE_END|[440]|Rows:1\n11:35:33.314 (563914828)|USER_DEBUG|[71]|DEBUG|approvalSearchApprrovalerByRuleWithOutSOQL != null\n11:35:33.314 (564820167)|USER_DEBUG|[108]|DEBUG|toAddresses-->(ayumi_liao@kinglai-hm.com)\n11:35:33.314 (564879807)|USER_DEBUG|[110]|DEBUG|ccAddresses-->(vivian@kinglai-hm.com)\n11:35:33.314 (564928029)|USER_DEBUG|[112]|DEBUG|nnAddresses-->()\n11:35:33.314 (565690570)|USER_DEBUG|[160]|DEBUG|$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$Messaging.SingleEmailMessage[getBccAddresses=null;getCcAddresses=(vivian@kinglai-hm.com);getCharset=UTF-8;getDocumentAttachments=null;getEntityAttachments=null;getFileAttachments=null;getHtmlBody=您所參與的教育訓練申請流程已批准. <br> 單號:AN1-180315-00004340<br> 申請人:廖 淑雲 30210131<br>參訓名單:<br>30210131 廖 淑雲 <br>表單詳情請至連結檢視:<a href=\"https://kinglai.my.salesforce.com/a070I00000drExiQAE\">https://kinglai.my.salesforce.com/a070I00000drExiQAE</a>;getInReplyTo=null;getOptOutPolicy=SEND;getOrgWideEmailAddressId=null;getPlainTextBody=null;getReferences=null;getTargetObjectId=null;getTemplateId=null;getToAddresses=(ayumi_liao@kinglai-hm.com);getWhatId=null;isTreatBodiesAsTemplate=false;isTreatTargetObjectAsRecipient=true;isUserMail=false;]\n11:35:33.314 (565748872)|USER_DEBUG|[96]|DEBUG|kkkk\n11:35:33.565 (565808405)|CUMULATIVE_LIMIT_USAGE\n11:35:33.565 (565808405)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 8 out of 100\n  Number of query rows: 2023 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 0 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n11:35:33.565 (565808405)|CUMULATIVE_LIMIT_USAGE_END\n\n11:35:33.314 (565855680)|CODE_UNIT_FINISHED|execute_anonymous_apex\n11:35:33.314 (567220099)|EXECUTION_FINISHED\n",
-			"settings":
-			{
-				"buffer_size": 18263,
-				"line_ending": "Windows",
-				"name": "Execute Anonymous Result",
-				"scratch": true
-			}
-		},
-		{
-			"contents": "\nset<String> ids = new set<String>();\nset<String> idsx = new set<String>();\nfor (Approval_Managed_item__c ami:[select LeaveManage__r.id from Approval_Managed_item__c where recordtypeId='01228000001Honf' and LeaveManage__c !=null]){\n    ids.add(ami.LeaveManage__r.id);\n}\nSystem.debug(ids.size());\ninteger i = 0;\nfor (Approval_Managed__c am : [select id from Approval_Managed__c where id in:ids and isDeleted = true ALL ROWS]){\n\t\n\t\tidsx.add(am.id);\n\t\n}\nSystem.debug(idsx);\n\n\n\nApproval_Managed__c am = [Select id from Approval_Managed__c where Id = 'a010I00001hPFA4QAO' and isDeleted = true ALL ROWS];\nSystem.debug(am);\nManpower__c 0120I000001HrIi\n编号(采购订单)\nPurchase_Order__c\n采购订单\nPurchase_Order_Price__c 01228000000XcVO 定價 01228000000XcVP\n采购申请\nPurchasing_Request__c 01228000001HnAl\n盘盈盘亏子表\nInventoryKinglai_table__c 0120I000001HrQr\n请假明细表\nLeaveManage__c\t01228000001Honf\n申请单号\nPurchase_Info_Inquiry__c\n申请单号\nVoucher_Info__c\n销售定价子表\nSalesPricing_son_table__c 0120I000001HrRp\n销售定价子表2\nSalesPricing_son2__c 0120I000001HrSs\n\n\n异常单号\nAbnormal_Containment__c \n异常单号\nAbnormal_Header__c 01228000000XcVL\n异常单号\nAbnormal_Problem__c 01228000000XcVK  01228000000XcVQ",
-			"settings":
-			{
-				"buffer_size": 1139,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "//介面 采购申请作业流程 模擬 for(SObject obj : Trigger.new)\nSObject obj  = Database.query('SELECT ' + getAllFields('Approval_Managed__c').get('Approval_Managed__c') + ' FROM Approval_Managed__c WHERE Name = ' + '\\'AN-170824-00001564\\'').get(0);\n\n// 取得各detail 必輸資訊\nMap<String, Map<String, Set<String>>> req = Utils.getDetailRequireFields(String.valueOf(obj.get('Id')), String.valueOf(obj.get('RecordTypeId')));\n\n// 取得master 必輸資訊\nMap<String, Set<String>> masterReq = Utils.getNodeEditFields(String.valueOf(obj.get('Id')), String.valueOf(obj.get('RecordTypeId')));\n\nSystem.debug(req);\nMap<String, Set<String>> subItem = req.get('detailrequire');\n//System.debug();\nMap<String, Schema.SObjectField> mmyFields = obj.getSObjectType().getDescribe().fields.getMap();\n\nString errMsg = '';\n\nfor(String ms : masterReq.get('mainrequire'))\n{\n\n    System.debug(obj.get('Approval_Name__c') + '主表必輸欄位 標籤:' + mmyFields.get(ms).getDescribe().getLabel() + ' API name:' + ms + ' 值:' + obj.get(ms));\n    errMsg += obj.get('Approval_Name__c') + '主表必輸欄位 標籤:' + mmyFields.get(ms).getDescribe().getLabel() + ' API name:' + ms + ' 值:' + obj.get(ms)+'\\\\n';\n}\n\n\nfor(String s : subItem.keySet())\n{\n    System.debug(s);\n    Set<String> subFieldSet = subItem.get(s);\n    //如果同一個父物件下兩個不同種明細但都是同一子物件 則將不會查詢到\n    //即使關聯欄位統一\n    List<SObject> objDetail = Database.query('SELECT ' + getAllFields(s).get(s) + ' FROM ' + s + ' WHERE Purchasing_Request__c =\\'' + obj.get('Id') + '\\'');\n    \n    for(SObject o : objDetail)\n    {\t\n    \tMap<String, Schema.SObjectField> myFields = o.getSObjectType().getDescribe().fields.getMap();\n        for(String fieldApiName : subFieldSet)\n        {\n\n            System.debug(obj.get('Approval_Name__c') + '子項必輸欄位 標籤:' + myFields.get(fieldApiName).getDescribe().getLabel() + ' API name:' + fieldApiName + ' 值:' + o.get(fieldApiName));\n        \terrMsg += obj.get('Approval_Name__c') + '子項必輸欄位 標籤:' + myFields.get(fieldApiName).getDescribe().getLabel() + ' API name:' + fieldApiName + ' 值:' + o.get(fieldApiName)+'\\\\n';\n        }\n\n    }\n\n}\n\n\nSystem.debug(getAllFields('Approval_Managed_Item__c').get('Approval_Managed_Item__c'));\n//System.debug(errMsg);\n// 物件取得所有欄位\npublic static Map<String, String> getAllFields(String sobjectname)\n{\n    if(!Schema.getGlobalDescribe().containsKey(sobjectname)) return new Map<String, String> {'Exception' => 'Invalid object name'};\n    Map<String, Schema.SObjectField> fields = Schema.getGlobalDescribe().get(sobjectname).getDescribe().SObjectType.getDescribe().fields.getMap();\n\n    List<String> accessiblefields = new List<String>();\n\n    for(Schema.SObjectField field : fields.values())\n    {\n        if(field.getDescribe().isAccessible())\n            accessiblefields.add(field.getDescribe().getName());\n    }\n\n    String allfields = '';\n\n    for(String fieldname : accessiblefields)\n        allfields += fieldname + ',';\n\n    allfields = allfields.subString(0, allfields.length() - 1);\n\n    return new Map<String, String> {sobjectname => allfields};\n}\n\nselect id, Name,(select Id,LeaveManage__c from Approval_Managed_item__c) from Approval_Managed__c\n\n\n\n\n\n\nId uId = UserInfo.getUserId();\nSystem.debug(isSysAdmin(uId));\npublic boolean isSysAdmin(String thisUserId) {\n        boolean isAdmin = false;\n        User thisUser;\n        try {\n            thisUser = [SELECT Profile.PermissionsModifyAllData\n                FROM User WHERE u.Id =: thisUserId];\n            isAdmin = thisUser.Profile.PermissionsModifyAllData;\n        } catch(Exception exc) {\n            //do nothing\n        }\n        return isAdmin;\n    }\n\n\n\n\n\n\n\n",
-			"settings":
-			{
-				"buffer_size": 3544,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "Datetime st = Datetime.parse('2017-12-14 上午 12:30');\nTimeZone tz = UserInfo.getTimeZone();\n\nSystem.debug( st);\n\nList<Id>  setSFID = new List<Id>();\nsetSFID = Utils.approvalSearchUserByJob(org.Approval_Post__c);\n\n\n//serch by name\nId devRecordTypeId = Schema.getGlobalDescribe().get('Custom_Approval_Managed__c').getDescribe().getRecordTypeInfosByName().get(SapApprovalEnum.VENDORCLAIM).getRecordTypeId();\n\nSystem.debug(Schema.getGlobalDescribe().get('Custom_Approval_Managed__c').getDescribe().getRecordTypeInfosByName());\n\n//--------\nString objectAPIName = 'Custom_Approval_Managed__c' ; //any object api\nSchema.DescribeSObjectResult sobjectResult = Schema.getGlobalDescribe().get(objectAPIName).getDescribe();\n\nList<Schema.RecordTypeInfo> recordTypeInfo = sobjectResult.getRecordTypeInfos();\n\n\nMap<Schema.RecordTypeInfo, Id> mapofCaseRecordTypeNameandId = new Map<Schema.RecordTypeInfo, Id>();\n\nfor(Schema.RecordTypeInfo info : recordTypeInfo)\n{\n    mapofCaseRecordTypeNameandId.put(info, info.getRecordTypeId());\n}\nsystem.debug('***mapofCaseRecordTypeNameandId*' + mapofCaseRecordTypeNameandId);\n\n\nHarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.VENDORCLAIM, 'Custom_Approval_Managed__c');\n\n\n\n        String objectName = '';\n        try{\n            //Get prefix from record ID\n            //This assumes that you have passed at least 3 characters\n            String myIdPrefix = String.valueOf('003O0000016JTVNIA4').substring(0,3);\n             \n            //Get schema information\n            Map<String, Schema.SObjectType> gd =  Schema.getGlobalDescribe(); \n             \n            //Loop through all the sObject types returned by Schema\n            for(Schema.SObjectType stype : gd.values()){\n                Schema.DescribeSObjectResult r = stype.getDescribe();\n                String prefix = r.getKeyPrefix();\n                System.debug('Prefix is ' + prefix + ' ' + r.getName());\n                 \n                //Check if the prefix matches with requested prefix\n                if(prefix!=null && prefix.equals(myIdPrefix)){\n                   \n                    System.debug('Object Name! ' + r.getName());\n                    break;\n                }\n            }\n        }catch(Exception e){\n            System.debug(e);\n        }\n       \n    ",
-			"settings":
-			{
-				"buffer_size": 2284,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"contents": "SELECT Id, Node_Edit_Fields__c, Node_DetailEdit_Fields__c,\n                                                  Node_Require_Fields__c, Node_DetailRequire_Fields__c\n                                                  FROM Organizational__c\n                                                  WHERE RecordType.DeveloperName = 'Node_Edit_Field'\n                                                          AND Node_API__c = 'AP02'\n                                                                  AND Approval_Name__c = '請假申請流程'\n\n\nSELECT Id, ProcessNodeId, ProcessNode.DeveloperName, ProcessInstance.ProcessDefinition.DeveloperName\n             FROM ProcessInstanceNode\n             WHERE ProcessInstance.TargetObjectId = 'a0bO000000AmsSO' ORDER BY CreatedDate DESC\n                     LIMIT 1\n                             ",
 			"settings":
 			{
@@ -466,10 +436,10 @@
 			}
 		},
 		{
-			"contents": "\n//j_id0:j_id15:form\n//Toastmaster\nfunction createLookUpFiled(formId,inputId){\n\n\tlet lastStr = [\n\t\t\"_lkid\",\n\t\t\"_lkold\",\n\t\t\"_lktp\",\n\t\t\"_lspf\",\n\t\t\"_lspfsub\",\n\t\t\"_mod\"];\n\tlet defVal = [\n\t\t\"000000000000000\",\n\t\t\"null\",\n\t\t\"_lktp\",\n\t\t\"_lspf\",\n\t\t\"_lspfsub\",\n\t\t\"_mod\"];\n\n\tlet i ;\n\n\tfor (i = 1; i <= 6; i++) { \n\t    let template = $( \"<input>\", \n\t\t{ \tid: formId+\":\"+inputId+lastStr[i], \n\t\t\t// html:$( \"<div>\", \n\t\t\t// \t\t{ \tclass: \"bar\", \n\t\t\t// \t\t\ttext: \"bla\" \n\t\t\t// \t\t} )\n\t\t\ttype:\"hidden\",\n\t\t\tname:formId+\":\"+inputId+lastStr[i],\n\t\t\tvalue:defVal[i]\n\t\t});\n\n\t\t$('body').append(template);\n\t} \n\n\tlet template = $( \"<a>\", \n\t\t{ \tid: formId+\":\"+inputId+lastStr[i], \n\t\t\thtml:$( \"<img>\", \n\t\t\t\t\t{ \t\n\t\t\t\t\t\tsrc:\"/img/s.gif\",\n\t\t\t\t\t\talt:\"员工 對應 (新視窗)\",\n\t\t\t\t\t\tclass:\"lookupIcon\",\n\t\t\t\t\t\tonblur:\"this.className = 'lookupIcon';\" ,\n\t\t\t\t\t\tonfocus:\"this.className = 'lookupIconOn';\",\n\t\t\t\t\t\tonmouseout:\"this.className = 'lookupIcon';this.className = 'lookupIcon';\" ,\n\t\t\t\t\t\tonmouseover:\"this.className = 'lookupIconOn';this.className = 'lookupIconOn';\",\n\t\t\t\t\t\ttitle:\"员工 對應 (新視窗)\"\n\n\t\t\t\t\t\t\n\t\t\t\t\t} ),\n\t\t\t\n\t\t\thref:\"javascript:openLookup('/_ui/common/data/LookupPage?lkfm=\"+formId+\"&lknm=\"+formId+\":\"+inputId+\"&lktp=003','&lksrch=' + escapeUTF(getElementByIdCS('\"+formId+\":\"+inputId+\"').value.substring(0, 80)))\",\n\t\t\tid:formId+\":\"+inputId+\"_lkwgt\",\n\t\t\tonclick:\"setLastMousePosition(event)\",\n\t\t\ttitle:\"员工 對應 (新視窗)\"\n\n\n\t\t});\n\n\t\t$('body').append(template);\n\n\t\n\t\n\n}",
+			"contents": "\n//j_id0:j_id15:form\n//Toastmaster\n////**************手動增加人員選擇視窗的程式******************************//\nfunction createLookUpFiled(formId,inputId){\n\n\tlet lastStr = [\n\t\t\"_lkid\",\n\t\t\"_lkold\",\n\t\t\"_lktp\",\n\t\t\"_lspf\",\n\t\t\"_lspfsub\",\n\t\t\"_mod\"];\n\tlet defVal = [\n\t\t\"000000000000000\",\n\t\t\"null\",\n\t\t\"_lktp\",\n\t\t\"_lspf\",\n\t\t\"_lspfsub\",\n\t\t\"_mod\"];\n\n\tlet i ;\n\n\tfor (i = 1; i <= 6; i++) { \n\t    let template = $( \"<input>\", \n\t\t{ \tid: formId+\":\"+inputId+lastStr[i], \n\t\t\t// html:$( \"<div>\", \n\t\t\t// \t\t{ \tclass: \"bar\", \n\t\t\t// \t\t\ttext: \"bla\" \n\t\t\t// \t\t} )\n\t\t\ttype:\"hidden\",\n\t\t\tname:formId+\":\"+inputId+lastStr[i],\n\t\t\tvalue:defVal[i]\n\t\t});\n\n\t\t$('body').append(template);\n\t} \n\n\tlet template = $( \"<a>\", \n\t\t{ \tid: formId+\":\"+inputId+lastStr[i], \n\t\t\thtml:$( \"<img>\", \n\t\t\t\t\t{ \t\n\t\t\t\t\t\tsrc:\"/img/s.gif\",\n\t\t\t\t\t\talt:\"员工 對應 (新視窗)\",\n\t\t\t\t\t\tclass:\"lookupIcon\",\n\t\t\t\t\t\tonblur:\"this.className = 'lookupIcon';\" ,\n\t\t\t\t\t\tonfocus:\"this.className = 'lookupIconOn';\",\n\t\t\t\t\t\tonmouseout:\"this.className = 'lookupIcon';this.className = 'lookupIcon';\" ,\n\t\t\t\t\t\tonmouseover:\"this.className = 'lookupIconOn';this.className = 'lookupIconOn';\",\n\t\t\t\t\t\ttitle:\"员工 對應 (新視窗)\"\n\n\t\t\t\t\t\t\n\t\t\t\t\t} ),\n\t\t\t\n\t\t\thref:\"javascript:openLookup('/_ui/common/data/LookupPage?lkfm=\"+formId+\"&lknm=\"+formId+\":\"+inputId+\"&lktp=003','&lksrch=' + escapeUTF(getElementByIdCS('\"+formId+\":\"+inputId+\"').value.substring(0, 80)))\",\n\t\t\tid:formId+\":\"+inputId+\"_lkwgt\",\n\t\t\tonclick:\"setLastMousePosition(event)\",\n\t\t\ttitle:\"员工 對應 (新視窗)\"\n\n\n\t\t});\n\n\t\t$('body').append(template);\n\n\t\n\t\n\n}",
 			"settings":
 			{
-				"buffer_size": 1419,
+				"buffer_size": 1483,
 				"line_ending": "Windows"
 			}
 		},
@@ -503,16 +473,16 @@
 			"file": "src/pages/AMLeaveApplication.page",
 			"settings":
 			{
-				"buffer_size": 18702,
+				"buffer_size": 18947,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/components/ApprovalProcessButtonSwitcher.component",
+			"file": "src/classes/AMEducationTrainingHandler.cls",
 			"settings":
 			{
-				"buffer_size": 3855,
+				"buffer_size": 14550,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -521,7 +491,7 @@
 			"file": "src/pages/MeetingMinutesMainPage.page",
 			"settings":
 			{
-				"buffer_size": 14060,
+				"buffer_size": 15574,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -536,19 +506,10 @@
 			}
 		},
 		{
-			"file": "src/classes/AMVendorExtension.cls",
+			"file": "src/triggers/CustomApprovalManageTrigger.trigger",
 			"settings":
 			{
-				"buffer_size": 12322,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/pages/AMVendor.page",
-			"settings":
-			{
-				"buffer_size": 41139,
+				"buffer_size": 2871,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -557,7 +518,7 @@
 			"file": "src/classes/AMLeaveApplicationHandler.cls",
 			"settings":
 			{
-				"buffer_size": 4533,
+				"buffer_size": 10386,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -566,7 +527,52 @@
 			"file": "src/classes/AMLeaveApplicationExtension.cls",
 			"settings":
 			{
-				"buffer_size": 9801,
+				"buffer_size": 11419,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/ApprovalsPending.page",
+			"settings":
+			{
+				"buffer_size": 2614,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/MeetingMinutesMainPageController.cls",
+			"settings":
+			{
+				"buffer_size": 6757,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/RemoteActionsOfLeave.cls",
+			"settings":
+			{
+				"buffer_size": 6339,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/SapQueryArgCreate.cls",
+			"settings":
+			{
+				"buffer_size": 40922,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/SapApprovalEnum.cls",
+			"settings":
+			{
+				"buffer_size": 7543,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -581,28 +587,47 @@
 			}
 		},
 		{
-			"file": "src/classes/BaseExtension.cls",
-			"settings":
-			{
-				"buffer_size": 1553,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "src/classes/AMLeaveApplictionTest.cls",
 			"settings":
 			{
-				"buffer_size": 13707,
+				"buffer_size": 15345,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/classes/RemoteActionsOfLeave.cls",
+			"file": "src/classes/SapInputArgCreate.cls",
 			"settings":
 			{
-				"buffer_size": 3614,
+				"buffer_size": 111191,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/Utils.cls",
+			"settings":
+			{
+				"buffer_size": 66072,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 983 files for \"createSapAmleaveInputArgs\"\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\SapInputArgCreate.cls:\n 2078  //员工请假\n 2079      //创建传送给SAP Web Service的请假参数STEP1\n 2080:     public static String createSapAmleaveInputArgs(String amleaveId){\n 2081          String sql = Utils.getApprovalSQL(SapApprovalEnum.LEAVE,true);\n 2082          sql = sql + ' WHERE Id = \\'' + amleaveId + '\\'';\n ....\n 2084          \n 2085          if(lstItems.size() > 0){\n 2086:             return createSapAmleaveInputArgs(lstItems.get(0));\n 2087          }else{\n 2088              return '';\n ....\n 2090      }\n 2091      //创建传送给SAP Web Service的请假参数STEP2\n 2092:     public static String createSapAmleaveInputArgs(Approval_Managed__c amleave){\n 2093          List<Approval_Managed_Item__c> items = \n 2094         [SELECT Id,SAPID__c,Leave_type__c,Leave_reason__c,Start_date__c,Start_Time__c,End_date__c,End_Time__c\n ....\n 2098              System.debug('*** xxxxxxxxxxx：' + amleave.Id);\n 2099              System.debug(LoggingLevel.INFO, '*** items: ' + items);\n 2100:         return createSapAmleaveInputArgs(amleave,items);\n 2101      }\n 2102      //创建传送给SAP Web Service的请假参数STEP3\n 2103:     public static String createSapAmleaveInputArgs(Approval_Managed__c amleave,List<Approval_Managed_Item__c> items){\n 2104          String strArgs = '';\n 2105          try{\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\SapInputArgCreateTest.cls:\n  148          //员工请假\n  149          Approval_Managed__c amleave = TestUtil.createAmleave();\n  150:         SapInputArgCreate.createSapAmleaveInputArgs(amleave.Id);\n  151  \n  152          Test.stopTest();\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\SyncFromSfToSapSchedule.cls:\n  153              }else if(job.Approval_Name__c == SapApprovalEnum.LEAVE){\n  154                  //员工请假\n  155:                 returnJson = Utils.postToSAP(SapInputArgCreate.createSapAmleaveInputArgs(job.ApprovalID__c));\n  156  \n  157              }else if(job.Approval_Name__c == SapApprovalEnum.PMTICKET){\n\n7 matches across 3 files\n\n\nSearching 983 files for \"Leave_type__c\"\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\AMLeave.cls:\n   42          am = Database.query(sql);\n   43  \n   44:         list1 = [SELECT RecordTypeId,LeaveManage__c,Leave_type__c,Leave_reason__c,Start_date__c,End_date__c,Start_time__c,End_time__c,Time_number__c FROM Approval_Managed_Item__c \n   45                    WHERE LeaveManage__c = :amid AND RecordType.DeveloperName = 'LeaveDetails'];\n   46  \n   ..\n  101  \n  102                      //计算年休和\n  103:                     if (ami.Leave_type__c == '0100' && Decimal.valueOf(ami.time_number__c) != null) {\n  104                          sum1 -= Decimal.valueOf(ami.time_number__c);\n  105                      }\n  106                      \n  107                      //计算调休和\n  108:                     if (ami.Leave_type__c == '1100' && Decimal.valueOf(ami.time_number__c) != null) {\n  109                          sum2 -= Decimal.valueOf(ami.time_number__c);\n  110                      }\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\AMLeaveHanderTest.cls:\n   51          \n   52          Approval_Managed_Item__c ami = new Approval_Managed_Item__c();\n   53:         ami.Leave_type__c = '0100';\n   54          ami.Start_date__c = Date.newInstance(2017,09,01);\n   55          ami.Start_Time__c = '000000';\n   ..\n   62  \n   63          Approval_Managed_Item__c ami2 = new Approval_Managed_Item__c();\n   64:         ami2.Leave_type__c = '1100';\n   65          ami2.Start_date__c = Date.newInstance(2017,09,01);\n   66          ami2.Start_Time__c = '000000';\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\SapInputArgCreate.cls:\n 2092      public static String createSapAmleaveInputArgs(Approval_Managed__c amleave){\n 2093          List<Approval_Managed_Item__c> items = \n 2094:        [SELECT Id,SAPID__c,Leave_type__c,Leave_reason__c,Start_date__c,Start_Time__c,End_date__c,End_Time__c\n 2095          FROM Approval_Managed_Item__c \n 2096               WHERE LeaveManage__c = :amleave.Id];\n\nD:\\mmworkspace\\TestEvn\\src\\pages\\AMleave.page:\n   93                          <td>{!list1Index+1}</td>\n   94                          <!-- 假别 -->\n   95:                         <td><apex:inputField value=\"{!item.Leave_type__c}\"  required=\"true\" style=\"width: 85px\"></apex:inputField></td>\n   96                          <!-- 请假事由 -->\n   97                          <td><apex:inputField value=\"{!item.Leave_reason__c}\"  required=\"true\" style=\"width: 250px\"></apex:inputField></td>\n\n7 matches across 4 files\n",
+			"settings":
+			{
+				"buffer_size": 4472,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "src/classes/SyncFromSfToSapSchedule.cls",
+			"settings":
+			{
+				"buffer_size": 22748,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -617,70 +642,10 @@
 			}
 		},
 		{
-			"file": "src/classes/PushApprovalDataToSapHandler.cls",
-			"settings":
-			{
-				"buffer_size": 2254,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/MeetingMinutesMainPageHandler.cls",
-			"settings":
-			{
-				"buffer_size": 1733,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/SyncFromSfToSapSchedule.cls",
-			"settings":
-			{
-				"buffer_size": 22480,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/SapInputArgCreate.cls",
-			"settings":
-			{
-				"buffer_size": 109017,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/MeetingMinutesMainPageController.cls",
-			"settings":
-			{
-				"buffer_size": 5704,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "<section class=\"side-2\" id=\"pageTop\">\n    <div class=\"container clearfix\">\n        <aside class=\"one-fourth\" id=\"sidebar\">\n            <div class=\"widget\">\n                <h3>\n                    Exhibition\n                </h3>\n                <nav class=\"manu\">\n                    <li>\n                        <a href=\"#SEMICON_Japan_2017\">\n                            SEMICON Japan 2017\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"#SEMICON China 2018 \">\n                            SEMICON China 2018\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"#2018 Western China International Vacuum Industry Exhibition \">\n                            2018 Western China International Vacuum Industry Exhibition\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"#China International Battery Fair (CIBF 2018) \">\n                            China International Battery Fair (CIBF 2018)\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"#SRI 2018 \">\n                            SRI 2018\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"#2018 OPTO TAIWAN \">\n                            2018 OPTO TAIWAN\n                        </a>\n                    </li>\n                </nav>\n            </div>\n        </aside>\n    </div>\n</section>\n<section class=\"three-fourths column-last\" id=\"main\">\n    <div class=\"container clearfix\">\n        <!-- begin our company -->\n        <section class=\"center-2\" id=\"SEMICON_Japan_2017\">\n            <h2>\n                SEMICON Japan 2017\n            </h2>\n            <p>\n                KING LAI, founded in 1991 in Taiwan, specializes in manufacturing stainless steel fittings and components for fluid and gas applications used in piping systems. Our expertise and top quality products are widely accepted in hygienic (food & dairy), pharmaceutical, vacuum, and semi-conductor/electronics industries.\n                <br/>\n                <br/>\n                Please visit us at SEMICON Japan 2017- 【AdvanTorr BOOTH NO : N2 2220】\n                <br/>\n                <br/>\n                Date: 2017,12/13~12/15\n                <br/>\n                <br/>\n                Place: Tokyo Big Sight ,Tokyo, Japan\n                <br/>\n                <br/>\n                Official Website:\n                <a href=\"http://www.semiconjapan.org/en/?vlang=en\" target=\"_blank\">\n                    http://www.semiconjapan.org/en/?vlang=en\n                </a>\n            </p>\n            <p>\n                <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/semicon_japan_2017_1.jpg\" width=\"100%\"/>\n            </p>\n            <p>\n                <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/semicon_japan_2017_2.jpg\" width=\"100%\"/>\n            </p>\n        </section>\n        <section class=\"center-2\" id=\"SEMICON China 2018\">\n            <h2>\n                SEMICON China 2018\n            </h2>\n            <p>\n                <strong>\n                    <span lang=\"EN-US\">\n                        Welcome to SEMICON China 2018\n                    </span>\n                </strong>\n            </p>\n            <p>\n                <strong>\n                    <strong>\n                        <span lang=\"EN-US\">\n                            Please visit us at SEMICON China 2018-\n                        </span>\n                    </strong>\n                    【\n                    <strong>\n                        <span lang=\"EN-US\">\n                            AdvanTorr Vacuum Products & Vacuum Valves\n                        </span>\n                    </strong>\n                    】\n                </strong>\n            </p>\n            <table>\n                <tbody>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Booth No:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                N1 1451\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Date:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                2018/03/14~03/16\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Place:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                Shanghai New International Expo Centre\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Official Website:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                http://www.semiconchina.org/\n                            </p>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n            <p>\n                <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/02-SEMICON-China-2018-KING-LAI.jpg\" width=\"100%\"/>\n            </p>\n            <h2>\n            </h2>\n        </section>\n        <section class=\"center-2\">\n            <h2>\n                <strong>\n                    2018 Western China International Vacuum Industry Exhibition\n                </strong>\n            </h2>\n            <p>\n                <strong>\n                    <span lang=\"EN-US\">\n                        Welcome to\n                    </span>\n                    <span lang=\"EN-US\">\n                        2018 Western China International Vacuum Industry Exhibition\n                    </span>\n                </strong>\n            </p>\n            <p>\n                <strong>\n                    <strong>\n                        <span lang=\"EN-US\">\n                            Please visit us at\n                        </span>\n                        <span lang=\"EN-US\">\n                            2018 Western China International Vacuum Industry Exhibition-\n                        </span>\n                    </strong>\n                    【\n                    <strong>\n                        <span lang=\"EN-US\">\n                            AdvanTorr Vacuum Products & Vacuum Valves\n                        </span>\n                    </strong>\n                    】\n                </strong>\n            </p>\n            <table>\n                <tbody>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Booth No:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                V16\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Date:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                2018/03/15~03/18\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Place:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                China-Xi'an\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"165\">\n                            <p>\n                                <strong>\n                                    Official Website:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                <a href=\"http://www.cwieme.com/\">\n                                    http://www.cwieme.com/\n                                </a>\n                            </p>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n            <p>\n                <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/03-2018西部真空展.jpg\" width=\"100%\"/>\n            </p>\n        </section>\n        <!-- end our team -->\n        <section class=\"center-2\">\n            <h2>\n                <strong>\n                    China International Battery Fair (CIBF 2018)\n                </strong>\n            </h2>\n            <!-- begin clients -->\n            <p>\n            </p>\n            <p>\n                <strong>\n                    <span lang=\"EN-US\">\n                        Welcome to\n                        <strong>\n                            China International Battery Fair (CIBF 2018)\n                        </strong>\n                    </span>\n                </strong>\n            </p>\n            <p>\n                <strong>\n                    <strong>\n                        <span lang=\"EN-US\">\n                            Please visit us at\n                            <strong>\n                                China International Battery Fair (CIBF 2018)-\n                            </strong>\n                        </span>\n                    </strong>\n                    【\n                    <strong>\n                        <span lang=\"EN-US\">\n                            AdvanTorr Vacuum Products & Vacuum Valves\n                        </span>\n                    </strong>\n                    】\n                </strong>\n            </p>\n            <table>\n                <tbody>\n                    <tr>\n                        <td width=\"189\">\n                            <p>\n                                <strong>\n                                    Booth No:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                3T045\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"189\">\n                            <p>\n                                <strong>\n                                    Date:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                2018/5/22~5/24\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"189\">\n                            <p>\n                                <strong>\n                                    Place:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                Shenzhen Convention and Exhibition Center\n                            </p>\n                        </td>\n                    </tr>\n                    <tr>\n                        <td width=\"189\">\n                            <p>\n                                <strong>\n                                    Official Website:\n                                </strong>\n                            </p>\n                        </td>\n                        <td width=\"563\">\n                            <p>\n                                <a href=\"http://www.cibf.net/\">\n                                    http://www.cibf.net/\n                                </a>\n                            </p>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n            <p>\n                <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/04-CIBF-2018.jpg\" width=\"100%\"/>\n            </p>\n        </section>\n        <section class=\"center-2\">\n        <p>\n           \n                <span style=\"font-family: 'arial black', 'avant garde'; font-size: 12pt;\">\n                    <strong>\n                        <span lang=\"EN-US\">\n                            SRI 2018\n                        </span>\n                    </strong>\n                </span>\n            \n        </p>\n        <p>\n            <strong>\n                <span lang=\"EN-US\">\n                    Welcome to\n                </span>\n                <span lang=\"EN-US\">\n                    SRI 2018\n                </span>\n            </strong>\n        </p>\n        <p>\n            <strong>\n                <strong>\n                    <span lang=\"EN-US\">\n                        Please visit us at\n                    </span>\n                    <span lang=\"EN-US\">\n                        SRI 2018-\n                    </span>\n                </strong>\n                【\n                <strong>\n                    <span lang=\"EN-US\">\n                        AdvanTorr Vacuum Products & Vacuum Valves\n                    </span>\n                </strong>\n                】\n            </strong>\n        </p>\n        <table>\n            <tbody>\n                <tr>\n                    <td width=\"189\">\n                        <p>\n                            <strong>\n                                Booth No:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            3SA2\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td width=\"189\">\n                        <p>\n                            <strong>\n                                Date:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            2018/6/10-6/15\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td width=\"189\">\n                        <p>\n                            <strong>\n                                Place:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            Taipei International Convention Center\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td width=\"189\">\n                        <p>\n                            <strong>\n                                Official Website:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            <a href=\"http://sri2018.nsrrc.org.tw/site/page.aspx?pid=901&sid=1157&lang=en\">\n                                http://sri2018.nsrrc.org.tw/site/page.aspx?pid=901&sid;=1157〈=en\n                            </a>\n                        </p>\n                    </td>\n                </tr>\n            </tbody>\n        </table>\n        <p>\n            <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/05-SRI-2018.jpg\" width=\"100%\"/>\n        </p>\n        <!-- end clients -->\n         </section>\n        <section class=\"center-2\">\n        <p>\n            <span style=\"font-family: 'arial black', 'avant garde'; font-size: 12pt;\">\n                <strong>\n                    <span lang=\"EN-US\">\n                        2018 OPTO TAIWAN\n                    </span>\n                </strong>\n            </span>\n        </p>\n        <p>\n            <strong>\n                <span lang=\"EN-US\">\n                    Welcome to\n                </span>\n                <span lang=\"EN-US\">\n                    2018 OPTO TAIWAN\n                </span>\n            </strong>\n        </p>\n        <p>\n            <strong>\n                <strong>\n                    <span lang=\"EN-US\">\n                        Please visit us at\n                    </span>\n                    <span lang=\"EN-US\">\n                        2018 OPTO TAIWAN-\n                    </span>\n                </strong>\n                【\n                <strong>\n                    <span lang=\"EN-US\">\n                        AdvanTorr Vacuum Products & Vacuum Valves\n                    </span>\n                </strong>\n                】\n            </strong>\n        </p>\n        <table>\n            <tbody>\n                <tr>\n                    <td width=\"165\">\n                        <p>\n                            <strong>\n                                Booth No:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td width=\"165\">\n                        <p>\n                            <strong>\n                                Date:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            2018/8/29~8/31\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td width=\"165\">\n                        <p>\n                            <strong>\n                                Place:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            TWTC Nangang Exhibition Hall\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td width=\"165\">\n                        <p>\n                            <strong>\n                                Official Website:\n                            </strong>\n                        </p>\n                    </td>\n                    <td width=\"563\">\n                        <p>\n                            <a href=\"http://www.optotaiwan.com/\">\n                                http://www.optotaiwan.com/\n                            </a>\n                        </p>\n                    </td>\n                </tr>\n            </tbody>\n        </table>\n        <p>\n            <img alt=\"\" height=\"auto\" src=\"/Content/Images/uploaded/06-OPTO-2018.jpg\" width=\"100%\"/>\n        </p>\n        </section>\n    </div>\n</section>",
-			"settings":
-			{
-				"buffer_size": 20101,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"contents": "Organizational__c o = new Organizational__c();\no.Approval_Rule__c  = '指定岗位';\no.Approval_Post__c \t= Id.valueOf('a042800000sg4ti');\nId bossId = null;\n\n\n//bossId = ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(o,null).get(0);\nSystem.debug(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(o,null).get(0));\n\n\nSystem.debug(Type.forName('Custom_Approval_Managed__c'));\n,\nSystem.debug(Schema.getGlobalDescribe().get('Custom_Approval_Managed__c').getDescribe().getRecordTypeInfosByName().get('供應商索賠').getRecordTypeId());\nSystem.debug([SELECT Dept_Number__r.Name FROM Contact Where Dept_Number__r.Name <> '' LIMIT 1000].get(0).Dept_Number__r.Name);",
 			"settings":
 			{
 				"buffer_size": 657,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "/**\n * 可用來查詢某個員工的審批人\n */\n\nString a = '林 嘉鈴-30210355';\nList<String> pList = a.split(',');\nList<String> empidList = new List<String>();\nfor(String p : pList)\n{\n    empidList.add(p.substringAfter('-'));\n\n}\n//for(User ps :[SELECT Id, Email, Name FROM User WHERE Number__c IN : empidList]){\n//    sendMailToParticipants(ps.Name, ps.email, cam);\n//}\nOrganizational__c o = new Organizational__c();\no.Approval_Rule__c  = '指定人部门主管';\nId bossId = null;\nfor(String num : empidList)\n{\n\n    //取得主管email\n    \n    Contact toCon = Peoples.getInstance().KlAllContactMapGetByNum.get(num);\n    System.debug('++++++++>'+Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(o, toCon.Id), 0));\n    System.debug('toCon='+toCon);\n    bossId           = ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(o, toCon.Id).get(0);\n    System.debug('bossID='+bossId);\n    String bossEmail    = Peoples.getInstance().KlAllUserMapGetById.get(bossId).email;\n    String toEmail      = toCon.email;\n    System.debug('bosse='+Peoples.getInstance().KlAllUserMapGetById.get(bossId).Name+' num='+Peoples.getInstance().KlAllUserMapGetById.get(bossId).Dept_Number__c);\n    Id ii = ApproverUtils.approvalSearchSpecificManagerByApplicationWithOutSOQL(toCon.Id, 4, false);\n     System.debug('~~~~~~~~'+Peoples.getInstance().KlAllUserMapGetById.get(ii).Name);\n    //sendMailToParticipants(toCon.Name , toEmail , bossEmail , cam);\n}\nSystem.debug(Peoples.getInstance().KlAllContactMapGetByNum.get('10212239'));\nSystem.debug(Peoples.getInstance().KlAllUserMapGetByNum.get('10212239'));//10210853 10210016 10212239 \n\nSystem_Setting__c ssc = System_Setting__c.getValues('Setting');\nSystem.debug(System_Setting__c.getSObjectType());\n\nSystem.debug(Schema.getGlobalDescribe().get('Approval_Managed_Item__c').getDescribe().getRecordTypeInfosByName().get('请假明细表').getRecordTypeId());\n\nList<Id>  setSFID = new List<Id>();\nsetSFID.add(null);\nSystem.debug(setSFID.get(0) == null);\n\nList<Id>  setSFID = new List<Id>();\nContact con = [SELECT SF_User__c, Number__c, SF_User__r.Is_First_Manager__c, SF_User__r.Is_Manager__c,Corp_Code__c FROM Contact WHERE Id = '00328000014shOr'];\nif ((setSFID.size() == 0 || setSFID.get(0) == null) && con.Corp_Code__c == '3000' && con.SF_User__r.Is_First_Manager__c){\n             setSFID.add(Id.valueOf('00528000006nvgB'));\n             System.debug('ANY o');\n        }\n\nMap<String,String> inputMap = new Map<String,String>();\ninputMap.put('aa','');\ninputMap.put('aas','aaas');\ninputMap.put('end_date','2018/02/01');\ninputMap.put('aasd','aaasd');\ninputMap.put('start_date','2018/01/01');\nSystem.debug(Utils.checkStringToBuildSOQLString(inputMap));\n\n\n\nList<Contact> c = [SELECT Id, Email, Number__c, Name, Is_Manager__c,SF_User__c ,SF_User__r.Is_First_Manager__c ,SF_User__r.Is_Manager__c,Dept_Number__c,Dept_Number__r.Parent_Number__c,Dept_Number__r.Name,Corp_Code__c,Take_Office_Date__c,Job_Title_Level__c,Title,Post_Number__r.Post_Description__c    \n                            FROM Contact \n                            WHERE SF_User__r.IsActive = true and RecordType.DeveloperName = 'Staff'\n                            ];\nId i = Peoples.getInstance().KlAllUserMapGetByNum.get('30210035').Id;\nSystem.debug(Peoples.getInstance().KlAllUserMapGetByNum.get('30210035'));\nSystem.debug(Peoples.getInstance().KlAllUserMapGetByNum.get(Peoples.getInstance().KlAllContactMapGetById.get(null).Number__c).Id);\n",
-			"settings":
-			{
-				"buffer_size": 3399,
 				"line_ending": "Windows"
 			}
 		},
@@ -697,7 +662,16 @@
 			"file": "src/triggers/ApprovalManageTrigger.trigger",
 			"settings":
 			{
-				"buffer_size": 4344,
+				"buffer_size": 4508,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/PushApprovalDataToSapHandler.cls",
+			"settings":
+			{
+				"buffer_size": 2254,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -711,7 +685,7 @@
 	"command_palette":
 	{
 		"height": 392.0,
-		"last_filter": "",
+		"last_filter": "dep",
 		"selected_items":
 		[
 			[
@@ -743,11 +717,11 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 452.0
+		"width": 436.0
 	},
 	"console":
 	{
-		"height": 199.0,
+		"height": 60.0,
 		"history":
 		[
 			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
@@ -765,26 +739,40 @@
 	},
 	"expanded_folders":
 	[
-		"/D/mmworkspace/TestEvn",
-		"/D/mmworkspace/TestEvn/resource-bundles",
-		"/D/mmworkspace/TestEvn/src",
-		"/D/mmworkspace/TestEvn/src/triggers"
+		"/D/mmworkspace/TestEvn"
 	],
 	"file_history":
 	[
+		"/D/mmworkspace/TestEvn/src/classes/Utils.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SapQueryArgCreate.cls",
+		"/D/mmworkspace/TestEvn/src/pages/ApprovalSetting.page",
+		"/D/mmworkspace/TestEvn/src/components/ApprovalProcessButtonSwitcher.component",
+		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtension.cls",
+		"/D/mmworkspace/TestEvn/src/classes/KLSyncActivity.cls",
+		"/D/mmworkspace/TestEvn/src/classes/MeetingMinutesMainPageHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/MeetingMinutesMainPageController.cls",
+		"/D/mmworkspace/TestEvn/src/classes/BaseExtension.cls",
+		"/D/mmworkspace/TestEvn/src/pages/AMVendor.page",
+		"/D/mmworkspace/TestEvn/src/classes/SapOperateEnum.cls",
+		"/D/mmworkspace/TestEvn/src/classes/QueryController.cls",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/MeetingMinutes/queryPageJS.js",
+		"/D/mmworkspace/TestEvn/src/classes/AMVendorExtension.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMVendorHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SyncFromSfToSapSchedule.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMLeaveHander.cls",
+		"/D/mmworkspace/TestEvn/src/classes/PushApprovalDataToSapHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/ApprovalPermissionHandler.cls",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
+		"/D/mmworkspace/TestEvn/src/classes/VFShowInApprovalExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimHandlerTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandlerTest.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/ApprovalManage1Trigger.trigger",
-		"/D/mmworkspace/TestEvn/src/classes/ApprovalPermissionHandler.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMVendorClaim.page",
 		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/toolingapi.sublime-settings",
-		"/D/mmworkspace/TestEvn/src/classes/Utils.cls",
-		"/D/mmworkspace/TestEvn/src/classes/VFShowInApprovalExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMInternalmemoHandler.cls",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication/LeaveQueryJS.js",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
 		"/D/mmworkspace/TestEvn/src/pages/AMLeaveApplication.page-meta.xml",
 		"/D/mmworkspace/TestEvn/src/classes/ApprovalHomeController.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ApprovalManualShareHandler.cls",
@@ -797,9 +785,6 @@
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/MeetingMinutes/mainJS.js",
 		"/D/mmworkspace/TestEvn/src/classes/AMLeave.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SyncSapToSfReturnArgs.cls",
-		"/D/mmworkspace/TestEvn/src/classes/MeetingMinutesMainPageHandler.cls",
-		"/D/mmworkspace/TestEvn/src/classes/MeetingMinutesMainPageController.cls",
-		"/D/mmworkspace/TestEvn/src/classes/QueryController.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ApprovalContactExtension.cls",
 		"/D/mmworkspace/TestEvn/src/pages/ApprovalContact.page",
 		"/D/mmworkspace/TestEvn/src/triggers/MeetingMinutesTaskTrigger.trigger",
@@ -807,23 +792,18 @@
 		"/D/mmworkspace/TestEvn/src/pages/bootstrapTest.page",
 		"/D/mmworkspace/TestEvn/src/pages/MeetingMinutesQueryPage.page",
 		"/D/mmworkspace/TestEvn/src/pages/MeetingMinutesMainPage.page",
-		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtension.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMEducationTraining.page",
-		"/D/mmworkspace/TestEvn/src/classes/BaseExtension.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/KLSystemsTrigger.trigger",
 		"/D/mmworkspace/TestEvn/src/classes/VFShowInApprovalExtensionTest.cls",
-		"/D/mmworkspace/TestEvn/src/components/ApprovalProcessButtonSwitcher.component",
 		"/D/mmworkspace/TestEvn/src/classes/ApproverUtils.cls-meta.xml",
 		"/D/mmworkspace/TestEvn/src/classes/Peoples.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SObjectUtilsTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AmAbnormalityHrPt60ControllerTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/SapQueryArgCreate.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMleave.page",
 		"/D/mmworkspace/TestEvn/src/pages/AMLeaveApplication.page",
 		"/D/mmworkspace/TestEvn/src/pages/ApproverGroupMaintainSystem.page",
 		"/D/mmworkspace/TestEvn/src/classes/AMAdvanceChargeHandler.cls-meta.xml",
 		"/D/mmworkspace/TestEvn/src/classes/ApproverUtilsTest.cls",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/MeetingMinutes/queryPageJS.js",
 		"/D/mmworkspace/TestEvn/src/classes/RemoteActionsOfLeave.cls",
 		"/D/mmworkspace/testRun/AMEductionTrainingEmailTest.txt",
 		"/D/mmworkspace/TestEvn/src/classes/HarryUtils.cls",
@@ -833,7 +813,6 @@
 		"/D/mmworkspace/TestEvn/src/classes/TestUserUtil.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimExtensionTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMLeaveHander.cls",
 		"/D/mmworkspace/TestEvn/src/classes/LeaveQueryController.cls",
 		"/D/mmworkspace/TestEvn/src/pages/LeaveQuery.page",
 		"/D/mmworkspace/TestEvn/src/pages/AMVisitorHosts.page",
@@ -845,7 +824,6 @@
 		"/D/mmworkspace/TestEvn/src/components/ApprovalProcessButtonSwitcher.component-meta.xml",
 		"/D/mmworkspace/TestEvn/src/components/baseFormInfo.component",
 		"/D/mmworkspace/TestEvn/src/classes/SObjectUtils.cls",
-		"/D/mmworkspace/TestEvn/src/pages/ApprovalSetting.page",
 		"/D/mmworkspace/TestEvn/src/classes/SapWebServiceReturnArgs.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtensionTest.cls",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMEducationTrainingJS.js",
@@ -859,7 +837,6 @@
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/JValidator.js",
 		"/D/mmworkspace/TestEvn/src/classes/APtest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/UtilsTest.cls",
-		"/D/mmworkspace/TestEvn/src/pages/AMVendor.page",
 		"/D/mmworkspace/TestEvn/src/components/baseFormInfo.component-meta.xml",
 		"/D/mmworkspace/TestEvn/src/classes/AMExpenseReimburseHandler.cls",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplicationJS.js",
@@ -875,11 +852,9 @@
 		"/D/mmworkspace/TestEvn/src/classes/RemoteAction4Query.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMQccHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMSaleOrderHandler.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMVendorHandler.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMDieRequest.page",
 		"/D/mmworkspace/TestEvn/src/classes/IExtension.cls",
 		"/D/mmworkspace/TestEvn/src/pages/ApprovalQuery.page",
-		"/D/mmworkspace/TestEvn/src/classes/AMVendorExtension.cls",
 		"/D/mmworkspace/TestEvn/src/pages/ApprovalHome.page",
 		"/D/mmworkspace/TestEvn/src/classes/Triggers.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/CustomApprovalManageTrigger.trigger",
@@ -888,8 +863,6 @@
 		"/C/Users/young_cheng/Documents/test.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/ContactTrigger.trigger",
 		"/D/mmworkspace/TestEvn/src/classes/AMAssetPurchaseHandlerTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/PushApprovalDataToSapHandler.cls",
-		"/D/mmworkspace/TestEvn/src/classes/SyncFromSfToSapSchedule.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ApproverGroupMaintainSystemExtention.cls",
 		"/D/mmworkspace/TestEvn/src/classes/PeoplesTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/RequiredFieldsCheck.cls",
@@ -897,9 +870,7 @@
 		"/D/mmworkspace/TestEvn/src/classes/RoleCheckTestClass.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMSupplierClaim.page",
 		"/D/mmworkspace/TestEvn/src/classes/AMSupplierClaimExtension.cls",
-		"/D/mmworkspace/TestEvn/src/pages/AMBusinessTravel.page",
-		"/D/mmworkspace/TestEvn/src/classes/AMBusinessTravelExtension.cls",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/vueComponents.js"
+		"/D/mmworkspace/TestEvn/src/pages/AMBusinessTravel.page"
 	],
 	"find":
 	{
@@ -920,6 +891,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Leave_type__c",
+			"createSapAmleaveInputArgs",
+			"/KL/SyncActivity",
+			"/services/apexrest/KL/SyncActivity",
 			"Employee_Code__c",
 			"approvalSearchUserByDept",
 			"selectMaterial",
@@ -1046,149 +1021,11 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 11,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 13855,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								9181,
-								936
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 378.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 18263,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								17449,
-								17449
-							]
-						],
-						"settings":
-						{
-							"is_debug_log": true,
-							"syntax": "Packages/Java/Java.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 3564.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1139,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								470,
-								470
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 358.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 28,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3544,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3539,
-								3539
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1026.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2284,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1597,
-								1597
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 340.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1211,23 +1048,23 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 27,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 1,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1419,
+						"buffer_size": 1483,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								542,
-								542
+								183,
+								183
 							]
 						],
 						"settings":
@@ -1238,11 +1075,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 26,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 2,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1265,11 +1102,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 3,
 					"file": "src/classes/LeaveQueryController.cls",
 					"semi_transient": false,
 					"settings":
@@ -1281,8 +1118,8 @@
 						"selection":
 						[
 							[
-								1316,
-								1316
+								1094,
+								1173
 							]
 						],
 						"settings":
@@ -1295,11 +1132,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 19,
+					"stack_index": 26,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 4,
 					"file": "src/pages/LeaveQuery.page",
 					"semi_transient": false,
 					"settings":
@@ -1325,24 +1162,24 @@
 						"translation.y": 684.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 20,
+					"stack_index": 24,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 5,
 					"file": "src/pages/AMLeaveApplication.page",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 18702,
+						"buffer_size": 18947,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								14508,
-								14523
+								3237,
+								3237
 							]
 						],
 						"settings":
@@ -1352,57 +1189,57 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4032.0,
+						"translation.y": 378.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
-					"file": "src/components/ApprovalProcessButtonSwitcher.component",
+					"buffer": 6,
+					"file": "src/classes/AMEducationTrainingHandler.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3855,
+						"buffer_size": 14550,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1837,
-								1847
+								8994,
+								8994
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"syntax": "Packages/Java/Java.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 285.0,
+						"translation.y": 5670.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 21,
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 7,
 					"file": "src/pages/MeetingMinutesMainPage.page",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 14060,
+						"buffer_size": 15574,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1441,
-								1441
+								8708,
+								8708
 							]
 						],
 						"settings":
@@ -1412,14 +1249,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2646.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 20,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 8,
 					"file": "src/pages/MeetingMinutesQueryPage.page",
 					"semi_transient": false,
 					"settings":
@@ -1442,117 +1279,57 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 912.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 22,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "src/triggers/CustomApprovalManageTrigger.trigger",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 2871,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								711,
+								711
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 216.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 25,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
-					"file": "src/classes/AMVendorExtension.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 12322,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								9505,
-								9505
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 4158.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 15,
-					"file": "src/pages/AMVendor.page",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 41139,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								17360,
-								17360
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 413.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 30,
-					"type": "text"
-				},
-				{
-					"buffer": 16,
+					"buffer": 10,
 					"file": "src/classes/AMLeaveApplicationHandler.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4533,
+						"buffer_size": 10386,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2931,
-								2931
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 297.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 17,
-					"file": "src/classes/AMLeaveApplicationExtension.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9801,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2162,
-								2186
+								3053,
+								3053
 							]
 						],
 						"settings":
@@ -1562,14 +1339,193 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1242.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 19,
 					"type": "text"
 				},
 				{
-					"buffer": 18,
+					"buffer": 11,
+					"file": "src/classes/AMLeaveApplicationExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11419,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1484,
+								1484
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 216.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "src/pages/ApprovalsPending.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2614,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								322,
+								331
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "src/classes/MeetingMinutesMainPageController.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6757,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2546,
+								2546
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1080.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "src/classes/RemoteActionsOfLeave.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6339,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4932,
+								4932
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1734.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "src/classes/SapQueryArgCreate.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 40922,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								36410,
+								36410
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 17340.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "src/classes/SapApprovalEnum.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7543,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7187,
+								7203
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2206.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 23,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
 					"file": "src/classes/VFShowInApprovalExtension.cls",
 					"semi_transient": false,
 					"settings":
@@ -1581,14 +1537,44 @@
 						"selection":
 						[
 							[
-								224,
-								233
+								1357,
+								1369
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
 							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 168.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 27,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "src/classes/AMLeaveApplictionTest.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15345,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1922,
+								1922
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
@@ -1600,19 +1586,177 @@
 				},
 				{
 					"buffer": 19,
-					"file": "src/classes/BaseExtension.cls",
+					"file": "src/classes/SapInputArgCreate.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1553,
+						"buffer_size": 111191,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								261,
-								261
+								100943,
+								100943
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 37399.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 20,
+					"file": "src/classes/Utils.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 66072,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11698,
+								11698
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 5557.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 21,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4472,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										201,
+										226
+									],
+									[
+										476,
+										501
+									],
+									[
+										667,
+										692
+									],
+									[
+										1063,
+										1088
+									],
+									[
+										1194,
+										1219
+									],
+									[
+										1532,
+										1557
+									],
+									[
+										1852,
+										1877
+									],
+									[
+										2211,
+										2224
+									],
+									[
+										2533,
+										2546
+									],
+									[
+										2810,
+										2823
+									],
+									[
+										3161,
+										3174
+									],
+									[
+										3408,
+										3421
+									],
+									[
+										3780,
+										3793
+									],
+									[
+										4178,
+										4191
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								3584,
+								3584
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 2,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 828.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 22,
+					"file": "src/classes/SyncFromSfToSapSchedule.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 22748,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1629,67 +1773,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 20,
-					"file": "src/classes/AMLeaveApplictionTest.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 13707,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4141,
-								4141
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2196.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 21,
-					"file": "src/classes/RemoteActionsOfLeave.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3614,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								48,
-								48
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 18,
-					"type": "text"
-				},
-				{
-					"buffer": 22,
+					"buffer": 23,
 					"file": "src/classes/AMLeaveHander.cls",
 					"semi_transient": false,
 					"settings":
@@ -1701,8 +1785,8 @@
 						"selection":
 						[
 							[
-								1094,
-								1423
+								1244,
+								1268
 							]
 						],
 						"settings":
@@ -1715,187 +1799,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 32,
-					"type": "text"
-				},
-				{
-					"buffer": 23,
-					"file": "src/classes/PushApprovalDataToSapHandler.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2254,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1309,
-								1309
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 223.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 23,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
 					"buffer": 24,
-					"file": "src/classes/MeetingMinutesMainPageHandler.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1733,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								542,
-								545
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 14,
-					"type": "text"
-				},
-				{
-					"buffer": 25,
-					"file": "src/classes/SyncFromSfToSapSchedule.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 22480,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3417,
-								3417
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1371.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 31,
-					"type": "text"
-				},
-				{
-					"buffer": 26,
-					"file": "src/classes/SapInputArgCreate.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 109017,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								101799,
-								101806
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 37335.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 29,
-					"type": "text"
-				},
-				{
-					"buffer": 27,
-					"file": "src/classes/MeetingMinutesMainPageController.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5704,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4267,
-								4270
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2430.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 21,
-					"type": "text"
-				},
-				{
-					"buffer": 28,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 20101,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								19388,
-								19388
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 35.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 24,
-					"type": "text"
-				},
-				{
-					"buffer": 29,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1918,38 +1826,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 22,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 30,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3399,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1411,
-								26
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 540.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 31,
+					"buffer": 25,
 					"file": "src/classes/ApproverUtils.cls",
 					"semi_transient": false,
 					"settings":
@@ -1975,24 +1856,24 @@
 						"translation.y": 2848.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 32,
+					"buffer": 26,
 					"file": "src/triggers/ApprovalManageTrigger.trigger",
-					"semi_transient": true,
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4344,
+						"buffer_size": 4508,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3914,
-								3914
+								661,
+								661
 							]
 						],
 						"settings":
@@ -2002,10 +1883,39 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1404.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 18,
+					"type": "text"
+				},
+				{
+					"buffer": 27,
+					"file": "src/classes/PushApprovalDataToSapHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2254,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1368,
+								1368
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -2067,6 +1977,62 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"sapin",
+				"src\\classes\\SapInputArgCreate.cls"
+			],
+			[
+				"amleave",
+				"src\\classes\\AMLeaveHander.cls"
+			],
+			[
+				"meet",
+				"src\\classes\\MeetingMinutesMainPageController.cls"
+			],
+			[
+				"approval",
+				"src\\pages\\ApprovalSetting.page"
+			],
+			[
+				"approval.page",
+				"src\\pages\\ApprovalsPending.page"
+			],
+			[
+				"amedu",
+				"src\\classes\\AMEducationTrainingHandler.cls"
+			],
+			[
+				"sap",
+				"src\\classes\\SapInputArgCreate.cls"
+			],
+			[
+				"amven",
+				"src\\classes\\AMVendorHandler.cls"
+			],
+			[
+				"amvend",
+				"src\\classes\\AMVendorExtension.cls"
+			],
+			[
+				"query",
+				"src\\classes\\QueryController.cls"
+			],
+			[
+				"amvendorext",
+				"src\\classes\\AMVendorExtension.cls"
+			],
+			[
+				"amed",
+				"src\\classes\\AMEducationTrainingExtension.cls"
+			],
+			[
+				"amleaveapptest",
+				"src\\classes\\AMLeaveApplictionTest.cls"
+			],
+			[
+				"educationt",
+				"src\\classes\\AMEducationTrainingHandler.cls"
+			],
 			[
 				"amvendorc",
 				"src\\pages\\AMVendorClaim.page"
@@ -2164,10 +2130,6 @@
 				"src\\classes\\AMLeaveHander.cls"
 			],
 			[
-				"amleave",
-				"src\\pages\\AMLeaveApplication.page"
-			],
-			[
 				"amapplictionex",
 				"src\\classes\\AMLeaveApplicationExtension.cls"
 			],
@@ -2212,10 +2174,6 @@
 				"src\\classes\\BaseExtension.cls"
 			],
 			[
-				"amedu",
-				"src\\classes\\AMEducationTrainingExtension.cls"
-			],
-			[
 				"leaveq",
 				"src\\pages\\LeaveQuery.page"
 			],
@@ -2250,10 +2208,6 @@
 			[
 				"amvendorctest",
 				"src\\classes\\AMVendorClaimHandlerTest.cls"
-			],
-			[
-				"amed",
-				"src\\pages\\AMEducationTraining.page"
 			],
 			[
 				"",
@@ -2344,10 +2298,6 @@
 				"src\\classes\\ProcessUtils.cls"
 			],
 			[
-				"sap",
-				"src\\classes\\SapApprovalEnum.cls"
-			],
-			[
 				"amassetpurchaseextensiontest",
 				"src\\classes\\AMAssetPurchaseExtensionTest.cls"
 			],
@@ -2436,10 +2386,6 @@
 				"src\\pages\\AMVendorClaim.page"
 			],
 			[
-				"approval",
-				"src\\pages\\ApprovalContact.page"
-			],
-			[
 				"groupcontroller",
 				"src\\classes\\ApproverGroupMaintainSystemController.cls"
 			],
@@ -2456,16 +2402,8 @@
 				"src\\classes\\AMVendorClaimExtension.cls"
 			],
 			[
-				"amvend",
-				"src\\pages\\AMVendorClaim.page"
-			],
-			[
 				"pushapprovaldatatosaphandler",
 				"src\\classes\\PushApprovalDataToSapHandler.cls"
-			],
-			[
-				"amven",
-				"src\\classes\\AMVendorHandler.cls"
 			],
 			[
 				"synctosap",
@@ -2550,34 +2488,6 @@
 			[
 				"pushtosap",
 				"src\\classes\\PushApprovalDataToSapHandler.cls"
-			],
-			[
-				"u",
-				"src\\classes\\Utils.cls"
-			],
-			[
-				"amedhand",
-				"KL-TEST-20171117\\src\\classes\\AMEducationTrainingHandler.cls"
-			],
-			[
-				"travel",
-				"SB_Cheng\\src\\pages\\AMBusinessTravel.page"
-			],
-			[
-				"apphome",
-				"KL-TEST-20171114\\src\\pages\\ApprovalHome.page"
-			],
-			[
-				"ema",
-				"SB_Cheng\\src\\classes\\EmailUtils.cls"
-			],
-			[
-				"synchronousorganization",
-				"KL-TEST-20171114\\src\\classes\\SynchronousOrganization.cls"
-			],
-			[
-				"email",
-				"src\\classes\\EmailUtils .cls"
 			]
 		],
 		"width": 0.0
@@ -2608,7 +2518,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 553.0,
+	"side_bar_width": 284.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
