@@ -5,13 +5,15 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
     public List<ParticipantRow> participantList { set; get;}
 
     public KL_Systems__c kls {set; get;}
-
+    public List<SelectOption> meetingRoomOptions {set; get;}
+    public String selectedMeetingRoom {set; get;}
     public MeetingMinutesMainPageController(ApexPages.StandardController con)
     {
 
         super('KL_Systems__c', 'Meeting_Minutes', con, null, null, null);
         participantList = new List<ParticipantRow>();
         kls = (KL_Systems__c)this.sobj;
+        meetingRoomOptions = getCountries();
         if(con.getId() != null)
         {
             //因為沒有狀態欄位
@@ -46,22 +48,24 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         String inputValue  = Apexpages.currentPage().getParameters().get('inputValue');
         Integer rowId = integer.valueof(Apexpages.currentPage().getParameters().get('rowId')) - 1;
         ParticipantRow pr = participantList.get(rowId);
-        pr.name = getValue('name',inputType,inputValue, pr.name);
+        pr.name = getValue('name', inputType, inputValue, pr.name);
 
-        pr.subject =  getValue('subject',inputType,inputValue, pr.subject);
+        pr.subject =  getValue('subject', inputType, inputValue, pr.subject);
 
-        pr.duedate =  getValue('duedate',inputType,inputValue, pr.duedate);
+        pr.duedate =  getValue('duedate', inputType, inputValue, pr.duedate);
 
         return null;
     }
 
-    public String getValue( String myKey,String nowKey,String inputValue ,String oldValue)
+    public String getValue( String myKey, String nowKey, String inputValue , String oldValue)
     {
-        
+
         if (!String.isBlank(inputValue) && !inputValue.equals(oldValue) && myKey.equals(nowKey))
         {
             return  inputValue;
-        }else{
+        }
+        else
+        {
             return oldValue;
         }
         return null;
@@ -79,6 +83,13 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
     public override PageReference saveAction()
     {
 
+        if(selectedMeetingRoom != 'else'){
+            kls.Meeting_Place__c = selectedMeetingRoom;
+        }
+        if (kls.Meeting_Place__c == null || kls.Meeting_Place__c.trim() == ''){
+            ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '請輸入會議地點'));
+            return null;
+        }
         upsert kls;
 
         String persons = '';
@@ -127,6 +138,7 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         task.Subject = row.subject;
         // task.priority = 'Normal';
         // task.status = 'Not Started';
+        /****下面有給紀錄類型,表示工作是能區分類型的****/
         task.recordTypeId = '012O0000000Aa6v';
         task.ActivityDate = Date.valueOf(row.duedate);
         //task.description = 'New  Work';
@@ -172,5 +184,21 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         if (!Test.isRunningTest())
             Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
 
+    }
+
+    public List<SelectOption> getCountries()
+    {
+        List<SelectOption> options = new List<SelectOption>();
+
+        Schema.DescribeFieldResult fieldResult =
+            Approval_Managed1__c.MeetingRooms__c.getDescribe();
+        List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+
+        for( Schema.PicklistEntry f : ple)
+        {
+            options.add(new SelectOption(f.getLabel(),f.getLabel()));
+        }
+        options.add(new SelectOption('else','其他'));
+        return options;
     }
 }
