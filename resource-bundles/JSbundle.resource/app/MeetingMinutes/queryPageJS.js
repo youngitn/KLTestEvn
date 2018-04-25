@@ -23,15 +23,15 @@ j$(function() {
         soqlStr += ' and Meeting_Date__c >= ' + sQueryDate + ' and Meeting_Date__c <= ' + eQueryDate;
         createJsonItem(map, 'Toastmaster__c', Query_Toastmaster__c);
         if (Query_Toastmaster__c != '') {
-            soqlStr += " and Toastmaster__c ='" + Query_Toastmaster__c + "' ";
+            soqlStr += " and Toastmaster__c like '%" + Query_Toastmaster__c + "%' ";
         }
         createJsonItem(map, 'Note_Taker__c', Query_Note_Taker__c);
         if (Query_Note_Taker__c != '') {
-            soqlStr += " and Note_Taker__c ='" + Query_Note_Taker__c + "' ";
+            soqlStr += " and Note_Taker__c like '%" + Query_Note_Taker__c + "%' ";
         }
         createJsonItem(map, 'Meeting_Subject__c', Query_Meeting_Subject__c);
         if (Query_Meeting_Subject__c != '') {
-            soqlStr += " and Meeting_Subject__c ='" + Query_Meeting_Subject__c + "' ";
+            soqlStr += " and Meeting_Subject__c like '%" + Query_Meeting_Subject__c + "%' ";
         }
         //給物件名稱 提供後台SOQL用
         createJsonItem(map, 'sobjName', 'KL_Systems__c');
