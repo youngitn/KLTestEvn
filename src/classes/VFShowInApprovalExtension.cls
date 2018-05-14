@@ -37,6 +37,7 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
         //有子項 則進行子項紀錄類型查詢
         if (DetailApprovalName != null)
         {
+
             detailRecTypeId = this.getReCTypeId(DetailSobjName, DetailApprovalName);
             //建立子項實體
             String listType = 'List<' + DetailSobjName + '>';
@@ -50,6 +51,7 @@ public virtual class VFShowInApprovalExtension extends BaseExtension
              String sql = '';
             sql += 'Select ' + SObjectUtils.getAllFields(sobjName).get(sobjName) + ' from ' + sobjName;
             sql += ' WHERE Id = \'' + stdController.getId() + '\'';
+            System.debug(sql);
             this.sobj = Database.query(sql);
             //try catch是要讓子系統紀錄物件不因例外而停擺
             //因為子系統紀錄物件沒有狀態(草稿,審批中,拒絕..)欄位
