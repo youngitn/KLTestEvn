@@ -7,7 +7,7 @@ private class AMEducationTrainingHandlerTest
         Test.startTest();
         // Implement test code
         RecordType rc = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Approval_Managed1__c' AND  DeveloperName = 'EducationTraining'];
-        
+
         Profile pf = [SELECT Id FROM Profile WHERE name = '员工'];
         System.debug('pf->' + pf);
         UserRole ur = new UserRole(Name = 'Finance');
@@ -39,14 +39,15 @@ private class AMEducationTrainingHandlerTest
 
     }*/
     @isTest
-    static void  testMethod1() {
+    static void  testMethod1()
+    {
         Test.startTest();
-        
-            //amIt.isDeletedStatus = true;
-            //amIt.save();
-            //amIt.cancel();
+
+        //amIt.isDeletedStatus = true;
+        //amIt.save();
+        //amIt.cancel();
         System.debug('@@ ' + [SELECT Id, name FROM user ].get(0).name); //有資料
-        
+
         Profile pf = [SELECT Id FROM Profile WHERE name = '员工'];
         System.debug('pf->' + pf);
         /*AMEducationTrainingHandler ameth=new AMEducationTrainingHandler();
@@ -59,19 +60,19 @@ private class AMEducationTrainingHandlerTest
         UserRole ur = new UserRole(Name = 'Finance');
         insert ur;
         User usr = TestUserUtil.createTestUser(ur.Id, pf.Id, 'Test FirstName', 'Test LastName', '30210999');
-        
+
         System.runAs(usr)
         {
-            
-            Contact con2 = new Contact(LastName = 'bbb', number__c = '30210999', SF_User__c = usr.id ,Email = 'test@test.com');
+
+            Contact con2 = new Contact(LastName = 'bbb', number__c = '30210999', SF_User__c = usr.id , Email = 'test@test.com');
             insert con2;
             RecordType rc = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Approval_Managed1__c' AND  DeveloperName = 'EducationTraining'];
-             //createApprovalconfig(26,'MeasuringInstRequest');
-             Approval_Managed1__c cusApprove = new Approval_Managed1__c();
-             cusApprove.RecordTypeId = rc.Id;
-             
-             cusApprove.InternalEducationParticipants__c = '30210999  test';
-             INSERT cusApprove;
+            //createApprovalconfig(26,'MeasuringInstRequest');
+            Approval_Managed1__c cusApprove = new Approval_Managed1__c();
+            cusApprove.RecordTypeId = rc.Id;
+
+            cusApprove.InternalEducationParticipants__c = '30210999-test';
+            INSERT cusApprove;
             AMEducationTrainingExtension amIt = new AMEducationTrainingExtension(new ApexPages.StandardController(cusApprove));
             cusApprove.Applicant__c = con2.Id;
             cusApprove.EducationTrainingType__c = 'InternalTraining';
@@ -82,7 +83,7 @@ private class AMEducationTrainingHandlerTest
             cusApprove.EducationTrainingName__c = 'test';
             cusApprove.EducationTrainingHours__c = 1;
             cusApprove.Days__c = 1;
-            cusApprove.InternalEducationParticipants__c = '30210999  test';
+            cusApprove.InternalEducationParticipants__c = '30210999-test';
             cusApprove.Approval_Status__c = 'A';
             /*cusApprove.die_use_bu__c='BU1';
             cusApprove.Material_Number__c='123';
@@ -100,5 +101,51 @@ private class AMEducationTrainingHandlerTest
 
         test.stopTest();
     }
+
+
+    @isTest
+    static void  testMethod2()
+    {
+        Test.startTest();
+
+        //amIt.isDeletedStatus = true;
+        //amIt.save();
+        //amIt.cancel();
+        System.debug('@@ ' + [SELECT Id, name FROM user ].get(0).name); //有資料
+
+        Profile pf = [SELECT Id FROM Profile WHERE name = '员工'];
+        System.debug('pf->' + pf);
+        /*AMEducationTrainingHandler ameth=new AMEducationTrainingHandler();
+        ameth.test1();
+        ameth.test2();
+        ameth.test3();
+        ameth.test4();
+        ameth.test5();*/
+
+        UserRole ur = new UserRole(Name = 'Finance');
+        insert ur;
+        User usr = TestUserUtil.createTestUser(ur.Id, pf.Id, 'Test FirstName', 'Test LastName', '30210999');
+
+        System.runAs(usr)
+        {
+
+            Contact con2 = new Contact(LastName = 'bbb', number__c = '30210999', SF_User__c = usr.id , Email = 'test@test.com');
+            insert con2;
+            RecordType rc = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Approval_Managed1__c' AND  DeveloperName = 'EducationTraining'];
+            //createApprovalconfig(26,'MeasuringInstRequest');
+            Approval_Managed1__c cusApprove = new Approval_Managed1__c();
+            cusApprove.RecordTypeId = rc.Id;
+            cusApprove.Applicant__c = con2.Id;
+            cusApprove.InternalEducationParticipants__c = '30210999 test';
+            INSERT cusApprove;
+            AMEducationTrainingHandler eth = new AMEducationTrainingHandler();
+            eth.getBoosId(con2);
+            eth.notification(cusApprove);
+
+        }
+
+        test.stopTest();
+    }
+
 
 }

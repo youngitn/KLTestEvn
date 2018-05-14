@@ -94,7 +94,7 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
                 // 審批狀態應該會更新進而觸發此程式
                 if (cam.RecordTypeId == rtId && cam.Approval_Status__c == 'A' && cam.InternalEducationParticipants__c != null)
                 {
-
+                     notification(cam);
                 }
                 /***********************************************************************************************************************************************/
                 if (cam.RecordTypeId == rtId && cam.Is_Reset_Approvaler__c)
@@ -132,26 +132,26 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         //指定崗位 or 指定人員 是用中文字判斷.
         //根據不同規則拿申請人(contactID)作條件查詢審批人.
         System.debug('申請人(contactID)~~~~~~~~~~~' + cam.Applicant__c);
-        cam.Approval_User1__c     = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(1), cam.Applicant__c), 0);
+        cam.Approval_User1__c     = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(1), cam.Applicant__c), 0);
         //Id myid = Id.valueOf('00528000006o8EJAAY');
         // cam.Approval_User1__c     = myid;
         //人力資源課承辦人
-        cam.Approval_User2__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2), null), 0);
+        cam.Approval_User2__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(2), null), 0);
 
         //人力資源課
-        cam.Approval_User3__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3), null), 0);
+        cam.Approval_User3__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(3), null), 0);
 
         //管理部
-        cam.Approval_User4__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4), null), 0);
+        cam.Approval_User4__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(4), null), 0);
 
         //財務主管
-        cam.Approval_User14__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(5), null), 0);
+        cam.Approval_User14__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(5), null), 0);
 
         //財務人員
-        cam.Approval_User15__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(6), null), 0);
+        cam.Approval_User15__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(6), null), 0);
 
         //總經理核示
-        cam.Approval_User5__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(7), null), 0);
+        cam.Approval_User5__c       = Utils.getByIndex(ApproverUtils.approvalSearchApprrovalerByRuleWithOutSOQL(mapSpecify.get(7), null), 0);
 
         // //6-13节点审批人设置
         cam.Approval_User6__c       = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8), cam.Applicant__c), 0);
@@ -187,7 +187,14 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
 
         //找不到可通知的人,就會寄給申請人
         List<String> nonAddresses = new List<String>();
-        nonAddresses.add(Peoples.getInstance().KlAllContactMapGetById.get(cam.Applicant__c).email);
+        try
+        {
+            nonAddresses.add(Peoples.getInstance().KlAllContactMapGetById.get(cam.Applicant__c).email);
+        }
+        catch(Exception e)
+        {
+
+        }
 
         String nonEmp = '';
         for(String p : pList)
@@ -293,6 +300,17 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
             Contact Applicant = Peoples.getInstance().KlAllContactMapGetById.get(am.Applicant__c);
             ApplicantName = Applicant.Name;
             ApplicantNum = Applicant.Number__c;
+            /*try
+        {
+            Contact Applicant = Peoples.getInstance().KlAllContactMapGetById.get(am.Applicant__c);
+            ApplicantName = Applicant.Name;
+            ApplicantNum = Applicant.Number__c;
+        }
+        catch(Exception e)
+        {
+            return;
+        }*/
+            
         }
 
         String htmlBody = '您所參與的教育訓練申請流程已批准. <br> 單號:' + am.Name + '<br> 申請人:' + ApplicantName + ' ' + ApplicantNum + '<br>參訓名單:<br>' + am.InternalEducationParticipants__c + ' <br>表單詳情請至連結檢視:<a href="https://kinglai.my.salesforce.com/' + am.id + '">https://kinglai.my.salesforce.com/' + am.id + '</a>';
@@ -300,7 +318,7 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
         //如果有無發接收mail通知的參訓人存在,
         //則將收件人List增加申請人email addr,
         //並在內容加上"**系統無法自動通知以下的人員與其主管,煩請手動通知..."的字樣
-        if (!Test.isRunningTest() && nnAddresses.size() > 0 && (!nonEmp.equals('') || nonEmp != null) )
+        if (!Test.isRunningTest() && !(nonEmp.equals('') || nonEmp == null) )
         {
             //內容增加有無法收信的參訓人字樣
             htmlBody = '**系統無法自動通知以下的人員與其主管,煩請手動通知:' + nonEmp + '<br>' + htmlBody;
