@@ -1,0 +1,483 @@
+<apex:page doctype="html-5.0" showheader="false" sidebar="false">
+    <!-- 
+20180426 報工UI
+ -->
+    <html lang="en">
+        <head>
+            <meta charset="utf-8">
+                <meta content="width=device-width, initial-scale=1.0" name="viewport">
+                    <meta content="A layout example that shows off a blog page with a list of posts." name="description">
+                        <title>
+                            Layout
+                        </title>
+                        <link crossorigin="anonymous" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" rel="stylesheet"/>
+                        <link href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css" rel="stylesheet"/>
+                        <link href="{!URLFOR($Resource.workLayout, 'workLayout/css/layouts/blog.css')}" rel="stylesheet"/>
+                        <link href="{!URLFOR($Resource.workLayout, 'workLayout/css/layouts/marketing.css')}" rel="stylesheet"/>
+                    </meta>
+                </meta>
+            </meta>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+            </script>
+        </head>
+        <body>
+            <div class="splash" id="welcome">
+                <div class="pure-g">
+                    <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-warning pure-button" onclick="prod();" style="border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                        <h1 style="color:black">
+                            投入
+                        </h1>
+                    </div>
+                    <div class="pure-u-md-1-3 pure-u-lg-1-3">
+                    </div>
+                    <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-warning pure-button" onclick="work();" style="border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                        <h1 style="color:black">
+                            產出
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="pure-g" id="layout">
+                <div class="pure-u-1 pure-u-md-3-5" id="forms">
+                    <form class="">
+                        <fieldset>
+                            <div>
+                                <div class="pure-u-1 pure-u-md-1-3 ">
+                                    <label for="PERNR">
+                                        工號
+                                    </label>
+                                    <input id="PERNR" style="background-color:yellow;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="RUECK">
+                                        確認碼
+                                    </label>
+                                    <input class="pure-u-23-24" id="RUECK" style="background-color:yellow;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="ACTIVE">
+                                        類型
+                                    </label>
+                                    <select class="pure-u-23-24" disabled="" id="ACTIVE" style="background-color:lightgray;">
+                                        <option>
+                                            1 換模
+                                        </option>
+                                        <option>
+                                            2 正常作業
+                                        </option>
+                                        <option>
+                                            3 協作報工
+                                        </option>
+                                        <option>
+                                            4 借人不借機-人
+                                        </option>
+                                        <option>
+                                            5 借人不借機-機
+                                        </option>
+                                        <option>
+                                            6 設備閒置報工
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="ACTIVE_TXT">
+                                        類型說明
+                                    </label>
+                                    <input class="pure-u-23-24" id="ACTIVE_TXT" readonly="" required="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="WORK_STEP">
+                                        投入 or 產出
+                                    </label>
+                                    <input class="pure-u-23-24" id="WORK_STEP" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="AUFNR">
+                                        工單訊息
+                                    </label>
+                                    <input class="pure-u-23-24" id="AUFNR" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="WERKS">
+                                        工廠
+                                    </label>
+                                    <input class="pure-u-23-24" id="WERKS" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="VORNR">
+                                        作業編號
+                                    </label>
+                                    <input class="pure-u-23-24" id="VORNR" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="KOSTL">
+                                        成本中心
+                                    </label>
+                                    <input class="pure-u-23-24" id="KOSTL" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="LTXA1">
+                                        成本中心說明
+                                    </label>
+                                    <input class="pure-u-23-24" id="LTXA1" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="MATNR">
+                                        物料
+                                    </label>
+                                    <input class="pure-u-23-24" id="MATNR" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="MEINH">
+                                        單位
+                                    </label>
+                                    <input class="pure-u-23-24" id="MEINH" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="MAKTX">
+                                        物料說明
+                                    </label>
+                                    <input class="pure-u-23-24" id="MAKTX" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="PSMNG">
+                                        數量
+                                    </label>
+                                    <input class="pure-u-23-24" id="PSMNG" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="AMEIN">
+                                        單位
+                                    </label>
+                                    <input class="pure-u-23-24" id="AMEIN" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="ISDD">
+                                        開始日期
+                                    </label>
+                                    <input class="pure-u-23-24" id="ISDD" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="ISDZ">
+                                        開始時間
+                                    </label>
+                                    <input class="pure-u-23-24" id="ISDZ" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3" id="ISM99_DIV" style="background-color:lightgreen;">
+                                    <label for="ISM99">
+                                        作業時間
+                                    </label>
+                                    <input class="pure-u-23-24" id="ISM99" style="background-color:yellow" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3" id="IEDD_DIV" style="background-color:lightgreen;">
+                                    <label for="IEDD">
+                                        結束日期
+                                    </label>
+                                    <input class="pure-u-23-24" id="IEDD" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3" id="IEDZ_DIV" style="background-color:lightgreen;">
+                                    <label for="IEDZ">
+                                        結束時間
+                                    </label>
+                                    <input class="pure-u-23-24" id="IEDZ" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="LMNGA_KY">
+                                        可報工
+                                    </label>
+                                    <input class="pure-u-23-24" id="LMNGA_KY" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="LMNGA_YB">
+                                        已報工
+                                    </label>
+                                    <input class="pure-u-23-24" id="LMNGA_YB" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="XMNGA_YB">
+                                        已報廢
+                                    </label>
+                                    <input class="pure-u-23-24" id="XMNGA_YB" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="GRUND">
+                                        差異原因
+                                    </label>
+                                    <input class="pure-u-23-24" id="GRUND" style="background-color:yellow;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="GRDTX">
+                                        報廢原因說明
+                                    </label>
+                                    <input class="pure-u-23-24" id="GRDTX" readonly="" style="background-color:lightgray;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3" id="BUDAT_DIV" style="background-color:lightgreen;">
+                                    <label for="BUDAT">
+                                        過帳日期
+                                    </label>
+                                    <input class="pure-u-23-24" id="BUDAT" style="background-color:yellow;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="ARBPL">
+                                        工作中心
+                                    </label>
+                                    <input class="pure-u-23-24" id="ARBPL" style="background-color:yellow;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <label for="ZEQUNR">
+                                        設備編號
+                                    </label>
+                                    <input class="pure-u-23-24" id="ZEQUNR" style="background-color:yellow;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3" id="LMNGA_DIV" style="background-color:lightgreen;">
+                                    <label for="LMNGA">
+                                        產量
+                                    </label>
+                                    <input class="pure-u-23-24" id="LMNGA" style="background-color:yellow;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3" id="XMNGA_DIV" style="background-color:lightgreen;">
+                                    <label for="XMNGA">
+                                        報廢
+                                    </label>
+                                    <input class="pure-u-23-24" id="XMNGA" style="background-color:yellow;" type="text">
+                                    </input>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3" id="RMNGA_DIV" style="background-color:lightgreen;">
+                                    <label for="RMNGA">
+                                        返工
+                                    </label>
+                                    <input class="pure-u-23-24" id="RMNGA" style="background-color:yellow;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-2" id="REMARK_DIV" style="background-color:lightgreen;">
+                                    <label for="REMARK">
+                                        內文
+                                    </label>
+                                    <input class="pure-u-23-24" id="REMARK" style="background-color:yellow;" type="text">
+                                    </input>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="pure-u-1 pure-u-md-2-5" id="numberGrid">
+                    <br>
+                        <br>
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-cta pure-button" style="border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                                    <h1>
+                                        1
+                                    </h1>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-cta pure-button" style="border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                                    <h1>
+                                        2
+                                    </h1>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-cta pure-button" style="border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                                    <h1>
+                                        3
+                                    </h1>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-cta pure-button" style="border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                                    <h1>
+                                        4
+                                    </h1>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-cta pure-button" style="border-width:3px;border-style:solid;border-color:#1fbfd6;padding:5px;">
+                                    <h1>
+                                        5
+                                    </h1>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-cta pure-button" style="border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                                    <h1>
+                                        6
+                                    </h1>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-cta pure-button" style="border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                                    <h1>
+                                        7
+                                    </h1>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-cta pure-button" style="border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                                    <h1>
+                                        8
+                                    </h1>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-cta pure-button" style="border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                                    <h1>
+                                        9
+                                    </h1>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-cta pure-button" style="border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                                    <h1>
+                                        Clear
+                                    </h1>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-cta pure-button" style="border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                                    <h1>
+                                        0
+                                    </h1>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-cta pure-button" style="border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                                    <h1>
+                                        back
+                                    </h1>
+                                </div>
+                            </div>
+                        </br>
+                    </br>
+                    <div class="pure-g">
+                        <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-warning pure-button" id="saveBtn" onclick="location.reload();" style="background-color: #1fbfd6;border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                            <h1>
+                                保存
+                            </h1>
+                        </div>
+                        <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-3 button-warning pure-button" id="workBtn" onclick="location.reload();" style="background-color: #1fbfd6;border-width:3px;border-style:groove;border-color:#1fbfd6;padding:5px;">
+                            <h1>
+                                報工
+                            </h1>
+                        </div>
+                    </div>
+                    <form action="http://59.120.231.206:8000/sap/bc/zhttp_rest?sap-client=400" method="POST">
+                        <input name="approval" type="text" value="SF_SYNC_PT60"/>
+                        <input name="userid" type="text" value="10210224"/>
+                        <input type="submit"/>
+                    </form>
+                </div>
+            </div>
+        </body>
+    </html>
+    <script>
+        var j$ = jQuery.noConflict();
+    var workItems= ['welcome','IEDD_DIV', 'IEDZ_DIV', 'BUDAT_DIV', 'LMNGA_DIV', 'XMNGA_DIV', 'RMNGA_DIV', 'REMARK_DIV','ISM99_DIV','workBtn' ];
+
+    j$( function() {
+    	removeCommonCss();
+        doInit();
+        numberAct();
+
+    });
+    function doInit(){
+        j$('#layout').hide();
+
+    }
+
+    function prod(){
+        j$('#layout').show();
+        doHide(workItems);
+    }
+
+    function work(){
+        j$('#layout').show();
+        setWorkFontSize();
+        j$('#welcome').hide();
+        j$('#saveBtn').hide();
+        //doHide(workItems);
+    }
+    function doHide(items){
+        items.forEach(function(item, index, array) {
+          j$('#'+item).hide();
+        });
+    }
+
+    function numberAct(){
+        j$( "#num0" )
+              .mouseup(function() {
+                j$( this ).attr( 'src', "img/number/ball_o_1.png" );
+              })
+              .mousedown(function() {
+                j$( this ).attr( 'src', "img/number/ball_o_0.png");
+              });
+    }
+
+    function setWorkFontSize(){
+         j$( "#forms" ).attr('style','height:768px; overflow:auto');
+    }
+    function test(){
+
+
+         j$.ajax({
+            url: "http://59.120.231.206:8000/sap/bc/zhttp_rest",
+            type: "get",
+            crossDomain: true,
+            data: { approval: "SF_SYNC_PT60", userid: "10210224" },
+            dataType: "json",
+            success:function(result){
+                alert(JSON.stringify(result));
+            },
+            error:function(xhr,status,error){
+                alert(status);
+            }
+        });
+    
+       }
+
+      function removeCommonCss(){
+      	var styleSheets = document.styleSheets;
+		var href = 'common.css';
+		for (var i = 0; i < styleSheets.length; i++) {
+		    if (styleSheets[i].href.includes(href)) {
+		        styleSheets[i].disabled = true;
+		        break;
+		    }
+		}
+      }
+    </script>
+</apex:page>
