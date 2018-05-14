@@ -35,16 +35,7 @@ global with sharing class QueryController
 
         String soql = mapx.get('SOQL');
 
-        //      Map<String,String> inputMap = new Map<String,String>();
-        //inputMap.put('Start_date__c',sQueryDate);
-        //inputMap.put('End_date__c',eQueryDate);
-        //inputMap.put('End_date__c',eQueryDate);
-
-        //inputMap.put('LeaveManage__r.RecordTypeId',recType);
-
-        //      System.debug(inputMap);
-        //      sql += ' '+Utils.checkStringToBuildSOQLString(inputMap,true) ;
-        //      System.debug(sql);
+        
         String listType = 'List<' + sobjName + '>';
         List<SObject> SObjList = (List<SObject>)Type.forName(listType).newInstance();
         SObjList = Database.query(soql);
@@ -92,7 +83,7 @@ global with sharing class QueryController
 
         String sqlSelect = 'SELECT Id,SF_user__c, Human_Range__c, Dept_Number__r.Name, Name, Number__c, Phone, MobilePhone, Email';
         String sqlFrom = ' FROM Contact ';
-        String sqlWhere = ' WHERE Id != null AND Human_Range__c != null AND Dept_Number__r.Name != null ';
+        String sqlWhere = ' WHERE Id != null AND Human_Range__c != null AND Number__c != null ';
         System.debug(LoggingLevel.INFO, '*** selectedContactCodeValue: ' + selectedContactCodeValue);
 
 
@@ -129,7 +120,7 @@ global with sharing class QueryController
 
         String sqlWhere1 = ' ORDER BY Dept_Number__r.Name, Number__c  LIMIT 100';
         List<Contact> con = Database.query(sqlSelect + sqlFrom + sqlWhere + sqlWhere1);
-
+        System.debug(sqlSelect + sqlFrom + sqlWhere + sqlWhere1);
         List<KL_Systems__c> klsys = [ SELECT MeetingRoom_Text__c FROM  KL_Systems__c WHERE  MeetingRoom_Name__c = 'TWKL' ];
 
         for(KL_Systems__c abc : klsys)
