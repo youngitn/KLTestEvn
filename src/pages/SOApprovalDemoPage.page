@@ -1,0 +1,126 @@
+<apex:page applyhtmltag="true" doctype="html-5.0" extensions="SOApprovalDemo" standardcontroller="Custom_Approval_Managed__c">
+    <!-- 請假申請流程 -->
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <html>
+        <head>
+            <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"/>
+            <link crossorigin="anonymous" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" rel="stylesheet"/>
+            <link href="https://unpkg.com/purecss@1.0.0/build/base-min.css" rel="stylesheet"/>
+            <link href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css" rel="stylesheet"/>
+            <script src="{!URLFOR($Resource.jqueryMin331)}" />
+            <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet"/>
+            <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" />
+            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/dataTableConfigObj.js')}" />
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" />
+            <script>
+                const j$ = jQuery.noConflict();
+            	j$( function() {
+	            	j$( "#tabs" ).tabs({
+	                      beforeLoad: function( event, ui ) {
+	                        ui.jqXHR.fail(function() {
+	                          ui.panel.html(
+	                            "Couldn't load this tab. We'll try to fix this as soon as possible. " +
+	                            "If this wouldn't be a demo." );
+	                        }); 
+	                      }
+	                    });
+
+	                queryVacationTW('30210078');
+
+                });
+
+            	let datatables;
+                function queryVacationTW(cId) {
+ 
+					     SOApprovalDemo.dataTableDeom(cId, function(result, event) {
+					     	console.log(JSON.parse(j$.parseHTML(result)[0].data));
+					         if (event.status && result != null) {
+					             //console.log(JSON.parse(j$.parseHTML(result)[0].data).content);
+					             if (j$.fn.dataTable.isDataTable('#datatables')) {
+					                 datatables.destroy();
+					             }
+					             datatables = j$('#datatables').DataTable({
+					                 responsive: true,
+					                 "language": languageConf,
+					                 "data": JSON.parse(j$.parseHTML(result)[0].data),
+					                 "columns": [{
+					                     "data": "Applicant_position",
+					                     "defaultContent": "<i>空</i>"
+					                 }, {
+					                     "data": "Number__c",
+					                     "defaultContent": "<i>空</i>"
+					                 }, {
+					                     "data": "Phone",
+					                     "defaultContent": "<i>空</i>"
+					                 }, {
+					                     "data": "Take_Office_Date",
+					                     "defaultContent": "<i>空</i>"
+					                 }],
+					                 "columnDefs": [{
+					                     "title": "職務",
+					                     "targets": 0
+					                 }, {
+					                     "title": "工號",
+					                     "targets": 1
+					                 }, {
+					                     "title": "電話",
+					                     "targets": 2
+					                 }, {
+					                     "title": "到職日",
+					                     "targets": 3
+					                 }]
+					             });
+					         }
+					     });
+					 }
+            </script>
+        </head>
+        <body>
+            <div id="tabs">
+                <ul>
+                    <li>
+                        <a href="#tabs-1">
+                            page1
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#tabs-2">
+                            page2
+                        </a>
+                    </li>
+                </ul>
+                <div id="tabs-2">
+                    <h1>
+                        page2
+                    </h1>
+                </div>
+                <div id="tabs-1">
+                    <apex:form styleclass="pure-form pure-form-stacked">
+                        <div class="pure-g">
+                            <div class="pure-u-1 pure-u-md-1-3">
+                                <label for="Employee">
+                                    單號
+                                </label>
+                                <apex:inputfield id="Name" styleclass="pure-u-1 pure-u-md-2-3" value="{!cam.Name}">
+                                </apex:inputfield>
+                            </div>
+                            <div class="pure-u-1 pure-u-md-1-3">
+                                <label for="Employee">
+                                    折让信息
+                                </label>
+                                <apex:inputfield id="Info_of_Discount__c" styleclass="pure-u-1 pure-u-md-2-3" value="{!cam.Info_of_Discount__c}">
+                                </apex:inputfield>
+                            </div>
+                        </div>
+                    </apex:form>
+                </div>
+            </div>
+        </body>
+    </html>
+    <div>
+        <table class="display" id="datatables" width="100%">
+        </table>
+    </div>
+    <br/>
+    <br/>
+</apex:page>
