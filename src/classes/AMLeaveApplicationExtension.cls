@@ -30,26 +30,8 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
 
     public override PageReference saveAction()
     {
-        //測試組給SAP的參數,先將存檔功能駐解掉
-        //System.debug(RemoteActionsOfLeave.createSapLeaveApplicationInsertArgs(am,list1));
-        String str2 = Utils.postToSAP(RemoteActionsOfLeave.createSapLeaveApplicationInsertArgs(am, list1));
-        Map<String, Object> m =
-            (Map<String, Object>)
-            JSON.deserializeUntyped(str2);
-        List<Object> detailList = (List<Object>)m.get('leave_data');
-        for (Object detail : detailList)
-        {
-            Map<String, Object> mmm = (Map<String, Object>)detail;
-            System.debug(mmm.get('no'));
-            System.debug(mmm.get('time_number__c'));
-        }
-
-
-        //success to get first item
-        //System.debug(((Map)(detail.get(0))).get('end_date__c'));
-        return null;
-
-        /***********************************************************************************
+        
+        /***********************************************************************************/
         hasError = 0;
 
         //取得請假人的聯絡人物件
@@ -79,8 +61,6 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
             //儲存表頭(master)
             upsert am;
             //設置每一筆明細(detail)的 fk=表頭(master) Id
-
-
             //儲存明細(detail)
             list1 = setRelationOfDetailWithMaster(list1, am.Id);
             System.debug(list1);
@@ -93,7 +73,7 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
             System.debug('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&>>>>>>>>>>' + hasError);
             return null;
         }
-        ***********************************************************************************/
+        /***********************************************************************************/
     }
 
     /**
@@ -129,6 +109,8 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
         //下年度特休重置時數
         Decimal sum3 = 0;
 
+        Integer i = 0;
+
         //am.Annual_leave__c = am.Annual_leave__c.replace(' ', '');
         //am.Adjustable_vacation__c = am.Adjustable_vacation__c.replace(' ', '');
         //特休可用時數
@@ -139,6 +121,14 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
 
         //下年度特休重置時數
         sum3 = validateLeaveHour(am.Warehouse_confirmation__c, '下年度特休重置時數');
+        System.debug('1list1--->'+list1.size());
+        String str2 = Utils.postToSAP(RemoteActionsOfLeave.createSapLeaveApplicationInsertArgs(am, list1));
+        System.debug('2list1--->'+list1);
+        Map<String, Object> m = (Map<String, Object>)JSON.deserializeUntyped(str2);
+        List<Object> detailList = (List<Object>)m.get('leave_data');
+        System.debug(m.get('check'));
+
+
         //更新详细记录
         if (list1.size() > 0)
         {
@@ -146,6 +136,7 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
             for (Approval_Managed_Item__c ami : list1)
             {
 
+                ami.time_number__c = ((String)((Map<String, Object>)detailList.get(i)).get('time_number__c')).trim();
                 //新特休生效日
                 //假設 起單日 2010/5/1 到職日7/1 所以新年度特休生效日為2010/7/1(日期皆為2010年)
                 Date dd = getResetDateOfNextYearAnnualLeaveHour(Date.today());
@@ -184,6 +175,8 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
                 {
                     sum2 -= Decimal.valueOf(ami.time_number__c);
                 }
+
+                i++;
             }
         }
         //判斷休假時數總和是否大於可休時數
@@ -193,7 +186,7 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
         //檢查休假時數合計是否=0
         validateLeaveSumAll(am.Sum_Vacation__c);
         //單筆請假時數總和超過24小時,等於連續三天,存檔時會顯示錯誤訊息.
-        isLeaveHourSumOver24(am.Sum_Vacation__c, am.Is_Been_Evaluated__c);
+        isLeaveHourSumOver24(am.Sum_Vacation__c, am.Is_Been_Evaluated__c,(String)m.get('check'));
         return list1;
     }
 
@@ -225,7 +218,7 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
      * @param  over24HCheckBox [description]
      * @return                 [description]
      */
-    public void isLeaveHourSumOver24(Decimal sum, Boolean over24HCheckBox)
+    public void isLeaveHourSumOver24(Decimal sum, Boolean over24HCheckBox,String check)
     {
 
         if (sum >= 24 && over24HCheckBox == false)
@@ -311,15 +304,17 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
      */
     public PageReference deletelist1()
     {
+
         if (list1[list1Row].Id != null)
         {
+            ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '刪除請假明細後請執行儲存動作,變更才會生效.'));
             Delete list1[list1Row];
             list1.remove(list1Row);
             take_Office_Date = Peoples.getInstance().KlAllContactMapGetById.get(am.Employee__c).Take_Office_Date__c;
             //表頭和請假明細相關的欄位需一併更新
             //如請假總時數
-            saveAction();
-
+            //saveAction();
+            
             return null;
         }
         list1.remove(list1Row);

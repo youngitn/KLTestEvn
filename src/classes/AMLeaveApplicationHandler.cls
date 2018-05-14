@@ -112,6 +112,20 @@ public with sharing class AMLeaveApplicationHandler  implements Triggers.Handler
                                                 buildMail(subject, htmlBody, toAddresses, ccAddresses)
                                             });
 
+                    }
+                    //核准後同步SAP
+                    if (cam.Approval_Status__c == 'A' && cam.Interface_Info__c == null)
+                    {
+                        
+                        /**回傳格式:
+                        {"status":"0", "message":"因冲突不能插入",  "sapid":""}**/
+                       myMethod(String.valueOf(cam.id));
+                        // if(((String)fromSapJson.get('status')) == '0'){
+                        //     cam.addError( '<script>document.getElementById("bodyCell").innerHTML="<cnter><H1 >'+fromSapJson.get('message')+'</H1></center>";</script>', false);
+                        // }else{
+                        //     cam.Interface_Info__c=(String)fromSapJson.get('message');
+                        // }
+                        
                     }     
 
                 }
@@ -119,6 +133,24 @@ public with sharing class AMLeaveApplicationHandler  implements Triggers.Handler
             }
 
         }
+    }
+
+    //在trigger中callout必須設置 標註（Annotation） 
+    //回傳值必須void且是靜態方法
+    //傳入參數必須是標準資料型態(應該吧)
+    @future (callout=true)
+    public static void myMethod(String id) {
+        String argJson = SapInputArgCreate.createSapAmleaveInputArgs(id);
+        argJson = argJson.replace('TypesOfLeave__c', 'Leave_type__c');
+        System.debug('argJson==>'+argJson);
+       Map<String, object> fromSapJson =  (Map<String, object>)JSON.deserializeUntyped(Utils.postToSAP(argJson));
+       Approval_Managed__c am = [SELECT Interface_Info__c FROM Approval_Managed__c WHERE id =:id];
+       
+       am.Interface_Info__c = 'SAP info:'+fromSapJson.get('message')+'';
+        
+        System.debug(am.Interface_Info__c);
+        upsert am;
+
     }
     public void setApprovalUser(Map<Decimal, Organizational__c> mapSpecify, Approval_Managed__c cam )
     {

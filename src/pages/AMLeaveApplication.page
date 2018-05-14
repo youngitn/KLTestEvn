@@ -54,20 +54,6 @@
                     if("{!NowStatus}" === 'NEW' || "{!NowStatus}" === 'SKETCH' || "{!isEditable}" == 'true'){
                        j$("input[id$=btnAdd],input[id$=btnDel]").show();
                      }
-
-                    j$.ajax({
-                              method: "POST",
-                              url: "//59.120.231.206:8000/sap/bc/zhttp_rest",
-                              data: { approval: "SF_SYNC_PT60", userid: "10210224" }
-                            })
-                              .done(function( msg ) {
-                                alert( "Data Saved: " + msg );
-                              }) .fail(function( xhr, status, errorThrown ) {
-    console.log( '出現錯誤，無法完成!' )
-    console.log( 'Error: ' + errorThrown )
-    console.log( 'Status: ' + status )
-    console.dir( xhr )
-  });
                    
 
               });
@@ -94,10 +80,10 @@
                 <div id="tabs-1">
                     <apex:sectionheader title="請假申請流程">
                     </apex:sectionheader>
-                    <apex:pageblock>
+                    <apex:pageblock >
                         <apex:form id="form" styleclass="pure-form pure-form-stacked">
-                            <c:baseforminfo inputobject="{!am}">
-                            </c:baseforminfo>
+                            <c:baseFormInfo inputobject="{!am}">
+                            </c:baseFormInfo>
                             <fieldset>
                                 <legend>
                                     <apex:pageblocksection title="請假資訊">
@@ -185,14 +171,13 @@
                                 <div>
                                 </div>
                             </fieldset>
-                            <c:approvalprocessbuttonswitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
-                            </c:approvalprocessbuttonswitcher>
+                            <c:ApprovalProcessButtonSwitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
+                            </c:ApprovalProcessButtonSwitcher>
                             <apex:pageblocksection title="請假明細">
                             </apex:pageblocksection>
                             <div id="detail">
                                 <!-- 页面信息提示区 -->
-                                <apex:pagemessages escape="true" id="message">
-                                </apex:pagemessages>
+                                
                                 <div class="pure-u-1 pure-u-md-4-24 pure-u-xl-2-24">
                                     <apex:commandbutton action="{!newlist1}" id="btnAdd" immediate="true" rerender="list1" status="retrieveStatus" value="新增請假明細">
                                     </apex:commandbutton>
@@ -204,6 +189,8 @@
                                     </apex:inputfield>
                                 </div>
                                 <apex:outputpanel id="list1" layout="block" styleclass="scroll">
+                                    <apex:pagemessages escape="true" id="message">
+                                </apex:pagemessages>
                                     <apex:actionstatus id="retrieveStatus" starttext="(waiting...)">
                                     </apex:actionstatus>
                                     <table class="pure-table rwd-table" id="tableBank">
@@ -243,7 +230,7 @@
                                                     <td data-th="刪除">
                                                         <script>
                                                             addButtonClass();
-                                                            setTip();
+                                                            
                                                         </script>
                                                         <apex:commandbutton action="{!deletelist1}" id="btnDel" immediate="true" rerender="list1" title="在草稿狀態刪除明細後,請按下儲存鈕以刷新頁面." value="删除">
                                                             <apex:param assignto="{!list1Row}" name="list1Row" value="{!list1Index}">
@@ -297,10 +284,10 @@
                                 </apex:outputpanel>
                             </div>
                             <!-- 待代理人通知一併上正式區 -->
-                            <!-- <div id="queryVacTw">
+                            <div id="queryVacTw">
                                     <table class="display" id="queryTable_SAP" width="100%">
                                     </table>
-                                </div> -->
+                                </div> 
                             <br/>
                             <br/>
                         </apex:form>
