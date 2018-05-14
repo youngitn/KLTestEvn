@@ -7,13 +7,20 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
     public KL_Systems__c kls {set; get;}
     public List<SelectOption> meetingRoomOptions {set; get;}
     public String selectedMeetingRoom {set; get;}
+    public List<SelectOption> DeptOptions {set; get;}
+    public String objList {get; set;}
+    //Task 紀錄類型Id
+    //final public String taskRcecordTypeId = '012O0000000Aa6v';
+
     public MeetingMinutesMainPageController(ApexPages.StandardController con)
     {
 
         super('KL_Systems__c', 'Meeting_Minutes', con, null, null, null);
         participantList = new List<ParticipantRow>();
         kls = (KL_Systems__c)this.sobj;
-        meetingRoomOptions = getCountries();
+        meetingRoomOptions = getMeetingRoom();
+        DeptOptions = getDept();
+        objList = new QueryController().objList;
         if(con.getId() != null)
         {
             //因為沒有狀態欄位
@@ -98,16 +105,21 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         //決議事項
         //正常用新建TASK方式,則指派對象會自動收到mail
         //但是用Apex新增TASK則要寫程式來做email寄送
+        //會議紀錄人需跟隨所有決議事項
+        //同時建立決議事項明細給信件內容使用
+        
         if (count > 0)
         {
             for (ParticipantRow row : participantList)
             {
-                insertTask( kls.Id, row);
+                String taskId = insertTask( kls.Id, row).id;
+                ConnectApi.ChatterUsers.follow(null, String.valueOf(getUser(kls.Note_Taker__c).Id), taskId);
                 emails.add('young_cheng@kinglai-hm.com');
+
+
             }
 
         }
-
         /**
          * 這裡還需送信件給決議事項的指派對象
          * 另一個類似 sendMailToParticipants(emails, kls) 的方法;
@@ -125,12 +137,13 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
             }
         }
 
-        sendMailToParticipants(emails, kls);
+        sendMailToParticipants(emails, kls ,participantList);
         return this.goPage(kls.Id);
     }
 
-    public void insertTask(Id billId, ParticipantRow row)
+    public Task insertTask(Id billId, ParticipantRow row)
     {
+        //name = 姓名-工號
         User u = getUser(row.name);
         Task task = new Task();
         task.WhatId = billId;
@@ -139,10 +152,33 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         // task.priority = 'Normal';
         // task.status = 'Not Started';
         /****下面有給紀錄類型,表示工作是能區分類型的****/
-        task.recordTypeId = '012O0000000Aa6v';
+        //task.recordTypeId = this.taskRcecordTypeId;
         task.ActivityDate = Date.valueOf(row.duedate);
         //task.description = 'New  Work';
         insert task;
+        return task;
+    }
+
+    public String taskDetailBodyBuilder(List<ParticipantRow> amiList){
+        String body = '決議事項:<br>\r\n';
+        body += '<table border="1">';
+        body += '<tr>'+
+                    '<th>主要負責人</th>'+
+                    '<th>主題</th>'+  
+                    '<th>預計完成日</th>'+
+                '</tr>';
+
+        for(ParticipantRow ami:amiList){
+            body += '<tr>';
+            body += '<td>' + ami.name + '</td>';
+            body += '<td>' + ami.subject + '</td>';
+            body += '<td>' + ami.duedate + '</td>';
+            
+            
+            body += '</tr>'; 
+        }
+        body += '</table>';
+        return body;
     }
 
     public User getUser(String nameAndNumber)
@@ -151,7 +187,7 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         User u = Peoples.getInstance().KlAllUserMapGetByNum.get(empid);
         return u;
     }
-    public void sendMailToParticipants(List<String> commAddresses, KL_Systems__c kls)
+    public void sendMailToParticipants(List<String> commAddresses, KL_Systems__c kls,List<ParticipantRow> participantList)
     {
 
         Messaging.reserveSingleEmailCapacity(2);
@@ -177,7 +213,7 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
 
         mail.setSubject('Salesforce 會議記錄創建完成');
 
-        mail.setHtmlBody('您所參與的會議記錄已創建完成. <br> 會議日期:' + ('' + kls.Meeting_Date__c).left(10) + '<br> 會議時間:' + kls.BegingTime__c + '~' + kls.EndTime__c + '<br>會議地點:' + kls.Meeting_Place__c + '<br>會議主題:' + kls.Meeting_Subject__c + '<br> 會議主席:' + kls.Toastmaster__c + '<br>會議紀錄:' + kls.Note_Taker__c + '<br><br>表單詳情請至連結檢視:<a href="https://kinglai.my.salesforce.com/' + kls.id + '">開啟連結</a>');
+        mail.setHtmlBody('您所參與的會議記錄已創建完成. <br> 會議日期:' + ('' + kls.Meeting_Date__c).left(10) + '<br> 會議時間:' + kls.BegingTime__c + '~' + kls.EndTime__c + '<br>會議地點:' + kls.Meeting_Place__c + '<br>會議主題:' + kls.Meeting_Subject__c + '<br> 會議主席:' + kls.Toastmaster__c + '<br>會議紀錄:' + kls.Note_Taker__c + '<br>'+taskDetailBodyBuilder(participantList)+'<br><br>表單詳情請至連結檢視:<a href="https://kinglai.my.salesforce.com/' + kls.id + '">開啟連結</a>');
         mail.setToAddresses(commAddresses);
         mail.setWhatId(kls.Id);
         System.debug(commAddresses);
@@ -186,7 +222,7 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
 
     }
 
-    public List<SelectOption> getCountries()
+    public List<SelectOption> getMeetingRoom()
     {
         List<SelectOption> options = new List<SelectOption>();
 
@@ -201,4 +237,21 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         options.add(new SelectOption('else','其他'));
         return options;
     }
+
+
+    public List<SelectOption> getDept()
+    {
+        List<SelectOption> options = new List<SelectOption>();
+
+        List<Organizational__c> oList = [select Dept_Number__c,Description__c from Organizational__c where recordTypeId = '012O0000000DLwN' and Corp_Number__c='3000'];
+
+        for( Organizational__c o : oList)
+        {
+            options.add(new SelectOption(o.Dept_Number__c,o.Description__c));
+        }
+        //options.add(new SelectOption('else','其他'));
+        return options;
+    }
+
+   
 }

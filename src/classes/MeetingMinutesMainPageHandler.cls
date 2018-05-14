@@ -6,7 +6,7 @@ public with sharing class MeetingMinutesMainPageHandler implements Triggers.Hand
 
         Map<Decimal, Organizational__c>  mapSpecify = null;
         Id rtId =  HarryUtils.getRecordTypeIdByDevNameAndObjName('Meeting_Minutes', 'KL_Systems__c');
-        
+        System.debug(rtId);
         Boolean haveSfID = true;
         if (Trigger.isBefore && Trigger.isInsert)
         {
