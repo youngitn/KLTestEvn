@@ -125,14 +125,6 @@
      j$("input[id$=btnDel],input[id$=btnAdd]").removeAttr('class').addClass("pure-button pure-button-primary pure-u-1-1");
  }
 
- function setTip() {
-     j$("input[id$=btnDel]").tooltip({
-         show: {
-             effect: "slideDown",
-             delay: 0
-         }
-     });
- }
  //從SAP取請假資料
  function queryVacation(cId) {
      //let empId = j$('input[id $= Name]').val();
@@ -167,6 +159,7 @@
  function queryVacationTW(cId) {
      //let empId = j$('input[id $= Name]').val();
      //alert(empId);
+     j$('#queryTable_SAP_title').show();
      AMLeaveApplicationExtension.queryVacationTW(cId, function(result, event) {
          if (event.status && result != null) {
              //console.log(JSON.parse(j$.parseHTML(result)[0].data).content);

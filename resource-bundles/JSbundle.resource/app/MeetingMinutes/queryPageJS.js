@@ -9,6 +9,11 @@ j$(function() {
         let Query_Toastmaster__c = j$("input[id$=Query_Toastmaster__c]").val();
         let Query_Note_Taker__c = j$("input[id$=Query_Note_Taker__c]").val();
         let Query_Meeting_Subject__c = j$("input[id$=Query_Meeting_Subject__c]").val();
+
+        let Query_IsRegularMeeting__c =document.querySelector('[id$=Query_IsRegularMeeting__c]').checked;
+        let Query_Company__c = j$("select[id$=Query_Company__c]").val();
+        let Query_Dept__c = j$("input[id$=Query_Dept__c_lkid]").val();
+
         let soqlStr = "SELECT id,Toastmaster__c,Note_Taker__c,Meeting_Subject__c,Meeting_Date__c FROM KL_Systems__c WHERE recordTypeId='" + recordTypeId + "'";
         var map = new Map(),
             object = {};
@@ -21,6 +26,8 @@ j$(function() {
             eQueryDate = "2100-01-01";
         }
         soqlStr += ' and Meeting_Date__c >= ' + sQueryDate + ' and Meeting_Date__c <= ' + eQueryDate;
+
+        //以下需重構
         createJsonItem(map, 'Toastmaster__c', Query_Toastmaster__c);
         if (Query_Toastmaster__c != '') {
             soqlStr += " and Toastmaster__c like '%" + Query_Toastmaster__c + "%' ";
@@ -33,6 +40,24 @@ j$(function() {
         if (Query_Meeting_Subject__c != '') {
             soqlStr += " and Meeting_Subject__c like '%" + Query_Meeting_Subject__c + "%' ";
         }
+
+        createJsonItem(map, 'IsRegularMeeting__c', Query_IsRegularMeeting__c);
+        if (Query_IsRegularMeeting__c != '') {
+            soqlStr += " and IsRegularMeeting__c = " + Query_IsRegularMeeting__c + " ";
+        }
+
+        createJsonItem(map, 'Company__c', Query_Company__c);
+        if (Query_Company__c != '') {
+            soqlStr += " and Company__c = '" + Query_Company__c + "' ";
+        }
+
+        createJsonItem(map, 'Dept__c', Query_Dept__c);
+        if (Query_Dept__c != '' && Query_Dept__c != '000000000000000') {
+            soqlStr += " and Dept__c = '" + Query_Dept__c + "' ";
+        }
+
+
+
         //給物件名稱 提供後台SOQL用
         createJsonItem(map, 'sobjName', 'KL_Systems__c');
         createJsonItem(map, 'recordTypeId', recordTypeId);
@@ -43,7 +68,8 @@ j$(function() {
             keys.reduce((r, a) => r[a] = r[a] || {}, object)[last] = value;
         });
         console.log(object);
-        QueryController.doQuery(JSON.stringify(object), function(result, event) {
+        console.log(soqlStr);
+        MeetingMinutesQueryPageController.doQuery(JSON.stringify(object), function(result, event) {
             if (event.status) {
                 //var o = JSON.parse(result);
                 console.log(JSON.parse(j$.parseHTML(result)[0].textContent));
@@ -79,7 +105,7 @@ j$(function() {
                         "targets": 0,
                         "data": "profileImageUrl",
                         "render": function(data, type, row, meta) {
-                            return "<input value='瀏覽' type='button' class='pure-button pure-button-primary pure-u-1 pure-u-md-2-5 pure-u-xl-1-5' onClick=\"window.open('/" + data + "');j$(this).removeAttr('class').addClass('pure-button pure-button-primary');\"/>";
+                            return "<input value='瀏覽' type='button' class='pure-button pure-button-primary pure-u-1 pure-u-md-5-5 pure-u-xl-5-5' onClick=\"window.open('/" + data + "');j$(this).removeAttr('class').addClass('pure-button pure-button-primary');\"/>";
                         },
                         'createdCell': function(td, cellData, rowData, row, col) {
                             j$(td).attr('data-th', '單號');
