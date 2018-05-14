@@ -38,7 +38,9 @@ public with sharing class MeetingMinutesMainPageControllerTest {
 	        m.deleteRow();
 	        m.selectedMeetingRoom = 'else';
 	        kls.Meeting_Place__c = 'testPlace';
+	        kls.Note_Taker__c = 'bbb-30210999';
 	        m.kls = kls;
+
 	        m.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName('Meeting_Minutes', 'KL_Systems__c');
 	        m.saveAction();
 	        m.cancelAction();

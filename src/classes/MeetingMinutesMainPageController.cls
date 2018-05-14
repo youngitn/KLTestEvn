@@ -95,7 +95,11 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         }
         if (kls.Meeting_Place__c == null || kls.Meeting_Place__c.trim() == ''){
             ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '請輸入會議地點'));
-            return null;
+            return null; 
+        }
+        if(getUser(kls.Note_Taker__c) == null ){
+            ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '會議紀錄人:'+kls.Note_Taker__c + ' 非SF USER帳號用戶.'));
+            return null;       
         }
         upsert kls;
 
@@ -110,11 +114,19 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         
         if (count > 0)
         {
+            System.debug('決議事項-->'+participantList);
             for (ParticipantRow row : participantList)
             {
+
                 String taskId = insertTask( kls.Id, row).id;
-                ConnectApi.ChatterUsers.follow(null, String.valueOf(getUser(kls.Note_Taker__c).Id), taskId);
-                emails.add('young_cheng@kinglai-hm.com');
+                
+                ConnectApi.ChatterUsers.follow(null, String.valueOf(getUser(kls.Note_Taker__c).Id), taskId);         
+                
+                //emails.add('young_cheng@kinglai-hm.com');    
+                
+                emails.add(getUser(row.name).email); 
+                
+                System.debug('ParticipantRow email part1-->'+emails);
 
 
             }
@@ -132,11 +144,19 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
             List<String> pList = kls.Participant__c.split(',');
             for(String p : pList)
             {
-                User u = getUser(p);
-                emails.add('young_cheng@kinglai-hm.com');
+               
+                //emails.add('young_cheng@kinglai-hm.com');    
+                System.debug('P-->'+p);
+                if(getUser(p) != null){
+                    emails.add(getUser(p).email);    
+                }
+                 
+                           
+               
             }
+            
         }
-
+        System.debug('ParticipantRow email part2-->'+emails);
         sendMailToParticipants(emails, kls ,participantList);
         return this.goPage(kls.Id);
     }
