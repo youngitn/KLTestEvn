@@ -81,7 +81,7 @@ public with sharing class AMSaleOrderExtension {
                     //增加销售订单明细记录类型ID
                     ami.RecordTypeId = recTypeDetailTd;
                 }
-                for (Custom_Approval_Managed_Item__c ami : list2) {
+                for (Custom_Approval_Managed_Item__c ami : list2) { 
                     ami.Sales_Order_Header__c = am.Id;
                     //增加销售订单头条件明细记录类型ID
                     ami.RecordTypeId = recTypeHeaderId;
@@ -92,7 +92,11 @@ public with sharing class AMSaleOrderExtension {
                     ami.RecordTypeId = recTypeRowId;
                 }
             } else {
+                if (am.Approval_User1__c == null) {
+                    am.Approval_User1__c = am.Applicant__c;
+                }
                 update am;
+                System.debug(LoggingLevel.INFO, '*** am: ' + am);
             }
 
             upsert list1;

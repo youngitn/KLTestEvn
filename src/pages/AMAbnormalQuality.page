@@ -133,8 +133,9 @@
                 <apex:inputField value="{!am.Applicant_Cost__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Applicant_Cost__c'))}" id="Speical_Dept"></apex:inputField>
                 </apex:pageBlockSectionItem>
                 <!-- 指定作业人 -->
-                <apex:inputField value="{!am.Operator_Abnormal__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Operator_Abnormal__c'))}"></apex:inputField>
-                <apex:outputField value="{!am.Operator_Abnormal__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Operator_Abnormal__c'))}"></apex:outputField>
+                <apex:inputField value="{!am.Operator_Abnormal__c}" required="true"></apex:inputField>
+                <!-- <apex:inputField value="{!am.Operator_Abnormal__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Operator_Abnormal__c'))}"></apex:inputField>
+                <apex:outputField value="{!am.Operator_Abnormal__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Operator_Abnormal__c'))}"></apex:outputField> -->
             </apex:pageBlockSection>
             <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>问题说明</h3></div>
                 <apex:outputPanel id="problem" layout="block" styleClass="scroll">

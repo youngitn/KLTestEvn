@@ -3,7 +3,6 @@
  作    者：杨旺 
  创建日期：2018-4-18
 <-->
-
 <apex:page standardController="Approval_Managed1__c" extensions="AMChangeJobsExtension">
 <html>
 <body>

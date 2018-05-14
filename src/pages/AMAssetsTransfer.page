@@ -43,7 +43,7 @@
             	<!-- 公司代码 -->
             	<apex:inputField value="{!am.Corporation__c}" required="true"></apex:inputField>
                 <!-- 资产编号 -->
-                <apex:inputField value="{!am.Asset_Code__c}" required="true"></apex:inputField>
+                <apex:inputField value="{!am.Asset_Codes__c}" required="true"></apex:inputField>
                 <!-- 查询 -->
                 <apex:commandButton value="查询" action="{!queryAccountInfo}"/>
                 <!-- 资产名称-->

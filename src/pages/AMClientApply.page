@@ -1,0 +1,326 @@
+<!--> 
+ 名    称：客户单笔信贷核发申请
+ 作    者：杨旺 
+ 创建日期：2018-4-27
+<-->
+
+<apex:page standardController="Approval_Managed__c" extensions="AMClientApplyExtension">
+    
+      <head>
+        <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+        <script>
+        var j$ = jQuery.noConflict();
+ 
+        j$(document).ready(function(){
+            var cmb1 = j$("select[id$='ConditionType']");
+            var cmb2 = j$("select[id$='KeyCombination']");
+            var approvalValue1 = cmb1.val();
+            var approvalValue2 = cmb2.val();
+            console.log('approvalValue1: ' + approvalValue1);
+            console.log('approvalValue2: ' + approvalValue2);
+            
+            var desc1 = j$("[id$='Account']");
+            var desc2 = j$("[id$='Currency']");
+            var desc3 = j$("[id$='Price_Group']");
+        });
+
+        function toggleData(){
+            var cmb1 = j$("select[id$='ConditionType']");
+            var cmb2 = j$("select[id$='KeyCombination']");
+            var approvalValue1 = cmb1.val();
+            var approvalValue2 = cmb2.val();
+            console.log('approvalValue1: ' + approvalValue1);
+            console.log('approvalValue2: ' + approvalValue2);
+
+            var desc1 = j$("[id$='Account']");
+            var desc2 = j$("[id$='Currency']");
+            var desc3 = j$("[id$='Price_Group']");
+            
+            if (approvalValue1 == 'PR01' && approvalValue2 == 304) {
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.show();
+                desc2.parent().prev().children("label").show();
+
+                desc3.hide();
+                desc3.parent().prev().children("label").hide();
+
+            }else if (approvalValue1 == 'PR01' && approvalValue2 == 510) {
+
+                desc1.hide();
+                desc1.parent().prev().children("label").hide();
+
+                desc2.show();
+                desc2.parent().prev().children("label").show();
+
+                desc3.show();
+                desc3.parent().prev().children("label").show();
+
+            }else{
+                desc1.show();
+                desc1.parent().prev().children("label").show();
+
+                desc2.show();
+                desc2.parent().prev().children("label").show();
+
+                desc3.show();
+                desc3.parent().prev().children("label").show();
+            }
+        
+        }               
+    </script>
+    <style>
+            input.text {
+                text-align: center;
+            }
+            div.scroll{
+                width:1200px; 
+                height:200px; 
+                overflow:scroll;
+            }
+            textarea{
+                width: 75%
+            }
+            table.list th,table.list td{
+                text-align: center;
+            }
+           
+          </style>
+        <script>
+            function deleteItemDetail(rowID){
+                deleteDetail(rowID);
+            }
+             function queryClientApply(rowID){
+                queryClientApply(rowID);
+            }
+        </script>
+       
+    </head>
+     
+
+
+
+<html>
+<body>
+<apex:sectionHeader title="客户单笔信贷核发申请" subtitle="新建/客户单笔信贷核发申请"></apex:sectionHeader>
+
+<!-- 页面信息提示区 -->
+    <apex:pageMessages escape="true"></apex:pageMessages> 
+
+    <apex:form > 
+          <!-- 子表删除行数调用function -->
+        <apex:actionFunction action="{!deleteDetail}" name="deleteDetail" id="deleteDetail" reRender="list1">
+           <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+
+         <apex:actionFunction action="{!queryClientApply}" id="queryClientApply" name="queryClientApply" reRender="list2,messgae">
+            <apex:param assignTo="{!resultRowID}" name="rowID" value="rowID"></apex:param>
+        </apex:actionFunction>
+        
+        <apex:actionFunction action="{!addDetail}" name="addDetail" id="addDetail" reRender="list1">
+           <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+
+
+
+
+
+        <apex:pageBlock >  
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="基本信息" collapsible="false">
+                <!-- 审批流程编号 -->
+                <apex:outputField value="{!am.Name}"></apex:outputField>
+                <!-- 流程名称 -->
+             <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人姓名 -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>`
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 申请人公司代码 -->
+                <apex:outputField value="{!am.Applicant_Corp_Code__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 单据状态 -->
+                <apex:outputField value="{!am.Status__c}"></apex:outputField>
+
+
+
+            </apex:pageBlockSection>  
+ 
+            <apex:pageBlockSection title="头信息" collapsible="false">
+                <!-- 订单未交总金额-->
+                <apex:inputField value="{!am.UnOrd_Mon__c}" ></apex:inputField>
+     
+            </apex:pageBlockSection> 
+
+            <apex:pageBlockSection collapsible="true">
+                <!-- 备注 -->
+            <apex:inputField id="Remark" value="{!am.Remark__c}"  style="width: 500px;height: 200px"></apex:inputField>
+            </apex:pageBlockSection>
+
+
+<!-- .........................................................- -->
+            <apex:outputPanel title="查询结果" layout="block" styleClass="scroll" id="list2" style="display:{!IF(isDeletedStatus,'','none')};"> 
+                <div class="pbSubheader brandTertiaryBgr tertiaryPaleette" style="background-color: pink"><h3>查询结果</h3></div>
+                <table class="list" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <th>操作</th> 
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Sal_Evi__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Customer_Code__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Customer_Name__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Dan_Cus__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Sho_AllMon__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Ove_AllMon__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Now_Mon__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Ove_Perc__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Cre_Quo__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.No_Mon__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Pay_Req__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Ord_Mon__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Pur_Ord__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Pre_Mon__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Cau_Rem__c.Label}</th>
+                            
+                    </thead>
+                    <tbody>
+                    <apex:variable var="listIndex2" value="{!0}"/>
+                    <apex:repeat value="{!listson}" var="item">
+                    <tr>
+                        <td> 
+                        <apex:commandButton action="{!selectMaterial}" reRender="list2,list1" value="选中">
+                            <apex:param assignTo="{!selectRow}" name="selectRow" value="{!listIndex2}"></apex:param>
+                        </apex:commandButton>
+                        </td>
+                         <!--销售凭证 -->
+                        <td><apex:inputField value="{!item.Sal_Evi__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 客户代码-->
+                        <td><apex:inputField value="{!item.Customer_Code__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 客户名称-->
+                        <td><apex:inputField value="{!item.Customer_Name__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 风险类别-->
+                        <td><apex:inputField value="{!item.Dan_Cus__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 应收总额 -->
+                        <td><apex:inputField value="{!item.Sho_AllMon__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 逾期应收总额 -->
+                        <td><apex:inputField value="{!item.Ove_AllMon__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 暂估金额 -->
+                        <td><apex:inputField value="{!item.Now_Mon__c}"></apex:inputField></td>
+                        <!-- 逾期占比% --> 
+                        <td><apex:inputField value="{!item.Ove_Perc__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 信贷限额-->
+                        <td><apex:outputField value="{!item.Cre_Quo__c}" style="width: 70px"></apex:outputField></td>
+                        <!--未清金额-->
+                        <td><apex:inputField value="{!item.No_Mon__c}" style="width: 70px"></apex:inputField></td>
+                        <!--付款条件 -->
+                        <td><apex:inputField value="{!item.Pay_Req__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 订单金额-->
+                        <td><apex:inputField value="{!item.Ord_Mon__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 采购订单编号-->
+                        <td><apex:outputField value="{!item.Pur_Ord__c}" style="width: 40px"></apex:outputField></td>
+                        <!-- 预收账款-->
+                        <td><apex:inputField value="{!item.Pre_Mon__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 原因及备注-->
+                        <td><apex:inputField value="{!item.Cau_Rem__c}" style="width: 40px"></apex:inputField></td>
+                       
+                    </tr>
+                    <apex:variable var="listIndex2" value="{!listIndex2+1}"/>
+                    </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+<!-- ......................................................................... -->
+
+           <apex:outputPanel title="子表" styleClass="scroll" id="list1"> 
+                <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>单笔信货核发申请单</h3></div>
+                <apex:commandButton action="{!addDetail}" value="新增" reRender="list1,messgae" immediate="true"/>
+
+                <table class="list" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <th></th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Row_Index__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Del_Scrip__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Ref_scrip__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Sal_Evi__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Customer_Code__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Customer_Name__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Dan_Cus__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Sho_AllMon__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Ove_AllMon__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Now_Mon__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Ove_Perc__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Cre_Quo__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.No_Mon__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Pay_Req__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Ord_Mon__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Pur_Ord__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Pre_Mon__c.Label}</th>
+                        <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Cau_Rem__c.Label}</th>                      
+                    </thead> 
+                    <tbody>
+                    <apex:variable var="listIndex" value="{!1}"/>
+                    <apex:repeat value="{!listDetail}" var="item">
+                    <tr>
+                        <td>
+                            <input type="button" onclick="deleteItemDetail('{!listIndex}')" value="删除" class="btn" reRender="list1"/>
+                             <apex:param assignTo="{!rowID}" name="rowID" value="{!listIndex}"></apex:param>
+                        </td>
+                         <!-- 行号 --> 
+                        <td><apex:inputField value="{!item.Row_Index__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 处理意见描述-->
+                        <td><apex:inputField value="{!item.Del_Scrip__c}" style="width: 70px"></apex:inputField></td>
+                        <!--拒绝原因描述-->
+                        <td><apex:inputField value="{!item.Ref_scrip__c}" style="width: 70px"></apex:inputField></td>
+                        <!--销售凭证 -->
+                           <td>
+                            <span class="lookupInput">
+                            <apex:inputField value="{!item.Sal_Evi__c}" required="true" styleClass="text"/>
+                            <img src="/img/s.gif" alt="销售凭证" class="lookupIcon" onblur="this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" title="查询凭证信息" onclick="queryClientApply('{!listIndex}')" style="cursor: pointer;" required="list2" />
+                            </span>
+                        </td> 
+                        <!-- 客户代码-->
+                        <td><apex:inputField value="{!item.Customer_Code__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 客户名称-->
+                        <td><apex:inputField value="{!item.Customer_Name__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 风险类别-->
+                        <td><apex:inputField value="{!item.Dan_Cus__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 应收总额 -->
+                        <td><apex:inputField value="{!item.Sho_AllMon__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 逾期应收总额 -->
+                        <td><apex:inputField value="{!item.Ove_AllMon__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 暂估金额 -->
+                        <td><apex:inputField value="{!item.Now_Mon__c}"></apex:inputField></td>     
+                        <!-- 逾期占比% --> 
+                        <td><apex:inputField value="{!item.Ove_Perc__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 信贷限额-->
+                        <td><apex:inputField value="{!item.Cre_Quo__c}" style="width: 70px"></apex:inputField></td>
+                        <!--未清金额-->
+                        <td><apex:inputField value="{!item.No_Mon__c}" style="width: 70px"></apex:inputField></td>
+                        <!--付款条件 -->
+                        <td><apex:inputField value="{!item.Pay_Req__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 订单金额-->
+                        <td><apex:inputField value="{!item.Ord_Mon__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 采购订单编号-->
+                        <td><apex:inputField value="{!item.Pur_Ord__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 预收账款-->
+                        <td><apex:inputField value="{!item.Pre_Mon__c}" style="width: 40px"></apex:inputField></td>
+                        <!-- 原因及备注-->
+                        <td><apex:inputField value="{!item.Cau_Rem__c}" style="width: 40px"></apex:inputField></td>
+                    </tr>
+                    <apex:variable var="listIndex" value="{!listIndex+1}"/>
+                    </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+
+
+        </apex:pageBlock>
+    </apex:form>
+</body>
+</html>
+</apex:page>

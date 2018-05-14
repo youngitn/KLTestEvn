@@ -2,7 +2,7 @@ public with sharing class AMAssetsTransferExtension {
     public Approval_Managed__c am{get;set;} 
     public Id amId {get; set;}
     public List<Approval_Managed__c>  listam = new List<Approval_Managed__c>();
-
+    
     public AMAssetsTransferExtension(ApexPages.StandardController con) {
     	am = new Approval_Managed__c();
         Id recType = HarryUtils.getRecordTypeIdByDevNameAndObjName('AssetsTransfer','Approval_Managed__c');
@@ -19,7 +19,7 @@ public with sharing class AMAssetsTransferExtension {
     } 
  
     public PageReference save(){ 
-    	Upsert am;
+           	Upsert am;
 
         // 为提升覆盖率的无用代码
         am.Asset_Name__c = '';
@@ -74,6 +74,7 @@ public with sharing class AMAssetsTransferExtension {
 
     public PageReference queryAccountInfo(){  
          try{
+            
             String str1 = SapQueryArgCreate.createSapAssetsTransferQueryDesc(am.Corporation__c,am.Asset_Code__c);
             System.debug(str1);
             String str2 = Utils.postToSAP(str1);

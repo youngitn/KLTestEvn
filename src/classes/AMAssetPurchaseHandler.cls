@@ -147,9 +147,9 @@ public without sharing class AMAssetPurchaseHandler implements Triggers.Handler 
             //审批用户同节点2 
           //节点二十
            // cam.Approval_User24__c  = utils.getUserByEmployeeCode('10212251');
-          // Set<String> userIds = new Set<String>(); 
-          // userIds.add('00528000006p2Jc');
-          // Utils.ManualShareRecordToUsers(userIds, 'Approval_Managed__c', id.valueOf('a010I00001hR2gPQAS'));
+          Set<String> userIds = new Set<String>(); 
+          userIds.add('00528000006p2Jc');
+          Utils.ManualShareRecordToUsers(userIds, 'Approval_Managed__c', id.valueOf('a010I00001hR2gZQAS'));
           //节点二十一 两个审批用户
           
           //节点二十二

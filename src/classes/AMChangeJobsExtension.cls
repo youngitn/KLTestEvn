@@ -10,6 +10,7 @@ if(con.getId() == null){
             am.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName('changejobs','Approval_Managed1__c');
     }else{
       am = (Approval_Managed1__c)con.getRecord();
+      return;
     }
 
 

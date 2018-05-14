@@ -298,7 +298,99 @@ public with sharing class SapQueryArgCreate {
         return JSON.serialize(createQueryArg('SALESPRICEQUERY',lstCon));    
     }
 
+   //客户单笔信贷核发
+    public static String createClientApplyQueryDesc(String Sal_Evi){
+        return createSapSalesPriceQueryDesc(Sal_Evi,'');
+    }
 
+    public static String createClientApplyQueryDesc(
+        String Sal_Evi,String Customer_Code,String Customer_Name,String Dan_Cus,
+        String Sho_AllMon,String Ove_AllMon,String Now_Mon,
+        String Ove_Perc,String Cre_Quo,String No_Mon,
+        String Pay_Req,String Ord_Mon,String Pur_Ord,String Pre_Mon,String Cau_Rem){
+        List<Map<String,String>> lstCon = new List<Map<String,String>>();
+        Integer index = 1;
+        Map<String,String> con1 = new Map<String,String>();
+        
+       //销售凭证
+        if (!String.isBlank(Sal_Evi)) {
+            lstCon.add(createCondition(index,'Sal_Evi__c','String','=',Sal_Evi));
+        index = index + 1;
+        }
+        //客户代码
+        if (!String.isBlank(Customer_Code)) {
+            lstCon.add(createCondition(index,'Customer_Code__c','String','=',Customer_Code));
+        index = index + 1;
+        }
+        //客户名称
+        if(!String.isBlank(Customer_Name)){
+            lstCon.add(createCondition(index,'Customer_Name__c','String','LIKE',Customer_Name));
+            index = index + 1;
+        }//风险类别
+        if (!String.isBlank(Dan_Cus)) {
+            lstCon.add(createCondition(index,'Dan_Cus__c','String','=',Dan_Cus));
+        index = index + 1;
+        }
+        //应收总额
+        if (!String.isBlank(Sho_AllMon)) {
+            lstCon.add(createCondition(index,'Sho_AllMon__c','String','=',Sho_AllMon));
+        index = index + 1;
+        }
+        //逾期合计金额
+        if(!String.isBlank(Ove_AllMon)){
+            lstCon.add(createCondition(index,'Ove_AllMon__c','String','LIKE',Ove_AllMon));
+            index = index + 1;
+        }
+         //暂估金额
+        if(!String.isBlank(Now_Mon)){
+            lstCon.add(createCondition(index,'Now_Mon__c','String','LIKE',Now_Mon));
+            index = index + 1;
+        }
+         //逾期占比%
+        if(!String.isBlank(Ove_Perc)){
+            lstCon.add(createCondition(index,'Ove_Perc__c','String','LIKE',Ove_Perc));
+            index = index + 1;
+        }
+         //信贷限额
+        if(!String.isBlank(Cre_Quo)){
+            lstCon.add(createCondition(index,'Cre_Quo__c','String','LIKE',Cre_Quo));
+            index = index + 1;
+        }
+         //未清金额
+        if(!String.isBlank(No_Mon)){
+            lstCon.add(createCondition(index,'No_Mon__c','String','LIKE',No_Mon));
+            index = index + 1;
+        }
+         //付款条件
+        if(!String.isBlank(Pay_Req)){
+            lstCon.add(createCondition(index,'Pay_Req__c','String','LIKE',Pay_Req));
+            index = index + 1;
+        }
+         //订单金额
+        if(!String.isBlank(Ord_Mon)){
+            lstCon.add(createCondition(index,'Ord_Mon__c','String','LIKE',Ord_Mon));
+            index = index + 1;
+        }
+         //采购订单编号
+        if(!String.isBlank(Pur_Ord)){
+            lstCon.add(createCondition(index,'Pur_Ord__c','String','LIKE',Pur_Ord));
+            index = index + 1;
+        }
+         //预收账款
+        if(!String.isBlank(Pre_Mon)){
+            lstCon.add(createCondition(index,'Pre_Mon__c','String','LIKE',Pre_Mon));
+            index = index + 1;
+        }
+         //原因及备注
+        if(!String.isBlank(Cau_Rem)){
+            lstCon.add(createCondition(index,'Cau_Rem__c','String','LIKE',Cau_Rem));
+            index = index + 1;
+        }
+        
+        return JSON.serialize(createQueryArg('ClientApplyQuery',lstCon));    
+    }
+    
+     
 //资产转移报废停用申请流程
     public static String createSapAssetsTransferQueryDesc(String Corporation,String Asset_Code){
         return createSapAssetsTransferQueryDesc(Corporation,Asset_Code,'','','','','','','','','','','');
@@ -1079,6 +1171,4 @@ public with sharing class SapQueryArgCreate {
     
 
     
-    
-
 }

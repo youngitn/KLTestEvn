@@ -23,7 +23,7 @@ public without sharing class AMSaleOrderHandler implements Triggers.Handler {
                     setApprovalUser(mapSpecify,cam);
                 }
             }
-        }
+        } 
         if (Trigger.isBefore && Trigger.isUpdate) {
             for (Custom_Approval_Managed__c cam : (List<Custom_Approval_Managed__c>)Trigger.new) {
                 if (cam.RecordTypeId == rtId && cam.Is_Reset_Approvaler__c) {
@@ -35,10 +35,11 @@ public without sharing class AMSaleOrderHandler implements Triggers.Handler {
                 }
             }
         }
-    }
+    } 
     public void setApprovalUser(Map<Decimal,Organizational__c> mapSpecify,Custom_Approval_Managed__c cam){
 //节点一:
         cam.Approval_User1__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(1),cam.Applicant__c),0);
+        // cam.Approval_User1__c = cam.Approval_User1__c;
 //节点二：
         cam.Approval_User2__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2),cam.Applicant__c),0);
 //节点三：

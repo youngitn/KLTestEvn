@@ -87,6 +87,8 @@ public without sharing class UpdateBillHeaderInfoHandler implements Triggers.Han
 					}
 					else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.SALESRETURN, 'Custom_Approval_Managed__c')) {
 						cam.Approval_Name__c = '退货申请流程'; //流程名称
+					}else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.CLIENTAPPLY, 'Custom_Approval_Managed__c')) {
+						cam.Approval_Name__c = '客户单笔信贷核发申请流程'; //流程名称
 					}
 
 

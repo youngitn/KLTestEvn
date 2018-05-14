@@ -169,12 +169,12 @@ public without sharing class AMExpenseReimburseHandler implements Triggers.Handl
 
 
      public Id specialCall(Approval_Managed__c cam){
-        //公司代码不为6000
-        if (cam.Corporation__c !='6000' && cam.Corporation__c !='3000') {
+        //公司代码不为6000 和2000
+        if (cam.Corporation__c !='6000' && cam.Corporation__c !='3000' && cam.Corporation__c !='2000') {
             return utils.getUserByEmployeeCode('10210971');  //殷正宇
         }
         //生产及辅助设备
-        else if (cam.Corporation__c =='6000') {
+        else if (cam.Corporation__c =='6000' || cam.Corporation__c =='2000') {
             return utils.getUserByEmployeeCode('10212299');  //秦冬琴
         }
         else{
