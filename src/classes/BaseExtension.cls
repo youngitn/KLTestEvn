@@ -12,7 +12,7 @@ public virtual  class BaseExtension implements IExtension
     public BaseExtension(String sobjName, String approvalName, ApexPages.StandardController con)
     {
         sobj            = (SObject)Type.forName(sobjName).newInstance();
-        recordTypeId    = HarryUtils.getRecordTypeIdByDevNameAndObjName(approvalName, sobjName);
+        recordTypeId    = getReCTypeId(sobjName,approvalName);
 
         System.debug(this.recordTypeId);
 
@@ -39,10 +39,11 @@ public virtual  class BaseExtension implements IExtension
     {
         return new PageReference('/'  + sobj.Id);
     }
-    //某些使用者會出現null,棄用.
+    
     public Id getReCTypeId(String sobjName, String approvalName)
     {
-        return Schema.getGlobalDescribe().get( sobjName ).getDescribe().getRecordTypeInfosByName().get( approvalName ).getRecordTypeId();
+        return HarryUtils.getRecordTypeIdByDevNameAndObjName(approvalName, sobjName);
+        //return Schema.getGlobalDescribe().get( sobjName ).getDescribe().getRecordTypeInfosByName().get( approvalName ).getRecordTypeId();
     }
     public virtual PageReference cancelAction()
     {
