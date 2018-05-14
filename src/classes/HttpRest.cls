@@ -82,6 +82,8 @@ public with sharing class HttpRest {
     	//POST到SAP
     	System.debug('*************************************');
         System.debug(Sap_Url);
+        System.debug(AuthorizationHeader);
+        System.debug(Body);
     	String Json = HttpPost(Sap_Url,AuthorizationHeader,Body);
     	//因SAP转换的JSON是js对象形式，需要转换
 	    Json = KlCommon.FormatSapJsonToSf(Json);
