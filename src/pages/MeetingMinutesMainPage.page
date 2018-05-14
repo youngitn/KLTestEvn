@@ -21,7 +21,7 @@
             </script>
             <script>
                 const recordTypeId = '{!recordTypeId}';
-
+                 const objList = jQuery.parseJSON('{!JSENCODE(objList)}');
                 j$(function() {
                     //會議地點欄位控制-->
                     //初始將 id$=Meeting_Place 欄位隱藏,此為實際儲存紀錄的欄位
@@ -47,7 +47,21 @@
                     }
 
                     j$('input[id$=__c],input[id$=Toastmaster],input[id$=Note_Taker]').attr('required','required');
+                    
+                    //進入頁面時先判斷是否例會
+                    doDeptSelect(document.querySelector('[id$=main_IsRegularMeeting__c]'));
+
                 });
+
+                function doDeptSelect(self){
+                    //alert(document.querySelector('[id$=IsRegularMeeting__c]').checked);
+                    if(self.checked){
+                        j$('#deptSelect,#companySelect').show();
+                    }else{
+                        j$('#deptSelect,#companySelect').hide();
+                    }
+                    
+                }
             </script>
         </head>
         <body>
@@ -124,7 +138,7 @@
                                     <label>
                                         會議地點
                                     </label>
-                                    <apex:selectlist id="picklistMeetingRoom" styleclass="pure-u-1 pure-u-md-2-3" multiselect="false" size="1" value="{!selectedMeetingRoom}">
+                                    <apex:selectlist id="picklistMeetingRoom" multiselect="false" size="1" styleclass="pure-u-1 pure-u-md-2-3" value="{!selectedMeetingRoom}">
                                         <apex:selectoptions value="{!meetingRoomOptions}">
                                         </apex:selectoptions>
                                     </apex:selectlist>
@@ -148,6 +162,35 @@
                                     </apex:inputfield>
                                 </div>
                             </div>
+                            <br/>
+                            <fieldset>
+                                <legend>
+                                    會議類型
+                                </legend>
+                                <div class="pure-g">
+                                    <div class="pure-u-1 pure-u-md-2-24">
+                                        <label>
+                                            是否例會
+                                        </label>
+                                        <apex:inputfield id="main_IsRegularMeeting__c" onchange="doDeptSelect(this);" styleclass="pure-u-1 pure-u-md-1-2" value="{!kls.IsRegularMeeting__c}">
+                                        </apex:inputfield>
+                                    </div>
+                                    <div class="pure-u-1 pure-u-md-6-24" id="companySelect">
+                                        <label>
+                                            公司別代碼
+                                        </label>
+                                        <apex:inputfield id="CompanyOptions" styleclass="pure-u-1 pure-u-md-1-2" value="{!kls.Company__c}">
+                                        </apex:inputfield>
+                                    </div>
+                                    <div class="pure-u-1 pure-u-md-6-24" id="deptSelect">
+                                        <label>
+                                            部門
+                                        </label>
+                                        <apex:inputfield id="deptOptions" styleclass="pure-u-1 pure-u-md-1-2" value="{!kls.Dept__c}">
+                                        </apex:inputfield>
+                                    </div>
+                                </div>
+                            </fieldset>
                             <apex:pagemessages escape="true" id="message">
                             </apex:pagemessages>
                             <br/>
@@ -170,7 +213,7 @@
                                                 序號
                                             </th>
                                             <th width="10%">
-                                                負責人
+                                                主要負責人
                                             </th>
                                             <th width="60%">
                                                 主題
