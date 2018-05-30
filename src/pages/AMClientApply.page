@@ -6,71 +6,10 @@
 
 <apex:page standardController="Approval_Managed__c" extensions="AMClientApplyExtension">
     
-      <head>
+    <head>
         <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
-        <script>
-        var j$ = jQuery.noConflict();
- 
-        j$(document).ready(function(){
-            var cmb1 = j$("select[id$='ConditionType']");
-            var cmb2 = j$("select[id$='KeyCombination']");
-            var approvalValue1 = cmb1.val();
-            var approvalValue2 = cmb2.val();
-            console.log('approvalValue1: ' + approvalValue1);
-            console.log('approvalValue2: ' + approvalValue2);
-            
-            var desc1 = j$("[id$='Account']");
-            var desc2 = j$("[id$='Currency']");
-            var desc3 = j$("[id$='Price_Group']");
-        });
-
-        function toggleData(){
-            var cmb1 = j$("select[id$='ConditionType']");
-            var cmb2 = j$("select[id$='KeyCombination']");
-            var approvalValue1 = cmb1.val();
-            var approvalValue2 = cmb2.val();
-            console.log('approvalValue1: ' + approvalValue1);
-            console.log('approvalValue2: ' + approvalValue2);
-
-            var desc1 = j$("[id$='Account']");
-            var desc2 = j$("[id$='Currency']");
-            var desc3 = j$("[id$='Price_Group']");
-            
-            if (approvalValue1 == 'PR01' && approvalValue2 == 304) {
-                desc1.hide();
-                desc1.parent().prev().children("label").hide();
-
-                desc2.show();
-                desc2.parent().prev().children("label").show();
-
-                desc3.hide();
-                desc3.parent().prev().children("label").hide();
-
-            }else if (approvalValue1 == 'PR01' && approvalValue2 == 510) {
-
-                desc1.hide();
-                desc1.parent().prev().children("label").hide();
-
-                desc2.show();
-                desc2.parent().prev().children("label").show();
-
-                desc3.show();
-                desc3.parent().prev().children("label").show();
-
-            }else{
-                desc1.show();
-                desc1.parent().prev().children("label").show();
-
-                desc2.show();
-                desc2.parent().prev().children("label").show();
-
-                desc3.show();
-                desc3.parent().prev().children("label").show();
-            }
-        
-        }               
-    </script>
-    <style>
+   
+        <style>
             input.text {
                 text-align: center;
             }
@@ -86,7 +25,7 @@
                 text-align: center;
             }
            
-          </style>
+        </style>
         <script>
             function deleteItemDetail(rowID){
                 deleteDetail(rowID);
@@ -94,12 +33,8 @@
              function queryClientApply(rowID){
                 queryClientApply(rowID);
             }
-        </script>
-       
+        </script>      
     </head>
-     
-
-
 
 <html>
 <body>
@@ -121,10 +56,6 @@
         <apex:actionFunction action="{!addDetail}" name="addDetail" id="addDetail" reRender="list1">
            <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
         </apex:actionFunction>
-
-
-
-
 
         <apex:pageBlock >  
             <apex:pageBlockButtons >
@@ -149,8 +80,6 @@
                 <!-- 单据状态 -->
                 <apex:outputField value="{!am.Status__c}"></apex:outputField>
 
-
-
             </apex:pageBlockSection>  
  
             <apex:pageBlockSection title="头信息" collapsible="false">
@@ -163,7 +92,6 @@
                 <!-- 备注 -->
             <apex:inputField id="Remark" value="{!am.Remark__c}"  style="width: 500px;height: 200px"></apex:inputField>
             </apex:pageBlockSection>
-
 
 <!-- .........................................................- -->
             <apex:outputPanel title="查询结果" layout="block" styleClass="scroll" id="list2" style="display:{!IF(isDeletedStatus,'','none')};"> 
@@ -317,7 +245,6 @@
                     </tbody>
                 </table>
             </apex:outputPanel>
-
 
         </apex:pageBlock>
     </apex:form>

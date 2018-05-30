@@ -2080,6 +2080,7 @@ public without sharing class SapInputArgCreate {
     public static String createSapAmleaveInputArgs(String amleaveId){
         String sql = Utils.getApprovalSQL(SapApprovalEnum.LEAVE,true);
         sql = sql + ' WHERE Id = \'' + amleaveId + '\'';
+        System.debug(sql);
         List<Approval_Managed__c> lstItems = Database.query(sql);
         
         if(lstItems.size() > 0){

@@ -45,6 +45,7 @@ public class AMLeaveApplictionTest
             ami.LeaveManage__c = am.id;
             insert ami;
             upsert am;
+            AMLeaveApplicationExtension.leaveAppSyncToSAP(am.Id);
 
         }
 
@@ -87,6 +88,7 @@ public class AMLeaveApplictionTest
             extension.am.Employee__c = con2.Id;
             extension.am.Annual_leave__c = '1.0';
             extension.am.Adjustable_vacation__c = '1.0';
+            extension.sapInsertArgs = '{"status":"1", "message":"查詢成功", "check":"X", "leave_data":[{"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180601", "start_time__c":"070000", "start_date__c":"20180601", "leave_reason__c":"asd", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"0"}, {"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180605", "start_time__c":"070000", "start_date__c":"20180605", "leave_reason__c":"sdfdsf", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"1"}]}';
             ami.TypesOfLeave__c = '1006';
             ami.Leave_reason__c = 'test';
             ami.Start_date__c   = Date.today();
@@ -102,7 +104,7 @@ public class AMLeaveApplictionTest
             AMLeaveApplicationExtension.queryVacation((String)con2.Id);
             AMLeaveApplicationExtension.queryVacation('');
             AMLeaveApplicationExtension.queryVacationTW((String)con2.Id);
-
+            
             PageReference page = extension.saveAction();
 
 
@@ -146,6 +148,7 @@ public class AMLeaveApplictionTest
             extension.am.Employee__c = con2.Id;
             extension.am.Annual_leave__c = '1.0';
             extension.am.Adjustable_vacation__c = '1.0';
+            extension.sapInsertArgs = '{"status":"1", "message":"查詢成功", "check":"X", "leave_data":[{"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180601", "start_time__c":"070000", "start_date__c":"20180601", "leave_reason__c":"asd", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"0"}, {"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180605", "start_time__c":"070000", "start_date__c":"20180605", "leave_reason__c":"sdfdsf", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"1"}]}';
             ami.TypesOfLeave__c = '1006';
             ami.Leave_reason__c = 'test';
             ami.Start_date__c   = Date.today();
@@ -156,7 +159,7 @@ public class AMLeaveApplictionTest
             //extension.deletelist1();
             extension.list1.add(ami);
 
-
+            extension.hasError = 0;
             PageReference page = extension.saveAction();
 
         }
@@ -200,6 +203,7 @@ public class AMLeaveApplictionTest
             extension.am.Employee__c = con2.Id;
             extension.am.Annual_leave__c = '5.0';
             extension.am.Adjustable_vacation__c = '5.0';
+            extension.sapInsertArgs = '{"status":"1", "message":"查詢成功", "check":"X", "leave_data":[{"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180601", "start_time__c":"070000", "start_date__c":"20180601", "leave_reason__c":"asd", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"0"}, {"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180605", "start_time__c":"070000", "start_date__c":"20180605", "leave_reason__c":"sdfdsf", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"1"}]}';
             ami.TypesOfLeave__c = '1006';
             ami.Leave_reason__c = 'test';
             ami.Start_date__c   = Date.today();
@@ -253,6 +257,7 @@ public class AMLeaveApplictionTest
             extension.am.Employee__c = con2.Id;
             extension.am.Annual_leave__c = '5.0';
             extension.am.Adjustable_vacation__c = '5.0';
+            extension.sapInsertArgs = '{"status":"1", "message":"查詢成功", "check":"X", "leave_data":[{"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180601", "start_time__c":"070000", "start_date__c":"20180601", "leave_reason__c":"asd", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"0"}, {"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180605", "start_time__c":"070000", "start_date__c":"20180605", "leave_reason__c":"sdfdsf", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"1"}]}';
             ami.TypesOfLeave__c = '1006';
             ami.Leave_reason__c = 'test';
             ami.Start_date__c   = Date.today().addDays(5);
@@ -306,6 +311,7 @@ public class AMLeaveApplictionTest
             extension.am.Employee__c = con2.Id;
             extension.am.Annual_leave__c = '5.0';
             extension.am.Adjustable_vacation__c = '5.0';
+            extension.sapInsertArgs = '{"status":"1", "message":"查詢成功", "check":"X", "leave_data":[{"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180601", "start_time__c":"070000", "start_date__c":"20180601", "leave_reason__c":"asd", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"0"}, {"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180605", "start_time__c":"070000", "start_date__c":"20180605", "leave_reason__c":"sdfdsf", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"1"}]}';
 
             ami.TypesOfLeave__c = '1006';
             ami.Leave_reason__c = 'test';
@@ -360,6 +366,7 @@ public class AMLeaveApplictionTest
             extension.am.Employee__c = con2.Id;
             extension.am.Annual_leave__c = '1.0';
             extension.am.Adjustable_vacation__c = '1.0';
+            extension.sapInsertArgs = '{"status":"1", "message":"查詢成功", "check":"X", "leave_data":[{"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180601", "start_time__c":"070000", "start_date__c":"20180601", "leave_reason__c":"asd", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"0"}, {"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180605", "start_time__c":"070000", "start_date__c":"20180605", "leave_reason__c":"sdfdsf", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"1"}]}';
             ami.TypesOfLeave__c = '1006';
             ami.Leave_reason__c = 'test';
             ami.Start_date__c   = Date.today();
@@ -414,6 +421,7 @@ public class AMLeaveApplictionTest
             extension.am.Annual_leave__c = '1';
             extension.am.Adjustable_vacation__c = '1.0';
             extension.am.Warehouse_confirmation__c = '1.0';
+            extension.sapInsertArgs = '{"status":"1", "message":"查詢成功", "check":"X", "leave_data":[{"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180601", "start_time__c":"070000", "start_date__c":"20180601", "leave_reason__c":"asd", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"0"}, {"time_number__c":"  8.00", "end_time__c":"170000", "end_date__c":"20180605", "start_time__c":"070000", "start_date__c":"20180605", "leave_reason__c":"sdfdsf", "typesofleave__c":"1001", "recordtypeid":"012O00000009mziIAA", "no":"1"}]}';
             ami.TypesOfLeave__c = '1006';
             ami.Leave_reason__c = 'test';
             ami.Start_date__c   = Date.valueOf('2018-5-5');
@@ -422,10 +430,10 @@ public class AMLeaveApplictionTest
             ami.End_Time__c   = '010000';
             ami.Time_number__c = '1.0';
 
-            //extension.deletelist1();
+            extension.newlist1();
             extension.list1.add(ami);
-
-
+            extension.deletelist1();
+            extension.list1.add(ami);
             PageReference page = extension.saveAction();
 
         }

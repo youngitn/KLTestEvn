@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"ge",
+				"getJson"
+			],
+			[
+				"for",
+				"for"
+			],
+			[
+				"co",
+				"color"
+			],
+			[
+				"ba",
+				"background-color"
+			],
+			[
 				"D",
 				"Date\t[Standard Apex Class]"
 			],
@@ -176,16 +192,8 @@
 				"btnSave"
 			],
 			[
-				"co",
-				"continue"
-			],
-			[
 				"c",
 				"PUBLIC contains(String str) \tBoolean"
-			],
-			[
-				"for",
-				"FROM"
 			],
 			[
 				"va",
@@ -436,27 +444,73 @@
 	"buffers":
 	[
 		{
-			"contents": "SELECT Id, Node_Edit_Fields__c, Node_DetailEdit_Fields__c,\n                                                  Node_Require_Fields__c, Node_DetailRequire_Fields__c\n                                                  FROM Organizational__c\n                                                  WHERE RecordType.DeveloperName = 'Node_Edit_Field'\n                                                          AND Node_API__c = 'AP02'\n                                                                  AND Approval_Name__c = '請假申請流程'\n\n\nSELECT Id, ProcessNodeId, ProcessNode.DeveloperName, ProcessInstance.ProcessDefinition.DeveloperName\n             FROM ProcessInstanceNode\n             WHERE ProcessInstance.TargetObjectId = 'a0bO000000AmsSO' ORDER BY CreatedDate DESC\n                     LIMIT 1\n\n\n\n        String strJson = '{\\\"approval\\\":\\\"ZBC_CO11N_EQUNR\\\",\\\"PERNR\\\":\\\"' +\n                          '30210101' + '\\\",\\\"EQUNR\\\":\\\"' +\n                          '30210101' + '\\\"}';\n        \n        HttpRest httprest = new HttpRest();\n        strJson = httprest.HttpPostSap(strJson); \n\n        Task task = new Task();\n        task.OwnerId = '00528000007yJIW';\n        task.Subject = 'TEST';\n        // task.priority = 'Normal';\n        // task.status = 'Not Started';\n        /****下面有給紀錄類型,表示工作是能區分類型的****/\n        //task.recordTypeId = '012O0000000Aa6v';\n        //task.ActivityDate = Date.valueOf(row.duedate);\n        task.description = 'New  Work';\n        insert task;\n        ConnectApi.ChatterUsers.follow(null, '00528000007yJIW', String.valueOf(task.Id));\n\n\n       Approval_Managed_item__c ami = [select id ,Leave_reason__c from Approval_Managed_item__c where LeaveManage__c = 'a010I00001fARA6QAO' limit 1];\n       System.debug(ami);\n       ami.Leave_reason__c = '特休假抵沖';\n\n       update ami;\n\n       String aaa = '{\"operate\":\"INSERT\",\"content\":{\"main\":{\"Sum_Vacation__c\":\"12.00\",\"Employee_Code__c\":\"30210131\",\"Salary_Manager__c\":\"T01\",\"Adjustable_vacation__c\":\"0\",\"Annual_leave__c\":\"112\",\"Applicant_position__c\":\"2020人資課-行政管理類\",\"Employee__c\":\"003O0000012IDk0IAG\",\"Approval_Status__c\":\"S\",\"Bill_Date__c\": \"20180509\",\"Applicant_Name__c\":\"Lee Martin\",\"Approval_Name__c\":\"請假申請流程\",\"Name\":\"AN-180509-00003158\",\"RecordTypeId\":\"012O00000005tpVIAQ\",\"Id\":\"a0bO000000BAoUdIAL\"},\"details\":{\"items\":[{\"End_Time__c\":\"120000\",\"End_date__c\": \"20180509\",\"Start_Time__c\":\"080000\",\"Start_date__c\": \"20180509\",\"Leave_reason__c\":\"TRTRTRTTRT\",\"Leave_type__c\":\"1001\",\"Id\":\"a03O000000Jx4sIIAR\"},{\"End_Time__c\":\"170000\",\"End_date__c\": \"20180509\",\"Start_Time__c\":\"080000\",\"Start_date__c\": \"20180509\",\"Leave_reason__c\":\"dddddd\",\"Leave_type__c\":\"1001\",\"Id\":\"a03O000000Jx5kNIAR\"}]}},\"approval\":\"Leave\"}';\n       String bbb = '{\"operate\":\"INSERT\",\"content\":{\"main\":{\"Sum_Vacation__c\":\"1.00\",\"Employee_Code__c\":\"10210225\",\"Job_Title_Level__c\":\"7\",\"Salary_Manager__c\":\"X02\",\"Adjustable_vacation__c\":\"0\",\"Annual_leave__c\":\"38\",\"Applicant_position__c\":\"资讯部-主管\",\"Employee__c\":\"003O0000012IDm6IAG\",\"Approval_Status__c\":\"D\",\"Bill_Date__c\":\"2018-01-25\",\"Approval_Name__c\":\"请假管理流程\",\"Name\":\"AN-180125-00002885\",\"RecordTypeId\":\"012O00000009jorIAA\",\"Id\":\"a0bO000000An85hIAB\"},\"details\":{\"items\":[{\"End_Time__c\":\"090000\",\"End_date__c\":\"2018-01-25\",\"Start_Time__c\":\"090000\",\"Start_date__c\":\"2018-01-25\",\"Leave_reason__c\":\"test\",\"TypesOfLeave__c\":\"1006\",\"Leave_type__c\":\"0300\",\"Id\":\"a03O000000JqPnbIAF\"}]}},\"approval\":\"Leave\"}';\n       System.debug(Utils.postToSAP(aaa));\n       Map<String, Object> fromSapJson =  (Map<String, Object>)JSON.deserializeUntyped(Utils.postToSAP(aaa));\n       System.debug(fromSapJson.get('message'));\n       System.debug(SapInputArgCreate.createSapAmleaveInputArgs('a0bO000000An85hIAB'));\n       System.debug(SapInputArgCreate.createSapAmleaveInputArgs('a0bO000000BAoUdIAL'));\n\n\n\n                             ",
+			"contents": "SELECT Id, Node_Edit_Fields__c, Node_DetailEdit_Fields__c,\n                                                  Node_Require_Fields__c, Node_DetailRequire_Fields__c\n                                                  FROM Organizational__c\n                                                  WHERE RecordType.DeveloperName = 'Node_Edit_Field'\n                                                          AND Node_API__c = 'AP02'\n                                                                  AND Approval_Name__c = '請假申請流程'\n\n\nSELECT Id, ProcessNodeId, ProcessNode.DeveloperName, ProcessInstance.ProcessDefinition.DeveloperName\n             FROM ProcessInstanceNode\n             WHERE ProcessInstance.TargetObjectId = 'a0bO000000AmsSO' ORDER BY CreatedDate DESC\n                     LIMIT 1\n\n\n\n        String strJson = '{\\\"approval\\\":\\\"ZBC_CO11N_EQUNR\\\",\\\"PERNR\\\":\\\"' +\n                          '30210101' + '\\\",\\\"EQUNR\\\":\\\"' +\n                          '30210101' + '\\\"}';\n        \n        HttpRest httprest = new HttpRest();\n        strJson = httprest.HttpPostSap(strJson); \n\n        Task task = new Task();\n        task.OwnerId = '00528000007yJIW';\n        task.Subject = 'TEST';\n        // task.priority = 'Normal';\n        // task.status = 'Not Started';\n        /****下面有給紀錄類型,表示工作是能區分類型的****/\n        //task.recordTypeId = '012O0000000Aa6v';\n        //task.ActivityDate = Date.valueOf(row.duedate);\n        task.description = 'New  Work';\n        insert task;\n        ConnectApi.ChatterUsers.follow(null, '00528000007yJIW', String.valueOf(task.Id));\n\n\n       Approval_Managed_item__c ami = [select id ,Leave_reason__c from Approval_Managed_item__c where LeaveManage__c = 'a010I00001fARA6QAO' limit 1];\n       System.debug(ami);\n       ami.Leave_reason__c = '特休假抵沖';\n\n       update ami;\n\n       String aaa = '{\"operate\":\"INSERT\",\"content\":{\"main\":{\"Sum_Vacation__c\":\"12.00\",\"Employee_Code__c\":\"30210131\",\"Salary_Manager__c\":\"T01\",\"Adjustable_vacation__c\":\"0\",\"Annual_leave__c\":\"112\",\"Applicant_position__c\":\"2020人資課-行政管理類\",\"Employee__c\":\"003O0000012IDk0IAG\",\"Approval_Status__c\":\"S\",\"Bill_Date__c\": \"20180509\",\"Applicant_Name__c\":\"Lee Martin\",\"Approval_Name__c\":\"請假申請流程\",\"Name\":\"AN-180509-00003158\",\"RecordTypeId\":\"012O00000005tpVIAQ\",\"Id\":\"a0bO000000BAoUdIAL\"},\"details\":{\"items\":[{\"End_Time__c\":\"120000\",\"End_date__c\": \"20180509\",\"Start_Time__c\":\"080000\",\"Start_date__c\": \"20180509\",\"Leave_reason__c\":\"TRTRTRTTRT\",\"Leave_type__c\":\"1001\",\"Id\":\"a03O000000Jx4sIIAR\"},{\"End_Time__c\":\"170000\",\"End_date__c\": \"20180509\",\"Start_Time__c\":\"080000\",\"Start_date__c\": \"20180509\",\"Leave_reason__c\":\"dddddd\",\"Leave_type__c\":\"1001\",\"Id\":\"a03O000000Jx5kNIAR\"}]}},\"approval\":\"Leave\"}';\n       String bbb = '{\"operate\":\"INSERT\",\"content\":{\"main\":{\"Sum_Vacation__c\":\"1.00\",\"Employee_Code__c\":\"10210225\",\"Job_Title_Level__c\":\"7\",\"Salary_Manager__c\":\"X02\",\"Adjustable_vacation__c\":\"0\",\"Annual_leave__c\":\"38\",\"Applicant_position__c\":\"资讯部-主管\",\"Employee__c\":\"003O0000012IDm6IAG\",\"Approval_Status__c\":\"D\",\"Bill_Date__c\":\"2018-01-25\",\"Approval_Name__c\":\"请假管理流程\",\"Name\":\"AN-180125-00002885\",\"RecordTypeId\":\"012O00000009jorIAA\",\"Id\":\"a0bO000000An85hIAB\"},\"details\":{\"items\":[{\"End_Time__c\":\"090000\",\"End_date__c\":\"2018-01-25\",\"Start_Time__c\":\"090000\",\"Start_date__c\":\"2018-01-25\",\"Leave_reason__c\":\"test\",\"TypesOfLeave__c\":\"1006\",\"Leave_type__c\":\"0300\",\"Id\":\"a03O000000JqPnbIAF\"}]}},\"approval\":\"Leave\"}';\n       System.debug(Utils.postToSAP(aaa));\n       Map<String, Object> fromSapJson =  (Map<String, Object>)JSON.deserializeUntyped(Utils.postToSAP(aaa));\n       System.debug(fromSapJson.get('message'));\n       System.debug(SapInputArgCreate.createSapAmleaveInputArgs('a0bO000000An85hIAB'));\n       System.debug(SapInputArgCreate.createSapAmleaveInputArgs('a0bO000000BAoUdIAL'));\n\n       Approval_Managed__c am = [select id from Approval_Managed__c where id ='a0bO000000BAq7z'];\n       List<Approval_Managed_item__c> amis = [select id ,Leave_reason__c from Approval_Managed_item__c where LeaveManage__c = 'a0bO000000BAq7z'];\n       System.debug(Utils.postToSAP( SapJsonStringBuilder.getJson(am, amis,'LEAVE_TW','leaveItem')));\n       System.debug(Utils.postToSAP( SapJsonStringBuilder.createSapLeaveApplicationInsertArgs(am, amis,'LEAVE_TW','leaveItem')));\n       SObjectUtils.getAllFields('Approval_Managed__c').get('Approval_Managed__c');\n\n       List<String> aaa = new List<String>();\n       aaa.add('id');\n       System.debug(SapInputArgCreateForLeaveApplication.createSapAmleaveInputArgs('a0bO000000BAq7z').replace('TypesOfLeave__c', 'Leave_type__c'));\n\n       SapJsonStringBuilder sjb = new SapJsonStringBuilder();\n       List<String> aaa = new List<String>();\n       //aaa.add('id');\n       sjb.setMaster('a010I00001mskjrQAA','Approval_Managed__c');\n       sjb.setDetails('a010I00001mskjrQAA','Approval_Managed_item__c','LeaveManage__c'); \n       System.debug(Utils.postToSAP( sjb.getJson('LEAVE_TW','leaveItem',null)));\n\n       //測試環境連絡人ID\n       System.debug(RemoteActionsOfLeave.queryVacationTW('003O0000012IDk0'));\n\n\n\n                             ",
 			"settings":
 			{
-				"buffer_size": 3787,
+				"buffer_size": 5033,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "src/classes/SyncFromSfToSapSchedule.cls",
+			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: SapJsonStringBuilder sjb = new SapJsonStringBuilder();\nExecute Anonymous:        List<String> aaa = new List<String>();\nExecute Anonymous:        //aaa.add('id');\nExecute Anonymous:        sjb.setMaster('a010I00001mtMIAQA2','Approval_Managed__c');\nExecute Anonymous:        sjb.setDetails('a010I00001mtMIAQA2','Approval_Managed_item__c','LeaveManage__c'); \nExecute Anonymous:        System.debug(Utils.postToSAP( sjb.getJson('LEAVE_TW','leaveItem',null)));\n16:05:09.337 (337230014)|USER_INFO|[EXTERNAL]|00528000005lirp|martinlee-jfx3@force.com|中国标准时间|GMT+08:00\n16:05:09.337 (337272581)|EXECUTION_STARTED\n16:05:09.337 (337279235)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n16:05:09.337 (369298686)|USER_DEBUG|[8]|DEBUG|fields:{abnormal_code__c=Abnormal_Code__c, abnormal_type__c=Abnormal_Type__c, acacetin__c=acacetin__c, acceptance_condition__c=Acceptance_condition__c, account__c=Account__c, account_name__c=Account_Name__c, account_number__c=Account_Number__c, accumulated_depreciation__c=Accumulated_depreciation__c, actual_working_hours__c=actual_working_hours__c, adjustable_vacation__c=Adjustable_vacation__c, ...}\n16:05:09.337 (611876958)|USER_DEBUG|[16]|DEBUG|accessiblefields:(Id, OwnerId, IsDeleted, Name, RecordTypeId, CreatedDate, CreatedById, LastModifiedDate, LastModifiedById, SystemModstamp, ...)\n16:05:09.337 (616289034)|USER_DEBUG|[14]|DEBUG|Select Id,OwnerId,IsDeleted,Name,RecordTypeId,CreatedDate,CreatedById,LastModifiedDate,LastModifiedById,SystemModstamp,LastActivityDate,LastViewedDate,LastReferencedDate,Approval_Name__c,Abnormal_Code__c,Abnormal_Type__c,Account_Name__c,Account_Number__c,Account__c,Amount_Asset__c,Amount_Confirm__c,Amount_Net_Days__c,Amount_Offset__c,Amount_Prepay__c,Amount_of_Borrow__c,Amount_of_Budget__c,Amount_of_Forecast__c,Amount_of_General__c,Amount_of_Paid__c,Amount_of_Purchase__c,Amount_of_Total__c,Applicant_Code_Cost__c,Applicant_Code__c,Applicant_Corp_Code__c,Applicant_Cost__c,Applicant_Name_Cost__c,Applicant_Name__c,Applicant_Travel__c,Applicant__c,Approval_Entertained_Code__c,Approval_Entertained__c,Approval_Status__c,Approval_Travel_Code__c,Approval_Travel__c,Approval_User10__c,Approval_User11__c,Approval_User12__c,Approval_User13__c,Approval_User14__c,Approval_User15__c,Approval_User16__c,Approval_User17__c,Approval_User18__c,Approval_User19__c,Approval_User1__c,Approval_User20__c,Approval_User2__c,Approval_User3__c,Approval_User4__c,Approval_User5__c,Approval_User6__c,Approval_User7__c,Approval_User8__c,Approval_User9__c,Arrangement__c,Asset_Code_Inner__c,Asset_Code_Official__c,Asset_Code__c,Asset_Name__c,Asset_Type__c,Bill_Date__c,Bill_No__c,Birthday__c,Capital_Order__c,Cause_of_Analysis1__c,Cause_of_Analysis2__c,Cause_of_Analysis3__c,Cause_of_Analysis4__c,Cause_of_Analysis5__c,Clearing_Description__c,Confirm_Date_of_Effect__c,Confirm_Date_of_Feedback__c,Confirmor_of_Effect__c,Confirmor_of_Feedback__c,Corp_Code__c,Corporation__c,Cost_Budget__c,Currcency_Budget__c,Currency__c,Currency_of_Borrow__c,Currency_of_Budget__c,Days_of_Payment_Term__c,Days_of_Payment__c,Delivery_Type__c,Department__c,Dept_Code__c,Dept_Name__c,Dept_PR_Approval__c,Dept_of_CostCenter__c,Dept_of_Discovery__c,Dept_of_Duty__c,Description_Avoid__c,Description__c,Description_of_Effect__c,Description_of_Travel__c,Device_Number__c,Dismisson_Reason_of_Operate__c,Employee_Code__c,Employee_Name__c,Employee__c,End_Travel_Datetime__c,Estimate_Cost__c,Exchange_Rate__c,Expense_ApprovalProcess_Status__c,Expense_Type_Cost__c,Expense_Type_Prepay__c,Factory__c,Handover_Man1_Code__c,Handover_Man1__c,Handover_Man2_Code__c,Handover_Man2__c,Handover_Man3_Code__c,Handover_Man3__c,Handover_Man4_Code__c,Handover_Man4__c,Human_Range__c,International_Trade_Term__c,Is_Agree_Refund__c,Is_Budgeted__c,Is_Good_Regurned__c,Is_Invoice__c,Is_Key_Returned__c,Is_Ok_Factory_Burthen__c,Is_Push_Sap__c,Is_Receipt_Info__c,Is_Salary_Adjust__c,Is_Taipei_Employee__c,Is_Tools_Returned__c,Is_Withhold__c,Is_Work_Transfered__c,Job_Title_Level_New__c,Job_Title_Level_Old__c,Job_Title_Level__c,Job_Title_New_Code__c,Job_Title_New__c,Job_Title_Old__c,Job_Title__c,Keeper_Reserved__c,Kind_of_Asset__c,Kind_of_Cost__c,Kind_of_Order__c,Kind_of_Work__c,Leave_Office_Date__c,License_Number__c,Make_Man__c,Manager_of_Duty__c,Material_Dealwith__c,Material_Description__c,Material_Name__c,Material_Number__c,Model_and_Spec__c,Model_of_Asset__c,Native_Place__c,Num_Order__c,Num_Unfinished__c,Num_Unqualified__c,Occur_Datetime__c,Operation_Type__c,Operator_Abnormal_Code__c,Operator_Abnormal__c,Order__c,Percent_Pay__c,Percent_of_Payment_Term__c,Period_Delivery__c,Person_Liable__c,Phone__c,Place__c,Post_Category__c,Posting_Date__c,Posting_of_Company__c,Price_Purchase__c,Price__c,Purchase_Date__c,Purchase_Group__c,Purchase_Order_Date__c,Purchase_Org__c,Purchase_Required_Date__c,Purchase__c,Quantity__c,REQ_Code__c,Rate_Unqualified__c,Real_Purchase__c,Reason_of_Description__c,Reason_of_Leave_Human__c,Reason_of_Leave__c,Reason_of_Operate__c,Reason_of_Purchase__c,Reject_Date__c,Reject_Reason__c,Rejector__c,Remark_Vendor_Prepay__c,Remark__c,Remark_of_Explain__c,Required_date__c,Responsible_CostCenter__c,Result_Effect_Current_Period__c,SAPID__c,Salary_Manager__c,Same_Sample__c,Staff_Group_New__c,Staff_Group_Old__c,Staff_Sub_Group_New__c,Staff_Sub_Group__c,Staff_of_Both__c,Start_Travel_Datetime__c,Status_Abnormal__c,Status_Asset__c,Status__c,Stock_Note__c,Stock_Number__c,Supervisor1_Code__c,Supervisor1__c,Supervisor2_Code__c,Supervisor2__c,Supervisor3_Code__c,Supervisor3__c,Supervisor4_Code__c,Supervisor4__c,Supplier_Name__c,Supplier_Number__c,Take_Office_Date__c,Target_of_Travel__c,Term_of_Payment__c,Text_of_Head__c,Transfer_Date__c,Type_of_Approval__c,Type_of_Payment__c,Type_of_Travel__c,Validate_Date__c,Vehicle_of_Travel__c,Vendor_Name__c,Vendor_Number__c,Vendor__c,Voucher_Code__c,Voucher_Date__c,Voucher_HeaderText__c,Voucher_Type__c,Work_Center__c,Work_Company_New__c,Work_Company_Old__c,Work_Date__c,sex__c,Invoice_Amount_Total__c,Is_Print__c,Preinvoice_No__c,Is_Invoice_Success__c,Approval_SyncCheck__c,Is_Reset_Approvaler__c,Asset_No__c,Is_Push_Sap_Once__c,Approval_User21__c,Approval_User22__c,Is_HLY_ExpenseReimburse__c,Keeper_Reserved_Name__c,Is_Reject_Submit__c,Total_Price__c,Supplier__c,Staff_Group_Name__c,Staff_Sub_Group_Name__c,Post_Category_Name__c,Service_Category__c,Approval_DeptName__c,Confirm_Is_Stand__c,Confirm_of_Goods__c,Is_Been_Evaluated__c,Purchasing_Request__c,T_Been_Evaluated__c,Amount_Net_Days_Formula__c,Interface_Info__c,Approval_User23__c,Amount_of_Total_P__c,Amount_of_General_P__c,Amount_of_Borrow_P__c,Cost_Budget_P__c,Estimate_Cost_P__c,Applicant_position__c,Adjustable_vacation__c,Annual_leave__c,Total_Miles__c,Sum_Vacation__c,Warehouse_confirmation__c,Overdue_amount__c,Acceptance_condition__c,Detail_of_Travel__c,Retention_penalty__c,signet_type__c,Bill_number__c,Citic_policy_no__c,Content_acceptance__c,Contract_number__c,Delivery_contract_review__c,Field1Intellectual_property__c,FileName__c,New_account__c,Retention__c,Standard_parts__c,Standards__c,Summary_content__c,acacetin__c,company_number__c,file_type__c,payment_terms_describe__c,Name_and_Spec__c,Spread__c,Age__c,Arrival_Date__c,Department_staffing__c,Education__c,Existing_man_power__c,Hiring_schedule__c,Lack_man_power__c,Major__c,Manpower_supplement_description__c,Manpower_type__c,Modify_description__c,Pay_scope__c,Position_Level__c,Qualification_Requirements__c,Require_Job_Name__c,Requirements_number__c,Sex_Preference__c,ZISCALC__c,apply_dept__c,Involving_production__c,overtime_instructions__c,Planning_staff_group__c,assembling__c,assembling_name__c,asset_number__c,device__c,device_name__c,duty_dept_name__c,fault_code__c,fault_description__c,fault_text__c,functional_position__c,functional_position_desc__c,notice_number__c,notice_status__c,notice_type__c,qualitative_analysis__c,reason_code__c,reason_description__c,reason_text__c,responsible_department__c,responsible_person__c,responsible_person_name__c,short_text_description__c,type_description__c,duty_person__c,InventoryType__c,Name__c,ConditionType__c,KeyCombination__c,Sales_Org__c,Sales_channels__c,Price_Group__c,actual_working_hours__c,die_number__c,die_type__c,die_use_bu__c,estimated_working_hic__c,estimated_working_hours__c,isOutsourcing__c,mr_number__c,production_number__c,workpiece_value__c,Travel_days__c,Amount_receivable__c,Annual_sales_amount__c,Application_credit_limit__c,Average_sales__c,Bad_debt_records__c,Capital_on_stock__c,Company_record__c,Confirmation_credit_limits__c,CreditArea__c,Credit_account_numbe__c,Credit_validity__c,Customer_kind__c,Employees_number__c,Exception_handling__c,Founded_time__c,Freeze_confirm__c,Guarantee_amount_receivable__c,KLCooperate_product__c,Local_market_share__c,No_delivery_amount__c,Not_received_Amount__c,Responsible_person_Quality__c,Risk_kind__c,Sales_value__c,Sincere_cooperation__c,Special_current_debt__c,Suppliers__c,Third_credit_line__c,Total_credit_risk__c,Used_Credit_amount__c,credit_line__c,lawsuit__c,supplement__c,Risk_kind_describe__c,Term_of_Payment_account__c,Head_description__c,Accumulated_depreciation__c,Asset_date__c,Asset_initial_value__c,ChangeCostCenter__c,ChangeType__c,Durable_years__c,Entity_asset_type__c,Post_transfer_site__c,Residual_value__c,ScrapOutage_date__c,Approval_User24__c  from Approval_Managed__c  WHERE Id = 'a010I00001mtMIAQA2'\n16:05:09.337 (627390698)|SOQL_EXECUTE_BEGIN|[15]|Aggregations:0|Select Id,OwnerId,IsDeleted,Name,RecordTypeId,CreatedDate,CreatedById,LastModifiedDate,LastModifiedById,SystemModstamp,LastActivityDate,LastViewedDate,LastReferencedDate,Approval_Name__c,Abnormal_Code__c,Abnormal_Type__c,Account_Name__c,Account_Number__c,Account__c,Amount_Asset__c,Amount_Confirm__c,Amount_Net_Days__c,Amount_Offset__c,Amount_Prepay__c,Amount_of_Borrow__c,Amount_of_Budget__c,Amount_of_Forecast__c,Amount_of_General__c,Amount_of_Paid__c,Amount_of_Purchase__c,Amount_of_Total__c,Applicant_Code_Cost__c,Applicant_Code__c,Applicant_Corp_Code__c,Applicant_Cost__c,Applicant_Name_Cost__c,Applicant_Name__c,Applicant_Travel__c,Applicant__c,Approval_Entertained_Code__c,Approval_Entertained__c,Approval_Status__c,Approval_Travel_Code__c,Approval_Travel__c,Approval_User10__c,Approval_User11__c,Approval_User12__c,Approval_User13__c,Approval_User14__c,Approval_User15__c,Approval_User16__c,Approval_User17__c,Approval_User18__c,Approval_User19__c,Approval_User1__c,Approval_User20__c,Approval_User2__c,Approval_User3__c,Approval_User4__c,Approval_User5__c,Approval_User6__c,Approval_User7__c,Approval_User8__c,Approval_User9__c,Arrangement__c,Asset_Code_Inner__c,Asset_Code_Official__c,Asset_Code__c,Asset_Name__c,Asset_Type__c,Bill_Date__c,Bill_No__c,Birthday__c,Capital_Order__c,Cause_of_Analysis1__c,Cause_of_Analysis2__c,Cause_of_Analysis3__c,Cause_of_Analysis4__c,Cause_of_Analysis5__c,Clearing_Description__c,Confirm_Date_of_Effect__c,Confirm_Date_of_Feedback__c,Confirmor_of_Effect__c,Confirmor_of_Feedback__c,Corp_Code__c,Corporation__c,Cost_Budget__c,Currcency_Budget__c,Currency__c,Currency_of_Borrow__c,Currency_of_Budget__c,Days_of_Payment_Term__c,Days_of_Payment__c,Delivery_Type__c,Department__c,Dept_Code__c,Dept_Name__c,Dept_PR_Approval__c,Dept_of_CostCenter__c,Dept_of_Discovery__c,Dept_of_Duty__c,Description_Avoid__c,Description__c,Description_of_Effect__c,Description_of_Travel__c,Device_Number__c,Dismisson_Reason_of_Operate__c,Employee_Code__c,Employee_Name__c,Employee__c,End_Travel_Datetime__c,Estimate_Cost__c,Exchange_Rate__c,Expense_ApprovalProcess_Status__c,Expense_Type_Cost__c,Expense_Type_Prepay__c,Factory__c,Handover_Man1_Code__c,Handover_Man1__c,Handover_Man2_Code__c,Handover_Man2__c,Handover_Man3_Code__c,Handover_Man3__c,Handover_Man4_Code__c,Handover_Man4__c,Human_Range__c,International_Trade_Term__c,Is_Agree_Refund__c,Is_Budgeted__c,Is_Good_Regurned__c,Is_Invoice__c,Is_Key_Returned__c,Is_Ok_Factory_Burthen__c,Is_Push_Sap__c,Is_Receipt_Info__c,Is_Salary_Adjust__c,Is_Taipei_Employee__c,Is_Tools_Returned__c,Is_Withhold__c,Is_Work_Transfered__c,Job_Title_Level_New__c,Job_Title_Level_Old__c,Job_Title_Level__c,Job_Title_New_Code__c,Job_Title_New__c,Job_Title_Old__c,Job_Title__c,Keeper_Reserved__c,Kind_of_Asset__c,Kind_of_Cost__c,Kind_of_Order__c,Kind_of_Work__c,Leave_Office_Date__c,License_Number__c,Make_Man__c,Manager_of_Duty__c,Material_Dealwith__c,Material_Description__c,Material_Name__c,Material_Number__c,Model_and_Spec__c,Model_of_Asset__c,Native_Place__c,Num_Order__c,Num_Unfinished__c,Num_Unqualified__c,Occur_Datetime__c,Operation_Type__c,Operator_Abnormal_Code__c,Operator_Abnormal__c,Order__c,Percent_Pay__c,Percent_of_Payment_Term__c,Period_Delivery__c,Person_Liable__c,Phone__c,Place__c,Post_Category__c,Posting_Date__c,Posting_of_Company__c,Price_Purchase__c,Price__c,Purchase_Date__c,Purchase_Group__c,Purchase_Order_Date__c,Purchase_Org__c,Purchase_Required_Date__c,Purchase__c,Quantity__c,REQ_Code__c,Rate_Unqualified__c,Real_Purchase__c,Reason_of_Description__c,Reason_of_Leave_Human__c,Reason_of_Leave__c,Reason_of_Operate__c,Reason_of_Purchase__c,Reject_Date__c,Reject_Reason__c,Rejector__c,Remark_Vendor_Prepay__c,Remark__c,Remark_of_Explain__c,Required_date__c,Responsible_CostCenter__c,Result_Effect_Current_Period__c,SAPID__c,Salary_Manager__c,Same_Sample__c,Staff_Group_New__c,Staff_Group_Old__c,Staff_Sub_Group_New__c,Staff_Sub_Group__c,Staff_of_Both__c,Start_Travel_Datetime__c,Status_Abnormal__c,Status_Asset__c,Status__c,Stock_Note__c,Stock_Number__c,Supervisor1_Code__c,Supervisor1__c,Supervisor2_Code__c,Supervisor2__c,Supervisor3_Code__c,Supervisor3__c,Supervisor4_Code__c,Supervisor4__c,Supplier_Name__c,Supplier_Number__c,Take_Office_Date__c,Target_of_Travel__c,Term_of_Payment__c,Text_of_Head__c,Transfer_Date__c,Type_of_Approval__c,Type_of_Payment__c,Type_of_Travel__c,Validate_Date__c,Vehicle_of_Travel__c,Vendor_Name__c,Vendor_Number__c,Vendor__c,Voucher_Code__c,Voucher_Date__c,Voucher_HeaderText__c,Voucher_Type__c,Work_Center__c,Work_Company_New__c,Work_Company_Old__c,Work_Date__c,sex__c,Invoice_Amount_Total__c,Is_Print__c,Preinvoice_No__c,Is_Invoice_Success__c,Approval_SyncCheck__c,Is_Reset_Approvaler__c,Asset_No__c,Is_Push_Sap_Once__c,Approval_User21__c,Approval_User22__c,Is_HLY_ExpenseReimburse__c,Keeper_Reserved_Name__c,Is_Reject_Submit__c,Total_Price__c,Supplier__c,Staff_Group_Name__c,Staff_Sub_Group_Name__c,Post_Category_Name__c,Service_Category__c,Approval_DeptName__c,Confirm_Is_Stand__c,Confirm_of_Goods__c,Is_Been_Evaluated__c,Purchasing_Request__c,T_Been_Evaluated__c,Amount_Net_Days_Formula__c,Interface_Info__c,Approval_User23__c,Amount_of_Total_P__c,Amount_of_General_P__c,Amount_of_Borrow_P__c,Cost_Budget_P__c,Estimate_Cost_P__c,Applicant_position__c,Adjustable_vacation__c,Annual_leave__c,Total_Miles__c,Sum_Vacation__c,Warehouse_confirmation__c,Overdue_amount__c,Acceptance_condition__c,Detail_of_Travel__c,Retention_penalty__c,signet_type__c,Bill_number__c,Citic_policy_no__c,Content_acceptance__c,Contract_number__c,Delivery_contract_review__c,Field1Intellectual_property__c,FileName__c,New_account__c,Retention__c,Standard_parts__c,Standards__c,Summary_content__c,acacetin__c,company_number__c,file_type__c,payment_terms_describe__c,Name_and_Spec__c,Spread__c,Age__c,Arrival_Date__c,Department_staffing__c,Education__c,Existing_man_power__c,Hiring_schedule__c,Lack_man_power__c,Major__c,Manpower_supplement_description__c,Manpower_type__c,Modify_description__c,Pay_scope__c,Position_Level__c,Qualification_Requirements__c,Require_Job_Name__c,Requirements_number__c,Sex_Preference__c,ZISCALC__c,apply_dept__c,Involving_production__c,overtime_instructions__c,Planning_staff_group__c,assembling__c,assembling_name__c,asset_number__c,device__c,device_name__c,duty_dept_name__c,fault_code__c,fault_description__c,fault_text__c,functional_position__c,functional_position_desc__c,notice_number__c,notice_status__c,notice_type__c,qualitative_analysis__c,reason_code__c,reason_description__c,reason_text__c,responsible_department__c,responsible_person__c,responsible_person_name__c,short_text_description__c,type_description__c,duty_person__c,InventoryType__c,Name__c,ConditionType__c,KeyCombination__c,Sales_Org__c,Sales_channels__c,Price_Group__c,actual_working_hours__c,die_number__c,die_type__c,die_use_bu__c,estimated_working_hic__c,estimated_working_hours__c,isOutsourcing__c,mr_number__c,production_number__c,workpiece_value__c,Travel_days__c,Amount_receivable__c,Annual_sales_amount__c,Application_credit_limit__c,Average_sales__c,Bad_debt_records__c,Capital_on_stock__c,Company_record__c,Confirmation_credit_limits__c,CreditArea__c,Credit_account_numbe__c,Credit_validity__c,Customer_kind__c,Employees_number__c,Exception_handling__c,Founded_time__c,Freeze_confirm__c,Guarantee_amount_receivable__c,KLCooperate_product__c,Local_market_share__c,No_delivery_amount__c,Not_received_Amount__c,Responsible_person_Quality__c,Risk_kind__c,Sales_value__c,Sincere_cooperation__c,Special_current_debt__c,Suppliers__c,Third_credit_line__c,Total_credit_risk__c,Used_Credit_amount__c,credit_line__c,lawsuit__c,supplement__c,Risk_kind_describe__c,Term_of_Payment_account__c,Head_description__c,Accumulated_depreciation__c,Asset_date__c,Asset_initial_value__c,ChangeCostCenter__c,ChangeType__c,Durable_years__c,Entity_asset_type__c,Post_transfer_site__c,Residual_value__c,ScrapOutage_date__c,Approval_User24__c  from Approval_Managed__c  WHERE Id = 'a010I00001mtMIAQA2'\n16:05:09.337 (674504668)|SOQL_EXECUTE_END|[15]|Rows:1\n16:05:09.337 (689078949)|USER_DEBUG|[8]|DEBUG|fields:{abnormal_containment__c=Abnormal_Containment__c, abnormal_header__c=Abnormal_Header__c, abnormal_problem__c=Abnormal_Problem__c, abnormal_rectify__c=Abnormal_Rectify__c, accounting_code__c=Accounting_Code__c, accountname__c=AccountName__c, activitypartialdescription__c=ActivityPartialDescription__c, allocation__c=Allocation__c, amount__c=Amount__c, amount_p__c=Amount_P__c, ...}\n16:05:09.337 (721672310)|USER_DEBUG|[16]|DEBUG|accessiblefields:(Id, OwnerId, IsDeleted, Name, RecordTypeId, CreatedDate, CreatedById, LastModifiedDate, LastModifiedById, SystemModstamp, ...)\n16:05:09.337 (722688371)|USER_DEBUG|[50]|DEBUG|Select Id,OwnerId,IsDeleted,Name,RecordTypeId,CreatedDate,CreatedById,LastModifiedDate,LastModifiedById,SystemModstamp,LastViewedDate,LastReferencedDate,Abnormal_Containment__c,Abnormal_Header__c,Abnormal_Problem__c,Abnormal_Rectify__c,Accounting_Code__c,Allocation__c,Amount_Price__c,Amount__c,Applicant_Row__c,Applicant__c,Asset_Code__c,Asset_Now_Value__c,Asset_Purchase_Date__c,Asset_Value__c,Back_Project__c,Code_Group__c,Currency_Tax__c,Currency__c,Delivery_Date__c,Dept_of_CostCenter__c,Device_Number__c,Drawing_Number__c,Drawing_Version__c,Factory__c,Header_Code__c,Header_Name__c,Header__c,Index_Item__c,Is_Free__c,Item__c,Last_Pick_Currency__c,Last_Pick_Date__c,Last_Pick_Number__c,Last_Pick_Price__c,Ledger_Account_Purchase__c,Ledger_Account__c,Material_Description__c,Material_Name__c,Material_Number__c,Material_Number_of_Vendor__c,Material_of_Customer__c,Name_of_Price__c,Number_of_Item__c,Number_of_Purchase__c,Order2_Number__c,Order_Of_SalesOrder__c,Parent_Row_Index__c,Per__c,Plan_Completed_Date__c,Price_Net__c,Price_Tax__c,Price__c,Project_No__c,Project__c,Purchase_Info_Inquiry__c,Purchase_Item_Type__c,Purchase_Order_Number__c,Purchase_Order_Price__c,Purchase_Order__c,Quantity_Detail__c,Quantity__c,Quote_Item__c,Quote__c,Reason_Code__c,Remark__c,Row_Index__c,SAPID__c,SGL__c,Sales_Amount_Total__c,Schedule_Date__c,Selected__c,Status_Overview__c,Subject_Alloc_Type__c,TaskID__c,Text_Project__c,Text__c,Type_Description_Bug__c,Type_of_Affair__c,Type_of_Bug__c,Type_of_Cost__c,Type_of_Price__c,Unit3__c,Unit__c,Value_of_Price__c,Vendor_Response__c,Vendor__c,Voucher_Info__c,Expense_Type__c,Text_Long__c,LeadName__c,OpportunityName__c,AccountName__c,ActivityPartialDescription__c,OwnerName__c,TaskSubject__c,Lead2_Id__c,Opportunity2_Id__c,Opportunity2__c,Customer2_Id__c,Customer2__c,Lead2__c,Subject__c,Attachment__c,Cost_of_Tax__c,Fixed__c,Inventory_Quantity__c,Item_Category__c,Job_Number__c,Material_Group__c,Out_Delivery__c,P_Inclusive_of_Tax__c,Ratio__c,Sales_Order_Number__c,Sales_Order__c,Street_House_Num__c,Type_of_Account_Assign__c,Zip_Code_City__c,LevelNumber__c,Purchasing_Request__c,Tprice__c,Price_Net_Formula__c,Leave_reason__c,Leave_type__c,SalesPricing_son2__c,UOM__c,time_number__c,Price_P__c,Amount_P__c,Price_Tax_F__c,End_date__c,Start_date__c,reference_mileage__c,enter_mileage__c,LeaveManage__c,End_Time__c,Start_Time__c,InventoryKinglai_table__c,Storage__c,batch__c,NumerationType__c,EndTime__c,StartTime__c,TypesOfLeave__c,SalesPricing_son_table__c,Standard_parts__c,Device_fix_count__c,Device_fix_cost__c,Device_fix_date__c,matnr_purch_text__c  from Approval_Managed_item__c  WHERE LeaveManage__c = 'a010I00001mtMIAQA2'\n16:05:09.337 (724664940)|SOQL_EXECUTE_BEGIN|[51]|Aggregations:0|Select Id,OwnerId,IsDeleted,Name,RecordTypeId,CreatedDate,CreatedById,LastModifiedDate,LastModifiedById,SystemModstamp,LastViewedDate,LastReferencedDate,Abnormal_Containment__c,Abnormal_Header__c,Abnormal_Problem__c,Abnormal_Rectify__c,Accounting_Code__c,Allocation__c,Amount_Price__c,Amount__c,Applicant_Row__c,Applicant__c,Asset_Code__c,Asset_Now_Value__c,Asset_Purchase_Date__c,Asset_Value__c,Back_Project__c,Code_Group__c,Currency_Tax__c,Currency__c,Delivery_Date__c,Dept_of_CostCenter__c,Device_Number__c,Drawing_Number__c,Drawing_Version__c,Factory__c,Header_Code__c,Header_Name__c,Header__c,Index_Item__c,Is_Free__c,Item__c,Last_Pick_Currency__c,Last_Pick_Date__c,Last_Pick_Number__c,Last_Pick_Price__c,Ledger_Account_Purchase__c,Ledger_Account__c,Material_Description__c,Material_Name__c,Material_Number__c,Material_Number_of_Vendor__c,Material_of_Customer__c,Name_of_Price__c,Number_of_Item__c,Number_of_Purchase__c,Order2_Number__c,Order_Of_SalesOrder__c,Parent_Row_Index__c,Per__c,Plan_Completed_Date__c,Price_Net__c,Price_Tax__c,Price__c,Project_No__c,Project__c,Purchase_Info_Inquiry__c,Purchase_Item_Type__c,Purchase_Order_Number__c,Purchase_Order_Price__c,Purchase_Order__c,Quantity_Detail__c,Quantity__c,Quote_Item__c,Quote__c,Reason_Code__c,Remark__c,Row_Index__c,SAPID__c,SGL__c,Sales_Amount_Total__c,Schedule_Date__c,Selected__c,Status_Overview__c,Subject_Alloc_Type__c,TaskID__c,Text_Project__c,Text__c,Type_Description_Bug__c,Type_of_Affair__c,Type_of_Bug__c,Type_of_Cost__c,Type_of_Price__c,Unit3__c,Unit__c,Value_of_Price__c,Vendor_Response__c,Vendor__c,Voucher_Info__c,Expense_Type__c,Text_Long__c,LeadName__c,OpportunityName__c,AccountName__c,ActivityPartialDescription__c,OwnerName__c,TaskSubject__c,Lead2_Id__c,Opportunity2_Id__c,Opportunity2__c,Customer2_Id__c,Customer2__c,Lead2__c,Subject__c,Attachment__c,Cost_of_Tax__c,Fixed__c,Inventory_Quantity__c,Item_Category__c,Job_Number__c,Material_Group__c,Out_Delivery__c,P_Inclusive_of_Tax__c,Ratio__c,Sales_Order_Number__c,Sales_Order__c,Street_House_Num__c,Type_of_Account_Assign__c,Zip_Code_City__c,LevelNumber__c,Purchasing_Request__c,Tprice__c,Price_Net_Formula__c,Leave_reason__c,Leave_type__c,SalesPricing_son2__c,UOM__c,time_number__c,Price_P__c,Amount_P__c,Price_Tax_F__c,End_date__c,Start_date__c,reference_mileage__c,enter_mileage__c,LeaveManage__c,End_Time__c,Start_Time__c,InventoryKinglai_table__c,Storage__c,batch__c,NumerationType__c,EndTime__c,StartTime__c,TypesOfLeave__c,SalesPricing_son_table__c,Standard_parts__c,Device_fix_count__c,Device_fix_cost__c,Device_fix_date__c,matnr_purch_text__c  from Approval_Managed_item__c  WHERE LeaveManage__c = 'a010I00001mtMIAQA2'\n16:05:09.337 (737718133)|SOQL_EXECUTE_END|[51]|Rows:2\n16:05:09.337 (738157244)|USER_DEBUG|[52]|DEBUG|details-->(Approval_Managed_Item__c:{Id=a050I00000k2oPbQAI, OwnerId=00528000006o8EXAAY, IsDeleted=false, Name=000238017, RecordTypeId=01228000001HonfAAC, CreatedDate=2018-05-24 06:17:31, CreatedById=00528000006o8EXAAY, LastModifiedDate=2018-05-24 06:21:17, LastModifiedById=00528000006o8EXAAY, SystemModstamp=2018-05-24 06:21:17, Is_Free__c=false, Fixed__c=false, Price_Net_Formula__c=0.000, Leave_reason__c=生理假, time_number__c=8, Price_P__c=0.00, Amount_P__c=0.00, Price_Tax_F__c=0.00, End_date__c=2018-05-23 00:00:00, Start_date__c=2018-05-23 00:00:00, LeaveManage__c=a010I00001mtMIAQA2, End_Time__c=170000, Start_Time__c=080000, TypesOfLeave__c=1012, Standard_parts__c=false}, Approval_Managed_Item__c:{Id=a050I00000k2oPlQAI, OwnerId=00528000006o8EXAAY, IsDeleted=false, Name=000238018, RecordTypeId=01228000001HonfAAC, CreatedDate=2018-05-24 06:20:31, CreatedById=00528000006o8EXAAY, LastModifiedDate=2018-05-24 06:21:17, LastModifiedById=00528000006o8EXAAY, SystemModstamp=2018-05-24 06:21:17, Is_Free__c=false, Fixed__c=false, Price_Net_Formula__c=0.000, Leave_reason__c=看醫生, time_number__c=8, Price_P__c=0.00, Amount_P__c=0.00, Price_Tax_F__c=0.00, End_date__c=2018-06-20 00:00:00, Start_date__c=2018-06-20 00:00:00, LeaveManage__c=a010I00001mtMIAQA2, End_Time__c=170000, Start_Time__c=080000, TypesOfLeave__c=1006, Standard_parts__c=false})\n16:05:09.337 (738871235)|USER_DEBUG|[186]|DEBUG|*** 序列化后数据：{\"attributes\":{\"type\":\"Approval_Managed__c\",\"url\":\"/services/data/v42.0/sobjects/Approval_Managed__c/a010I00001mtMIAQA2\"},\"Id\":\"a010I00001mtMIAQA2\",\"OwnerId\":\"00528000006o8EXAAY\",\"IsDeleted\":false,\"Name\":\"AN-180524-00071226\",\"RecordTypeId\":\"0120I000001HrswQAC\",\"CreatedDate\":\"2018-05-24T06:17:31.000+0000\",\"CreatedById\":\"00528000006o8EXAAY\",\"LastModifiedDate\":\"2018-05-24T06:21:45.000+0000\",\"LastModifiedById\":\"00528000006o8EXAAY\",\"SystemModstamp\":\"2018-05-24T06:21:45.000+0000\",\"LastViewedDate\":\"2018-05-24T08:01:15.000+0000\",\"LastReferencedDate\":\"2018-05-24T08:01:15.000+0000\",\"Approval_Name__c\":\"請假申請流程\",\"Amount_of_Borrow__c\":0.00,\"Applicant_Code__c\":\"30210008\",\"Applicant_Corp_Code__c\":\"3000\",\"Applicant_Name__c\":\"Chen May\",\"Applicant__c\":\"00328000014shOxAAI\",\"Approval_Status__c\":\"S\",\"Approval_User1__c\":\"00528000006nvfHAAQ\",\"Approval_User2__c\":\"00528000006nvgBAAQ\",\"Approval_User3__c\":\"00528000006nvgCAAQ\",\"Approval_User4__c\":\"00528000006o8ESAAY\",\"Approval_User5__c\":\"00528000006o8EXAAY\",\"Approval_User6__c\":\"00528000006o8FAAAY\",\"Bill_Date__c\":\"2018-05-24\",\"Birthday__c\":\"1965-10-31\",\"Corp_Code__c\":\"3000\",\"Cost_Budget__c\":0.00,\"Dept_Name__c\":\"8010採購課\",\"Employee_Code__c\":\"30210008\",\"Employee_Name__c\":\"陳 淑芬\",\"Employee__c\":\"00328000014shOxAAI\",\"Expense_Type_Cost__c\":\"02\",\"Expense_Type_Prepay__c\":\"20\",\"Human_Range__c\":\"3000\",\"Is_Agree_Refund__c\":false,\"Is_Budgeted__c\":false,\"Is_Good_Regurned__c\":false,\"Is_Invoice__c\":false,\"Is_Key_Returned__c\":false,\"Is_Ok_Factory_Burthen__c\":false,\"Is_Push_Sap__c\":false,\"Is_Receipt_Info__c\":false,\"Is_Salary_Adjust__c\":false,\"Is_Taipei_Employee__c\":true,\"Is_Tools_Returned__c\":false,\"Is_Withhold__c\":false,\"Is_Work_Transfered__c\":false,\"Job_Title_Old__c\":\"8010採購課-採購課課長\",\"Job_Title__c\":\"8010採購課-採購課課長\",\"Kind_of_Order__c\":\"NB\",\"Operator_Abnormal_Code__c\":\"30210212\",\"Operator_Abnormal__c\":\"00328000014shPFAAY\",\"Remark__c\":\"請假明細:\\r\\n(1){ 生理假 / 事由: 生理假 / 請假期間: 2018-05-23 08:00 至 2018-05-23 17:00 / 時數: 8 }\\r\\n(2){ 特休 / 事由: 看醫生 / 請假期間: 2018-06-20 08:00 至 2018-06-20 17:00 / 時數: 8 }\",\"Salary_Manager__c\":\"T01\",\"Status__c\":\"新建\",\"Take_Office_Date__c\":\"2004-08-09\",\"Voucher_Type__c\":\"KA\",\"Work_Company_Old__c\":\"8010採購課\",\"sex__c\":\"女\",\"Is_Print__c\":false,\"Is_Invoice_Success__c\":false,\"Approval_SyncCheck__c\":false,\"Is_Reset_Approvaler__c\":false,\"Is_Push_Sap_Once__c\":false,\"Is_HLY_ExpenseReimburse__c\":false,\"Is_Reject_Submit__c\":false,\"Is_Been_Evaluated__c\":false,\"Amount_Net_Days_Formula__c\":0.00,\"Amount_of_Total_P__c\":0.00,\"Amount_of_General_P__c\":0.00,\"Amount_of_Borrow_P__c\":0.00,\"Cost_Budget_P__c\":0.00,\"Estimate_Cost_P__c\":0.00,\"Applicant_position__c\":\"8010採購課-採購課課長\",\"Adjustable_vacation__c\":\"0\",\"Annual_leave__c\":\"128\",\"Total_Miles__c\":\"0\",\"Sum_Vacation__c\":16.00,\"Warehouse_confirmation__c\":\"160\",\"Acceptance_condition__c\":false,\"Contract_number__c\":\"13158\",\"Delivery_contract_review__c\":false,\"Field1Intellectual_property__c\":false,\"New_account__c\":false,\"Retention__c\":false,\"Standard_parts__c\":false,\"Standards__c\":false,\"Involving_production__c\":false,\"isOutsourcing__c\":false,\"Bad_debt_records__c\":false,\"Credit_validity__c\":\"2018-05-24\",\"Freeze_confirm__c\":false,\"Suppliers__c\":false,\"lawsuit__c\":false}\n16:05:09.337 (744174422)|USER_DEBUG|[107]|DEBUG|*** main{Acceptance_condition__c=false, Adjustable_vacation__c=0, Amount_Net_Days_Formula__c=0.00, Amount_of_Borrow_P__c=0.00, Amount_of_Borrow__c=0.00, Amount_of_General_P__c=0.00, Amount_of_Total_P__c=0.00, Annual_leave__c=128, Applicant_Code__c=30210008, Applicant_Corp_Code__c=3000, ...}\n16:05:09.337 (744713427)|USER_DEBUG|[208]|DEBUG|*** 序列化后数据：{\"attributes\":{\"type\":\"Approval_Managed_Item__c\",\"url\":\"/services/data/v42.0/sobjects/Approval_Managed_Item__c/a050I00000k2oPbQAI\"},\"Id\":\"a050I00000k2oPbQAI\",\"OwnerId\":\"00528000006o8EXAAY\",\"IsDeleted\":false,\"Name\":\"000238017\",\"RecordTypeId\":\"01228000001HonfAAC\",\"CreatedDate\":\"2018-05-24T06:17:31.000+0000\",\"CreatedById\":\"00528000006o8EXAAY\",\"LastModifiedDate\":\"2018-05-24T06:21:17.000+0000\",\"LastModifiedById\":\"00528000006o8EXAAY\",\"SystemModstamp\":\"2018-05-24T06:21:17.000+0000\",\"Is_Free__c\":false,\"Fixed__c\":false,\"Price_Net_Formula__c\":0.000,\"Leave_reason__c\":\"生理假\",\"time_number__c\":\"8\",\"Price_P__c\":0.00,\"Amount_P__c\":0.00,\"Price_Tax_F__c\":0.00,\"End_date__c\":\"2018-05-23\",\"Start_date__c\":\"2018-05-23\",\"LeaveManage__c\":\"a010I00001mtMIAQA2\",\"End_Time__c\":\"170000\",\"Start_Time__c\":\"080000\",\"TypesOfLeave__c\":\"1012\",\"Standard_parts__c\":false}\n16:05:09.337 (746807127)|USER_DEBUG|[208]|DEBUG|*** 序列化后数据：{\"attributes\":{\"type\":\"Approval_Managed_Item__c\",\"url\":\"/services/data/v42.0/sobjects/Approval_Managed_Item__c/a050I00000k2oPlQAI\"},\"Id\":\"a050I00000k2oPlQAI\",\"OwnerId\":\"00528000006o8EXAAY\",\"IsDeleted\":false,\"Name\":\"000238018\",\"RecordTypeId\":\"01228000001HonfAAC\",\"CreatedDate\":\"2018-05-24T06:20:31.000+0000\",\"CreatedById\":\"00528000006o8EXAAY\",\"LastModifiedDate\":\"2018-05-24T06:21:17.000+0000\",\"LastModifiedById\":\"00528000006o8EXAAY\",\"SystemModstamp\":\"2018-05-24T06:21:17.000+0000\",\"Is_Free__c\":false,\"Fixed__c\":false,\"Price_Net_Formula__c\":0.000,\"Leave_reason__c\":\"看醫生\",\"time_number__c\":\"8\",\"Price_P__c\":0.00,\"Amount_P__c\":0.00,\"Price_Tax_F__c\":0.00,\"End_date__c\":\"2018-06-20\",\"Start_date__c\":\"2018-06-20\",\"LeaveManage__c\":\"a010I00001mtMIAQA2\",\"End_Time__c\":\"170000\",\"Start_Time__c\":\"080000\",\"TypesOfLeave__c\":\"1006\",\"Standard_parts__c\":false}\n16:05:09.337 (765762586)|USER_DEBUG|[185]|DEBUG|*** SF传送给SAP的数据: {\"operate\":null,\"content\":{\"main\":{\"lawsuit__c\":\"false\",\"Suppliers__c\":\"false\",\"Freeze_confirm__c\":\"false\",\"Credit_validity__c\": \"20180524\",\"Bad_debt_records__c\":\"false\",\"isOutsourcing__c\":\"false\",\"Involving_production__c\":\"false\",\"Standards__c\":\"false\",\"Standard_parts__c\":\"false\",\"Retention__c\":\"false\",\"New_account__c\":\"false\",\"Field1Intellectual_property__c\":\"false\",\"Delivery_contract_review__c\":\"false\",\"Contract_number__c\":\"13158\",\"Acceptance_condition__c\":\"false\",\"Warehouse_confirmation__c\":\"160\",\"Sum_Vacation__c\":\"16.00\",\"Total_Miles__c\":\"0\",\"Annual_leave__c\":\"128\",\"Adjustable_vacation__c\":\"0\",\"Applicant_position__c\":\"8010採購課-採購課課長\",\"Estimate_Cost_P__c\":\"0.00\",\"Cost_Budget_P__c\":\"0.00\",\"Amount_of_Borrow_P__c\":\"0.00\",\"Amount_of_General_P__c\":\"0.00\",\"Amount_of_Total_P__c\":\"0.00\",\"Amount_Net_Days_Formula__c\":\"0.00\",\"Is_Been_Evaluated__c\":\"false\",\"Is_Reject_Submit__c\":\"false\",\"Is_HLY_ExpenseReimburse__c\":\"false\",\"Is_Push_Sap_Once__c\":\"false\",\"Is_Reset_Approvaler__c\":\"false\",\"Approval_SyncCheck__c\":\"false\",\"Is_Invoice_Success__c\":\"false\",\"Is_Print__c\":\"false\",\"sex__c\":\"女\",\"Work_Company_Old__c\":\"8010採購課\",\"Voucher_Type__c\":\"KA\",\"Take_Office_Date__c\": \"20040809\",\"Status__c\":\"新建\",\"Salary_Manager__c\":\"T01\",\"Remark__c\":\"請假明細:\\r\\n(1){ 生理假 / 事由: 生理假 / 請假期間: 2018-05-23 08:00 至 2018-05-23 17:00 / 時數: 8 }\\r\\n(2){ 特休 / 事由: 看醫生 / 請假期間: 2018-06-20 08:00 至 2018-06-20 17:00 / 時數: 8 }\",\"Operator_Abnormal__c\":\"00328000014shPFAAY\",\"Operator_Abnormal_Code__c\":\"30210212\",\"Kind_of_Order__c\":\"NB\",\"Job_Title__c\":\"8010採購課-採購課課長\",\"Job_Title_Old__c\":\"8010採購課-採購課課長\",\"Is_Work_Transfered__c\":\"false\",\"Is_Withhold__c\":\"false\",\"Is_Tools_Returned__c\":\"false\",\"Is_Taipei_Employee__c\":\"true\",\"Is_Salary_Adjust__c\":\"false\",\"Is_Receipt_Info__c\":\"false\",\"Is_Push_Sap__c\":\"false\",\"Is_Ok_Factory_Burthen__c\":\"false\",\"Is_Key_Returned__c\":\"false\",\"Is_Invoice__c\":\"false\",\"Is_Good_Regurned__c\":\"false\",\"Is_Budgeted__c\":\"false\",\"Is_Agree_Refund__c\":\"false\",\"Human_Range__c\":\"3000\",\"Expense_Type_Prepay__c\":\"20\",\"Expense_Type_Cost__c\":\"02\",\"Employee__c\":\"00328000014shOxAAI\",\"Employee_Name__c\":\"陳 淑芬\",\"Employee_Code__c\":\"30210008\",\"Dept_Name__c\":\"8010採購課\",\"Cost_Budget__c\":\"0.00\",\"Corp_Code__c\":\"3000\",\"Birthday__c\": \"19651031\",\"Bill_Date__c\": \"20180524\",\"Approval_User6__c\":\"00528000006o8FAAAY\",\"Approval_User5__c\":\"00528000006o8EXAAY\",\"Approval_User4__c\":\"00528000006o8ESAAY\",\"Approval_User3__c\":\"00528000006nvgCAAQ\",\"Approval_User2__c\":\"00528000006nvgBAAQ\",\"Approval_User1__c\":\"00528000006nvfHAAQ\",\"Approval_Status__c\":\"S\",\"Applicant__c\":\"00328000014shOxAAI\",\"Applicant_Name__c\":\"Chen May\",\"Applicant_Corp_Code__c\":\"3000\",\"Applicant_Code__c\":\"30210008\",\"Amount_of_Borrow__c\":\"0.00\",\"Approval_Name__c\":\"請假申請流程\",\"LastReferencedDate\":\"2018-05-24T08:01:15.000+0000\",\"LastViewedDate\":\"2018-05-24T08:01:15.000+0000\",\"SystemModstamp\":\"2018-05-24T06:21:45.000+0000\",\"LastModifiedById\":\"00528000006o8EXAAY\",\"LastModifiedDate\":\"2018-05-24T06:21:45.000+0000\",\"CreatedById\":\"00528000006o8EXAAY\",\"CreatedDate\":\"2018-05-24T06:17:31.000+0000\",\"RecordTypeId\":\"0120I000001HrswQAC\",\"Name\":\"AN-180524-00071226\",\"IsDeleted\":\"false\",\"OwnerId\":\"00528000006o8EXAAY\",\"Id\":\"a010I00001mtMIAQA2\"},\"details\":{\"leaveItem\":[{\"Standard_parts__c\":\"false\",\"TypesOfLeave__c\":\"1012\",\"Start_Time__c\":\"080000\",\"End_Time__c\":\"170000\",\"LeaveManage__c\":\"a010I00001mtMIAQA2\",\"Start_date__c\": \"20180523\",\"End_date__c\": \"20180523\",\"Price_Tax_F__c\":\"0.00\",\"Amount_P__c\":\"0.00\",\"Price_P__c\":\"0.00\",\"time_number__c\":\"8\",\"Leave_reason__c\":\"生理假\",\"Price_Net_Formula__c\":\"0.000\",\"Fixed__c\":\"false\",\"Is_Free__c\":\"false\",\"SystemModstamp\":\"2018-05-24T06:21:17.000+0000\",\"LastModifiedById\":\"00528000006o8EXAAY\",\"LastModifiedDate\":\"2018-05-24T06:21:17.000+0000\",\"CreatedById\":\"00528000006o8EXAAY\",\"CreatedDate\":\"2018-05-24T06:17:31.000+0000\",\"RecordTypeId\":\"01228000001HonfAAC\",\"Name\":\"000238017\",\"IsDeleted\":\"false\",\"OwnerId\":\"00528000006o8EXAAY\",\"Id\":\"a050I00000k2oPbQAI\",\"No\":\"0\"},{\"Standard_parts__c\":\"false\",\"TypesOfLeave__c\":\"1006\",\"Start_Time__c\":\"080000\",\"End_Time__c\":\"170000\",\"LeaveManage__c\":\"a010I00001mtMIAQA2\",\"Start_date__c\": \"20180620\",\"End_date__c\": \"20180620\",\"Price_Tax_F__c\":\"0.00\",\"Amount_P__c\":\"0.00\",\"Price_P__c\":\"0.00\",\"time_number__c\":\"8\",\"Leave_reason__c\":\"看醫生\",\"Price_Net_Formula__c\":\"0.000\",\"Fixed__c\":\"false\",\"Is_Free__c\":\"false\",\"SystemModstamp\":\"2018-05-24T06:21:17.000+0000\",\"LastModifiedById\":\"00528000006o8EXAAY\",\"LastModifiedDate\":\"2018-05-24T06:21:17.000+0000\",\"CreatedById\":\"00528000006o8EXAAY\",\"CreatedDate\":\"2018-05-24T06:20:31.000+0000\",\"RecordTypeId\":\"01228000001HonfAAC\",\"Name\":\"000238018\",\"IsDeleted\":\"false\",\"OwnerId\":\"00528000006o8EXAAY\",\"Id\":\"a050I00000k2oPlQAI\",\"No\":\"1\"}]}},\"approval\":\"LEAVE_TW\"}\n16:05:09.337 (766354592)|USER_DEBUG|[31]|DEBUG|*** 开始调用Soap\n16:05:09.337 (940601467)|CALLOUT_REQUEST|[32]|ZwbSalesforce_element:[SalesforceJosnImport={\"operate\":null,\"content\":{\"main\":{\"lawsuit__c\":\"false\",\"Suppliers__c\":\"false\",\"Freeze_confirm__c\":\"false\",\"Credit_validity__c\": \"20180524\",\"Bad_debt_records__c\":\"false\",\"isOutsourcing__c\":\"false\",\"Involving_production__c\":\"false\",\"Standards__c\":\"false\",\"Standard_parts__c\":\"false\",\"Retention__c\":\"false\",\"New_account__c\":\"false\",\"Field1Intellectual_property__c\":\"false\",\"Delivery_contract_review__c\":\"false\",\"Contract_number__c\":\"13158\",\"Acceptance_condition__c\":\"false\",\"Warehouse_confirmation__c\":\"160\",\"Sum_Vacation__c\":\"16.00\",\"Total_Miles__c\":\"0\",\"Annual_leave__c\":\"128\",\"Adjustable_vacation__c\":\"0\",\"Applicant_position__c\":\"8010採購課-採購課課長\",\"Estimate_Cost_P__c\":\"0.00\",\"Cost_Budget_P__c\":\"0.00\",\"Amount_of_Borrow_P__c\":\"0.00\",\"Amount_of_General_P__c\":\"0.00\",\"Amount_of_Total_P__c\":\"0.00\",\"Amount_Net_Days_Formula__c\":\"0.00\",\"Is_Been_Evaluated__c\":\"false\",\"Is_Reject_Submit__c\":\"false\",\"Is_HLY_ExpenseReimburse__c\":\"false\",\"Is_Push_Sap_Once__c\":\"false\",\"Is_Reset_Approvaler__c\":\"false\",\"Approval_SyncCheck__c\":\"false\",\"Is_Invoice_Success__c\":\"false\",\"Is_Print__c\":\"false\",\"sex__c\":\"女\",\"Work_Company_Old__c\":\"8010採購課\",\"Voucher_Type__c\":\"KA\",\"Take_Office_Date__c\": \"20040809\",\"Status__c\":\"新建\",\"Salary_Manager__c\":\"T01\",\"Remark__c\":\"請假明細:\\r\\n(1){ 生理假 / 事由: 生理假 / 請假期間: 2018-05-23 08:00 至 2018-05-23 17:00 / 時數: 8 }\\r\\n(2){ 特休 / 事由: 看醫生 / 請假期間: 2018-06-20 08:00 至 2018-06-20 17:00 / 時數: 8 }\",\"Operator_Abnormal__c\":\"00328000014shPFAAY\",\"Operator_Abnormal_Code__c\":\"30210212\",\"Kind_of_Order__c\":\"NB\",\"Job_Title__c\":\"8010採購課-採購課課長\",\"Job_Title_Old__c\":\"8010採購課-採購課課長\",\"Is_Work_Transfered__c\":\"false\",\"Is_Withhold__c\":\"false\",\"Is_Tools_Returned__c\":\"false\",\"Is_Taipei_Employee__c\":\"true\",\"Is_Salary_Adjust__c\":\"false\",\"Is_Receipt_Info__c\":\"false\",\"Is_Push_Sap__c\":\"false\",\"Is_Ok_Factory_Burthen__c\":\"false\",\"Is_Key_Returned__c\":\"false\",\"Is_Invoice__c\":\"false\",\"Is_Good_Regurned__c\":\"false\",\"Is_Budgeted__c\":\"false\",\"Is_Agree_Refund__c\":\"false\",\"Human_Range__c\":\"3000\",\"Expense_Type_Prepay__c\":\"20\",\"Expense_Type_Cost__c\":\"02\",\"Employee__c\":\"00328000014shOxAAI\",\"Employee_Name__c\":\"陳 淑芬\",\"Employee_Code__c\":\"30210008\",\"Dept_Name__c\":\"8010採購課\",\"Cost_Budget__c\":\"0.00\",\"Corp_Code__c\":\"3000\",\"Birthday__c\": \"19651031\",\"Bill_Date__c\": \"20180524\",\"Approval_User6__c\":\"00528000006o8FAAAY\",\"Approval_User5__c\":\"00528000006o8EXAAY\",\"Approval_User4__c\":\"00528000006o8ESAAY\",\"Approval_User3__c\":\"00528000006nvgCAAQ\",\"Approval_User2__c\":\"00528000006nvgBAAQ\",\"Approval_User1__c\":\"00528000006nvfHAAQ\",\"Approval_Status__c\":\"S\",\"Applicant__c\":\"00328000014shOxAAI\",\"Applicant_Name__c\":\"Chen May\",\"Applicant_Corp_Code__c\":\"3000\",\"Applicant_Code__c\":\"30210008\",\"Amount_of_Borrow__c\":\"0.00\",\"Approval_Name__c\":\"請假申請流程\",\"LastReferencedDate\":\"2018-05-24T08:01:15.000+0000\",\"LastViewedDate\":\"2018-05-24T08:01:15.000+0000\",\"SystemModstamp\":\"2018-05-24T06:21:45.000+0000\",\"LastModifiedById\":\"00528000006o8EXAAY\",\"LastModifiedDate\":\"2018-05-24T06:21:45.000+0000\",\"CreatedById\":\"00528000006o8EXAAY\",\"CreatedDate\":\"2018-05-24T06:17:31.000+0000\",\"RecordTypeId\":\"0120I000001HrswQAC\",\"Name\":\"AN-180524-00071226\",\"IsDeleted\":\"false\",\"OwnerId\":\"00528000006o8EXAAY\",\"Id\":\"a010I00001mtMIAQA2\"},\"details\":{\"leaveItem\":[{\"Standard_parts__c\":\"false\",\"TypesOfLeave__c\":\"1012\",\"Start_Time__c\":\"080000\",\"End_Time__c\":\"170000\",\"LeaveManage__c\":\"a010I00001mtMIAQA2\",\"Start_date__c\": \"20180523\",\"End_date__c\": \"20180523\",\"Price_Tax_F__c\":\"0.00\",\"Amount_P__c\":\"0.00\",\"Price_P__c\":\"0.00\",\"time_number__c\":\"8\",\"Leave_reason__c\":\"生理假\",\"Price_Net_Formula__c\":\"0.000\",\"Fixed__c\":\"false\",\"Is_Free__c\":\"false\",\"SystemModstamp\":\"2018-05-24T06:21:17.000+0000\",\"LastModifiedById\":\"00528000006o8EXAAY\",\"LastModifiedDate\":\"2018-05-24T06:21:17.000+0000\",\"CreatedById\":\"00528000006o8EXAAY\",\"CreatedDate\":\"2018-05-24T06:17:31.000+0000\",\"RecordTypeId\":\"01228000001HonfAAC\",\"Name\":\"000238017\",\"IsDeleted\":\"false\",\"OwnerId\":\"00528000006o8EXAAY\",\"Id\":\"a050I00000k2oPbQAI\",\"No\":\"0\"},{\"Standard_parts__c\":\"false\",\"TypesOfLeave__c\":\"1006\",\"Start_Time__c\":\"080000\",\"End_Time__c\":\"170000\",\"LeaveManage__c\":\"a010I00001mtMIAQA2\",\"Start_date__c\": \"20180620\",\"End_date__c\": \"20180620\",\"Price_Tax_F__c\":\"0.00\",\"Amount_P__c\":\"0.00\",\"Price_P__c\":\"0.00\",\"time_number__c\":\"8\",\"Leave_reason__c\":\"看醫生\",\"Price_Net_Formula__c\":\"0.000\",\"Fixed__c\":\"false\",\"Is_Free__c\":\"false\",\"SystemModstamp\":\"2018-05-24T06:21:17.000+0000\",\"LastModifiedById\":\"00528000006o8EXAAY\",\"LastModifiedDate\":\"2018-05-24T06:21:17.000+0000\",\"CreatedById\":\"00528000006o8EXAAY\",\"CreatedDate\":\"2018-05-24T06:20:31.000+0000\",\"RecordTypeId\":\"01228000001HonfAAC\",\"Name\":\"000238018\",\"IsDeleted\":\"false\",\"OwnerId\":\"00528000006o8EXAAY\",\"Id\":\"a050I00000k2oPlQAI\",\"No\":\"1\"}]}},\"approval\":\"LEAVE_TW\"}, SalesforceJosnImport_type_info=(SalesforceJosnImport, urn:sap-com:document:sap:soap:functions:mc-style, null, 0, 1, false), apex_schema_type_info=(urn:sap-com:document:sap:soap:functions:mc-style, false, true), field_order_type_info=(SalesforceJosnImport)]::SOAPAction=\"\" Accept=text/xml User-Agent=SFDC-Callout/42.0 SFDC_STACK_DEPTH=1 Content-Type=text/xml;charset=UTF-8 \n16:05:09.337 (1205616315)|CALLOUT_RESPONSE|[32]|\n16:05:09.337 (1205979037)|USER_DEBUG|[44]|DEBUG|*** 结束调用Soap\n16:05:09.337 (1206451052)|USER_DEBUG|[233]|DEBUG|*** SAP返回结果JSON: {\"status\":\"1\", \"message\":\"查詢成功\",  \"leave_data\":[]}\n16:05:09.337 (1207269256)|USER_DEBUG|[6]|DEBUG|{\"status\":\"1\", \"message\":\"查詢成功\",  \"leave_data\":[]}\n16:05:10.207 (1207354964)|CUMULATIVE_LIMIT_USAGE\n16:05:10.207 (1207354964)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 2 out of 100\n  Number of query rows: 3 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 226 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 1 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n16:05:10.207 (1207354964)|CUMULATIVE_LIMIT_USAGE_END\n\n16:05:09.337 (1207419355)|CODE_UNIT_FINISHED|execute_anonymous_apex\n16:05:09.337 (1208844646)|EXECUTION_FINISHED\n",
 			"settings":
 			{
-				"buffer_size": 22748,
+				"buffer_size": 41464,
+				"line_ending": "Windows",
+				"name": "Execute Anonymous Result",
+				"scratch": true
+			}
+		},
+		{
+			"file": "src/classes/SapJsonStringBuilder.cls",
+			"settings":
+			{
+				"buffer_size": 7205,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/classes/HttpRest.cls",
+			"file": "src/classes/SapJsonStringBuilderTest.cls",
 			"settings":
 			{
-				"buffer_size": 4640,
+				"buffer_size": 7348,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMLeaveApplicationExtension.cls",
+			"settings":
+			{
+				"buffer_size": 14091,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMLeaveApplictionTest.cls",
+			"settings":
+			{
+				"buffer_size": 19495,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/RemoteActionsOfLeave.cls",
+			"settings":
+			{
+				"buffer_size": 4436,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/RemoteActionsOfLeaveTest.cls",
+			"settings":
+			{
+				"buffer_size": 2322,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -499,7 +553,7 @@
 			"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
 			"settings":
 			{
-				"buffer_size": 12232,
+				"buffer_size": 10963,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -513,37 +567,31 @@
 			}
 		},
 		{
+			"contents": "<!--> \n 請假申請流程VF\n 因後續尚有眾多修改計畫以此流程為基準,\n 所以沒有共用計畫.\n<-->\n<apex:page applyhtmltag=\"true\" doctype=\"html-5.0\" extensions=\"AMLeaveApplicationExtension\" standardcontroller=\"Approval_Managed__c\">\n    <!-- 請假申請流程 -->\n    <meta content=\"width=device-width, initial-scale=1\" name=\"viewport\"/>\n   \n    <html>\n        <head>\n            \n            <link href=\"//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css\" rel=\"stylesheet\"/>\n            <link crossorigin=\"anonymous\" href=\"https://unpkg.com/purecss@1.0.0/build/pure-min.css\" integrity=\"sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w\" rel=\"stylesheet\"/>\n            <link href=\"https://unpkg.com/purecss@1.0.0/build/base-min.css\" rel=\"stylesheet\"/>\n            <link href=\"https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css\" rel=\"stylesheet\"/>\n            <link href=\"{!URLFOR($Resource.JSbundle, '/app/RWD-Table.css')}\" rel=\"stylesheet\"/>\n            <link href=\"{!URLFOR($Resource.JSbundle, '/app/AMLeaveApplication/requireRedBarSetting.css')}\" rel=\"stylesheet\"/>\n            <script src=\"{!URLFOR($Resource.jqueryMin331)}\">\n            </script>\n            <script src=\"https://code.jquery.com/ui/1.12.1/jquery-ui.min.js\">\n            </script>\n            <script src=\"https://malsup.github.io/jquery.blockUI.js\" type=\"text/javascript\">\n            </script>\n            <script crossorigin=\"anonymous\" src=\"{!URLFOR($Resource.JSbundle, '/app/AMLeaveApplication/AMLeaveApplicationJS.js')}\">\n            </script>\n            <script crossorigin=\"anonymous\" src=\"{!URLFOR($Resource.JSbundle, '/app/dataTableConfigObj.js')}\">\n            </script>\n            <script type=\"text/javascript\">\n                j$( function() {\n                   \n                    //隱藏新增刪除請假明細按鈕  \n                    j$(\"input[id$=btnAdd],input[id$=btnDel]\").hide();\n                    //隱藏 查詢tab\n                    j$('#ui-id-2').hide();\n                    j$( \"#tabs\" ).tabs({\n                      beforeLoad: function( event, ui ) {\n                        ui.jqXHR.fail(function() {\n                          ui.panel.html(\n                            \"Couldn't load this tab. We'll try to fix this as soon as possible. \" +\n                            \"If this wouldn't be a demo.\" );\n                        }); \n                      }\n                    });\n\n                    //搜尋tab只有在草稿和新建狀態顯示\n                    if ('{!NowStatus}' == 'SKETCH' || '{!NowStatus}' == 'NEW') { \n                        j$('#ui-id-2').show();\n                        // j$(\"input[id$=Employee]\").attr('placeholder','請點下方的放大鏡圖示做輸入');\n                        // j$(\"input[id$=Agent]\").attr('placeholder','請點下方的放大鏡圖示做輸入');\n                           \n                    }\n                    //只有在草稿和新建狀態或者該關卡有可編輯欄位\n                    //顯示新增刪除請假明細按鈕 \n                    if(\"{!NowStatus}\" === 'NEW' || \"{!NowStatus}\" === 'SKETCH' || \"{!isEditable}\" == 'true'){\n                       j$(\"input[id$=btnAdd],input[id$=btnDel]\").show();\n                     }\n                   //alert('{!approvalNode}' );\n                   \n                    if ('{!approvalNode}' == 'AP99'){\n                        let target = j$('#sync');\n                        target.show();\n                        target.on('click',function(){\n                            syncToSAP();\n                         });\n                    }else{\n                         j$('#sync').hide();\n                    }\n                     \n              });\n\n                //SAP資料同步\n                function syncToSAP() {\n                 let cId = '{!am.Id}';\n                 if (cId != '000000000000000' && cId != null && cId != '') {\n                     AMLeaveApplicationExtension.leaveAppSyncToSAP(cId, function(result, event) {\n                         if (event.status && result != null) {\n                             // JSON.parse(result.replace(/(&quot\\;)/g, \"\\\"\"), function(k, v) {\n                             //     console.log(k + ',' + v);\n                             //     if (k == 'message') {\n                             //        alert(v);\n                             //     }\n                             // });\n                             alert(result);\n                             window.parent.location.href='/{!am.id}';\n                         }\n                     })\n                 }\n             }\n            </script>\n        </head>\n        <body>\n            <div id=\"tabs\">\n                <ul>\n                    <li>\n                        <a href=\"#tabs-1\">\n                            請假申請\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"#tabs-2\">\n                            查詢\n                        </a>\n                    </li>\n                </ul>\n                <div id=\"tabs-2\">\n                    <apex:include pagename=\"LeaveQuery\">\n                    </apex:include>\n                </div>\n                <div id=\"tabs-1\">\n                    <apex:sectionheader title=\"請假申請流程\">\n                    </apex:sectionheader>\n                    <button id=\"sync\" style=\"background: #f44336;color:white; \">與SAP請假資料同步</button>\n                    <apex:pageblock >\n                        <apex:form id=\"form\" styleclass=\"pure-form pure-form-stacked\">\n                            <c:baseFormInfo inputobject=\"{!am}\">\n                            </c:baseFormInfo>\n                            <fieldset>\n                                <legend>\n                                    <apex:pageblocksection title=\"請假資訊\">\n                                    </apex:pageblocksection>\n                                </legend>\n                                <div class=\"pure-g\">\n                                    <div class=\"pure-u-1 pure-u-md-1-3\">\n                                        <label for=\"Employee\">\n                                            請假人\n                                        </label>\n                                        <apex:inputfield id=\"Employee\" required=\"true\" styleclass=\"pure-u-1 pure-u-md-2-3\" value=\"{!am.Employee__c}\">\n                                        </apex:inputfield>\n                                    </div>\n                                    <div class=\"pure-u-1 pure-u-md-1-3\">\n                                        <label for=\"Employee_Code\">\n                                            請假人工號\n                                        </label>\n                                        <apex:inputfield id=\"Employee_Code\" styleclass=\"pure-u-1 pure-u-md-2-3 readOnly\" value=\"{!am.Employee_Code__c}\">\n                                        </apex:inputfield>\n                                    </div>\n                                    <div class=\"pure-u-1 pure-u-md-1-3\">\n                                    </div>\n                                    <div class=\"pure-u-1 pure-u-md-1-3\">\n                                        <label for=\"Agent\">\n                                            代理人\n                                        </label>\n                                        <apex:inputfield id=\"Agent\" required=\"true\" styleclass=\"pure-u-1 pure-u-md-2-3\" value=\"{!am.Operator_Abnormal__c}\">\n                                        </apex:inputfield>\n                                    </div>\n                                    <div class=\"pure-u-1 pure-u-md-1-3\">\n                                        <label for=\"AgentExt\">\n                                            代理人分機\n                                        </label>\n                                        <apex:inputfield id=\"AgentExt\" styleclass=\"pure-u-1 pure-u-md-2-3\" value=\"{!am.Contract_number__c}\">\n                                        </apex:inputfield>\n                                    </div>\n                                    <div class=\"pure-u-1 pure-u-md-1-3\">\n                                    </div>\n                                    <div class=\"pure-u-1 pure-u-md-1-3\">\n                                        <label for=\"Annual_leave\">\n                                            特休可用時數\n                                        </label>\n                                        <apex:inputfield id=\"Annual_leave\" styleclass=\"pure-u-1 pure-u-md-2-3 readOnly\" value=\"{!am.Annual_leave__c}\">\n                                        </apex:inputfield>\n                                    </div>\n                                    <!--使用Warehouse_confirmation__c 文字(10) 做為資料儲存欄位-->\n                                    <div class=\"pure-u-1 pure-u-md-1-3\">\n                                        <label for=\"Annual_leave_Reset\">\n                                            下年度特休重置總時數\n                                        </label>\n                                        <apex:inputfield id=\"Annual_leave_Reset\" styleclass=\"pure-u-1 pure-u-md-2-3 readOnly\" value=\"{!am.Warehouse_confirmation__c}\">\n                                        </apex:inputfield>\n                                    </div>\n                                    <div class=\"pure-u-1 pure-u-md-1-3\">\n                                        <label for=\"Adjustable_vacation\">\n                                            調休可用時數\n                                        </label>\n                                        <apex:inputfield id=\"Adjustable_vacation\" styleclass=\"pure-u-1 pure-u-md-2-3 readOnly\" value=\"{!am.Adjustable_vacation__c }\">\n                                        </apex:inputfield>\n                                    </div>\n                                    <div class=\"pure-u-1 pure-u-md-1-3\">\n                                        <label for=\"Applicant_position\">\n                                            請假人職稱\n                                        </label>\n                                        <input class=\"pure-u-1 pure-u-md-2-3 readOnly\" id=\"Applicant_position\" type=\"text\" value=\"{!am.Applicant_position__c}\">\n                                        </input>\n                                    </div>\n                                    <div class=\"pure-u-1 pure-u-md-1-3\">\n                                        <label for=\"Take_Office_Date\">\n                                            到職日期\n                                        </label>\n                                        <input class=\"pure-u-1 pure-u-md-2-3 readOnly\" id=\"Take_Office_Date_box\" value=\"\">\n                                        </input>\n                                        <apex:inputfield id=\"Take_Office_Date\" onchange=\"j$('#Take_Office_Date_box').val(j$(this).val());\" value=\"{!am.Take_Office_Date__c}\">\n                                        </apex:inputfield>\n                                    </div>\n                                    <div class=\"pure-u-1 pure-u-md-1-3\">\n                                        <label for=\"Sum_Vacation\">\n                                            休假時數合計\n                                        </label>\n                                        <apex:inputfield id=\"Sum_Vacation\" styleclass=\"pure-u-1 pure-u-md-2-3 readOnly\" value=\"{!am.Sum_Vacation__c}\">\n                                        </apex:inputfield>\n                                    </div>\n                                </div>\n                                <div>\n                                </div>\n                            </fieldset>\n                            <c:ApprovalProcessButtonSwitcher cancelaction=\"{!cancelAction}\" iseditable=\"{!isEditable}\" saveaction=\"{!saveAction}\" status=\"{!NowStatus}\">\n                            </c:ApprovalProcessButtonSwitcher>\n                            \n                            <apex:pageblocksection title=\"請假明細\">\n                            </apex:pageblocksection>\n                            <div id=\"detail\">\n                                <!-- 页面信息提示区 -->\n                                \n                                <div class=\"pure-u-1 pure-u-md-4-24 pure-u-xl-2-24\">\n                                    <apex:commandbutton action=\"{!newlist1}\" id=\"btnAdd\" immediate=\"true\" rerender=\"list1\" status=\"retrieveStatus\" value=\"新增請假明細\">\n                                    </apex:commandbutton>\n                                </div>\n                                <!--將\"是否已评估\"欄位拿來做為\"連續休假天數是否三天以上(含例假/國定假日):\"欄位使用-->\n                                <div class=\"pure-u-1 pure-u-md-1-4\" style=\"border-width:3px;border-style:groove;border-color:red;padding:1px;\">\n                                    連續休假天數是否三天以上(含例假/國定假日):\n                                    <apex:inputfield id=\"IsLeave3Days\" styleclass=\"pure-u-1\" value=\"{!am.Is_Been_Evaluated__c}\">\n                                    </apex:inputfield>\n                                </div>\n                                <apex:outputpanel id=\"list1\" layout=\"block\" styleclass=\"scroll\">\n                                    <apex:pagemessages escape=\"true\" id=\"message\">\n                                </apex:pagemessages>\n                                    <apex:actionstatus id=\"retrieveStatus\" starttext=\"(waiting...)\">\n                                    </apex:actionstatus>\n                                    <table class=\"pure-table rwd-table\" id=\"tableBank\">\n                                        <thead>\n                                            <th>\n                                            </th>\n                                            <th>\n                                                序號\n                                            </th>\n                                            <th>\n                                                假別\n                                            </th>\n                                            <th>\n                                                請假事由\n                                            </th>\n                                            <th>\n                                                請假開始日期\n                                            </th>\n                                            <th>\n                                                請假開始時間\n                                            </th>\n                                            <th>\n                                                請假結束日期\n                                            </th>\n                                            <th>\n                                                請假結束時間\n                                            </th>\n                                            <th>\n                                                請假時數(小時)\n                                            </th>\n                                        </thead>\n                                        <tbody>\n                                            <apex:variable value=\"{!0}\" var=\"list1Index\">\n                                            </apex:variable>\n                                            <apex:repeat value=\"{!list1}\" var=\"item\">\n                                                <tr>\n                                                    <td data-th=\"刪除\">\n                                                        <script>\n                                                            addButtonClass();\n                                                            \n                                                        </script>\n                                                        <apex:commandbutton action=\"{!deletelist1}\" id=\"btnDel\" immediate=\"true\" rerender=\"list1\" title=\"在草稿狀態刪除明細後,請按下儲存鈕以刷新頁面.\" value=\"删除\">\n                                                            <apex:param assignto=\"{!list1Row}\" name=\"list1Row\" value=\"{!list1Index}\">\n                                                            </apex:param>\n                                                        </apex:commandbutton>\n                                                    </td>\n                                                    <td data-th=\"序號\">\n                                                        {!list1Index+1}\n                                                    </td>\n                                                    <!-- 假別 -->\n                                                    <td data-th=\"假別\">\n                                                        <apex:inputfield required=\"true\" style=\"width: 100%\" value=\"{!item.TypesOfLeave__c}\">\n                                                        </apex:inputfield>\n                                                    </td>\n                                                    <!-- 請假事由 -->\n                                                    <td data-th=\"請假事由\">\n                                                        <apex:inputfield required=\"true\" style=\"width: 100%\" value=\"{!item.Leave_reason__c}\">\n                                                        </apex:inputfield>\n                                                    </td>\n                                                    <!-- 請假開始日期 -->\n                                                    <td data-th=\"請假開始日期\">\n                                                        <apex:inputfield id=\"Start_date\" onchange=\"checkDay(j$(this),'start')\" required=\"true\" style=\"width: 100%\" value=\"{!item.Start_date__c}\">\n                                                        </apex:inputfield>\n                                                    </td>\n                                                    <!-- 請假開始時間 -->\n                                                    <td data-th=\"請假開始時間\">\n                                                        <apex:inputfield id=\"Start_Time\" onchange=\"leaveHourCalBySingleDetail(j$(this))\" required=\"true\" style=\"width: 100%\" value=\"{!item.Start_Time__c}\">\n                                                        </apex:inputfield>\n                                                    </td>\n                                                    <!-- 請假結束日期 -->\n                                                    <td data-th=\"請假結束日期\">\n                                                        <apex:inputfield id=\"End_date\" onchange=\"checkDay(j$(this),'end')\" required=\"true\" style=\"width: 100%\" value=\"{!item.End_date__c}\">\n                                                        </apex:inputfield>\n                                                    </td>\n                                                    <!-- 請假結束時間 -->\n                                                    <td data-th=\"請假結束時間\">\n                                                        <apex:inputfield id=\"End_Time\" onchange=\"leaveHourCalBySingleDetail(j$(this))\" required=\"true\" style=\"width: 100%\" value=\"{!item.End_Time__c}\">\n                                                        </apex:inputfield>\n                                                    </td>\n                                                    <!-- 請假時數(小時) -->\n                                                    <td data-th=\"請假時數(小時)\">\n                                                        <apex:inputfield id=\"Leave_Time\" onclick=\"leaveHourCalBySingleDetail(j$(this))\" style=\"width: 100%\" value=\"{!item.time_number__c}\">\n                                                        </apex:inputfield>\n                                                    </td>\n                                                </tr>\n                                                <apex:variable value=\"{!list1Index+1}\" var=\"list1Index\">\n                                                </apex:variable>\n                                            </apex:repeat>\n                                        </tbody>\n                                    </table>\n                                </apex:outputpanel>\n                            </div>\n                            <!-- 待代理人通知一併上正式區 -->\n                            <div id=\"queryVacTw\">\n                                    <table class=\"display\" id=\"queryTable_SAP\" width=\"100%\">\n                                    </table>\n                                </div> \n                            <br/>\n                            <br/>\n                        </apex:form>\n                    </apex:pageblock>\n                </div>\n            </div>\n        </body>\n    </html>\n</apex:page>",
 			"file": "src/pages/AMLeaveApplication.page",
+			"file_size": 21058,
+			"file_write_time": 131716223843087834,
 			"settings":
 			{
-				"buffer_size": 18734,
+				"buffer_size": 20178,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/classes/AMLeaveApplicationExtension.cls",
+			"file": "src/classes/SapInputArgCreate.cls",
 			"settings":
 			{
-				"buffer_size": 11389,
+				"buffer_size": 111218,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/classes/AMEducationTrainingHandler.cls",
+			"file": "src/classes/SapInputArgCreateTest.cls",
 			"settings":
 			{
-				"buffer_size": 15091,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/AMEducationTrainingHandlerTest.cls",
-			"settings":
-			{
-				"buffer_size": 5496,
+				"buffer_size": 4836,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -576,6 +624,15 @@
 			}
 		},
 		{
+			"file": "src/classes/AMLeaveApplicationHandler.cls",
+			"settings":
+			{
+				"buffer_size": 11972,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "src/classes/MeetingMinutesQueryPageControllerTest.cls",
 			"settings":
 			{
@@ -585,10 +642,145 @@
 			}
 		},
 		{
+			"file": "src/classes/AMInformationServiceHandlerTest.cls",
+			"settings":
+			{
+				"buffer_size": 3129,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMInformationServiceHandler.cls",
+			"settings":
+			{
+				"buffer_size": 15887,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "src/classes/QueryController.cls",
 			"settings":
 			{
-				"buffer_size": 5084,
+				"buffer_size": 5201,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/AMExpenseReimburse.page",
+			"settings":
+			{
+				"buffer_size": 15772,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMExpenseReimburseExtension.cls",
+			"settings":
+			{
+				"buffer_size": 10143,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMExpenseReimburseHandler.cls",
+			"settings":
+			{
+				"buffer_size": 8906,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/triggers/ApprovalManageItemTrigger.trigger",
+			"settings":
+			{
+				"buffer_size": 609,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/ApprovalPermissionItemHandler.cls",
+			"settings":
+			{
+				"buffer_size": 12807,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/AMVisitorHosts.page",
+			"settings":
+			{
+				"buffer_size": 27050,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMVisitorHostsExtension.cls",
+			"settings":
+			{
+				"buffer_size": 585,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMInternalmemoHandler.cls",
+			"settings":
+			{
+				"buffer_size": 7609,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMVisitorHostsHandler.cls",
+			"settings":
+			{
+				"buffer_size": 1195,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/AMITServiceRequest.page",
+			"settings":
+			{
+				"buffer_size": 14274,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMITServiceRequestExtension.cls",
+			"settings":
+			{
+				"buffer_size": 1094,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMITServiceRequestHandler.cls",
+			"settings":
+			{
+				"buffer_size": 1213,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/triggers/ApprovalManage1Trigger.trigger",
+			"settings":
+			{
+				"buffer_size": 2579,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -597,7 +789,7 @@
 			"file": "src/classes/QueryControllerTest.cls",
 			"settings":
 			{
-				"buffer_size": 2777,
+				"buffer_size": 2797,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -644,6 +836,23 @@
 			{
 				"buffer_size": 3178,
 				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/VFShowInApprovalExtension.cls",
+			"settings":
+			{
+				"buffer_size": 4508,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/ProcessUtils.cls",
+			"settings":
+			{
+				"buffer_size": 1499,
 				"line_ending": "Unix"
 			}
 		},
@@ -711,15 +920,6 @@
 			}
 		},
 		{
-			"file": "resource-bundles/JSbundle.resource/app/MeetingMinutes/mainJS.js",
-			"settings":
-			{
-				"buffer_size": 7603,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "src/triggers/CustomApprovalManageTrigger.trigger",
 			"settings":
 			{
@@ -756,19 +956,10 @@
 			}
 		},
 		{
-			"file": "src/classes/ApprovalPermissionHandler.cls",
-			"settings":
-			{
-				"buffer_size": 7356,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "src/classes/SapQueryArgCreate.cls",
 			"settings":
 			{
-				"buffer_size": 44370,
+				"buffer_size": 44409,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -845,15 +1036,32 @@
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/MeetingMinutes",
 		"/D/mmworkspace/TestEvn/src",
 		"/D/mmworkspace/TestEvn/src/aura",
+		"/D/mmworkspace/TestEvn/src/classes",
+		"/D/mmworkspace/TestEvn/src/components",
 		"/D/mmworkspace/TestEvn/src/triggers"
 	],
 	"file_history":
 	[
-		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplicationHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SapInputArgCreateForLeaveApplication.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SapInputArgCreateForLeaveApplicationTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SObjectUtils.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SapJsonStringBuilder.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SapJsonStringBulider.cls",
+		"/D/mmworkspace/TestEvn/src/classes/RemoteActionsOfLeave.cls",
+		"/D/mmworkspace/TestEvn/src/classes/HttpRest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SyncFromSfToSapSchedule.cls",
+		"/D/mmworkspace/TestEvn/src/classes/RemoteActionsOfLeaveTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/Utils.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SapInputArgCreate.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandlerTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandler.cls",
+		"/C/Users/young_cheng/Downloads/language_pack.xml",
+		"/C/Users/young_cheng/Downloads/3.60_language_pack_zh.xml",
+		"/D/mmworkspace/TestEvn/src/classes/AMInternalmemoHandlerTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/ApprovalPermissionHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplicationHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/VFShowInApprovalExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SapApprovalEnum.cls",
-		"/D/mmworkspace/TestEvn/src/classes/RemoteActionsOfLeave.cls",
 		"/D/mmworkspace/TestEvn/src/pages/WorkLayout.page",
 		"/D/mmworkspace/TestEvn/src/pages/ApprovalsPending.page",
 		"/D/mmworkspace/TestEvn/src/pages/BarCodeCo11n.page",
@@ -862,15 +1070,11 @@
 		"/D/mmworkspace/TestEvn/src/classes/PushApprovalDataToSapHandler.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/ApprovalManageTrigger.trigger",
 		"/D/mmworkspace/TestEvn/src/classes/ApproverUtils.cls",
-		"/D/mmworkspace/TestEvn/src/classes/Utils.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMLeaveHander.cls",
-		"/D/mmworkspace/TestEvn/src/classes/SyncFromSfToSapSchedule.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplictionTest.cls",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
 		"/D/mmworkspace/TestEvn/src/classes/SapSoapFunctions.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AmAbnormalityHrPt60Controller.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandlerTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMExpenseReimburseHandlerTest.cls",
 		"/D/mmworkspace/TestEvn/src/pages/MeetingMinutesQueryPage.page",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/libs/jquery-3.2.1.js",
@@ -890,7 +1094,6 @@
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/MeetingMinutes/queryPageJS.js",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorHandler.cls",
-		"/D/mmworkspace/TestEvn/src/classes/ApprovalPermissionHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimHandlerTest.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/ApprovalManage1Trigger.trigger",
@@ -942,7 +1145,6 @@
 		"/D/mmworkspace/TestEvn/src/classes/ProcessUtils.cls",
 		"/D/mmworkspace/TestEvn/src/components/ApprovalProcessButtonSwitcher.component-meta.xml",
 		"/D/mmworkspace/TestEvn/src/components/baseFormInfo.component",
-		"/D/mmworkspace/TestEvn/src/classes/SObjectUtils.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SapWebServiceReturnArgs.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtensionTest.cls",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMEducationTrainingJS.js",
@@ -967,20 +1169,11 @@
 		"/D/mmworkspace/TestEvn/src/classes/RemoteAction4Query.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMQccHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMSaleOrderHandler.cls",
-		"/D/mmworkspace/TestEvn/src/pages/AMDieRequest.page",
-		"/D/mmworkspace/TestEvn/src/classes/IExtension.cls",
-		"/D/mmworkspace/TestEvn/src/pages/ApprovalQuery.page",
-		"/D/mmworkspace/TestEvn/src/pages/ApprovalHome.page",
-		"/D/mmworkspace/TestEvn/src/classes/Triggers.cls",
-		"/D/mmworkspace/TestEvn/src/triggers/CustomApprovalManageTrigger.trigger",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/DocBlockr/README.md",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/ApproverGroupMaintainSystem/CreateApproverTable.js",
-		"/C/Users/young_cheng/Documents/test.cls",
-		"/D/mmworkspace/TestEvn/src/triggers/ContactTrigger.trigger"
+		"/D/mmworkspace/TestEvn/src/pages/AMDieRequest.page"
 	],
 	"find":
 	{
-		"height": 28.0
+		"height": 41.0
 	},
 	"find_in_files":
 	{
@@ -997,6 +1190,15 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"validateDetailList",
+			"upsert",
+			"SapWebServiceInputArgs",
+			"leave",
+			"deletelist1",
+			"queryVacationTW",
+			"getApprovalUser",
+			"getApprovalPageEditFields",
+			"getApprovalUser",
 			"dataTable",
 			"tab",
 			"are currently not supported.",
@@ -1115,13 +1317,7 @@
 			"\t账户组",
 			"\t\n账户组",
 			"createSapVendorInputArgs",
-			"serializeToJson",
-			"json",
-			"postTo",
-			"供应商主",
-			"供",
-			"SyncFromSfToSapSchedule",
-			"PushToSapOnce"
+			"serializeToJson"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -1142,7 +1338,7 @@
 	"groups":
 	[
 		{
-			"selected": 22,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -1150,15 +1346,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3787,
+						"buffer_size": 5033,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1792,
-								2676
+								4902,
+								4540
 							]
 						],
 						"settings":
@@ -1166,57 +1362,55 @@
 							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 120.0,
+						"translation.y": 941.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 24,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "src/classes/SyncFromSfToSapSchedule.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 22748,
+						"buffer_size": 41464,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7045,
-								7061
+								35325,
+								39999
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"is_debug_log": true,
+							"syntax": "Packages/Java/Java.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 2451.0,
+						"translation.y": 4385.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 28,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "src/classes/HttpRest.cls",
+					"file": "src/classes/SapJsonStringBuilder.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4640,
+						"buffer_size": 7205,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2900,
-								2900
+								76,
+								76
 							]
 						],
 						"settings":
@@ -1226,14 +1420,162 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1080.0,
+						"translation.y": 1740.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 35,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
+					"file": "src/classes/SapJsonStringBuilderTest.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7348,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2402,
+								2402
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 300.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/classes/AMLeaveApplicationExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14091,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9157,
+								9157
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4855.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/classes/AMLeaveApplictionTest.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 19495,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								971,
+								971
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 60.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/classes/RemoteActionsOfLeave.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4436,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2648,
+								2663
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1096.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/classes/RemoteActionsOfLeaveTest.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2322,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1539,
+								1539
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1256,11 +1598,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 37,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 9,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1283,11 +1625,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 36,
+					"stack_index": 14,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 10,
 					"file": "src/classes/LeaveQueryController.cls",
 					"semi_transient": false,
 					"settings":
@@ -1310,14 +1652,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 120.0,
+						"translation.y": 118.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 22,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 11,
 					"file": "src/pages/LeaveQuery.page",
 					"semi_transient": false,
 					"settings":
@@ -1343,24 +1685,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 27,
+					"stack_index": 54,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 12,
 					"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12232,
+						"buffer_size": 10963,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6569,
-								6550
+								9119,
+								9119
 							]
 						],
 						"settings":
@@ -1370,14 +1712,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 4108.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 13,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1406,20 +1748,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 14,
 					"file": "src/pages/AMLeaveApplication.page",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 18734,
+						"buffer_size": 20178,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1611,
-								1611
+								3091,
+								3091
 							]
 						],
 						"settings":
@@ -1429,27 +1771,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 240.0,
+						"translation.y": 720.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
-					"file": "src/classes/AMLeaveApplicationExtension.cls",
+					"buffer": 15,
+					"file": "src/classes/SapInputArgCreate.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11389,
+						"buffer_size": 111218,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10116,
-								10750
+								99917,
+								99917
 							]
 						],
 						"settings":
@@ -1459,27 +1801,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 41234.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
-					"file": "src/classes/AMEducationTrainingHandler.cls",
+					"buffer": 16,
+					"file": "src/classes/SapInputArgCreateTest.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 15091,
+						"buffer_size": 4836,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1619,
-								1670
+								94,
+								94
 							]
 						],
 						"settings":
@@ -1489,44 +1831,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 180.0,
+						"translation.y": 720.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 25,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
-					"buffer": 12,
-					"file": "src/classes/AMEducationTrainingHandlerTest.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5496,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 14,
-					"type": "text"
-				},
-				{
-					"buffer": 13,
+					"buffer": 17,
 					"file": "src/pages/MeetingMinutesMainPage.page",
 					"semi_transient": false,
 					"settings":
@@ -1552,11 +1864,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 47,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
+					"buffer": 18,
 					"file": "src/pages/MeetingMinutesQueryPage.page",
 					"semi_transient": false,
 					"settings":
@@ -1582,11 +1894,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 46,
 					"type": "text"
 				},
 				{
-					"buffer": 15,
+					"buffer": 19,
 					"file": "src/classes/MeetingMinutesQueryPageController.cls",
 					"semi_transient": false,
 					"settings":
@@ -1612,11 +1924,41 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 17,
+					"stack_index": 22,
 					"type": "text"
 				},
 				{
-					"buffer": 16,
+					"buffer": 20,
+					"file": "src/classes/AMLeaveApplicationHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11972,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5769,
+								5769
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1740.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 20,
+					"type": "text"
+				},
+				{
+					"buffer": 21,
 					"file": "src/classes/MeetingMinutesQueryPageControllerTest.cls",
 					"semi_transient": false,
 					"settings":
@@ -1628,8 +1970,8 @@
 						"selection":
 						[
 							[
-								1325,
-								1325
+								88,
+								1323
 							]
 						],
 						"settings":
@@ -1640,24 +1982,202 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 31,
+					"stack_index": 19,
 					"type": "text"
 				},
 				{
-					"buffer": 17,
-					"file": "src/classes/QueryController.cls",
+					"buffer": 22,
+					"file": "src/classes/AMInformationServiceHandlerTest.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5084,
+						"buffer_size": 3129,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								526,
-								530
+								1527,
+								1527
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 480.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 23,
+					"file": "src/classes/AMInformationServiceHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15887,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2064,
+								2064
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1380.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 36,
+					"type": "text"
+				},
+				{
+					"buffer": 24,
+					"file": "src/classes/QueryController.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5201,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5201,
+								5201
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2321.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 35,
+					"type": "text"
+				},
+				{
+					"buffer": 25,
+					"file": "src/pages/AMExpenseReimburse.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15772,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								69,
+								69
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 32,
+					"type": "text"
+				},
+				{
+					"buffer": 26,
+					"file": "src/classes/AMExpenseReimburseExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10143,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7516,
+								7518
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1440.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 31,
+					"type": "text"
+				},
+				{
+					"buffer": 27,
+					"file": "src/classes/AMExpenseReimburseHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8906,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8896,
+								8896
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1440.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 30,
+					"type": "text"
+				},
+				{
+					"buffer": 28,
+					"file": "src/triggers/ApprovalManageItemTrigger.trigger",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 609,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								227,
+								227
 							]
 						],
 						"settings":
@@ -1670,24 +2190,84 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 32,
+					"stack_index": 29,
 					"type": "text"
 				},
 				{
-					"buffer": 18,
-					"file": "src/classes/QueryControllerTest.cls",
+					"buffer": 29,
+					"file": "src/classes/ApprovalPermissionItemHandler.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2777,
+						"buffer_size": 12807,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1217,
-								1232
+								7973,
+								7973
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3240.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 27,
+					"type": "text"
+				},
+				{
+					"buffer": 30,
+					"file": "src/pages/AMVisitorHosts.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 27050,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								73,
+								73
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 25,
+					"type": "text"
+				},
+				{
+					"buffer": 31,
+					"file": "src/classes/AMVisitorHostsExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 585,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								585,
+								585
 							]
 						],
 						"settings":
@@ -1698,11 +2278,219 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 33,
+					"stack_index": 26,
 					"type": "text"
 				},
 				{
-					"buffer": 19,
+					"buffer": 32,
+					"file": "src/classes/AMInternalmemoHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7609,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3934,
+								3934
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1260.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 24,
+					"type": "text"
+				},
+				{
+					"buffer": 33,
+					"file": "src/classes/AMVisitorHostsHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1195,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								834,
+								834
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 34,
+					"file": "src/pages/AMITServiceRequest.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14274,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								14045,
+								14045
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7020.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 28,
+					"type": "text"
+				},
+				{
+					"buffer": 35,
+					"file": "src/classes/AMITServiceRequestExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1094,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								29,
+								29
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 40,
+					"type": "text"
+				},
+				{
+					"buffer": 36,
+					"file": "src/classes/AMITServiceRequestHandler.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1213,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1064,
+								1064
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 37,
+					"type": "text"
+				},
+				{
+					"buffer": 37,
+					"file": "src/triggers/ApprovalManage1Trigger.trigger",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2579,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								801,
+								801
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 39,
+					"type": "text"
+				},
+				{
+					"buffer": 38,
+					"file": "src/classes/QueryControllerTest.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2797,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								2797
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 495.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 38,
+					"type": "text"
+				},
+				{
+					"buffer": 39,
 					"file": "src/classes/AMEducationTrainingExtensionTest.cls",
 					"semi_transient": false,
 					"settings":
@@ -1728,11 +2516,11 @@
 						"translation.y": 540.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 34,
+					"stack_index": 57,
 					"type": "text"
 				},
 				{
-					"buffer": 20,
+					"buffer": 40,
 					"file": "src/classes/MeetingMinutesMainPageController.cls",
 					"semi_transient": false,
 					"settings":
@@ -1758,11 +2546,11 @@
 						"translation.y": 2100.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 42,
 					"type": "text"
 				},
 				{
-					"buffer": 21,
+					"buffer": 41,
 					"file": "src/classes/ApprovalManualShareHandler.cls",
 					"semi_transient": false,
 					"settings":
@@ -1788,11 +2576,11 @@
 						"translation.y": 1500.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 43,
 					"type": "text"
 				},
 				{
-					"buffer": 22,
+					"buffer": 42,
 					"file": "src/classes/MeetingMinutesMainPageControllerTest.cls",
 					"semi_transient": false,
 					"settings":
@@ -1804,8 +2592,8 @@
 						"selection":
 						[
 							[
-								0,
-								1743
+								930,
+								930
 							]
 						],
 						"settings":
@@ -1813,14 +2601,14 @@
 							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 60.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 41,
 					"type": "text"
 				},
 				{
-					"buffer": 23,
+					"buffer": 43,
 					"file": "src/classes/VFShowInApprovalExtensionTest.cls",
 					"semi_transient": false,
 					"settings":
@@ -1832,8 +2620,8 @@
 						"selection":
 						[
 							[
-								22,
-								51
+								838,
+								838
 							]
 						],
 						"settings":
@@ -1846,11 +2634,71 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 21,
 					"type": "text"
 				},
 				{
-					"buffer": 24,
+					"buffer": 44,
+					"file": "src/classes/VFShowInApprovalExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4508,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2150,
+								2211
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 780.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 45,
+					"file": "src/classes/ProcessUtils.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1499,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								474,
+								560
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 18,
+					"type": "text"
+				},
+				{
+					"buffer": 46,
 					"file": "src/classes/AMVendorClaimExtension.cls",
 					"semi_transient": false,
 					"settings":
@@ -1876,11 +2724,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 16,
+					"stack_index": 50,
 					"type": "text"
 				},
 				{
-					"buffer": 25,
+					"buffer": 47,
 					"file": "src/pages/AMVendorClaim.page",
 					"semi_transient": false,
 					"settings":
@@ -1906,11 +2754,11 @@
 						"translation.y": 180.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 30,
+					"stack_index": 56,
 					"type": "text"
 				},
 				{
-					"buffer": 26,
+					"buffer": 48,
 					"file": "src/classes/MeetingMinutesMainPageHandlerTest.cls",
 					"semi_transient": false,
 					"settings":
@@ -1934,11 +2782,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 29,
+					"stack_index": 55,
 					"type": "text"
 				},
 				{
-					"buffer": 27,
+					"buffer": 49,
 					"file": "src/classes/MeetingMinutesMainPageHandler.cls",
 					"semi_transient": false,
 					"settings":
@@ -1964,11 +2812,11 @@
 						"translation.y": 180.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 34,
 					"type": "text"
 				},
 				{
-					"buffer": 28,
+					"buffer": 50,
 					"file": "src/classes/BaseExtension.cls",
 					"semi_transient": false,
 					"settings":
@@ -1994,11 +2842,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 21,
+					"stack_index": 52,
 					"type": "text"
 				},
 				{
-					"buffer": 29,
+					"buffer": 51,
 					"file": "src/triggers/KLSystemsTrigger.trigger",
 					"semi_transient": false,
 					"settings":
@@ -2024,11 +2872,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 26,
+					"stack_index": 53,
 					"type": "text"
 				},
 				{
-					"buffer": 30,
+					"buffer": 52,
 					"file": "resource-bundles/JSbundle.resource/app/MeetingMinutes/queryPageJS.js",
 					"semi_transient": false,
 					"settings":
@@ -2054,41 +2902,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 48,
 					"type": "text"
 				},
 				{
-					"buffer": 31,
-					"file": "resource-bundles/JSbundle.resource/app/MeetingMinutes/mainJS.js",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 7603,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 32,
+					"buffer": 53,
 					"file": "src/triggers/CustomApprovalManageTrigger.trigger",
 					"semi_transient": false,
 					"settings":
@@ -2114,11 +2932,11 @@
 						"translation.y": 186.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 49,
 					"type": "text"
 				},
 				{
-					"buffer": 33,
+					"buffer": 54,
 					"file": "src/classes/SOApprovalDemo.cls",
 					"semi_transient": false,
 					"settings":
@@ -2142,11 +2960,11 @@
 						"translation.y": 420.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 44,
 					"type": "text"
 				},
 				{
-					"buffer": 34,
+					"buffer": 55,
 					"file": "src/pages/SOApprovalDemoPage.page",
 					"semi_transient": false,
 					"settings":
@@ -2170,11 +2988,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 45,
 					"type": "text"
 				},
 				{
-					"buffer": 35,
+					"buffer": 56,
 					"file": "src/pages/AMEducationTraining.page",
 					"semi_transient": false,
 					"settings":
@@ -2197,49 +3015,19 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3780.0,
+						"translation.y": 160.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 18,
+					"stack_index": 33,
 					"type": "text"
 				},
 				{
-					"buffer": 36,
-					"file": "src/classes/ApprovalPermissionHandler.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7356,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3304,
-								3429
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 840.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 20,
-					"type": "text"
-				},
-				{
-					"buffer": 37,
+					"buffer": 57,
 					"file": "src/classes/SapQueryArgCreate.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 44370,
+						"buffer_size": 44409,
 						"regions":
 						{
 						},
@@ -2260,7 +3048,7 @@
 						"translation.y": 18486.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 19,
+					"stack_index": 51,
 					"type": "text"
 				}
 			]
@@ -2299,7 +3087,7 @@
 	"menu_visible": true,
 	"output.MavensMate-OutputPanel":
 	{
-		"height": 303.0
+		"height": 146.0
 	},
 	"output.error":
 	{
@@ -2322,6 +3110,58 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"sapi",
+				"src\\classes\\SapInputArgCreateForLeaveApplication.cls"
+			],
+			[
+				"remoteactio",
+				"src\\classes\\RemoteActionsOfLeaveTest.cls"
+			],
+			[
+				"sob",
+				"src\\classes\\SObjectUtils.cls"
+			],
+			[
+				"remoteactionsofleavetes",
+				"src\\classes\\RemoteActionsOfLeaveTest.cls"
+			],
+			[
+				"sapinputargcreatet",
+				"src\\classes\\SapInputArgCreateTest.cls"
+			],
+			[
+				"remoteactionsofleave",
+				"src\\classes\\RemoteActionsOfLeave.cls"
+			],
+			[
+				"amleaveapp",
+				"src\\classes\\AMLeaveApplictionTest.cls"
+			],
+			[
+				"aminternalmemo",
+				"src\\classes\\AMInternalmemoHandlerTest.cls"
+			],
+			[
+				"amvisitorhosts",
+				"src\\classes\\AMVisitorHostsHandler.cls"
+			],
+			[
+				"utils",
+				"src\\classes\\Utils.cls"
+			],
+			[
+				"amexpensereimburseh",
+				"src\\classes\\AMExpenseReimburseHandler.cls"
+			],
+			[
+				"amexpense",
+				"src\\pages\\AMExpenseReimburse.page"
+			],
+			[
+				"amitservicerequest",
+				"src\\classes\\AMITServiceRequestHandler.cls"
+			],
 			[
 				"amleave",
 				"src\\classes\\AMLeaveApplicationExtension.cls"
@@ -2439,10 +3279,6 @@
 				"src\\classes\\AMEducationTrainingHandlerTest.cls"
 			],
 			[
-				"aminternalmemo",
-				"src\\classes\\AMInternalmemoHandler.cls"
-			],
-			[
 				"amvenexte",
 				"src\\classes\\AMVendorExtension.cls"
 			],
@@ -2555,10 +3391,6 @@
 				"src\\classes\\QueryController.cls"
 			],
 			[
-				"amleaveapp",
-				"src\\pages\\AMLeaveApplication.page"
-			],
-			[
 				"leaveq",
 				"src\\pages\\LeaveQuery.page"
 			],
@@ -2627,10 +3459,6 @@
 				"src\\pages\\AMLeaveApplication.page"
 			],
 			[
-				"amvisitorhosts",
-				"src\\pages\\AMVisitorHosts.page"
-			],
-			[
 				"ameuc",
 				"src\\pages\\AMEducationTraining.page"
 			],
@@ -2661,10 +3489,6 @@
 			[
 				"pro",
 				"src\\classes\\ProcessUtils.cls"
-			],
-			[
-				"sob",
-				"src\\classes\\SObjectUtilsTest.cls"
 			],
 			[
 				"bas",
@@ -2797,42 +3621,6 @@
 			[
 				"ut",
 				"src\\classes\\Utils.cls"
-			],
-			[
-				"perm",
-				"src\\classes\\ApprovalPermissionHandler.cls"
-			],
-			[
-				"approvalhome",
-				"src\\pages\\ApprovalHome.page"
-			],
-			[
-				"approvalhomecontroller",
-				"src\\classes\\ApprovalHomeController.cls"
-			],
-			[
-				"sa",
-				"src\\classes\\SapApprovalEnum.cls"
-			],
-			[
-				"sapapprovalenum",
-				"src\\classes\\SapApprovalEnum.cls"
-			],
-			[
-				"ambu",
-				"src\\pages\\AMBusinessTravel.page"
-			],
-			[
-				"appper",
-				"src\\classes\\ApprovalPermissionItemHandler.cls"
-			],
-			[
-				"approvalc",
-				"src\\classes\\ApprovalContactExtension.cls"
-			],
-			[
-				"re",
-				"src\\classes\\RequiredFieldsCheck.cls"
 			]
 		],
 		"width": 0.0
@@ -2863,7 +3651,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 515.0,
+	"side_bar_width": 356.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

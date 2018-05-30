@@ -28,6 +28,7 @@
             </script>
             <script type="text/javascript">
                 j$( function() {
+                   
                     //隱藏新增刪除請假明細按鈕  
                     j$("input[id$=btnAdd],input[id$=btnDel]").hide();
                     //隱藏 查詢tab
@@ -54,9 +55,38 @@
                     if("{!NowStatus}" === 'NEW' || "{!NowStatus}" === 'SKETCH' || "{!isEditable}" == 'true'){
                        j$("input[id$=btnAdd],input[id$=btnDel]").show();
                      }
+                   //alert('{!approvalNode}' );
                    
-
+                    if ('{!approvalNode}' == 'AP99'){
+                        let target = j$('#sync');
+                        target.show();
+                        target.on('click',function(){
+                            syncToSAP();
+                         });
+                    }else{
+                         j$('#sync').hide();
+                    }
+                     
               });
+
+                //SAP資料同步
+                function syncToSAP() {
+                 let cId = '{!am.Id}';
+                 if (cId != '000000000000000' && cId != null && cId != '') {
+                     AMLeaveApplicationExtension.leaveAppSyncToSAP(cId, function(result, event) {
+                         if (event.status && result != null) {
+                             // JSON.parse(result.replace(/(&quot\;)/g, "\""), function(k, v) {
+                             //     console.log(k + ',' + v);
+                             //     if (k == 'message') {
+                             //        alert(v);
+                             //     }
+                             // });
+                             alert(result);
+                             window.parent.location.href='/{!am.id}';
+                         }
+                     })
+                 }
+             }
             </script>
         </head>
         <body>
@@ -80,6 +110,7 @@
                 <div id="tabs-1">
                     <apex:sectionheader title="請假申請流程">
                     </apex:sectionheader>
+                    <button id="sync" style="background: #f44336;color:white; ">與SAP請假資料同步</button>
                     <apex:pageblock >
                         <apex:form id="form" styleclass="pure-form pure-form-stacked">
                             <c:baseFormInfo inputobject="{!am}">
@@ -173,6 +204,7 @@
                             </fieldset>
                             <c:ApprovalProcessButtonSwitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
                             </c:ApprovalProcessButtonSwitcher>
+                            
                             <apex:pageblocksection title="請假明細">
                             </apex:pageblocksection>
                             <div id="detail">
@@ -272,7 +304,7 @@
                                                     </td>
                                                     <!-- 請假時數(小時) -->
                                                     <td data-th="請假時數(小時)">
-                                                        <apex:inputfield id="Leave_Time" onclick="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.time_number__c}">
+                                                        <apex:inputfield id="Leave_Time" onclick="leaveHourCalBySingleDetail(j$(this))" style="width: 100%" value="{!item.time_number__c}">
                                                         </apex:inputfield>
                                                     </td>
                                                 </tr>

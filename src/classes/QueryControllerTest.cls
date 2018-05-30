@@ -26,7 +26,7 @@ public with sharing class QueryControllerTest {
         System.runAs(usr)
         {
 
-            Contact con2 = new Contact(LastName = 'bbb', number__c = '30210999', SF_User__c = usr.id , Email = 'test@test.com');
+            Contact con2 = new Contact(Corp_Code__c='3000',LastName = 'bbb', number__c = '30210999', SF_User__c = usr.id , Email = 'test@test.com');
             insert con2;
             //隨便找個rcID
             RecordType rc = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Approval_Managed1__c' AND  DeveloperName = 'EducationTraining'];

@@ -298,16 +298,17 @@ public with sharing class SapQueryArgCreate {
         return JSON.serialize(createQueryArg('SALESPRICEQUERY',lstCon));    
     }
 
-   //客户单笔信贷核发
+//客户单笔信贷核发
     public static String createClientApplyQueryDesc(String Sal_Evi){
-        return createSapSalesPriceQueryDesc(Sal_Evi,'');
+        return createSapSalesPriceQueryDesc(Sal_Evi,'','','','','','','','','','','','','','');
     }
 
-    public static String createClientApplyQueryDesc(
+    public static String createSapSalesPriceQueryDesc(
         String Sal_Evi,String Customer_Code,String Customer_Name,String Dan_Cus,
         String Sho_AllMon,String Ove_AllMon,String Now_Mon,
         String Ove_Perc,String Cre_Quo,String No_Mon,
         String Pay_Req,String Ord_Mon,String Pur_Ord,String Pre_Mon,String Cau_Rem){
+
         List<Map<String,String>> lstCon = new List<Map<String,String>>();
         Integer index = 1;
         Map<String,String> con1 = new Map<String,String>();

@@ -83,16 +83,16 @@ global with sharing class QueryController
 
         String sqlSelect = 'SELECT Id,SF_user__c, Human_Range__c, Dept_Number__r.Name, Name, Number__c, Phone, MobilePhone, Email';
         String sqlFrom = ' FROM Contact ';
-        String sqlWhere = ' WHERE Id != null AND Human_Range__c != null AND Number__c != null ';
+        String sqlWhere = ' WHERE Leave_Office_Date__c = null AND Number__c != null AND Corp_Code__c != null ';
         System.debug(LoggingLevel.INFO, '*** selectedContactCodeValue: ' + selectedContactCodeValue);
 
 
         //工廠
-        if ( meta.Human_Range__c != null)
-        {
-            String fac = meta.Human_Range__c ;
-            sqlWhere += ' AND Human_Range__c =  \'' + fac + '\' ';
-        }
+        //if ( meta.Human_Range__c != null)
+        //{
+        //    String fac = meta.Human_Range__c ;
+        //    sqlWhere += ' AND Human_Range__c =  \'' + fac + '\' ';
+        //}
         //部門
         if ( meta.Department != null)
         {
@@ -117,33 +117,35 @@ global with sharing class QueryController
             String eml = meta.Native_Place__c;
             sqlWhere += ' AND Email LIKE \'' + eml + '%' + '\' ';
         }
+        //
+        String sqlWhere1 = ' ORDER BY Dept_Number__r.Name, Number__c';
+         System.debug(sqlSelect + sqlFrom + sqlWhere + sqlWhere1);
 
-        String sqlWhere1 = ' ORDER BY Dept_Number__r.Name, Number__c  LIMIT 100';
-        List<Contact> con = Database.query(sqlSelect + sqlFrom + sqlWhere + sqlWhere1);
-        System.debug(sqlSelect + sqlFrom + sqlWhere + sqlWhere1);
-        List<KL_Systems__c> klsys = [ SELECT MeetingRoom_Text__c FROM  KL_Systems__c WHERE  MeetingRoom_Name__c = 'TWKL' ];
+        //List<Contact> con = Database.query(sqlSelect + sqlFrom + sqlWhere + sqlWhere1);
+       
+        //List<KL_Systems__c> klsys = [ SELECT MeetingRoom_Text__c FROM  KL_Systems__c WHERE  MeetingRoom_Name__c = 'TWKL' ];
 
-        for(KL_Systems__c abc : klsys)
-        {
-            AllApprovalData  data1 = new AllApprovalData();
-            data1.Klphone = abc.MeetingRoom_Text__c;
-            allApproval.add(data1);
+        //for(KL_Systems__c abc : klsys)
+        //{
+        //    AllApprovalData  data1 = new AllApprovalData();
+        //    data1.Klphone = abc.MeetingRoom_Text__c;
+        //    allApproval.add(data1);
 
-        }
-        for (Contact cn : con)
+        //}
+        for (Contact cn : Database.query(sqlSelect + sqlFrom + sqlWhere + sqlWhere1))
         {
             AllApprovalData  data = new AllApprovalData();
             data.factory = cn.Human_Range__c;
             data.Department = cn.Dept_Number__r.Name;
             data.Contact_Code = cn.Number__c;
 
-            //聯絡人id=使用者id ，抓出user頭像
-            if( cn.SF_user__c != null)
-            {
-                String theId = cn.SF_user__c;
-                data.profileImageUrl = [select SmallPhotoUrl from User where Id = :theId ].SmallPhotoUrl;
+            ////聯絡人id=使用者id ，抓出user頭像
+            //if( cn.SF_user__c != null)
+            //{
+            //    String theId = cn.SF_user__c;
+            //    data.profileImageUrl = [select SmallPhotoUrl from User where Id = :theId ].SmallPhotoUrl;
 
-            }
+            //}
             data.Id = cn.Id;
             data.Contact_Name = cn.Name ;
             data.Extension_Number = cn.Phone;

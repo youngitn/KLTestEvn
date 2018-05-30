@@ -1,0 +1,14 @@
+<apex:page applyhtmltag="true" controller="GetBoss" doctype="html-5.0">
+    <apex:pageblock>
+        <apex:outputpanel id="list1" layout="block" styleclass="scroll">
+            <apex:pagemessages escape="true" id="message">
+            </apex:pagemessages>
+        </apex:outputpanel>
+        <apex:form id="form">
+            <apex:input id="Annual_leave" value="{!empid}">
+            </apex:input>
+            <apex:commandbutton action="{!GetMyBoss}" title="" value="send">
+            </apex:commandbutton>
+        </apex:form>
+    </apex:pageblock>
+</apex:page>

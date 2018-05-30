@@ -222,68 +222,44 @@
  }
 
  function checkDay(self, type) {
-     let IsLeave3Days = j$('input[id$=IsLeave3Days]');
-     let mydate = new Date(self.val());
-     if (mydate.getDay() == 1) {
-         alert('這個日期為禮拜一,如果請假天數含例假日超過三天,請確認是否勾選"連續休假天數是否三天以上(含例假/國定假日)"');
-     } else if (mydate.getDay() == 5) {
-         alert('這個日期為禮拜五,如果請假天數含例假日超過三天,請確認是否勾選"連續休假天數是否三天以上(含例假/國定假日)"');
-     }
-     if (type == 'end') {
-         let td = self.parents("td");
-         let tr = j$(td.parents("tr").get(0));
-         let sdate = new Date(tr.find('input[id$=Start_date]').val());
-         let timeDiff = mydate.getTime() - sdate.getTime();
-         let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-         // alert(IsLeave3Days.attr('checked'));
-         if ((diffDays + 1) >= 3 && !IsLeave3Days.prop("checked")) {
-             alert('系統偵測到您的請假天數已達連續三日,請確認是否勾選"連續休假天數是否三天以上(含例假/國定假日)",以利正確審批.');
-             //j$('input[id$=IsLeave3Days]').prop( "checked", true );
-         } else if (timeDiff < 0) {
-             alert('結束日期不得小於開始日期!');
-         }
-         console.log(timeDiff);
-     }
-     if (type == 'start') {
-         let td = self.parents("td");
-         let tr = j$(td.parents("tr").get(0));
-         let edate = new Date(tr.find('input[id$=End_date]').val());
-         let timeDiff = edate.getTime() - mydate.getTime();
-         let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-         // alert(IsLeave3Days.attr('checked'));
-         if ((diffDays + 1) >= 3 && !IsLeave3Days.prop("checked")) {
-             alert('系統偵測到您的請假天數已達連續三日,請確認是否勾選"連續休假天數是否三天以上(含例假/國定假日)",以利正確審批.');
-             //j$('input[id$=IsLeave3Days]').prop( "checked", true );
-         } else if (timeDiff < 0) {
-             alert('結束日期不得小於開始日期!');
-         }
-         console.log(timeDiff);
-     }
+     // let IsLeave3Days = j$('input[id$=IsLeave3Days]');
+     // let mydate = new Date(self.val());
+     // if (mydate.getDay() == 1) {
+     //     alert('這個日期為禮拜一,如果請假天數含例假日超過三天,請確認是否勾選"連續休假天數是否三天以上(含例假/國定假日)"');
+     // } else if (mydate.getDay() == 5) {
+     //     alert('這個日期為禮拜五,如果請假天數含例假日超過三天,請確認是否勾選"連續休假天數是否三天以上(含例假/國定假日)"');
+     // }
+     // if (type == 'end') {
+     //     let td = self.parents("td");
+     //     let tr = j$(td.parents("tr").get(0));
+     //     let sdate = new Date(tr.find('input[id$=Start_date]').val());
+     //     let timeDiff = mydate.getTime() - sdate.getTime();
+     //     let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+     //     // alert(IsLeave3Days.attr('checked'));
+     //     if ((diffDays + 1) >= 3 && !IsLeave3Days.prop("checked")) {
+     //         alert('系統偵測到您的請假天數已達連續三日,請確認是否勾選"連續休假天數是否三天以上(含例假/國定假日)",以利正確審批.');
+     //         //j$('input[id$=IsLeave3Days]').prop( "checked", true );
+     //     } else if (timeDiff < 0) {
+     //         alert('結束日期不得小於開始日期!');
+     //     }
+     //     console.log(timeDiff);
+     // }
+     // if (type == 'start') {
+     //     let td = self.parents("td");
+     //     let tr = j$(td.parents("tr").get(0));
+     //     let edate = new Date(tr.find('input[id$=End_date]').val());
+     //     let timeDiff = edate.getTime() - mydate.getTime();
+     //     let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+     //     // alert(IsLeave3Days.attr('checked'));
+     //     if ((diffDays + 1) >= 3 && !IsLeave3Days.prop("checked")) {
+     //         alert('系統偵測到您的請假天數已達連續三日,請確認是否勾選"連續休假天數是否三天以上(含例假/國定假日)",以利正確審批.');
+     //         //j$('input[id$=IsLeave3Days]').prop( "checked", true );
+     //     } else if (timeDiff < 0) {
+     //         alert('結束日期不得小於開始日期!');
+     //     }
+     //     console.log(timeDiff);
+     // }
  }
- //請假時間自動完成 需要班表
- function leaveHourCalBySingleDetail(self) {
-     let td = self.parents("td");
-     //取得本列第一欄tde，此行code沒特別用途，只是寫來做個語法紀錄
-     td.parents("table:first").find("td");
-     //取得td的父層(tr)
-     let tr = j$(td.parents("tr").get(0));
-     console.log(tr);
-     let stValue = tr.find('select[id$=Start_Time] option:selected').val();
-     let etValue = tr.find('select[id$=End_Time] option:selected').val();
-     let sdate = new Date(tr.find('input[id$=Start_date]').val() + ' ' + tr.find('select[id$=Start_Time] option:selected').text());
-     let edate = new Date(tr.find('input[id$=End_date]').val() + ' ' + tr.find('select[id$=End_Time] option:selected').text());
-     //alert(tr.children().find('input[id$=Start_date]').val() + ' ' + tr.children().find('select[id$=Start_Time] option:selected').text());
-     //alert(tr.children().find('input[id$=End_date]').val()   + ' ' + tr.children().find('select[id$=End_Time] option:selected').text());
-     let timeDiff = edate.getTime() - sdate.getTime();
-     if (timeDiff < 0) {
-         alert('結束時間不得小於開始時間!請檢查 開始日期/開始時間 與 結束日期/結束時間 是否正確.');
-         j$('input[id$=Leave_Time]').val(null);
-     } else {
-         let diffHours = (timeDiff / (3600000)).toFixed(1);
-         if (stValue <= 120000 && etValue >= 170000) {
-             diffHours -= 1;
-         }
-         //alert(timeDiff);
-         //self.val(diffHours);
-     }
- }
+ 
+
+ 

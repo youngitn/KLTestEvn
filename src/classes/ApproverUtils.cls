@@ -90,6 +90,30 @@ public without sharing class ApproverUtils
                 {
                     System.debug(LoggingLevel.INFO, '*** 指定人部门主管为空，找一阶主管: ');
                     idUser = ApproverUtils.approvalSearchSpecificManagerByApplicationWithOutSOQL(contactID, 3, false);
+                    // if (String.isBlank(idUser))
+                    // {
+                    //     System.debug(LoggingLevel.INFO, '*** 一阶主管二阶主管都是空 找課長');
+                    //     Contact c = Peoples.getInstance().KlAllContactMapGetById.get(contactID);
+                    //     if (c != null)
+                    //     {
+                    //         //找同級單位的主管職(組,課級)
+                    //         List<Contact> ll = [select name, Post_Number__r.Name from Contact where Dept_Number__c = :c.Dept_Number__c AND Leave_Office_Date__c = null AND Post_Number__r.Name like '%主管職'];
+                    //         //正常會有課長(代理課長或組長無法判斷)
+                    //         if (ll.size() == 0)
+                    //         {
+                    //             System.debug('該人員單位為組');
+                    //             //往上找課長
+                    //             ll = [select name, Post_Number__r.Name, Dept_Number__r.Parent_Number__r.Name from Contact where Dept_Number__c = :c.Dept_Number__r.Parent_Number__c AND Leave_Office_Date__c = null AND Post_Number__r.Name like '%主管職'];
+                    //         }
+                    //         else
+                    //         {
+                    //             System.debug('該人員單位為課');
+                    //         }
+
+                    //         idUser = ll.get(0).SF_User__c;
+                    //     }
+
+                    // }
                 }
                 setSFID.add(idUser);
             }
@@ -230,7 +254,7 @@ public without sharing class ApproverUtils
         //如果傳進來的ID是USER ID 須轉成連絡人ID
         if(isUserId)
         {
-            
+
             return UserIdToContactId(applicationID);
 
         }
@@ -249,7 +273,7 @@ public without sharing class ApproverUtils
     {
         //為了取得工號欄位作聯絡人查詢,需先取得USER實體
         User inU = Peoples.getInstance().KlAllUserMapGetById.get(applicationID);
-        
+
         //用USER ID 找到工號,並用此工號找所屬聯絡人
         //如果有聯絡人進入處理
         if (inU != null)

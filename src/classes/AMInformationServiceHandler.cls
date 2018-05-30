@@ -3,9 +3,9 @@
  目    的：设置IT服务申请流程各节点审批人
  作    者：张旭
  创建日期：2017-07-07
- 修 改 人：
- 修改日期：
- 修改原因：
+ 修 改 人：Young
+ 修改日期：2018-5-15 
+ 修改原因：台灣資訊部主管審批人改為-郭士銓 30210086
  备    注：昆山&台湾共同使用该流程
  
  
@@ -105,6 +105,7 @@ public without sharing class AMInformationServiceHandler implements Triggers.Han
 
         if (cam.Factory__c == '3000'){      //TW 节点九與节点七同一人
         cam.Approval_User9__c = cam.Approval_User7__c;
+
         }
        
     }
@@ -144,7 +145,7 @@ public without sharing class AMInformationServiceHandler implements Triggers.Han
           lstID.add(utils.getUserByEmployeeCode('10210225')); //徐井西
         }
         if (cam.Factory__c == '3000'){
-          lstID.add(utils.getUserByEmployeeCode('30210240')); //李軏瀚
+          lstID.add(utils.getUserByEmployeeCode('30210086')); //郭士銓
         }
 
         return lstID;

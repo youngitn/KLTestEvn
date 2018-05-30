@@ -6,6 +6,9 @@
  修 改 人：张旭
  修改日期：2017/07/12
  修改原因：添加昆山各节点审核人（节点三至节点七）
+ 修 改 人：King
+ 修改日期：2018/05/17
+ 修改原因：人員離職修改審核人
  备    注：昆山&台湾共同使用该流程
  
  
@@ -81,7 +84,7 @@ public without sharing class AMInternalmemoHandler implements Triggers.Handler {
         }
         else if (cam.Recipient_Unit__c == '資訊' ) {
             //通过不同规则找SF用户
-            return utils.getUserByEmployeeCode('30210240');
+            return utils.getUserByEmployeeCode('3021086');
         }
         else if (cam.Recipient_Unit__c == '財務' ) {
             //通过不同规则找SF用户

@@ -25,7 +25,9 @@ public without sharing class SapApprovalEnum {
 	public static final String STAFFLEAVEOFFICE = 'StaffLeaveOffice';
 	//出差管理流程
 	public static final String BUSINESSTRAVEL = 'BusinessTravel';
-	//销售订单审批流程
+	//銷售訂單流程
+	public static final String SALEORDERDATATABLE = 'SaleOrderDatatable';
+	//销售订单流程
 	public static final String SALEORDER = 'SaleOrder';
 	//标准采购订单作业流程
 	public static final String PURCHASEORDER = 'PurchaseOrder';

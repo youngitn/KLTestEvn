@@ -6,7 +6,7 @@
  */
 
 public  class AMClientApplyExtension {   
-      PUBLIC Approval_Managed__c am{GET;SET;}
+    PUBLIC Approval_Managed__c am{GET;SET;}
     public List<Approval_Managed_Item__c> listDetail{GET;SET;}//行细目列表 
   
     public List<Approval_Managed_Item__c> listson{GET;SET;}//查询列表 
@@ -16,7 +16,6 @@ public  class AMClientApplyExtension {
     // 子表
     public List<Approval_Managed_Item__c> dellistDetail{GET;SET;} 
  
-
     public Boolean isDeletedStatus{GET;SET;}
     // 子表记录类型ID
     public String recTypeInterviewerID = '';
@@ -74,8 +73,6 @@ public  class AMClientApplyExtension {
         return null;
     }
 
-
-
     //删除
     public PageReference deleteDetail(){
         System.debug('*** rowID: ' + rowID);
@@ -85,12 +82,7 @@ public  class AMClientApplyExtension {
         listDetail.remove(rowID-1);
         return null;
     }  
-
   
-
-
-  
-
     public PageReference queryClientApply(){
         System.debug('*** resultRowID: ' + resultRowID);
         System.debug(LoggingLevel.INFO, '*** resultRowID: ' + resultRowID);
@@ -125,7 +117,6 @@ public  class AMClientApplyExtension {
  
         return null;
     }
-
 
     public PageReference selectMaterial(){
         System.debug(LoggingLevel.INFO, '*** selectRow: ' + selectRow);
@@ -200,4 +191,4 @@ public  class AMClientApplyExtension {
 
 
 
-    }
+}
