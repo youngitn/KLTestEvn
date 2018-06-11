@@ -57,7 +57,7 @@
                      }
                    //alert('{!approvalNode}' );
                    
-                    if ('{!approvalNode}' == 'AP99'){
+                    if ('{!approvalNode}' == 'AP01'){
                         let target = j$('#sync');
                         target.show();
                         target.on('click',function(){
