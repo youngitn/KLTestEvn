@@ -15,23 +15,32 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
     {
         super('Approval_Managed__c', '請假申請流程', con, 'Approval_Managed_Item__c', '请假明细表', 'LeaveManage__c');
 
+        System.debug('目前使用的語系:' + UserInfo.getLanguage());
+        
         sapInsertArgs = null;
         list1Row = 0;
         list1 = (List<Approval_Managed_Item__c>)this.detailSObjList;
         am = (Approval_Managed__c)this.sobj;
-        List<ProcessInstanceNode> pins = [SELECT Id, ProcessNodeId, ProcessNode.DeveloperName, ProcessInstance.ProcessDefinition.DeveloperName
-                                          FROM ProcessInstanceNode
-                                          WHERE ProcessInstance.TargetObjectId = :con.getId()  ORDER BY CreatedDate DESC
-                                                  LIMIT 1];
-        approvalNode = 'none';
-        if (pins.size() > 0)
-        {
-            approvalNode  = pins.get(0).ProcessNode.DeveloperName;
-        }
+
         if (con.getId() == null)
         {
             am = (Approval_Managed__c)SObjectUtils.init(am);
 
+        }
+        else
+        {
+            //取得單據目前的審批關卡
+            List<ProcessInstanceNode> pins = [SELECT Id, ProcessNodeId, ProcessNode.DeveloperName, ProcessInstance.ProcessDefinition.DeveloperName
+                                              FROM ProcessInstanceNode
+                                              WHERE ProcessInstance.TargetObjectId = :con.getId()  ORDER BY CreatedDate DESC
+                                                      LIMIT 1];
+            approvalNode = 'none';
+            if (pins.size() > 0)
+            {
+                //取得關卡API NAME
+                //如此可在前端做判斷條件使用
+                approvalNode  = pins.get(0).ProcessNode.DeveloperName;
+            }
         }
 
     }
@@ -61,13 +70,13 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
 
         //檢查輸入日期是否合法&假別時數是否可休&超過三天是否有勾選checkBox
         validateDetailList(list1);
-        
+
         if (hasError == 0)
         {
             // LeaveData ld = new LeaveData();
             // ld.empNumber = am.Employee_Code__c;
             // ld.amiList = list1;
-            
+
             //儲存表頭(master)
             upsert am;
             //設置每一筆明細(detail)的 fk=表頭(master) Id
@@ -75,12 +84,12 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
             list1 = setRelationOfDetailWithMaster(list1, am.Id);
             System.debug(list1);
             upsert list1;
-            
+
             return this.goPage(am.Id);
         }
         else
         {
-           
+
             return null;
         }
         /***********************************************************************************/
@@ -163,8 +172,9 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
                 ami.time_number__c = ((String)((Map<String, Object>)detailList.get(i)).get('time_number__c')).trim();
 
                 //判斷每筆請假時數 SAP計算回傳後是否為0
-                if(Decimal.valueOf(ami.time_number__c) < 1){
-                    ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '第'+(i+1)+'筆請假明細 時數不可為零'));
+                if(Decimal.valueOf(ami.time_number__c) < 1)
+                {
+                    ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '第' + (i + 1) + '筆請假明細 時數不可為零'));
                     hasError ++;
                 }
 
@@ -220,12 +230,14 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
         //單筆請假時數總和超過24小時,等於連續三天,存檔時會顯示錯誤訊息.
         isLeaveHourSumOver24(am.Sum_Vacation__c, am.Is_Been_Evaluated__c, (String)m.get('check'));
         //勾選連續休三天項目
-        if((String)m.get('check') == 'X'){
+        if((String)m.get('check') == 'X')
+        {
             am.Is_Been_Evaluated__c = true;
         }
-        if((String)m.get('status') == '0'){
-            ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '儲存失敗:特休&補休需提前三天申請.請修改特休日期.'));
-            hasError ++;
+        if((String)m.get('status') == '0')
+        {
+            ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING, '注意:如請的是特休或補休需提前三天申請.'));
+            // hasError ++;
         }
 
         //return list1;
@@ -387,14 +399,14 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
     @RemoteAction
     global static String queryVacation(String cid)
     {
-        return RemoteActionsOfLeave.queryVacationTW(cid,'VacationQuery');
+        return RemoteActionsOfLeave.queryVacationTW(cid, 'VacationQuery');
     }
 
     //查詢SAP請假紀錄列表
     @RemoteAction
     global static String queryVacationTW(String cid)
     {
-        return RemoteActionsOfLeave.queryVacationTW(cid,'VacationQueryTW');
+        return RemoteActionsOfLeave.queryVacationTW(cid, 'VacationQueryTW');
     }
 
     //推送請假紀錄到SAP
@@ -404,20 +416,21 @@ global with sharing class AMLeaveApplicationExtension extends VFShowInApprovalEx
         String argJson = '';
 
         Map<String, object> fromSapJson = new Map<String, object>();
-        
+
         SapJsonStringBuilder sjb = new SapJsonStringBuilder();
         sjb.setMaster(id, 'Approval_Managed__c');
         sjb.setDetails(id, 'Approval_Managed_item__c', 'LeaveManage__c');
         argJson = sjb.getJson('LEAVE', 'Items', SapOperateEnum.INSERTED).replace('TypesOfLeave__c', 'Leave_type__c');
         System.debug('請假單同步SAP推送JSON-->==>' + argJson);
         String result = '{"test":"test"}';
-        if(!Test.isRunningTest()){
-            result = Utils.postToSAP(argJson);    
+        if(!Test.isRunningTest())
+        {
+            result = Utils.postToSAP(argJson);
         }
-       
+
         //argJson = SapInputArgCreateForLeaveApplication.createSapAmleaveInputArgs(id);
 
-        
+
         fromSapJson =  (Map<String, object>)JSON.deserializeUntyped(result);
 
 
