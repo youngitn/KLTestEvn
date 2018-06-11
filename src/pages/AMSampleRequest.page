@@ -1,11 +1,14 @@
-<apex:page standardController="Approval_Managed1__c" extensions="AMSampleRequestExtension" >
+<apex:page applyHtmlTag="true" doctype="html-5.0"  lightningStylesheets="true"  standardController="Approval_Managed1__c" extensions="AMSampleRequestExtension" >
 <!-- MR模具申请流程 -->
 <html>
-<!-- <script src="{!URLFOR($Resource.JSbundle, '/libs/jquery-3.2.1.js')}" crossorigin="anonymous"></script>
+<head>
+            <script src="{!URLFOR($Resource.JSbundle, '/libs/jquery-3.2.1.js')}" crossorigin="anonymous"></script>
             <script src="/jslibrary/1510689194000/sfdc/Activity.js" crossorigin="anonymous"></script>
-            <script src="{!URLFOR($Resource.JSbundle, '/libs/vue.js')}" crossorigin="anonymous"></script>
+            <!-- <script src="{!URLFOR($Resource.JSbundle, '/libs/vue.js')}" crossorigin="anonymous"></script> -->
             <script src="{!URLFOR($Resource.JSbundle, '/app/vueComponents.js')}" crossorigin="anonymous"></script>
-            <script src="{!URLFOR($Resource.JSbundle, '/app/JValidator.js')}" crossorigin="anonymous"></script> -->
+            <script src="{!URLFOR($Resource.JSbundle, '/app/JValidator.js')}" crossorigin="anonymous"></script> 
+            <script src="{!URLFOR($Resource.JSbundle, '/app/AMEducationTrainingJS.js')}" crossorigin="anonymous"></script>
+</head>
 <body>
 <script>
 

@@ -6,8 +6,8 @@
  
  
  **********************************************************************/
-public without sharing class AMSampleRequestHandler implements Triggers.Handler {
-    public void handle() {
+public without sharing class AMSampleRequestHandler implements Triggers.Handler { 
+    public void handle() { 
         Map<Decimal,Organizational__c>  mapSpecify = null;
         Id rtId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.SAMPLEREQUEST,'Approval_Managed1__c');
         if (Trigger.isBefore && Trigger.isInsert) {
@@ -40,13 +40,15 @@ public without sharing class AMSampleRequestHandler implements Triggers.Handler 
 
             	//节点一：部门主管审批
             	cam.Approval_User1__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(1),cam.Applicant__c),0);
-            	//节点三：内勤主管审批
-            	if(cam.SalesGroup__c=='20')
-            	{
+                //节点二
+                cam.Approval_User3__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3),null),0);
+                cam.Approval_User4__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(4),null),0);
+                cam.Approval_User5__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(5),null),0);
+                //节点三：内勤主管审批
+            	if(cam.SalesGroup__c=='20'){
             		cam.Approval_User2__c  = utils.getUserByEmployeeCode('10210154');//程 汪林
             	}
-            	else
-            	{
+            	else{
             		cam.Approval_User2__c  = utils.getUserByEmployeeCode('10210452');//陈 丹华 
             	}
                 

@@ -8,10 +8,19 @@ public with sharing class AMLeave {
 
     public Map<String,Approval_Managed_Item__c> mapVoucher{get;set;}
 
+   
+
     public Integer list1Row {get; set;}
+    
     public Boolean isDeletedStatus{GET;SET;}
     //明细记录类型ID
     private Id recTypeDetailId = null;
+    
+
+
+
+
+
 
 
     public AMLeave(ApexPages.StandardController con) {
@@ -44,6 +53,7 @@ public with sharing class AMLeave {
         list1 = [SELECT RecordTypeId,LeaveManage__c,Leave_type__c,Leave_reason__c,Start_date__c,End_date__c,Start_time__c,End_time__c,Time_number__c FROM Approval_Managed_Item__c 
                   WHERE LeaveManage__c = :amid AND RecordType.DeveloperName = 'LeaveDetails'];
 
+        
         preDeletelist1 = new List<Approval_Managed_Item__c>();
         if (am.Name != null) {
             displayQueryResult = null;
@@ -51,6 +61,18 @@ public with sharing class AMLeave {
     }
 
     public PageReference save() {
+        for (Approval_Managed_Item__c s:list1 ) {
+            if(s.Leave_reason__c!= null){
+               
+                am.Head_description__c = '假别：'+s.Leave_type__c+';'+'请假事由：'+s.Leave_reason__c+';';
+                
+            }
+
+        }
+          
+
+
+  
         if (String.isNotBlank(am.Employee__c) ) {
             List<Contact> lstCon = [SELECT Name, Number__c FROM Contact WHERE Id = :am.Employee__c AND RecordType.DeveloperName = 'Staff'];
             if (lstCon.size()>0) {
@@ -94,7 +116,7 @@ public with sharing class AMLeave {
                         ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.WARNING,'开始日期不能大于结束日期'));    
                         return null;
                     }
-
+            
                     ami.RecordTypeId = recTypeDetailId;
                     ami.LeaveManage__c = am.Id;
                     am.Sum_Vacation__c += Decimal.valueOf(ami.time_number__c);
@@ -131,6 +153,7 @@ public with sharing class AMLeave {
             ApexPages.addMessages(e);
             return null;
         }
+
         return new PageReference('/' + am.Id);
 
     } 
@@ -143,9 +166,12 @@ public with sharing class AMLeave {
     public PageReference newlist1() {
         Approval_Managed_Item__c ami = new Approval_Managed_Item__c();
         ami.RecordTypeId = recTypeDetailId;
+
         list1.add(ami);
         return null;
     }
+
+   
 
     public PageReference deletelist1() {
         if (list1[list1Row].Id != null) {

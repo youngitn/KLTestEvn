@@ -1,7 +1,7 @@
-<apex:page applyhtmltag="true" doctype="html-5.0" extensions="AMLeaveApplicationExtension" standardcontroller="Approval_Managed__c">
+<apex:page applyhtmltag="true" doctype="html-5.0" extensions="AMSalesOrderDatatableExtension" standardcontroller="Custom_Approval_Managed__c">
     <!-- 銷售訂單流程 -->
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
-   
+  
     <html>
         <head>
             
@@ -17,61 +17,118 @@
             </script>
             <script src="https://malsup.github.io/jquery.blockUI.js" type="text/javascript">
             </script>
-            <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/AMLeaveApplication/AMLeaveApplicationJS.js')}">
+             <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/AMLeaveApplication/AMLeaveApplicationJS.js')}">
             </script>
             <script crossorigin="anonymous" src="{!URLFOR($Resource.JSbundle, '/app/dataTableConfigObj.js')}">
             </script>
+
             <script type="text/javascript">
-                j$( function() {
+                // j$( function() {
                     //隱藏新增刪除請假明細按鈕  
-                    j$("input[id$=btnAdd],input[id$=btnDel]").hide();
-                    //隱藏 查詢tab
-                    j$('#ui-id-2').hide();
-                    j$( "#tabs" ).tabs({
-                      beforeLoad: function( event, ui ) {
-                        ui.jqXHR.fail(function() {
-                          ui.panel.html(
-                            "Couldn't load this tab. We'll try to fix this as soon as possible. " +
-                            "If this wouldn't be a demo." );
-                        }); 
-                      }
-                    });
+                    // j$("input[id$=btnAdd],input[id$=btnDel]").hide();
+                    // //隱藏 查詢tab
+                    // j$('#ui-id-2').hide();
+                    // j$( "#tabs" ).tabs({
+                    //   beforeLoad: function( event, ui ) {
+                    //     ui.jqXHR.fail(function() {
+                    //       ui.panel.html(
+                    //         "Couldn't load this tab. We'll try to fix this as soon as possible. " +
+                    //         "If this wouldn't be a demo." );
+                    //     }); 
+                    //   }
+                    // });
 
                     //搜尋tab只有在草稿和新建狀態顯示
-                    if ('{!NowStatus}' == 'SKETCH' || '{!NowStatus}' == 'NEW') { 
-                        j$('#ui-id-2').show();
-                        // j$("input[id$=Employee]").attr('placeholder','請點下方的放大鏡圖示做輸入');
-                        // j$("input[id$=Agent]").attr('placeholder','請點下方的放大鏡圖示做輸入');
+                    // if ('{!NowStatus}' == 'SKETCH' || '{!NowStatus}' == 'NEW') { 
+                    //     j$('#ui-id-2').show();
+                    //     // j$("input[id$=Employee]").attr('placeholder','請點下方的放大鏡圖示做輸入');
+                    //     // j$("input[id$=Agent]").attr('placeholder','請點下方的放大鏡圖示做輸入');
                            
-                    }
+                    // }
                     //只有在草稿和新建狀態或者該關卡有可編輯欄位
                     //顯示新增刪除請假明細按鈕 
-                    if("{!NowStatus}" === 'NEW' || "{!NowStatus}" === 'SKETCH' || "{!isEditable}" == 'true'){
-                       j$("input[id$=btnAdd],input[id$=btnDel]").show();
-                     }
+              //       if("{!NowStatus}" === 'NEW' || "{!NowStatus}" === 'SKETCH' || "{!isEditable}" == 'true'){
+              //          j$("input[id$=btnAdd],input[id$=btnDel]").show();
+              //        }
                    
 
-              });
+              // });
+
+            
+
+
+
+
+          $(
+               function(){
+ 
+                   let datatable  =  $("#tableBank").Datatable({
+                        "aLengthMenu":[10,20,40,60],
+                        "searching":false,//禁用搜索
+                        "lengthChange":true,
+                        "paging": true,//开启表格分页
+                        "bProcessing" : true,
+                        "bServerSide" : true,
+                        "bAutoWidth" : false,
+                        "sort" : "position",
+                        "deferRender":true,//延迟渲染
+                        "bStateSave" : false, //在第三页刷新页面，会自动到第一页
+                        "iDisplayLength" : 10,
+                        "iDisplayStart" : 0,
+                        "dom": '<l<\'#topPlugin\'>f>rt<ip><"clear">',
+                        "language": languageConf,
+                        "data": JSON.parse(j$.parseHTML(result)[0].data),
+                        "columns": [{
+                                  "data": "1",
+                                  "defaultContent": ""  //默认值
+                                     },{
+                                  "data": "Row_Index__c",
+                                  "defaultContent": "1"
+                                     },{
+                                  "data": "Operate_Type__c",
+                                  "defaultContent": "1"
+                                     },{
+                                  "data": "Material_Number__c",
+                                  "defaultContent": "1"
+                                     },{
+                                  "data": "Material_Name__c",
+                                  "defaultContent": "1"
+                                     },{
+                                  "data": "Quantity__c",
+                                  "defaultContent": "1"
+                                     },{
+                                  "data": "Unit__c",
+                                  "defaultContent": "1"
+                                     },{
+                                  "data": "Schedule_Date__c",
+                                  "defaultContent": "1"
+                                     },{
+                                  "data": "Price_Net__c",
+                                  "defaultContent": "1"
+                                     },{
+                                  "data": "Reasons_for_refusal__c",
+                                  "defaultContent": "1"
+                                     }]
+                   });
+                          // }
+
+            );
+               
+
+
             </script>
         </head>
         <body>
             <div id="tabs">
                 <ul>
-                    <li>
-                        <a href="#tabs-1">
-                           销售订单流程 
-                        </a>
-                    </li>
+             
                     <li>
                         <a href="#tabs-2">
-                            查询
+                            销售订单
                         </a>
                     </li>
                 </ul>
-                <div id="tabs-1">
-                    <apex:include pagename="LeaveQuery">
-                    </apex:include>
-                </div>
+              
                 <div id="tabs-2">
                     <apex:sectionheader title="销售订单流程">
                     </apex:sectionheader>
@@ -79,351 +136,341 @@
                         <apex:form id="form" styleclass="pure-form pure-form-stacked">
                             <c:baseFormInfo inputobject="{!am}">
                             </c:baseFormInfo>
-                           <!--  <fieldset>
+                             <fieldset>
                                 <legend>
                                     <apex:pageblocksection title="销售订单基本信息">
                                     </apex:pageblocksection>
                                 </legend>
                                 <div class="pure-g">
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Employee">
+                                        <label for="Kind_of_Order">
                                            订单类型
                                         </label>
-                                        <apex:inputfield id="Employee" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Employee__c}">
+                                        <apex:inputfield id="Kind_of_Order" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Kind_of_Order__c}">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Employee_Code11">
+                                        <label for="Type_of_Approval">
                                             流程类型
                                         </label>
-                                        <apex:inputfield id="Employee_Cod11e" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Employee_Code11__c}">
+                                        <apex:inputfield id="Type_of_Approval" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Type_of_Approval__c}">
                                         </apex:inputfield>
                                     </div>
                                    
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Agent1">
+                                        <label for="Order_of_Sales">
                                             销售订单号
                                         </label>
-                                        <apex:inputfield id="Agent1" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Operator_Abnormal__c}">
+                                        <apex:inputfield id="Order_of_Sales" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Order_of_Sales__c}">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="AgentExt1">
+                                        <label for="Customer_Name">
                                             销售方名称
                                         </label>
-                                        <apex:inputfield id="AgentExt1" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Contract_number__c}">
+                                        <apex:inputfield id="Customer_Name" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Customer_Name__c}">
                                         </apex:inputfield>
                                     </div>
                                   
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Annual_leave11">
+                                        <label for="Customer_Code">
                                            销售方代码
                                         </label>
-                                        <apex:inputfield id="Annual_leave1" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Annual_leave1__c}">
+                                        <apex:inputfield id="Customer_Code" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Customer_Code__c}">
                                         </apex:inputfield>
                                     </div>
                                    
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Annual_leave2_Reset">
+                                        <label for="Delivery_Party_Name">
                                             送达方名称
                                         </label>
-                                        <apex:inputfield id="Annual_leave2_Reset" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Warehouse_confirmation__c}">
+                                        <apex:inputfield id="Delivery_Party_Name" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Delivery_Party_Name__c}">
                                         </apex:inputfield>
                                     </div>
 
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Adjustable_vacation3">
+                                        <label for="Delivery_Party_Code">
                                             送达方代码
                                         </label>
-                                        <apex:inputfield id="Adjustable_vacation3" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Adjustable_vacation3__c }">
+                                        <apex:inputfield id="Delivery_Party_Code" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Delivery_Party_Code__c }">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Applicant_position">
+                                        <label for="Currency_Purchase">
                                             币种
                                         </label>
-                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Applicant_position" type="text" value="{!am.Applicant_position__c}">
+                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Currency_Purchase" type="text" value="{!am.Currency_Purchase__c}">
                                         </input>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Take_Office_Date">
+                                        <label for="Sales_Org">
                                             销售组织
                                         </label>
-                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Take_Office_Date2_box" value="{!am.Take_Office_Date__c}">
+                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Sales_Org" value="{!am.Sales_Org__c}">
                                         </input>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Sum_Vacation1">
+                                        <label for="Term_of_Purchase_Payment">
                                             付款条件(客户_销售_新)
                                         </label>
-                                        <apex:inputfield id="Sum_Vacation" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Sum_Vacation1__c}">
+                                        <apex:inputfield id="Term_of_Purchase_Payment" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Term_of_Purchase_Payment__c}">
                                         </apex:inputfield>
                                     </div><div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Employee">
+                                        <label for="Distribution_Channel">
                                             分销渠道
                                         </label>
-                                        <apex:inputfield id="Employee1" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Employee1__c}">
+                                        <apex:inputfield id="Distribution_Channel" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Distribution_Channel__c}">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Employee_Cod111e">
+                                        <label for="Term_of_Purchase_Trade">
                                             国际贸易条件
                                         </label>
-                                        <apex:inputfield id="Employee1_Code" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Employee1_Cod111e__c}">
+                                        <apex:inputfield id="Term_of_Purchase_Trade" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Term_of_Purchase_Trade__c}">
                                         </apex:inputfield>
                                     </div>
                                    
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Agent2">
+                                        <label for="Product_Group">
                                             产品组
                                         </label>
-                                        <apex:inputfield id="Agent2" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Operator_Abnormal__c}">
+                                        <apex:inputfield id="Product_Group" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Product_Group__c}">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="AgentExt2">
+                                        <label for="Name_Additional">
                                             国际贸易条件补充说明
                                         </label>
-                                        <apex:inputfield id="AgentExt2" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Contract_number__c}">
+                                        <apex:inputfield id="Name_Additional" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Name_Additional__c}">
                                         </apex:inputfield>
                                     </div>
                                   
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Annual_leave3">
+                                        <label for="Price_Group">
                                             价格组
                                         </label>
-                                        <apex:inputfield id="Annual_leave3" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Annual_leave3__c}">
+                                        <apex:inputfield id="Price_Group" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Price_Group__c}">
                                         </apex:inputfield>
                                     </div>
                                    
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Annual_leave4_Reset">
-                                            来源于报价单	
+                                        <label for="Is_Based_Quotation">
+                                            来源于报价单  
                                         </label>
-                                        <apex:inputfield id="Annual_leave4_Reset" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Warehouse_confirmation__c}">
+                                        <apex:inputfield id="Is_Based_Quotation" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Is_Based_Quotation__c}">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Adjustable_vacation2">
+                                        <label for="Customer_Group">
                                             客户组
                                         </label>
-                                        <apex:inputfield id="Adjustable_vacation2" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Adjustable_vacation2__c }">
+                                        <apex:inputfield id="Customer_Group" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Customer_Group__c }">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Applicant_position">
-                                            参考币种	
+                                        <label for="Currency_Reference">
+                                            参考币种    
                                         </label>
-                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Applicant_position" type="text" value="{!am.Applicant_position__c}">
+                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Currency_Reference" type="text" value="{!am.Currency_Reference__c}">
                                         </input>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Take_Office_Date">
+                                        <label for="Sales_Area">
                                             销售地区
                                         </label>
-                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Take_Office_Date3_box" value="">
+                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Sales_Area" value="{!am.Sales_Area__c}">
                                         </input>
-                                        <apex:inputfield id="Take_Office_Date4" onchange="j$('#Take_Office_Date_box').val(j$(this).val());" value="{!am.Take_Office_Date__c}">
-                                        </apex:inputfield>
+                                       
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Sum_Vacation">
-                                            参考号	
+                                        <label for="Code_Reference">
+                                            参考号 
                                         </label>
-                                        <apex:inputfield id="Sum_Vacation2" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Sum_Vacation2__c}">
+                                        <apex:inputfield id="Code_Reference" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Code_Reference__c}">
                                         </apex:inputfield>
                                     </div><div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Employee2">
+                                        <label for="Sales_Office_Area">
                                             销售办公区
                                         </label>
-                                        <apex:inputfield id="Employee2" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Employee2__c}">
+                                        <apex:inputfield id="Sales_Office_Area" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Sales_Office_Area__c}">
                                         </apex:inputfield>
                                     </div>
-                                    <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Employee3_Code">
+                                     <div class="pure-u-1 pure-u-md-1-3">
+                                        <label for="Amount_Reference">
                                             参考金额P
                                         </label>
-                                        <apex:inputfield id="Employee_Cod1111e" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Employee3_Code__c}">
+                                        <apex:inputfield id="Amount_Reference" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Amount_Reference__c}">
                                         </apex:inputfield>
                                     </div>
+                                
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                    </div>
-                                    <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Agent3">
+                                        <label for="Sales_Group">
                                             销售组
                                         </label>
-                                        <apex:inputfield id="Agent3" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Operator_Abnormal__c}">
+                                        <apex:inputfield id="Sales_Group" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Sales_Group__c}">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="AgentExt3">
-                                            备料单协议	 
+                                        <label for="Prepare_Feed_Protocol">
+                                            备料单协议    
                                         </label>
-                                        <apex:inputfield id="AgentExt3" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Contract_number__c}">
+                                        <apex:inputfield id="Prepare_Feed_Protocol" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Prepare_Feed_Protocol__c}">
                                         </apex:inputfield>
                                     </div>
+                                   
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                    </div>
-                                    <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Annual_leave5">
-                                            订单原因	 
+                                        <label for="Reason_of_Order">
+                                            订单原因     
                                         </label>
-                                        <apex:inputfield id="Annual_leave5" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Annual_leave5__c}">
+                                        <apex:inputfield id="Reason_of_Order" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Reason_of_Order__c}">
                                         </apex:inputfield>
                                     </div>
                                  
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Annual_leave6_Reset">
+                                        <label for="Goods_Price">
                                             货物价值
                                         </label>
-                                        <apex:inputfield id="Annual_leave6_Reset" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Warehouse_confirmation__c}">
+                                        <apex:inputfield id="Goods_Price" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Goods_Price__c}">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Adjustable_vacation1">
-                                            商机编号	
+                                        <label for="Opportunity_Code">
+                                            商机编号    
                                         </label>
-                                        <apex:inputfield id="Adjustable_vacation1" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Adjustable_vacation1__c }">
+                                        <apex:inputfield id="Opportunity_Code" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Opportunity_Code__c }">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Applicant_position">
+                                        <label for="Discount_Rate">
                                             折扣率
                                         </label>
-                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Applicant_position" type="text" value="{!am.Applicant_position__c}">
+                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Discount_Rate" type="text" value="{!am.Discount_Rate__c}">
                                         </input>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Take_Office_Date1">
+                                        <label for="Weight_Total">
                                             总重量(KG)
                                         </label>
-                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Take_Office_Date5_box" value="">
+                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Weight_Total" value="{!am.Weight_Total__c}">
                                         </input>
-                                        <apex:inputfield id="Take_Office_Date6" onchange="j$('#Take_Office_Date_box').val(j$(this).val());" value="{!am.Take_Office_Date__c}">
-                                        </apex:inputfield>
                                     </div>
+
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Sum_Vacation3">
-                                            非标件价格判定标记	
+                                        <label for="NotStandard_Price_Flag">
+                                            非标件价格判定标记   
                                         </label>
-                                        <apex:inputfield id="Sum_Vacation3" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Sum_Vacation3__c}">
+                                        <apex:inputfield id="NotStandard_Price_Flag" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.NotStandard_Price_Flag__c}">
                                         </apex:inputfield>
                                     </div>
                                       <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Sum_Vacation4">
-                                            供应商是否同意退款	
+                                        <label for="Is_Agree_Refund2">
+                                            供应商是否同意退款   
                                         </label>
-                                        <apex:inputfield id="Sum_Vacation4" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Sum_Vacation4__c}">
+                                        <apex:inputfield id="Is_Agree_Refund2" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Is_Agree_Refund2__c}">
                                         </apex:inputfield>
                                     </div>
                                      <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Sum_Vacation5">
-                                            采购订单号	
+                                        <label for="Purchase">
+                                            采购订单号   
                                         </label>
-                                        <apex:inputfield id="Sum_Vacation5" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Sum_Vacation5__c}">
+                                        <apex:inputfield id="Purchase" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Purchase__c}">
                                         </apex:inputfield>
                                     </div>  
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Sum_Vacation6">
-                                            有效起始日期		
+                                        <label for="Eff_Start_Date">
+                                            有效起始日期      
                                         </label>
-                                        <apex:inputfield id="Sum_Vacation6" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Sum_Vacation6__c}">
+                                        <apex:inputfield id="Eff_Start_Date" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Eff_Start_Date__c}">
+                                        </apex:inputfield>
+                                    </div>
+    <!-------------------------------------- 仅呆滞代料结案 ------------------------->
+                                    <div class="pure-u-1 pure-u-md-1-3">
+                                        <label for="Eff_End_Date">
+                                            报价有效至   
+                                        </label>
+                                        <apex:inputfield id="Eff_End_Date" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Eff_End_Date__c}">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Sum_Vacation7">
-                                            仅呆滞代料结案	
+                                        <label for="Approval_User17">
+                                            *审批用户17 
                                         </label>
-                                        <apex:inputfield id="Sum_Vacation7" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Sum_Vacation7__c}">
-                                        </apex:inputfield>
-                                    </div>
-                                    <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Sum_Vacation8">
-                                            报价有效至	
-                                        </label>
-                                        <apex:inputfield id="Sum_Vacation8" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Sum_Vacation8__c}">
-                                        </apex:inputfield>
-                                    </div>
-                                    <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Sum_Vacation9">
-                                            *审批用户17	
-                                        </label>
-                                        <apex:inputfield id="Sum_Vacation9" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Sum_Vacation9__c}">
+                                        <apex:inputfield id="Approval_User17" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Approval_User17__c}">
                                         </apex:inputfield>
                                     </div>
                                 </div>
                                 <div>
                                 </div>
-                            </fieldset> -->
-
+                            </fieldset>
     <!-------------------------- 流程审批信息 ------------------------------------------>
-                           <!--   <fieldset>
+                        <!--     <fieldset>
                                 <legend>
                                     <apex:pageblocksection title="流程审批信息">
                                     </apex:pageblocksection>
                                 </legend>
                                 <div class="pure-g">
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Employee">
+                                        <label for="Name">
                                            审批流程编号
                                         </label>
-                                        <apex:inputfield id="Employee" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Employee__c}">
+                                        <apex:inputfield id="Name" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Name}">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Employee_Code">
+                                        <label for="Approval_Name">
                                             流程名称
                                         </label>
-                                        <apex:inputfield id="Employee_Code" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Employee_Code__c}">
+                                        <apex:inputfield id="Approval_Name" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Approval_Name__c}">
                                         </apex:inputfield>
                                     </div>
                                    
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Agent">
-                                            申请人(工号)	
+                                        <label for="Applicant_Code">
+                                            申请人(工号) 
                                         </label>
-                                        <apex:inputfield id="Agent" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Operator_Abnormal__c}">
+                                        <apex:inputfield id="Applicant_Code" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Applicant_Code__c}">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="AgentExt">
+                                        <label for="Dept_Name">
                                             申请人(部门描述)
                                         </label>
-                                        <apex:inputfield id="AgentExt" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Contract_number__c}">
+                                        <apex:inputfield id="Dept_Name" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Dept_Name__c}">
                                         </apex:inputfield>
                                     </div>
                                   
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Annual_leave">
+                                        <label for="Applicant_Name">
                                            申请人(姓名)
                                         </label>
-                                        <apex:inputfield id="Annual_leave" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Annual_leave__c}">
+                                        <apex:inputfield id="Applicant_Name" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Applicant_Name__c}">
                                         </apex:inputfield>
                                     </div>
                                    
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Annual_leave_Reset">
+                                        <label for="Bill_Date">
                                             单据日期
                                         </label>
-                                        <apex:inputfield id="Annual_leave_Reset" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Warehouse_confirmation__c}">
+                                        <apex:inputfield id="Bill_Date" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Bill_Date__c}">
                                         </apex:inputfield>
                                     </div>
 
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Adjustable_vacation">
+                                        <label for="Applicant_Corp_Code">
                                           申请人(公司代码)
                                         </label>
-                                        <apex:inputfield id="Adjustable_vacation" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Adjustable_vacation__c }">
+                                        <apex:inputfield id="Applicant_Corp_Code" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Applicant_Corp_Code__c}">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Applicant_position">
+                                        <label for="Approval_Status">
                                             *审批状态
                                         </label>
-                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Applicant_position" type="text" value="{!am.Applicant_position__c}">
+                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Approval_Status" type="text" value="{!am.Approval_Status__c}">
                                         </input>
                                      </div>
-                            </fieldset> -->
+                                   </div>
+                            </fieldset>  -->
 
   <!-------------------------- 信息说明------------------------------------------>
                              <fieldset>
@@ -433,89 +480,89 @@
                                 </legend>
                                 <div class="pure-g">
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Employee">
+                                        <label for="Info_of_Discount">
                                            折让信息
                                         </label>
-                                        <apex:inputfield id="Employee" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Employee__c}">
+                                        <apex:inputfield id="Info_of_Discount" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Info_of_Discount__c}">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Employee_Code">
+                                        <label for="CreatedBy">
                                             创建人
                                         </label>
-                                        <apex:inputfield id="Employee_Code" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Employee_Code__c}">
-                                        </apex:inputfield>
+                                        <apex:selectList id="CreatedBy" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.CreatedBy}">
+                                        </apex:selectList>
                                     </div>
                                    
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Agent">
+                                        <label for="LastModifiedBy">
                                            上次修改人
                                         </label>
-                                        <apex:inputfield id="Agent" required="true" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Operator_Abnormal__c}">
-                                        </apex:inputfield>
+                                        <apex:selectList id="LastModifiedBy" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.LastModifiedBy}">
+                                        </apex:selectList>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="AgentExt">
+                                        <label for="RecordType">
                                             记录类型
                                         </label>
-                                        <apex:inputfield id="AgentExt" styleclass="pure-u-1 pure-u-md-2-3" value="{!am.Contract_number__c}">
-                                        </apex:inputfield>
+                                        <apex:selectList id="RecordType" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.RecordType}">
+                                        </apex:selectList>
                                     </div>
                                   
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Annual_leave">
+                                        <label for="Owner">
                                            所有人
                                         </label>
-                                        <apex:inputfield id="Annual_leave" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Annual_leave__c}">
-                                        </apex:inputfield>
+                                        <apex:selectList id="Owner" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Owner}">
+                                        </apex:selectList>
                                     </div>
                                     
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Annual_leave_Reset">
+                                        <label for="Approval_User1">
                                            *审批用户01
                                         </label>
-                                        <apex:inputfield id="Annual_leave_Reset" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Warehouse_confirmation__c}">
+                                        <apex:inputfield id="Approval_User1" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Approval_User1__c}">
                                         </apex:inputfield>
                                     </div>
 
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Adjustable_vacation">
+                                        <label for="Approval_User2">
                                           *审批用户02
                                         </label>
-                                        <apex:inputfield id="Adjustable_vacation" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Adjustable_vacation__c }">
+                                        <apex:inputfield id="Approval_User2" styleclass="pure-u-1 pure-u-md-2-3 readOnly" value="{!am.Approval_User2__c}">
                                         </apex:inputfield>
                                     </div>
                                     <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Applicant_position">
+                                        <label for="Term_of_Contract">
                                             合同附文
                                         </label>
-                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Applicant_position" type="text" value="{!am.Applicant_position__c}">
+                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Term_of_Contract" type="text" value="{!am.Term_of_Contract__c}">
                                         </input>
                                     </div>
                                       <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Applicant_position">
+                                        <label for="Text1_Additional">
                                             补充文本1
                                         </label>
-                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Applicant_position" type="text" value="{!am.Applicant_position__c}">
+                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Text1_Additional" type="text" value="{!am.Text1_Additional__c}">
                                         </input>
                                     </div>
                                       <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Applicant_position">
-                                            工程项目名称	
+                                        <label for="Project_Name">
+                                            工程项目名称  
                                         </label>
-                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Applicant_position" type="text" value="{!am.Applicant_position__c}">
+                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Project_Name" type="text" value="{!am.Project_Name__c}">
                                         </input>
                                     </div>
                                       <div class="pure-u-1 pure-u-md-1-3">
-                                        <label for="Applicant_position">
-                                            采购人信息	
+                                        <label for="Purchaser_Info">
+                                            采购人信息   
                                         </label>
-                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Applicant_position" type="text" value="{!am.Applicant_position__c}">
+                                        <input class="pure-u-1 pure-u-md-2-3 readOnly" id="Purchaser_Info" type="text" value="{!am.Purchaser_Info__c}">
                                         </input>
                                     </div>
                                    </div>
 
-                            </fieldset>
+                            </fieldset> 
 
                             <c:ApprovalProcessButtonSwitcher cancelaction="{!cancelAction}" iseditable="{!isEditable}" saveaction="{!saveAction}" status="{!NowStatus}">
                             </c:ApprovalProcessButtonSwitcher>
@@ -534,40 +581,7 @@
                                     <apex:actionstatus id="retrieveStatus" starttext="(waiting...)">
                                     </apex:actionstatus>
                                     <table class="pure-table rwd-table" id="tableBank">
-                                        <thead>
-                                            <th>
-                                            </th>
-                                            <th>
-                                                行号
-                                            </th>
-                                            <th>
-                                                自定义审批子项
-                                            </th>
-                                            <th>
-                                                操作类型
-                                            </th>
-                                            <th>
-                                                物料号
-                                            </th>
-                                            <th>
-                                                物料名称
-                                            </th>
-                                            <th>
-                                                需求数量
-                                            </th>
-                                            <th>
-                                                客户物料编码
-                                            </th>
-                                            <th>
-                                                预交日期
-                                            </th>
-                                             <th>
-                                                净价值
-                                            </th>
-                                            <th>
-                                                拒绝原因
-                                            </th>
-                                        </thead>
+                                       
                                         <tbody>
                                             <apex:variable value="{!0}" var="list1Index">
                                             </apex:variable>
@@ -578,57 +592,61 @@
                                                             addButtonClass();
                                                             
                                                         </script>
-                                                        <apex:commandbutton action="{!deletelist1}" id="btnDel" immediate="true" rerender="list1" title="在草稿狀態刪除明細後,請按下儲存鈕以刷新頁面." value="删除">
+                                                        <apex:commandbutton action="{!deletelist1}" id="btnDel" immediate="true" rerender="list1"  value="删除">
                                                             <apex:param assignto="{!list1Row}" name="list1Row" value="{!list1Index}">
                                                             </apex:param>
                                                         </apex:commandbutton>
+                                                  
+
                                                     </td>
-                                                    <td data-th="行号">
+                                                  <!--  <td data-th="行号">
                                                         {!list1Index+1}
                                                     </td>
-                                                    <!-- 假別 -->
+                                                    
                                                     <td data-th="自定义审批子项">
-                                                        <apex:inputfield required="true" style="width: 100%" value="{!item.TypesOfLeave__c}">
+                                                        <apex:inputfield id="selfson" required="true" style="width: 100%" value="{!item.Sales_Order__c}">
                                                         </apex:inputfield>
                                                     </td>
-                                                    <!-- 請假事由 -->
+                                                    
                                                     <td data-th="操作类型">
-                                                        <apex:inputfield required="true" style="width: 100%" value="{!item.Leave_reason__c}">
+                                                        <apex:inputfield required="true" style="width: 100%" value="{!item.Operate_Type__c}">
                                                         </apex:inputfield>
                                                     </td>
-                                                    <!-- 請假開始日期 -->
+                                                    
                                                     <td data-th="物料号">
-                                                        <apex:inputfield id="Start_date" onchange="checkDay(j$(this),'start')" required="true" style="width: 100%" value="{!item.Start_date__c}">
+                                                        <apex:inputfield id="Material_Number" onchange="checkDay(j$(this),'start')" required="true" style="width: 100%" value="{!item.Material_Number__c}">
                                                         </apex:inputfield>
                                                     </td>
-                                                    <!-- 請假開始時間 -->
+                                                   
                                                     <td data-th="物料名称">
-                                                        <apex:inputfield id="Start_Time" onchange="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.Start_Time__c}">
+                                                        <apex:inputfield id="Start_Time" onchange="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.Material_Name__c}">
                                                         </apex:inputfield>
                                                     </td>
-                                                    <!-- 請假結束日期 -->
+                                                    
                                                     <td data-th="需求数量">
-                                                        <apex:inputfield id="End_date" onchange="checkDay(j$(this),'end')" required="true" style="width: 100%" value="{!item.End_date__c}">
+                                                        <apex:inputfield id="Quantity" onchange="checkDay(j$(this),'end')" required="true" style="width: 100%" value="{!item.Quantity__c}">
                                                         </apex:inputfield>
                                                     </td>
-                                                    <!-- 請假結束時間 -->
+                                               
                                                     <td data-th="客户物料编码">
-                                                        <apex:inputfield id="End_Time" onchange="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.End_Time__c}">
+                                                        <apex:inputfield id="Material_of_Customer" onchange="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.Material_of_Customer__c}">
                                                         </apex:inputfield>
                                                     </td>
-                                                    <!-- 請假時數(小時) -->
+                                               
                                                     <td data-th="预交日期">
-                                                        <apex:inputfield id="Leave_Time1" onclick="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.time_number__c}">
+                                                        <apex:inputfield id="Schedule_Date" onclick="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.Schedule_Date__c}">
                                                         </apex:inputfield>
                                                     </td>
+                                                    
                                                     <td data-th="净价值">
-                                                        <apex:inputfield id="Leave_Time2" onclick="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.time_number__c}">
+                                                        <apex:inputfield id="Price_Net" onclick="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.Price_Net__c}">
                                                         </apex:inputfield>
                                                     </td>
+                                                   
                                                     <td data-th="拒绝原因">
-                                                        <apex:inputfield id="Leave_Time3" onclick="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.time_number__c}">
+                                                        <apex:inputfield id="Reason" onclick="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.Reason__c}">
                                                         </apex:inputfield>
-                                                    </td>
+                                                    </td> -->
                                                 </tr>
                                                 <apex:variable value="{!list1Index+1}" var="list1Index">
                                                 </apex:variable>

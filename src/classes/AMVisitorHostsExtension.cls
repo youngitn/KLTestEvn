@@ -7,8 +7,13 @@ public with sharing class AMVisitorHostsExtension {
 			am = (Approval_Managed1__c)con.getRecord();
 		}
     }
-    public PageReference save(){
+    public PageReference save(){ 
+
+
+        am.Head_description__c ='来访事由：'+am.visit_reason__c;
+
     	am.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName('VisitorHosts','Approval_Managed1__c');
+
 
     	Upsert am;
     	ApexPages.addMessage(new ApexPages.Message (ApexPages.Severity.INFO,'数据保存成功！'));

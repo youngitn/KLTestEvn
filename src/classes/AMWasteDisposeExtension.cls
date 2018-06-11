@@ -41,21 +41,23 @@ public without sharing class AMWasteDisposeExtension {
     }
     public PageReference saveAction(){
         try {
-            upsert wasteHandle;
-        System.debug('*** listRowInfo: ' + listRowInfo + '');
-
+            
             //更新成本中心发料作业详细记录
             if (listRowInfo.size()>0) {
-
                 for (Custom_Approval_Managed_Item__c cami : listRowInfo) {
                     cami.Waste_Approval__c = wasteHandle.Id;
                     if (cami.Price__c != null && cami.Qty__c != null) {
                         cami.Amount__c = cami.Price__c*cami.Qty__c;
                     }
                     cami.RecordTypeId = recTypeBankDetailID;
+                    wasteHandle.Head_description__c = cami.Material_Name__c;   //流程备注
                 }
+
                 upsert listRowInfo;
             }
+
+            upsert wasteHandle;
+            System.debug('*** listRowInfo: ' + listRowInfo + '');
             /*
             //当编辑删除子表时，删除对应的记录
             if (isDeletedStatus) {

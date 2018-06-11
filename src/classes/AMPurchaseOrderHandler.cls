@@ -10,6 +10,8 @@
 
  **********************************************************************/
 public without sharing class AMPurchaseOrderHandler implements Triggers.Handler {
+
+
 	public void handle() {
         //获取标准采购订单流程各节点配置
         Map<Decimal,Organizational__c>  mapSpecify = null;
@@ -31,7 +33,7 @@ public without sharing class AMPurchaseOrderHandler implements Triggers.Handler 
                         mapSpecify = Utils.getApprovalStepByAPIName(SapApprovalEnum.PURCHASEORDER);
                     }
                     setApprovalUser(mapSpecify,cam);
-                    cam.Is_Reset_Approvaler__c = false;
+                    cam.Is_Reset_Approvaler__c = false;  
                 }
             }
         }

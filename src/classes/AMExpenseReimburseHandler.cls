@@ -49,10 +49,10 @@ public without sharing class AMExpenseReimburseHandler implements Triggers.Handl
                         //供应商报销    02
                         if(type == '01'){
                             if(String.isBlank(u.CompanyName) || !corpCode.contains(u.CompanyName) ){
-                                // if(!pernr.contains(u.Number__c) && !pernr.contains(cam.Employee_Code__c) ){
-                                //     cam.addError('非'+corpCode+'工厂员工或特定员工，不能创建个人报销！');
-                                //     return ;
-                                // }
+                                if(!pernr.contains(u.Number__c) && !pernr.contains(cam.Employee_Code__c) ){
+                                    cam.addError('非'+corpCode+'工厂员工或特定员工，不能创建个人报销！');
+                                    return ;
+                                }
                             }
                         }else if (type == '02') {
                             if (String.isNotBlank(cam.Employee__c) || String.isBlank(cam.Supplier__c)) {

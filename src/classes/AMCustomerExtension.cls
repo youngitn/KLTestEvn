@@ -72,10 +72,14 @@ public without sharing class AMCustomerExtension {
        
     }
     public PageReference saveAction(){
-        System.debug(LoggingLevel.INFO, '*** 进入saveAction: ');
+        System.debug(LoggingLevel.INFO, '*** 进入saveAction: '); 
+       
 		try {
             System.debug(LoggingLevel.INFO, '*** cusAP.Subject_Group__c: ' + cusAP.Subject_Group__c);
             System.debug(LoggingLevel.INFO, '*** : cusAp.Term_of_Payment__c' + cusAp.Term_of_Payment__c);
+            if (listContact.size()>0) {    //流程备注
+                cusAP.Head_description__c = '客户联系人：' + listContact[0].LastName + '  电话：' + listContact[0].MobilePhone + '  邮箱：' + listContact[0].Email;
+            }
             if ( cusAP.Subject_Group__c == 'Z001' && ( cusAp.Term_of_Payment__c <> 'YZ00' || cusAp.Term_of_Payment1__c <> 'YZ00')){
                 ApexPages.addMessage( new ApexPages.Message(ApexPages.Severity.ERROR,'准客户付款条件必须为YZ00 预付100%'));    
                 return null;

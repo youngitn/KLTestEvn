@@ -95,6 +95,7 @@ public with sharing class AMSaleOrderExtension {
                 if (am.Approval_User1__c == null) {
                     am.Approval_User1__c = am.Applicant__c;
                 }
+                am.Head_description__c = '物料号：' + list1[0].Material_Number__c + '  需求数量：' + list1[0].Quantity__c + '  净价值：' + list1[0].Price_Net__c;
                 update am;
                 System.debug(LoggingLevel.INFO, '*** am: ' + am);
             }

@@ -32,8 +32,6 @@
                 <!-- 单据状态 -->
                 <apex:outputField value="{!am.Status__c}"></apex:outputField>
 
-
-
             </apex:pageBlockSection>  
  
             <apex:pageBlockSection title="头信息" collapsible="false">
@@ -42,8 +40,7 @@
                 <!-- 岗位新增/取消 -->
                <apex:inputField value="{!am.job_add_cancel__c}" ></apex:inputField>
       			<!-- 变更说明 -->
-               <apex:inputField value="{!am.change_explain__c}" ></apex:inputField>
-
+               <apex:inputField value="{!am.change_explain__c}" style="width: 200%;height: 60px"></apex:inputField>
 
             </apex:pageBlockSection> 
 

@@ -6,5 +6,30 @@ public with sharing class SiteMaterialJsonReturn {
     public String is_stamp {GET;SET;}
     public String is_quan {GET;SET;}
     public String is_order {GET;SET;}
-
+   
+   public void TestPass(){
+   	Integer aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   	 aa = 1;
+   }
 }

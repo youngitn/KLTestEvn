@@ -10,8 +10,10 @@ public with sharing class AMSampleRequestExtension {
             am.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName('SampleRequest','Approval_Managed1__c');
     }else{
       am = (Approval_Managed1__c)con.getRecord();
+
     }
-          participants = new List<participant>();
+        am.Approval_Name__c = SapApprovalEnum.SAMPLEREQUEST;
+        participants = new List<participant>();
     }
     public PageReference save(){
       String str='物料号|描述|数量|价值|需求日期\n';

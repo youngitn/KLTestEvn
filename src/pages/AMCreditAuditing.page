@@ -1,5 +1,5 @@
 <apex:page standardController="Approval_Managed1__c" extensions="AMCreditAuditingExtension">
-    <!-- 客戶單筆信貸核發申請單 -->
+    <!-- 客户单笔信贷核发申请单 -->
     <head>
         <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
         <style>
@@ -27,7 +27,7 @@
             }
         </script>
     </head>
-    <apex:sectionHeader title="客戶單筆信貸核發申請單" subtitle="新建/编辑核發申請"></apex:sectionHeader>
+    <apex:sectionHeader title="客户单笔信贷核发申请单 " subtitle="新建/编辑核发申请"></apex:sectionHeader>
     <apex:form >
         <!-- 各子表删除行数调用function -->
         <apex:actionFunction action="{!deleteDetail}" id="deleteDetail" name="deleteDetail" reRender="output1">
@@ -36,13 +36,13 @@
         <apex:actionFunction action="{!queryClient}" id="queryClient" name="queryClient" reRender="queryResult,messgae">
             <apex:param assignTo="{!resultRowID}" name="rowID" value="rowID"></apex:param>
         </apex:actionFunction>
-        <apex:pageBlock title="作業" id="block">
+        <apex:pageBlock title="作业" id="block">
             <apex:pageBlockButtons >
                 <apex:commandButton action="{!saveAction}" value="保存"/>
                 <apex:commandButton action="{!cancelAction}" value="取消"/>
             </apex:pageBlockButtons>
-            <apex:pageBlockSection title="流程審批信息" collapsible="false">
-                <!-- 審批流程编號 -->
+            <apex:pageBlockSection title="流程审批信息" collapsible="false">
+                <!-- 审批流程标号 -->
                 <apex:outputField value="{!cusAP.Name}" id="Name"></apex:outputField>
                 <!-- 流程名称 -->
                 <apex:outputField value="{!cusAP.Approval_Name__c}"  id="Approval_Name__c"></apex:outputField>
@@ -59,11 +59,11 @@
                 <!-- 单据状态 -->
                 <apex:outputField value="{!cusAP.Status__c}" id="Status__c"></apex:outputField>
             </apex:pageBlockSection>
-            <apex:pageBlockSection title="單筆信貸核發申請單"  >
-             	 <!-- 訂單未付款總金額 -->
+            <apex:pageBlockSection title="客户单笔信贷核发申请单 "  >
+             	 <!-- 订单未付款总金额 -->
                 <apex:inputField value="{!cusAP.Order_unpaid_cost__c}"></apex:inputField>
                  <br/>
-                 <!-- 備註 -->
+                 <!-- 备注 -->
                 <apex:inputField value="{!cusAP.Remarks__c}"></apex:inputField>
                 <br/>
             </apex:pageBlockSection>
@@ -71,29 +71,29 @@
             <apex:pageMessages escape="true" id="messgae"></apex:pageMessages>
             <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>行信息</h3></div>
             <apex:outputPanel layout="block" styleClass="scroll" id="queryResult" style="display:{!IF(isQuery,'','none')};">
-            <div class="pbSubheader brandTertiaryBgr tertiaryPalette">查詢结果</div>
-                    <table class="list" border="0" cellspacing="0" cellpadding="0" title="查詢结果">
+            <div class="pbSubheader brandTertiaryBgr tertiaryPalette">查询结果</div>
+                    <table class="list" border="0" cellspacing="0" cellpadding="0" title="查询结果">
                         <thead>
                             <th>操作</th>
-                            <th>銷售憑證</th>
-                    		<th>客戶代碼</th>
-                    		<th>客戶名稱</th>
-                    		<th>風險類別</th>
-                    		<th>應收總額</th>
-                    		<th>逾期合計金額</th>
-                    		<th>暫估金額</th>
+                            <th>销售凭证</th>
+                    		<th>客户代码</th>
+                    		<th>客户名称</th>
+                    		<th>风险类别</th>
+                    		<th>应收总额</th>
+                    		<th>逾期合计金额</th>
+                    		<th>暂估金额</th>
                    			<th>逾期占比%</th>
-                   		 	<th>信貨限額</th>
-                   		 	<th>未清金額</th>
-                   		 	<th>付款條件</th>
-                   		 	<th>訂單金額</th>
-                   		 	<th>採購訂單編號</th>
-                   		 	<th>預收帳款</th>
+                   		 	<th>信贷限额</th>
+                   		 	<th>未清金额</th>
+                   		 	<th>付款条件</th>
+                   		 	<th>订单金额</th>
+                   		 	<th>采购订单编号</th>
+                   		 	<th>预收账款</th>
                         </thead>
                         <apex:variable var="customerIndex" value="{!0}"/>
                         <apex:repeat value="{!listQueryResult}" var="item">
                             <tr>
-                                <td><apex:commandButton action="{!selectClient}" reRender="output1,queryResult" value="選擇">
+                                <td><apex:commandButton action="{!selectClient}" reRender="output1,queryResult" value="选择">
                                     <apex:param assignTo="{!selectRow}" name="selectRow" value="{!customerIndex}"></apex:param>
                                 </apex:commandButton></td>
                                 <td><apex:outputField value="{!item.Sales_name__c}"></apex:outputField></td>
@@ -121,24 +121,24 @@
                 <table class="list" border="0" cellspacing="0" cellpadding="0"  id="tableBank" >
                    <thead>
                     <th></th>
-                    <th>行號</th>
-                    <th>處理意見描述</th>
-                    <th>拒絕緣因描述</th>
-                    <th>銷售憑證</th>
-                    <th>客戶代碼</th>
-                    <th>客戶名稱</th>
-                    <th>風險類別</th>
-                    <th>應收總額</th>
-                    <th>逾期合計金額</th>
-                    <th>暫估金額</th>
+                    <th>行号</th>
+                    <th>处理意见描述</th>
+                    <th>拒绝原因描述</th>
+                    <th>销售凭证</th>
+                    <th>客户代码</th>
+                    <th>客户名称</th>
+                    <th>风险类别</th>
+                    <th>应收总额</th>
+                    <th>逾期合计金额</th>
+                    <th>暂估金额</th>
                     <th>逾期占比%</th>
-                    <th>信貨限額</th>
-                    <th>未清金額</th>
-                    <th>付款條件</th>
-                    <th>訂單金額</th>
-                    <th>採購訂單編號</th>
-                    <th>預收帳款</th>
-                    <th>原因及備註</th>
+                    <th>信贷限额</th>
+                    <th>未清金额</th>
+                    <th>付款条件</th>
+                    <th>订单金额</th>
+                    <th>采购订单编号</th>
+                    <th>预收账款</th>
+                    <th>原因及备注</th>
                   </thead>
                     <tbody>
                         <apex:variable var="listIndex" value="{!1}"/>
@@ -149,7 +149,7 @@
                             <td><apex:inputField value="{!item.Processing_opinion_description__c}"></apex:inputField></td>
                             <td><apex:inputField value="{!item.Reasons_for_refusal__c}"></apex:inputField></td>
                             <td><span class="lookupInput"><apex:inputField value="{!item.Sales_name__c}" styleClass="text"/>
-<img src="/img/s.gif" alt="銷售憑證" class="lookupIcon" onblur="this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" title="查詢銷售憑證信息" onclick="queryClient('{!listIndex}')" style="cursor: pointer;" /></span></td>
+<img src="/img/s.gif" alt="销售凭证" class="lookupIcon" onblur="this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" title="查询销售凭证信息" onclick="queryClient('{!listIndex}')" style="cursor: pointer;" /></span></td>
                             
                             <td><apex:outputField value="{!item.Customer_code__c}"></apex:outputField></td>
                                 <td><apex:outputField value="{!item.Customer_name__c}"></apex:outputField></td>

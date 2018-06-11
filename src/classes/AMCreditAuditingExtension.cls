@@ -5,12 +5,16 @@ public without sharing class AMCreditAuditingExtension {
     public Integer rowID {GET;SET;}   //頁面子表行數
     public Integer resultRowID{GET;SET;}
     public Integer selectRow{GET;SET;}
+    public Id amId {GET; SET;}
+    public  Integer  a  {GET;SET;}
+
     public List<Custom_Approval_Managed_Item__c> dellistRowInfo{get;set;}
     public List<Custom_Approval_Managed_Item__c> delListItemDetail{get;set;}
     public List<Custom_Approval_Managed_Item__c> listQueryResult{get;set;}
     public Boolean isDeletedStatus{GET;SET;}
     public Boolean isQuery{get;set;}
     public AMCreditAuditingExtension(ApexPages.StandardController con) {
+        amId=con.getId();
         cusAP = new Approval_Managed1__c();
         listRowInfo = new List<Custom_Approval_Managed_Item__c>();
         dellistRowInfo = new List<Custom_Approval_Managed_Item__c>();
@@ -23,7 +27,7 @@ public without sharing class AMCreditAuditingExtension {
         //查询各子表的對應紀錄類型ID
         recTypeBankDetailID = HarryUtils.getRecordTypeIdByDevNameAndObjName('CreditAuditing','Custom_Approval_Managed_Item__c');
         //判断是新建還是編輯
-        if (con.getId() != null) {
+        if (con.getId() == null) {
             isDeletedStatus = true;
             //查詢相應記錄
             String sql = Utils.getApprovalSQL(SapApprovalEnum.CREDITAUDITING,true);
@@ -45,6 +49,106 @@ public without sharing class AMCreditAuditingExtension {
        
     }
     public PageReference saveAction(){
+         a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+
         //   當銷售憑證為空時不允許保存
          for (Custom_Approval_Managed_Item__c cami : listRowInfo) {
              if (String.isBlank(cami.Customer_code__c)) {

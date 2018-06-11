@@ -295,6 +295,7 @@
                }       
     //(E)  2017/09/28
 
+
      j$(document).ready(function(){
 
          notice();
@@ -371,8 +372,9 @@
 
             </apex:pageBlockSection>
 
-            <apex:pageBlockSection title="代訂餐盒料信息" columns="1" >  
+            <apex:pageBlockSection title="代訂餐信息" columns="1" >  
 
+                <apex:inputField id="Dinner_party" value="{!am.Dinner_party__c}" onchange="party()"></apex:inputField>
                 <apex:inputField id="meal_YN" value="{!am.meal_YN__c}" onchange="meal()"></apex:inputField>  
 
             </apex:pageBlockSection>
@@ -387,9 +389,28 @@
 
                 <apex:inputField value="{!am.meal_box_type__c}" styleClass="meal_hide"></apex:inputField>
 
-                <apex:inputField value="{!am.meal_expense__c}" styleClass="meal_hide"></apex:inputField>
+                <apex:inputField value="{!am.meal_expense__c}" styleClass="meal_hide"></apex:inputField>                                          
+            </apex:pageBlockSection>  
 
-            </apex:pageBlockSection>    
+            <!-- 昆山 -->
+            <apex:pageBlockSection > 
+                <!-- 工厂 -->
+                <apex:inputField value="{!am.Factory__c}" styleClass="party_hide"></apex:inputField>
+                <!-- 成本中心 -->
+                <apex:inputField value="{!am.KOSTL__c}" styleClass="party_hide"></apex:inputField>
+                <!-- 订餐类型 -->
+                <apex:inputField value="{!am.Reservation_type__c}" styleClass="party_hide"></apex:inputField>
+                <!-- 填单日期 -->
+                <apex:inputField value="{!am.Creation_date__c}" styleClass="party_hide"></apex:inputField>
+                <!-- 订餐时间 -->
+                <apex:inputField value="{!am.Ordering_time__c}" styleClass="party_hide"></apex:inputField>
+                <!-- 就餐总人数 -->
+                <apex:inputField value="{!am.Eat_number__c}" styleClass="party_hide"></apex:inputField>
+                <!-- 客户名称 -->
+                <apex:inputField value="{!am.CustomerName__c}" styleClass="party_hide"></apex:inputField>
+                <!-- 陪餐人 -->
+                <apex:inputField value="{!am.Dinner__c}" styleClass="party_hide" ></apex:inputField>
+            </apex:pageBlockSection>  
 
             <apex:pageBlockSection title="餽贈禮品信息" columns="1" >
 

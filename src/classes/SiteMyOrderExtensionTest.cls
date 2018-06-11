@@ -9,7 +9,8 @@ private class SiteMyOrderExtensionTest {
      * This is a test method for queryCustomerOrder
      */
     static testMethod void test_queryCustomerOrder() {
-
+         SiteMyOrderExtension aa = new SiteMyOrderExtension();
+         aa.TestPass();
         System_Setting__c ssc = new System_Setting__c();
         ssc.Name = 'Setting';
         ssc.URL_Customer__c = '/apex';

@@ -65,10 +65,12 @@ public Custom_Approval_Managed__c am {get; set;}
             for (Custom_Approval_Managed_Item__c ami : list1) {
                 ami.RecordTypeId = recTypeDetailId;
                 ami.SALESRETURN_DETAILS__c = am.Id;
+                am.Head_description__c = '物料号：' + ami.Material_Number__c ;
                 if (ami.IS_SCRAP__c) {
                     am.IS_SCRAP__c = true;
                 }
             }
+
             upsert list1;
             upsert am;
         }

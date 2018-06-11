@@ -1,4 +1,4 @@
-<apex:page applyhtmltag="true" doctype="html-5.0" extensions="AMSalesOrderDatatableExtention" standardcontroller="Custom_Approval_Managed__c">
+<apex:page applyhtmltag="true" doctype="html-5.0" extensions="AMSalesOrderDatatableExtension" standardcontroller="Custom_Approval_Managed__c">
     <!-- 銷售訂單流程 -->
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <html>

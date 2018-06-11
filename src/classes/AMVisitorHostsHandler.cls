@@ -11,12 +11,27 @@ public without sharing class AMVisitorHostsHandler implements Triggers.Handler {
         			//节点一：申请人部门主管
         			cam.Approval_User1__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(1),cam.Applicant__c),0);
         			//节点二：指定人员
-        			cam.Approval_User2__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2),null),0);
+                    if (cam.Applicant_Corp_Code__c == '3000') {    //申请人公司代码
+                        cam.Approval_User2__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2),null),0);
+                    }else {
+                        cam.Approval_User2__c = utils.getUserByEmployeeCode('10210853');
+                    }
+        			
         			//节点三：指定人员
-        			cam.Approval_User3__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3),null),0);
+                    if (cam.Applicant_Corp_Code__c == '3000') {
+                        cam.Approval_User3__c = utils.getUserByEmployeeCode('30210061');  //林雅純   
+                        cam.Approval_User4__c = utils.getUserByEmployeeCode('30210131');  //廖淑雲   
+                        cam.Approval_User5__c = utils.getUserByEmployeeCode('30210286');  //梁惠雯   
+                    }else{
+                        cam.Approval_User3__c = utils.getUserByEmployeeCode('10210861');  //王彩虹
+                        cam.Approval_User4__c = utils.getUserByEmployeeCode('10210533');  //章国庆
+                        cam.Approval_User5__c = utils.getUserByEmployeeCode('10210533');  //章国庆
+                    }
+        			
+                    
         		}
         	}
-            System.debug('*** 退出节点配置: '  + '');
+            System.debug('*** 退出节点配置: '  + '');     
         }    
     }
 }

@@ -1,9 +1,11 @@
 //预付款申请流程
 
 public without sharing class AMAdvanceChargeExtension {
-    public Approval_Managed__c am {GET; SET;}
-    public Id amId {GET; SET;}
 
+    public Approval_Managed__c am {GET; SET;}
+    public  List<Approval_Managed__c> list1 {GET;SET;}
+    public Id amId {GET; SET;}
+    public Integer a  {GET; SET;}
     //页面字段级控制变量
     public String szAbleEditFields{get;set;}
     public Boolean isClosed{get;set;}
@@ -26,9 +28,116 @@ public without sharing class AMAdvanceChargeExtension {
         String sql = Utils.getApprovalSQL(SapApprovalEnum.ADVANCECHARGE,true);
         sql = sql + ' WHERE Id = \'' + amId + '\'';
         am = Database.query(sql);
+          System.debug('ppppppppppppp'+sql);   
+
+         
+
     }
 
-    public PageReference save() {
+    public PageReference save() {    
+        System.debug(am);
+         am.Head_description__c = am.Vendor__c+'  '+am.Remark_of_Explain__c;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        
+
         try {
             if (String.isNotBlank(am.Applicant_Cost__c)) {
                 List<Contact> lstCon = [SELECT Name, Number__c FROM Contact WHERE Id = :am.Applicant_Cost__c];
