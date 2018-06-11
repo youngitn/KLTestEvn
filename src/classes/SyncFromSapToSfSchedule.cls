@@ -419,6 +419,7 @@ global class SyncFromSapToSfSchedule implements Schedulable {
         //在这时把arg.main数据转化为你想要的类型
         //销售订单
         Custom_Approval_Managed__c main = (Custom_Approval_Managed__c)JSON.deserialize(JSON.serialize(args.content.main), Custom_Approval_Managed__c.class);
+        main.Head_description__c='销售订单号：'+main.Order_of_Sales__c+' '+'售达方代码'+main.Customer_Code__c;
         System.debug(LoggingLevel.INFO, '*** main: ' + main);
         Map<String,Custom_Approval_Managed_Item__c> mapItems = new Map<String,Custom_Approval_Managed_Item__c>();
         List<Custom_Approval_Managed_item__c> items = new List<Custom_Approval_Managed_item__c> ();

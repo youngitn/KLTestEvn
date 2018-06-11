@@ -52,7 +52,7 @@
                     //EventUtil.preventDefault(window.event);
                 }
             }
-            else if(type=="2")
+            else if(type=="1")
             {
                 if(desc7.val()!='' ||desc8.val()!=''|| desc9.val()!=''
                 || desc10.val()!=''|| desc11.val()!=''
@@ -62,7 +62,7 @@
                     //EventUtil.preventDefault(window.event);
                 }
             }
-            else if(type=="3")
+            else if(type=="2")
             {
                 if(desc9.val()!=''
                 || desc10.val()!=''|| desc11.val()!='')
@@ -243,59 +243,60 @@
 
             var desc14 = j$("[id$='geographical']"); //外出地点
             
-            if (approvalValue == "1" ) {
-                desc.show();
-                desc.next().show();
-                desc.parent().parent().prev().children("label").show();
+        //     if (approvalValue == "1" ) {
+        //         desc.show();
+        //         desc.next().show();
+        //         desc.parent().parent().prev().children("label").show();
 
-                desc1.show();
-                desc1.parent().prev().children("label").show();
+        //         desc1.show();
+        //         desc1.parent().prev().children("label").show();
 
-                desc2.show();
-                desc2.parent().prev().children("label").show();
+        //         desc2.show();
+        //         desc2.parent().prev().children("label").show();
 
-                desc4.show();
-                desc4.next().show();
-                desc4.parent().parent().prev().children("label").show();
+        //         desc4.show();
+        //         desc4.next().show();
+        //         desc4.parent().parent().prev().children("label").show();
 
-                desc5.show();
-                desc5.parent().prev().children("label").show();
+        //         desc5.show();
+        //         desc5.parent().prev().children("label").show();
 
-                desc6.show();
-                desc6.parent().prev().children("label").show();
+        //         desc6.show();
+        //         desc6.parent().prev().children("label").show();
 
-                desc7.show();
-                desc7.parent().prev().children("label").show();
+        //         desc7.show();
+        //         desc7.parent().prev().children("label").show();
 
-                desc8.show();
-                desc8.parent().prev().children("label").show();
+        //         desc8.show();
+        //         desc8.parent().prev().children("label").show();
 
-                desc9.show();
-                desc9.parent().prev().children("label").show();
+        //         desc9.show();
+        //         desc9.parent().prev().children("label").show();
 
-                desc10.hide();
-                desc10.parent().prev().children("label").hide();
+        //         desc10.hide();
+        //         desc10.parent().prev().children("label").hide();
 
-                desc11.hide();
-                desc11.parent().prev().children("label").hide();
+        //         desc11.hide();
+        //         desc11.parent().prev().children("label").hide();
 
-                desc12.hide();
-                desc12.next().hide();
-                desc12.parent().parent().prev().children("label").hide();
+        //         desc12.hide();
+        //         desc12.next().hide();
+        //         desc12.parent().parent().prev().children("label").hide();
 
-                desc13.hide();
-                desc13.next().hide();
-                desc13.parent().parent().prev().children("label").hide();
+        //         desc13.hide();
+        //         desc13.next().hide();
+        //         desc13.parent().parent().prev().children("label").hide();
 
-                desc14.hide();
-                desc14.parent().prev().children("label").hide();
+        //         desc14.hide();
+        //         desc14.parent().prev().children("label").hide();
 
-                desc15.hide();
-                desc15.parent().prev().children("label").hide();
+        //         desc15.hide();
+        //         desc15.parent().prev().children("label").hide();
 
-                desc16.hide();
-                desc16.parent().prev().children("label").hide();
-        }else if (approvalValue == "2" || approvalValue == "3") {
+        //         desc16.hide();
+        //         desc16.parent().prev().children("label").hide();
+        // }else
+        if (approvalValue == "1" || approvalValue == "2") {
                 desc.hide();
                 desc.next().hide();
                 desc.parent().parent().prev().children("label").hide();
@@ -348,7 +349,7 @@
                 desc16.show();
                 desc16.parent().prev().children("label").show();
         } 
-        if (approvalValue == "3") {
+        if (approvalValue == "2") {
                 desc10.hide();
                 desc10.parent().prev().children("label").hide();
                 desc11.hide();
@@ -363,7 +364,7 @@
     </script>
 </head>
 <body>
-<apex:sectionHeader title="订餐&客户派车申请流程" subtitle="新建/编辑订餐&客户派车申请流程"></apex:sectionHeader>
+<apex:sectionHeader title="货运相关申请流程" subtitle="新建/编辑 货运相关申请流程"></apex:sectionHeader>
     <apex:pageMessages escape="true"></apex:pageMessages>
     <apex:form >
         <apex:pageBlock >
@@ -390,7 +391,7 @@
                 <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
             </apex:pageBlockSection>
              
-            <apex:pageBlockSection title="订餐&客户派车申请流程" >
+            <apex:pageBlockSection title="货车派运申请流程" >
                 <!-- 流程类型 -->
                 <apex:inputField id="ServiceCategory" value="{!am.process_type__c }" required="true" onchange="toggleData() "></apex:inputField>
                 <!-- 工厂 -->

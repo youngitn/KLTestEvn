@@ -32,5 +32,6 @@ public with sharing class AMCreditAuditingHandler implements Triggers.Handler {
         			cam.Approval_User2__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(2),null),0);
         			//節點三：指定人員
         			cam.Approval_User3__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(3),null),0);
+                   
     }
 }

@@ -26,7 +26,7 @@ private class AMCustomerCreditLoanTest {
  
         test.startTest();
           
-        //添加客户
+        // //添加客户
         RecordType rccustomer = [SELECT Id, DeveloperName FROM RecordType WHERE SObjectType = 'Account' AND DeveloperName = 'Customer'];
         Account acc = new Account(RecordTypeId = rccustomer.id,AccountNumber = '001',Name = 'test');
         insert acc;
@@ -74,9 +74,9 @@ private class AMCustomerCreditLoanTest {
 
         
         AMCustomerCreditLoanExtension amIt = new AMCustomerCreditLoanExtension(new ApexPages.StandardController(amc));
-        WebServiceMockImpl wbi = new WebServiceMockImpl();
-        wbi.returnJson = '{"status": "1", message": "信息获取成功", "approval": "CUSTOMERCREDITLOAN", "content":[{"credit_line__c":"300000", "currency__c":"CNY", "amount_receivable__c":"415336", "credit_account_numbe__c":"2004433", "used_credit_amount__c":"000000",  "total_credit_risk__c":"000000", "guarantee_amount_receivable__c":"000000", "risk_kind__c":"001"}, "details": ""]}';
-        Test.setMock(WebServiceMock.class, wbi);
+        // WebServiceMockImpl wbi = new WebServiceMockImpl();
+        // wbi.returnJson = '{"status": "1", message": "信息获取成功", "approval": "CUSTOMERCREDITLOAN", "content":[{"credit_line__c":"300000", "currency__c":"CNY", "amount_receivable__c":"415336", "credit_account_numbe__c":"2004433", "used_credit_amount__c":"000000",  "total_credit_risk__c":"000000", "guarantee_amount_receivable__c":"000000", "risk_kind__c":"001"}, "details": ""]}';
+        // Test.setMock(WebServiceMock.class, wbi);
 
         amIt.save();
         amIt.cancel();

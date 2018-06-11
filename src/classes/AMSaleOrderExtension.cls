@@ -52,7 +52,10 @@ public with sharing class AMSaleOrderExtension {
         sql = sql + ' WHERE Id = \'' + amId + '\'';
         am = Database.query(sql);
 
-        list1 = [SELECT RecordTypeId,Sales_Order__c, Index_Item__c, Material_Number__c, Material_Name__c,
+          Custom_Approval_Managed__c  am= new  Custom_Approval_Managed__c();
+          am=  (Custom_Approval_Managed__c )con.getRecord();
+
+        list1 = [SELECT RecordTypeId,Sales_Order__c,Index_Item__c, Material_Number__c, Material_Name__c,
                  Material_Description__c, Quantity__c, Unit__c, Status_Overview__c,
                  Material_of_Customer__c, Schedule_Date__c, Price_Net__c, Currency__c
                  FROM Custom_Approval_Managed_Item__c WHERE Sales_Order__c = :amId ];
@@ -73,6 +76,7 @@ public with sharing class AMSaleOrderExtension {
 
     public PageReference save() {
         System.Savepoint savepoint = Database.setSavepoint();
+ 
         try {
             if (isInsert()) {
                 insert am;
@@ -95,7 +99,7 @@ public with sharing class AMSaleOrderExtension {
                 if (am.Approval_User1__c == null) {
                     am.Approval_User1__c = am.Applicant__c;
                 }
-                am.Head_description__c = '物料号：' + list1[0].Material_Number__c + '  需求数量：' + list1[0].Quantity__c + '  净价值：' + list1[0].Price_Net__c;
+                
                 update am;
                 System.debug(LoggingLevel.INFO, '*** am: ' + am);
             }

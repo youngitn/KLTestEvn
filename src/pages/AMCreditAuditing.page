@@ -64,13 +64,13 @@
                 <apex:inputField value="{!cusAP.Order_unpaid_cost__c}"></apex:inputField>
                  <br/>
                  <!-- 备注 -->
-                <apex:inputField value="{!cusAP.Remarks__c}"></apex:inputField>
+                <apex:inputField value="{!cusAP.Remark__c}"></apex:inputField>
                 <br/>
             </apex:pageBlockSection>
             <!-- 页面信息提示区 -->
             <apex:pageMessages escape="true" id="messgae"></apex:pageMessages>
             <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>行信息</h3></div>
-            <apex:outputPanel layout="block" styleClass="scroll" id="queryResult" style="display:{!IF(isQuery,'','none')};">
+           <apex:outputPanel layout="block" styleClass="scroll" id="queryResult" style="display:{!IF(isQuery,'','none')};">
             <div class="pbSubheader brandTertiaryBgr tertiaryPalette">查询结果</div>
                     <table class="list" border="0" cellspacing="0" cellpadding="0" title="查询结果">
                         <thead>
@@ -115,7 +115,7 @@
                             </apex:repeat>
                     </table>
             </apex:outputPanel>
-            <apex:commandButton action="{!addDetail}"  value="新增" reRender="output1,messgae" status="retrieveStatus"/>
+          <apex:commandButton action="{!addDetail}"  value="新增" reRender="output1,messgae" status="retrieveStatus"/>
             <apex:outputPanel id="output1" layout="block" styleClass="scroll">
                 <apex:actionStatus startText="(waiting...)" id="retrieveStatus"/>
                 <table class="list" border="0" cellspacing="0" cellpadding="0"  id="tableBank" >
@@ -170,7 +170,7 @@
                         </apex:repeat>
                     </tbody>
                 </table>
-            </apex:outputPanel>
+            </apex:outputPanel> 
         </apex:pageBlock>
     </apex:form>
 </apex:page>

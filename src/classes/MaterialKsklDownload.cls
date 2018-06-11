@@ -9,10 +9,10 @@ global class  MaterialKsklDownload {
     public String is_quan {get; set;}    //是否带数量
     public String is_order {get; set;}   //是否从工单出
     public String spage {get; set;}   //页面纸张类型
+    public String sp_flag {get; set;}   //特殊格式标记
     public SapMaterialCertificate.MaterialCertificate mc {get; set;}
 
     public MaterialKsklDownload() {
-        TestPass();//为了测试通过
         try{
             Map<String, String> params = ApexPages.currentPage().getParameters();
 
@@ -44,6 +44,7 @@ global class  MaterialKsklDownload {
             System.debug('*** :is_stamp: ' + args.is_stamp + '\n');
             System.debug('*** :is_quan: ' + args.is_quan + '\n');
             System.debug('*** :is_order: ' + args.is_order + '\n');
+            System.debug('*** :sp_flag: ' + args.sp_flag + '\n');
             System.debug('***************************************** \n');
 
 
@@ -54,6 +55,7 @@ global class  MaterialKsklDownload {
             is_stamp      = args.is_stamp;
             is_quan       = args.is_quan;
             is_order      = args.is_order;
+            sp_flag       = args.sp_flag;
 
             
             //变更纸张

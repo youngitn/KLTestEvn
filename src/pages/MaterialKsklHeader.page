@@ -52,7 +52,7 @@
 
 
  <!--              中英文版      -->
-<apex:outputPanel rendered="{!langu='ZH'||langu='EL'}">
+<apex:outputPanel rendered="{!(langu='ZH'||langu='EL')&&sp_flag=''}">
     <table border="0">
         <!-- 客户名称 -->
         <tr>
@@ -159,6 +159,7 @@
     </table>
 </apex:outputPanel>
 
+
  <!--              英文版      -->
 <apex:outputPanel rendered="{!langu='EN'}">
     <table border="0">
@@ -263,5 +264,32 @@
     </table>
 
 
+</apex:outputPanel>
+
+
+ <!--              特殊1 合并相同炉号      -->
+<apex:outputPanel rendered="{!(langu='ZH'||langu='EL')&&sp_flag='T1'}">
+    <table border="0">
+        <!-- 客户名称 -->
+        <tr>
+            <td width="25%">Messer.客户名:</td>
+            <td width="25%">{!mc.customer_name}</td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+        </tr>
+
+        <!--  -->
+        <tr>
+            <apex:outputText rendered="{!mc.zdddd=''}">
+                <td width="35%" class="blod">Date of Certificate.出货日期：</td>
+            </apex:outputText>
+
+            <apex:outputText rendered="{!mc.zdddd!=''}">
+                <td width="35%" class="blod">{!mc.zdddd}.出货日期：</td>
+            </apex:outputText>
+
+            <td width="15%">{!mc.Date_of_Certificate}</td>
+        </tr>
+    </table>
 </apex:outputPanel>
 </apex:page>

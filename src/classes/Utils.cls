@@ -22,6 +22,7 @@ public without sharing class Utils
         md.RecordTypeId = getRecordTypeId('Metadata__c', 'SF_To_SAP_Queue');
         md.ApprovalID__c = approvalID;
         md.Approval_Name__c = approvalName;
+        System.debug(approvalName + 'approvalName');
         md.Operate__c =  (operateName == '新建' ? SapOperateEnum.INSERTED : operateName == '修改' ? SapOperateEnum.UPDATED : SapOperateEnum.FROZEN);
         md.Is_Send_Succeed__c = false;
         md.Send_Direction__c = 'SF_TO_SAP';

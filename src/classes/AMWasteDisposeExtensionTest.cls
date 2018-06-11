@@ -53,10 +53,13 @@ private class AMWasteDisposeExtensionTest {
         insert ami;
 
         AMWasteDisposeExtension extension = new AMWasteDisposeExtension(new ApexPages.StandardController(am));
+        extension.rowID = 1;
+        extension.listRowInfo.add(ami);
 
-        extension.saveAction();
         extension.cancelAction();
         extension.addBankDetail();
+        extension.deleteRow();
+        extension.saveAction();
         Test.stopTest();
     }
 }

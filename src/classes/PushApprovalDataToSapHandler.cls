@@ -31,6 +31,7 @@ public without sharing class PushApprovalDataToSapHandler implements Triggers.Ha
 					String approvalName = rtMap.get(rtId).DeveloperName;
 					String targetId = String.valueOf(obj.get('Id'));
 					String status = String.valueOf(obj.get('Status__c'));
+					System.debug('*** approvalName: ' + approvalName);
 					Utils.addToSendQueue(approvalName, targetId, status);
 					obj.put('Is_Push_Sap__c',false);
 				}

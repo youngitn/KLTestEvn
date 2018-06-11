@@ -7,22 +7,13 @@ public with sharing class AMLeave {
     public List<Approval_Managed_Item__c> preDeletelist1 {get; set;}
 
     public Map<String,Approval_Managed_Item__c> mapVoucher{get;set;}
-
    
-
     public Integer list1Row {get; set;}
     
     public Boolean isDeletedStatus{GET;SET;}
     //明细记录类型ID
     private Id recTypeDetailId = null;
     
-
-
-
-
-
-
-
     public AMLeave(ApexPages.StandardController con) {
         displayQueryResult = 'none';
 
@@ -53,7 +44,6 @@ public with sharing class AMLeave {
         list1 = [SELECT RecordTypeId,LeaveManage__c,Leave_type__c,Leave_reason__c,Start_date__c,End_date__c,Start_time__c,End_time__c,Time_number__c FROM Approval_Managed_Item__c 
                   WHERE LeaveManage__c = :amid AND RecordType.DeveloperName = 'LeaveDetails'];
 
-        
         preDeletelist1 = new List<Approval_Managed_Item__c>();
         if (am.Name != null) {
             displayQueryResult = null;
@@ -69,10 +59,7 @@ public with sharing class AMLeave {
             }
 
         }
-          
-
-
-  
+            
         if (String.isNotBlank(am.Employee__c) ) {
             List<Contact> lstCon = [SELECT Name, Number__c FROM Contact WHERE Id = :am.Employee__c AND RecordType.DeveloperName = 'Staff'];
             if (lstCon.size()>0) {
@@ -85,7 +72,6 @@ public with sharing class AMLeave {
                 am.Employee__c = null;
         }
         try {
-
 
             upsert am;
             DELETE preDeletelist1;
@@ -170,8 +156,6 @@ public with sharing class AMLeave {
         list1.add(ami);
         return null;
     }
-
-   
 
     public PageReference deletelist1() {
         if (list1[list1Row].Id != null) {

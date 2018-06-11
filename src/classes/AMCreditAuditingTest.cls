@@ -35,18 +35,12 @@ private class AMCreditAuditingTest {
         cami.Customer_code__c='12345';
         cami.Customer_name__c='jj';
         cami.Risk_category__c='高';
-        cami.Total_amount_receivable__c=33.3;
-        cami.Overdue_amount__c=111111;
-        cami.Estimated_amount__c=44.4;
-        cami.Overdue_proportion__c=0.33;
-        cami.Letter_limit__c=55.5;
+     
         AMCreditAuditingExtension a = new AMCreditAuditingExtension(new ApexPages.StandardController(am));
         
         a.saveAction();
         a.addDetail();
         a.cancelAction();
-        a.queryClient();
-        a.selectClient();
         test.stopTest();
     }
 

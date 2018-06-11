@@ -32,6 +32,7 @@ public without sharing class AMSaleOrderHandler implements Triggers.Handler {
                     }
                     setApprovalUser(mapSpecify,cam);
                     cam.Is_Reset_Approvaler__c = false;
+                    cam.Head_description__c = cam.Kind_of_Order__c;
                 }
             }
         }

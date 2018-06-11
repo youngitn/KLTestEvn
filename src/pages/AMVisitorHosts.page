@@ -6,6 +6,7 @@
  <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
     <script>
         var j$ = jQuery.noConflict();
+
         function toggleData(){
             var cmb = j$("select[id$='dropvalue']");
             var approvalValue = cmb.val();
@@ -20,6 +21,9 @@
                 desc.parent().prev().children("label").show();
             }
         }
+ 
+
+
         function toggle(){
             var cmb = j$("select[id$='pickup_plane_YN']");
             var approvalValue = cmb.val();
@@ -41,6 +45,8 @@
                     // j$(this).next().hide();
                 });
                 
+
+
             }else{
                 pickup_plane_date.each(function(){
                     // j$(this).show();
@@ -204,7 +210,7 @@
         //(E)  2017/06/09
 
     //(S)  2017/08/03
-    function meal(){
+     function meal(){       
             var cmb = j$("select[id$='meal_YN']");
             var approvalValue = cmb.val();
             var approvalName = cmb.find("option:selected").text();
@@ -219,9 +225,11 @@
                     }else{
                         j$(this).parent().hide();
                         j$(this).parent().prev().children().hide();
-                    }
+                    } }
                     // j$(this).next().hide();
-                });
+                 
+                    
+               );
                 
             }else{
                 meal_date.each(function(){
@@ -232,13 +240,106 @@
                     }else{
                         j$(this).parent().show();
                         j$(this).parent().prev().children().show();
-                    }
+                    } }
+                   
                     // j$(this).next().show();
-                });
+                
+                );
                
             }
         }     
 
+     //2018/05/30   昆山
+    function party(dp){
+            var cmb = j$("select[id$='Dinner_party']");
+            var approvalValue = cmb.val();
+            var approvalName = cmb.find("option:selected").text();
+            console.log('approvalValue: ' + approvalValue);     
+            var meal_date = j$('.meal_hide');
+            if(approvalValue == "TW"){
+               j$('.meal_hide').parent().parent().parent().children()[0].style='display:table-row';
+               j$('.meal_hide').parent().parent().parent().children()[1].style='display:table-row';
+               j$('.meal_hide').parent().parent().parent().children()[2].style='display:table-row'; 
+               j$('.meal_hide').parent().parent().parent().children()[3].style='display:none';
+               j$('.meal_hide').parent().parent().parent().children()[4].style='display:none';
+              // j$('.meal_hide').parent().parent().parent().children()[5].style='display:none';
+              // j$('.meal_hide').parent().parent().parent().children()[6].style='display:none';
+               /* j$("select[id$='j_id0:j_id31:j_id32:j_id58:aaa1']").parent().hide();*/
+                          
+            }
+             if(approvalValue == "KS"){
+              j$('.meal_hide').parent().parent().parent().children()[0].style='display:table-row';
+              j$('.meal_hide').parent().parent().parent().children()[1].style='display:none';
+              j$('.meal_hide').parent().parent().parent().children()[2].style='display:table-row';
+              j$('.meal_hide').parent().parent().parent().children()[3].style='display:table-row';
+              j$('.meal_hide').parent().parent().parent().children()[3].style='display:table-row';
+              
+        }     
+            if(approvalValue == ""){
+
+              j$('.meal_hide').parent().parent().parent().children()[0].style='display:none';
+              j$('.meal_hide').parent().parent().parent().children()[1].style='display:none';
+              j$('.meal_hide').parent().parent().parent().children()[2].style='display:none'; 
+              j$('.meal_hide').parent().parent().parent().children()[3].style='display:none';
+              j$('.meal_hide').parent().parent().parent().children()[4].style='display:none';  
+
+             
+            }                
+       }
+
+   //2018-6-06   昆山
+    function Item(ip){
+            var cmb = j$("select[id$='Item_type']");
+            var approvalValue = cmb.val();            //KSJD  OR ZCJD
+            var approvalName = cmb.find("option:selected").text();
+            console.log('approvalValue: ' + approvalValue);     
+           if(approvalValue == "ZCJD"){
+               j$('.main_ifmt').parent().parent().parent().children()[1].style='display:table-row';
+               j$('.main_ifmt').parent().parent().parent().children()[2].style='display:table-row';
+               j$('.main_ifmt').parent().parent().parent().children()[3].style='display:table-row';
+               j$('.guest_ifmt').parent().parent().parent().children()[0].style='display:table-row';
+               j$('.guest_ifmt').parent().parent().parent().children()[1].style='display:table-row';
+               
+                j$("select[id$='meal_YN']").val('N');            //订餐
+                j$("select[id$='souvenir_YN']").val('N');        //送礼
+                j$("select[id$='pickup_car_YN']").val('N');      //派车接至
+                j$("select[id$='deliver_car_YN']").val('N');     //派车送离
+                j$("select[id$='pickup_plane_YN']").val('N');    //安排接机
+                j$("select[id$='deliver_plane_YN']").val('N');   //安排送机
+                j$("select[id$='hotel_YN']").val('N');           //安排住宿
+                meal();
+                pickup_car();
+                souvenir();
+                deliver_car();
+                toggle(); 
+                deliver_plane();
+                hotel();
+
+           }else if(approvalValue == "KSJD"){
+                 j$("select[id$='meal_YN']").val('N');            //订餐
+                j$("select[id$='souvenir_YN']").val('N');        //送礼
+                j$("select[id$='pickup_car_YN']").val('N');      //派车接至
+                j$("select[id$='deliver_car_YN']").val('Y');     //派车送离
+                j$("select[id$='pickup_plane_YN']").val('N');    //安排接机
+                j$("select[id$='deliver_plane_YN']").val('N');   //安排送机
+                j$("select[id$='hotel_YN']").val('N');           //安排住宿
+                meal();
+                pickup_car();
+                souvenir();
+                deliver_car();
+                toggle(); 
+                deliver_plane();
+                hotel();
+                 j$('.main_ifmt').parent().parent().parent().children()[1].style='display:none';
+                 j$('.main_ifmt').parent().parent().parent().children()[2].style='display:none';
+                 j$('.main_ifmt').parent().parent().parent().children()[3].style='display:none';
+                 j$('.guest_ifmt').parent().parent().parent().children()[0].style='display:none';
+                 j$('.guest_ifmt').parent().parent().parent().children()[1].style='display:none';
+          }
+   }
+
+
+     //2018/05/30  昆山
     function souvenir(){
             var cmb = j$("select[id$='souvenir_YN']");
             var approvalValue = cmb.val();
@@ -334,84 +435,100 @@
                 <!--apex:inputField value="{!am.Approval_Name__c}"></apex:inputField-->
             </apex:pageBlockSection>
 
+
+<!------------------------------主要信息--------------------------------  -->
             <apex:pageBlockSection title="主要信息" >
                 
-                <!--apex:outputField value="{!am.Dept_Name__c}"></apex:outputField-->
+                <apex:inputField id="Item_type" value="{!am.Item_type__c}" styleClass="main_ifmt" onchange="Item(this)"></apex:inputField>
 
-                <apex:inputField value="{!am.reception_date__c}"></apex:inputField>
+                <div></div>
 
-                <apex:inputField value="{!am.leave_date__c}"></apex:inputField>
+                <apex:inputField value="{!am.reception_date__c}" styleClass="main_ifmt"></apex:inputField>
 
-                <apex:inputField value="{!am.reception_emp_name__c}"></apex:inputField>
+                <apex:inputField value="{!am.leave_date__c}" styleClass="main_ifmt"></apex:inputField>
 
-                <apex:outputField value="{!am.reception_emp_no__c}"></apex:outputField>                
+                <apex:inputField value="{!am.reception_emp_name__c}" styleClass="main_ifmt"></apex:inputField>
 
-                <apex:inputField value="{!am.company_person__c}"></apex:inputField>
+                <apex:outputField value="{!am.reception_emp_no__c}" styleClass="main_ifmt"></apex:outputField>                
 
-                <apex:inputField value="{!am.Cost_Center__c}"></apex:inputField>
+                <apex:inputField value="{!am.company_person__c}" styleClass="main_ifmt"></apex:inputField> 
+
+                <div></div>
+
+                <apex:inputField value="{!am.Cost_Center__c}" styleClass="main_ifmt"></apex:inputField>
 
             </apex:pageBlockSection>    
 
-            <apex:pageBlockSection title="來賓資料信息" >
 
-                <apex:inputField id="customer_name" value="{!am.customer_name__c}"></apex:inputField>
 
-                <apex:inputField value="{!am.customer_no__c}"></apex:inputField>
+<!-- -------------------------------来宾资料信息------------------------------------- -->
+    <apex:pageBlockSection title="來賓資料信息" >
 
-                <apex:inputField value="{!am.Customer_name1__c}"></apex:inputField>
 
-                <apex:inputField value="{!am.how_many_visitor__c}"></apex:inputField>
+        <apex:inputField value="{!am.Customer_name1__c}" styleClass="guest_ifmt" ></apex:inputField>
+             
+
+        <apex:inputField value="{!am.customer_no__c}" styleClass="guest_ifmt" ></apex:inputField>
+
+        <apex:inputField id="customer_name" value="{!am.customer_name__c}" styleClass="guest_ifmt" ></apex:inputField>
+
+        <apex:inputField value="{!am.how_many_visitor__c}" styleClass="guest_ifmt" ></apex:inputField>
 
             <!--/apex:pageBlockSection-->    
 
             <!--apex:pageBlockSection columns="1"-->
 
-                <apex:inputField value="{!am.visit_reason__c}"></apex:inputField>    
+        <apex:inputField value="{!am.visit_reason__c}" styleClass="guest_ifmt" style="width:200px;height: 50px"></apex:inputField>    
 
-                <apex:inputField id="notice" value="{!am.notice__c}"></apex:inputField>
+        <apex:inputField id="notice" value="{!am.notice__c}" styleClass="guest_ifmt" ></apex:inputField>
 
-            </apex:pageBlockSection>
+    </apex:pageBlockSection>
+
+
+<!--------------------------------------订餐信息-------------------------------------  -->
+
 
             <apex:pageBlockSection title="代訂餐信息" columns="1" >  
-
-                <apex:inputField id="Dinner_party" value="{!am.Dinner_party__c}" onchange="party()"></apex:inputField>
+              
                 <apex:inputField id="meal_YN" value="{!am.meal_YN__c}" onchange="meal()"></apex:inputField>  
+                <apex:inputField id="Dinner_party" value="{!am.Dinner_party__c}" onchange="party(this)"></apex:inputField> 
+            </apex:pageBlockSection> 
 
-            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="2">   
             
-            <apex:pageBlockSection >    
-
                 <apex:inputField value="{!am.meal_date__c}" styleClass="meal_hide"></apex:inputField>
 
                 <apex:inputField value="{!am.select_meal__c}" styleClass="meal_hide"></apex:inputField>
 
+                <apex:inputField value="{!am.meal_expense__c}" styleClass="meal_hide"></apex:inputField> 
+
+                 <apex:inputField value="{!am.meal_box_type__c}" styleClass="meal_hide"></apex:inputField> 
                 <apex:inputField value="{!am.meat_vegetarian__c}" styleClass="meal_hide"></apex:inputField>
-
-                <apex:inputField value="{!am.meal_box_type__c}" styleClass="meal_hide"></apex:inputField>
-
-                <apex:inputField value="{!am.meal_expense__c}" styleClass="meal_hide"></apex:inputField>                                          
-            </apex:pageBlockSection>  
-
-            <!-- 昆山 -->
-            <apex:pageBlockSection > 
+                 
+                 <div></div> 
+          
                 <!-- 工厂 -->
-                <apex:inputField value="{!am.Factory__c}" styleClass="party_hide"></apex:inputField>
+              <!--   <apex:inputField id="aaa1" value="{!am.Factory__c}" styleClass="meal_hide"></apex:inputField> -->
                 <!-- 成本中心 -->
-                <apex:inputField value="{!am.KOSTL__c}" styleClass="party_hide"></apex:inputField>
+               <!--  <apex:inputField value="{!am.KOSTL__c}" styleClass="meal_hide"></apex:inputField> -->
                 <!-- 订餐类型 -->
-                <apex:inputField value="{!am.Reservation_type__c}" styleClass="party_hide"></apex:inputField>
+                <!-- <apex:inputField value="{!am.Reservation_type__c}" styleClass="meal_hide"></apex:inputField> -->
                 <!-- 填单日期 -->
-                <apex:inputField value="{!am.Creation_date__c}" styleClass="party_hide"></apex:inputField>
+              <!--   <apex:inputField value="{!am.Creation_date__c}" styleClass="meal_hide"></apex:inputField> -->
                 <!-- 订餐时间 -->
-                <apex:inputField value="{!am.Ordering_time__c}" styleClass="party_hide"></apex:inputField>
+                <!-- <apex:inputField value="{!am.Ordering_time__c}" styleClass="meal_hide"></apex:inputField> -->
                 <!-- 就餐总人数 -->
-                <apex:inputField value="{!am.Eat_number__c}" styleClass="party_hide"></apex:inputField>
-                <!-- 客户名称 -->
-                <apex:inputField value="{!am.CustomerName__c}" styleClass="party_hide"></apex:inputField>
+                <apex:inputField value="{!am.meal_Location__c}" styleClass="meal_hide"></apex:inputField>
+                <!-- 就餐总人数 -->
+                <apex:inputField value="{!am.Eat_number__c}" styleClass="meal_hide"></apex:inputField>
                 <!-- 陪餐人 -->
-                <apex:inputField value="{!am.Dinner__c}" styleClass="party_hide" ></apex:inputField>
-            </apex:pageBlockSection>  
+                <apex:inputField value="{!am.Dinner__c}" styleClass="meal_hide" ></apex:inputField>
 
+            </apex:pageBlockSection>  
+                    
+
+
+<!-------------------------馈赠礼品信息  ------------------------------------------>
             <apex:pageBlockSection title="餽贈禮品信息" columns="1" >
 
                 <apex:inputField id="souvenir_YN" value="{!am.souvenir_YN__c}" onchange="souvenir()"></apex:inputField> 
@@ -423,8 +540,16 @@
                 <apex:inputField value="{!am.how_many_souvenir__c}" styleClass="souvenir_hide"></apex:inputField>
 
                 <apex:inputField value="{!am.souvenir__c}" styleClass="souvenir_hide"></apex:inputField>
+    
+                <apex:inputField value="{!am.Remark__c}" styleClass="souvenir_hide"></apex:inputField>
+
 
             </apex:pageBlockSection>
+
+
+
+
+<!-----------------------------------派车接送至公司信息---------------------------------------->
 
 
             <apex:pageBlockSection title="派車接送至公司信息" columns="1" >
@@ -442,6 +567,8 @@
 
             </apex:pageBlockSection>    
 
+<!-------------------------------------派车送离公司信息  ------------------------------>
+
             <apex:pageBlockSection title="派車送離公司信息" columns="1" >
 
                 <apex:inputField id="deliver_car_YN" value="{!am.deliver_car_YN__c}" onchange="deliver_car()"></apex:inputField>
@@ -450,11 +577,16 @@
 
             <apex:pageBlockSection >
 
-                <apex:inputField value="{!am.deliver_car_time__c}" styleClass="deliver_car_hide"></apex:inputField>
+                <apex:inputField value="{!am.deliver_car_time__c}" styleClass="deliver_car_hide"></apex:inputField> 
 
                 <apex:inputField value="{!am.deliver_car_place__c}" styleClass="deliver_car_hide"></apex:inputField>
 
+                 <apex:inputField value="{!am.deliver_car_guest_phone__c}" styleClass="deliver_car_hide"></apex:inputField>
+
             </apex:pageBlockSection>    
+
+
+<!-----------------------------------安排接机信息  -------------------------------------->
 
             <apex:pageBlockSection title="安排接機信息" columns="1" >
 
@@ -476,6 +608,9 @@
 
             </apex:pageBlockSection>    
 
+
+<!---------------------------安排送机信息  ---------------------------------------------->
+
             <apex:pageBlockSection title="安排送機信息" columns="1" >
 
                 <apex:inputField id="deliver_plane_YN" value="{!am.deliver_plane_YN__c}" onchange="deliver_plane()"></apex:inputField>
@@ -495,6 +630,9 @@
                 <apex:inputField value="{!am.deliver_plane_other__c}" styleClass="deliver_plane_hide"></apex:inputField>
 
             </apex:pageBlockSection>    
+
+
+<!------------------------------------安排住宿信息  ------------------------------------>
 
             <apex:pageBlockSection title="安排住宿信息" columns="1" >
 

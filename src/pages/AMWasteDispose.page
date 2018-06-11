@@ -69,11 +69,11 @@
                     <thead>
                     <th></th>
                     <th>行号</th>
-                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Material_Name__c.Label}</th>
-                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Qty__c.Label}</th>
-                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Weight_Actual__c.Label}</th>
-                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Price__c.Label}</th>
-                    <th>{!$ObjectType.Custom_Approval_Managed_Item__c.Fields.Amount__c.Label}</th>
+                    <th>物料名称</th>
+                    <th>数量</th>
+                    <th>实际称重(KG)</th>
+                    <th>单价(RMB)</th>
+                    <th>金额</th>
                     </thead>
                     <tbody>
                     <apex:variable var="listIndex" value="{!1}"/>

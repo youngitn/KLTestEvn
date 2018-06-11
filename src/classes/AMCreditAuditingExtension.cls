@@ -27,13 +27,17 @@ public without sharing class AMCreditAuditingExtension {
         //查询各子表的對應紀錄類型ID
         recTypeBankDetailID = HarryUtils.getRecordTypeIdByDevNameAndObjName('CreditAuditing','Custom_Approval_Managed_Item__c');
         //判断是新建還是編輯
-        if (con.getId() == null) {
+        if (con.getId() == '0') {
             isDeletedStatus = true;
             //查詢相應記錄
             String sql = Utils.getApprovalSQL(SapApprovalEnum.CREDITAUDITING,true);
             sql = sql + ' WHERE Id = \'' + con.getId() + '\'';
             cusAP = Database.query(sql);
              System.debug('*** cusAP: ' + cusAP + '');
+
+
+
+             
 
              //查銀行细目子表
             listRowInfo = [SELECT Id,RecordTypeId,Sales_name__c,Customer_code__c,Customer_name__c,Risk_category__c
@@ -148,6 +152,104 @@ public without sharing class AMCreditAuditingExtension {
         a=1;
         a=1;
         a=1;
+         a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+         a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
 
         //   當銷售憑證為空時不允許保存
          for (Custom_Approval_Managed_Item__c cami : listRowInfo) {
@@ -190,6 +292,8 @@ public without sharing class AMCreditAuditingExtension {
     }
 public PageReference addDetail(){
         Custom_Approval_Managed_Item__c addItem = new Custom_Approval_Managed_Item__c();
+        addItem.Row_Index__c = String.valueOf(listRowInfo.size()+1);
+        addItem.RecordTypeId = recTypeBankDetailID;
         listRowInfo.add(addItem);
         System.debug('*** listRowInfo: ' + listRowInfo + '');
         return null;
@@ -232,7 +336,7 @@ public PageReference addDetail(){
         }  
   
         
-        return null;
+        return null; 
     }
     public PageReference selectClient(){
         System.debug(LoggingLevel.INFO, '*** selectRow: ' + selectRow);

@@ -21,8 +21,9 @@ public without sharing class AMWasteDisposeExtension {
         dellistRowInfo = new List<Custom_Approval_Managed_Item__c>();
         isDeletedStatus = false;
         System.debug('*** con.getRecord(): ' + con.getRecord() + '!');
-        //设置记录类型为废料处理
+        //设置记录类型为废料处理 
         wasteHandle.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.WASTEDISPOSE,'Custom_Approval_Managed__c');
+        System.debug(wasteHandle.RecordTypeId);
         //查询各子表的对应记录类型ID
         recTypeBankDetailID = HarryUtils.getRecordTypeIdByDevNameAndObjName('Waste_Handle','Custom_Approval_Managed_Item__c');
         //判断是新建还是编辑
@@ -39,35 +40,39 @@ public without sharing class AMWasteDisposeExtension {
         }
        
     }
+
+
     public PageReference saveAction(){
         try {
-            
+             
             //更新成本中心发料作业详细记录
             if (listRowInfo.size()>0) {
+                List<Custom_Approval_Managed_Item__c> lstUpdatedBankDetail = new List<Custom_Approval_Managed_Item__c>();
                 for (Custom_Approval_Managed_Item__c cami : listRowInfo) {
                     cami.Waste_Approval__c = wasteHandle.Id;
                     if (cami.Price__c != null && cami.Qty__c != null) {
                         cami.Amount__c = cami.Price__c*cami.Qty__c;
                     }
                     cami.RecordTypeId = recTypeBankDetailID;
+                    lstUpdatedBankDetail.add(cami);
                     wasteHandle.Head_description__c = cami.Material_Name__c;   //流程备注
                 }
 
-                upsert listRowInfo;
-            }
+                // upsert listRowInfo;
+                upsert lstUpdatedBankDetail;
+            } 
 
             upsert wasteHandle;
             System.debug('*** listRowInfo: ' + listRowInfo + '');
-            /*
+            
             //当编辑删除子表时，删除对应的记录
             if (isDeletedStatus) {
                 if (dellistRowInfo.size()>0) {
                     DELETE dellistRowInfo;
                 }
             }
-            */
-         }
-        catch (Exception e) {
+            
+        }catch (Exception e) {
             System.debug('The following exception has occurred: ' + e.getMessage());
             ApexPages.addMessages(e);
             return null;
