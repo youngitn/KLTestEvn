@@ -43,12 +43,12 @@ private class AMAssetsTransferExtensionTest {
         am.RecordTypeId = rc.Id;
 
         am.Corporation__c = '1000';
-        am.ChangeType__c = '02';
+        am.ChangeType__c = '2';
         am.Durable_years__c = 3;
         INSERT am;
 
         am.Corporation__c = '6000';
-        am.ChangeType__c = '03';
+        am.ChangeType__c = '3';
         am.Durable_years__c = 4; 
         UPDATE am;
 
@@ -63,7 +63,7 @@ private class AMAssetsTransferExtensionTest {
         extension.queryAccountInfo();
 
         am.Corporation__c = '2000';
-        am.ChangeType__c = '01';
+        am.ChangeType__c = '1';
         am.Durable_years__c = 5; 
         UPDATE am;
         

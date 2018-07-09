@@ -82,7 +82,7 @@ public class AMCustomerCreditLoanExtension {
 
             } 
         }
-        am.Head_description__c = am.Account_Name__c;
+        am.Head_description__c ='流程名称：'+am.Approval_Name__c+'客户名称：'+am.Account_Name__c+'申请信用额度：'+am.Application_credit_limit__c;
         try {
             upsert am;
         } catch (Exception e) {

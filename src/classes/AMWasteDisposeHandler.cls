@@ -72,9 +72,17 @@ public with sharing class AMWasteDisposeHandler implements Triggers.Handler {
         cam.Approval_User18__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(18),null),0);
         //节点十八
         cam.Approval_User19__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(19),null),0);
+         //节点十九
         cam.Approval_User20__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(20),null),0);
+        //节点二十
         cam.Approval_User21__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(21),null),0);
+        //节点二十一
         cam.Approval_User22__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(22),null),0);
+        //节点二十二
         cam.Approval_User23__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(23),null),0);
+        //节点二十三
+        cam.Approval_User24__c = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(24),null),0);
+        //节点二十四
     }
+
 }

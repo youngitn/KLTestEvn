@@ -60,7 +60,7 @@
                 <apex:outputField value="{!cusAP.Status__c}" id="Status__c"></apex:outputField>
             </apex:pageBlockSection>
             <apex:pageBlockSection title="客户单笔信贷核发申请单 "  >
-             	 <!-- 订单未付款总金额 -->
+                 <!-- 订单未付款总金额 -->
                 <apex:inputField value="{!cusAP.Order_unpaid_cost__c}"></apex:inputField>
                  <br/>
                  <!-- 备注 -->
@@ -75,28 +75,28 @@
                     <table class="list" border="0" cellspacing="0" cellpadding="0" title="查询结果">
                         <thead>
                             <th>操作</th>
-                            <th>销售凭证</th>
-                    		<th>客户代码</th>
-                    		<th>客户名称</th>
-                    		<th>风险类别</th>
-                    		<th>应收总额</th>
-                    		<th>逾期合计金额</th>
-                    		<th>暂估金额</th>
-                   			<th>逾期占比%</th>
-                   		 	<th>信贷限额</th>
-                   		 	<th>未清金额</th>
-                   		 	<th>付款条件</th>
-                   		 	<th>订单金额</th>
-                   		 	<th>采购订单编号</th>
-                   		 	<th>预收账款</th>
+                            <th>备货单号</th>
+                            <th>客户代码</th>
+                            <th>客户名称</th>
+                            <th>风险类别</th>
+                            <th>应收总额</th>
+                            <th>逾期合计金额</th>
+                            <th>暂估金额</th>
+                            <th>逾期占比%</th>
+                            <th>信贷限额</th>
+                            <th>订单未清</th>
+                            <th>付款条件</th>
+                            <th>备货单金额</th>
+                            <th>采购订单编号</th>
+                            <th>预收账款</th>
                         </thead>
                         <apex:variable var="customerIndex" value="{!0}"/>
-                        <apex:repeat value="{!listQueryResult}" var="item">
+                        <apex:repeat value="{!listRowInfo}" var="item">
                             <tr>
                                 <td><apex:commandButton action="{!selectClient}" reRender="output1,queryResult" value="选择">
                                     <apex:param assignTo="{!selectRow}" name="selectRow" value="{!customerIndex}"></apex:param>
                                 </apex:commandButton></td>
-                                <td><apex:outputField value="{!item.Sales_name__c}"></apex:outputField></td>
+                                <td><apex:outputField value="{!item.Stock_Number__c}"></apex:outputField></td>
                                 <td><apex:outputField value="{!item.Customer_code__c}"></apex:outputField></td>
                                 <td><apex:outputField value="{!item.Customer_name__c}"></apex:outputField></td>
                                 <td><apex:outputField value="{!item.Risk_category__c}"></apex:outputField></td>
@@ -124,7 +124,7 @@
                     <th>行号</th>
                     <th>处理意见描述</th>
                     <th>拒绝原因描述</th>
-                    <th>销售凭证</th>
+                    <th>备货单号</th>
                     <th>客户代码</th>
                     <th>客户名称</th>
                     <th>风险类别</th>
@@ -133,42 +133,42 @@
                     <th>暂估金额</th>
                     <th>逾期占比%</th>
                     <th>信贷限额</th>
-                    <th>未清金额</th>
+                    <th>订单未清</th>
                     <th>付款条件</th>
-                    <th>订单金额</th>
+                    <th>备货单金额</th>
                     <th>采购订单编号</th>
                     <th>预收账款</th>
                     <th>原因及备注</th>
                   </thead>
-                    <tbody>
+                   
                         <apex:variable var="listIndex" value="{!1}"/>
                         <apex:repeat value="{!listRowInfo}" var="item">
                         <tr>
                             <td><input type="button" onclick="deleteDetail('{!listIndex}')" value="删除" style="cursor: pointer;" /></td>
-                            <td>{!listIndex}</td>
-                            <td><apex:inputField value="{!item.Processing_opinion_description__c}"></apex:inputField></td>
-                            <td><apex:inputField value="{!item.Reasons_for_refusal__c}"></apex:inputField></td>
-                            <td><span class="lookupInput"><apex:inputField value="{!item.Sales_name__c}" styleClass="text"/>
+                            <td style="height: 25px">{!listIndex}</td>
+                            <td style="height: 25px"><apex:inputField value="{!item.Processing_opinion_description__c}"></apex:inputField></td>
+                            <td style="height: 25px"><apex:inputField value="{!item.Reasons_for_refusal__c}"></apex:inputField></td>
+                            <td style="height: 25px"><span class="lookupInput"><apex:inputField value="{!item.Stock_Number__c}" styleClass="text"/>
 <img src="/img/s.gif" alt="销售凭证" class="lookupIcon" onblur="this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';" title="查询销售凭证信息" onclick="queryClient('{!listIndex}')" style="cursor: pointer;" /></span></td>
                             
-                            <td><apex:outputField value="{!item.Customer_code__c}"></apex:outputField></td>
-                                <td><apex:outputField value="{!item.Customer_name__c}"></apex:outputField></td>
-                                <td><apex:outputField value="{!item.Risk_category__c}"></apex:outputField></td>
-                                <td><apex:outputField value="{!item.Total_amount_receivable__c}"></apex:outputField></td>
-                                <td><apex:outputField value="{!item.Overdue_amount__c}"></apex:outputField></td>
-                                <td><apex:outputField value="{!item.Estimated_amount__c}"></apex:outputField></td>
-                                <td><apex:outputField value="{!item.Overdue_proportion__c}"></apex:outputField></td>
-                                <td><apex:outputField value="{!item.Letter_limit__c}"></apex:outputField></td>
-                                <td><apex:outputField value="{!item.Open_amount__c}"></apex:outputField></td>
-                                <td><apex:outputField value="{!item.Prepayment_conditions__c}"></apex:outputField></td>
-                                <td><apex:outputField value="{!item.order_amount__c}"></apex:outputField></td>
-                                <td><apex:outputField value="{!item.Purchase_Order_Number__c}"></apex:outputField></td>
-                                <td><apex:outputField value="{!item.Prepaid_accounts__c}"></apex:outputField></td>
-                                <td><apex:inputField value="{!item.Reason_Notes__c}"></apex:inputField></td>
+                                <td style="height: 25px"><apex:outputField value="{!item.Customer_code__c}"></apex:outputField></td>
+                                <td style="height: 25px"><apex:outputField value="{!item.Customer_name__c}"></apex:outputField></td>
+                                <td style="height: 25px"><apex:outputField value="{!item.Risk_category__c}"></apex:outputField></td>
+                                <td style="height: 25px"><apex:outputField value="{!item.Total_amount_receivable__c}"></apex:outputField></td>
+                                <td style="height: 25px"><apex:outputField value="{!item.Overdue_amount__c}"></apex:outputField></td>
+                                <td style="height: 25px"><apex:outputField value="{!item.Estimated_amount__c}"></apex:outputField></td>
+                                <td style="height: 25px"><apex:outputField value="{!item.Overdue_proportion__c}"></apex:outputField></td>
+                                <td style="height: 25px"><apex:outputField value="{!item.Letter_limit__c}"></apex:outputField></td>
+                                <td style="height: 25px"><apex:outputField value="{!item.Open_amount__c}"></apex:outputField></td>
+                                <td style="height: 25px"><apex:outputField value="{!item.Prepayment_conditions__c}"></apex:outputField></td>
+                                <td style="height: 25px"><apex:outputField value="{!item.order_amount__c}"></apex:outputField></td>
+                                <td style="height: 25px"><apex:outputField value="{!item.Purchase_Order_Number__c}"></apex:outputField></td>
+                                <td style="height: 25px"><apex:outputField value="{!item.Prepaid_accounts__c}"></apex:outputField></td>
+                                <td style="height: 25px"><apex:inputField value="{!item.Reason_Notes__c}"></apex:inputField></td>
                         </tr>
                         <apex:variable var="listIndex" value="{!listIndex+1}"/>
                         </apex:repeat>
-                    </tbody>
+
                 </table>
             </apex:outputPanel> 
         </apex:pageBlock>

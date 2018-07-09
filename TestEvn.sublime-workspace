@@ -448,170 +448,42 @@
 	"buffers":
 	[
 		{
-			"file": "src/classes/ApproverUtils.cls",
+			"contents": "//\n//\n//j_id0:j_id15:form\n//Toastmaster\n////**************手動增加人員選擇視窗的程式******************************//\nfunction createLookUpFiled(formId,inputId){\n\n\tlet lastStr = [\n\t\t\"_lkid\",\n\t\t\"_lkold\",\n\t\t\"_lktp\",\n\t\t\"_lspf\",\n\t\t\"_lspfsub\",\n\t\t\"_mod\"];\n\tlet defVal = [\n\t\t\"000000000000000\",\n\t\t\"null\",\n\t\t\"_lktp\",\n\t\t\"_lspf\",\n\t\t\"_lspfsub\",\n\t\t\"_mod\"];\n\n\tlet i ;\n\n\tfor (i = 1; i <= 6; i++) { \n\t    let template = $( \"<input>\", \n\t\t{ \tid: formId+\":\"+inputId+lastStr[i], \n\t\t\t// html:$( \"<div>\", \n\t\t\t// \t\t{ \tclass: \"bar\", \n\t\t\t// \t\t\ttext: \"bla\" \n\t\t\t// \t\t} )\n\t\t\ttype:\"hidden\",\n\t\t\tname:formId+\":\"+inputId+lastStr[i],\n\t\t\tvalue:defVal[i]\n\t\t});\n\n\t\t$('body').append(template);\n\t} \n\n\tlet template = $( \"<a>\", \n\t\t{ \tid: formId+\":\"+inputId+lastStr[i], \n\t\t\thtml:$( \"<img>\", \n\t\t\t\t\t{ \t\n\t\t\t\t\t\tsrc:\"/img/s.gif\",\n\t\t\t\t\t\talt:\"员工 對應 (新視窗)\",\n\t\t\t\t\t\tclass:\"lookupIcon\",\n\t\t\t\t\t\tonblur:\"this.className = 'lookupIcon';\" ,\n\t\t\t\t\t\tonfocus:\"this.className = 'lookupIconOn';\",\n\t\t\t\t\t\tonmouseout:\"this.className = 'lookupIcon';this.className = 'lookupIcon';\" ,\n\t\t\t\t\t\tonmouseover:\"this.className = 'lookupIconOn';this.className = 'lookupIconOn';\",\n\t\t\t\t\t\ttitle:\"员工 對應 (新視窗)\"\n\n\t\t\t\t\t\t\n\t\t\t\t\t} ),\n\t\t\t\n\t\t\thref:\"javascript:openLookup('/_ui/common/data/LookupPage?lkfm=\"+formId+\"&lknm=\"+formId+\":\"+inputId+\"&lktp=003','&lksrch=' + escapeUTF(getElementByIdCS('\"+formId+\":\"+inputId+\"').value.substring(0, 80)))\",\n\t\t\tid:formId+\":\"+inputId+\"_lkwgt\",\n\t\t\tonclick:\"setLastMousePosition(event)\",\n\t\t\ttitle:\"员工 對應 (新視窗)\"\n\n\n\t\t});\n\n\t\t$('body').append(template);\n\n\t\n\t\n\n}\n",
 			"settings":
 			{
-				"buffer_size": 10363,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/ApproverUtilsTest.cls",
-			"settings":
-			{
-				"buffer_size": 7138,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/SapJsonStringBuilderTest.cls",
-			"settings":
-			{
-				"buffer_size": 7348,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/SapJsonStringBuilder.cls",
-			"settings":
-			{
-				"buffer_size": 7205,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/AMLeaveApplicationExtension.cls",
-			"settings":
-			{
-				"buffer_size": 14297,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
-			"settings":
-			{
-				"buffer_size": 10963,
-				"encoding": "UTF-8",
+				"buffer_size": 1489,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "src/pages/GetBoss.page",
+			"contents": "String result = UserInfo.getLanguage();\nSystem.debug(result);\n\n\n \n\n        \n SapJsonStringBuilder sjb = new SapJsonStringBuilder();\n\n //getSelectFieldString('物件名','給null就是找該物件全部欄位')\n \n String sql1 = sjb.getSelectFieldString('Approval_Managed__c',null) + ' from ' + 'Approval_Managed__c' + ' '+' WHERE ' + 'id' + ' = \\'' + 'a010I00001o2EuOQAU' + '\\'' ;\n\n String sql = sjb.getSelectFieldString('Approval_Managed_Item__c',null) + ' from ' + 'Approval_Managed_Item__c' + ' '+' WHERE ' + 'LeaveManage__c' + ' = \\'' + 'a010I00001o2EuOQAU' + '\\'' ;\n\n//setMaster(主表資料);\nsjb.setMaster(Database.query(sql1).get(0));\n//setMaster(所有子項);\nsjb.setDetails(Database.query(sql));\n\n//getJson('SAP函數名稱', 'SAP辨識子項的關鍵字', 'INSERT UPDATE等...以SAP的判斷為主,查詢SAP資料可以給 null')\nString SAPQueryResult = Utils.postToSAP( sjb.getJson('LEAVE_TW', 'leaveItem', null));\nSystem.debug(SAPQueryResult);\n// String SAPQueryResult = Utils.postSAP()",
 			"settings":
 			{
-				"buffer_size": 569,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/GetBoss.cls",
-			"settings":
-			{
-				"buffer_size": 570,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/AMLeaveApplictionTest.cls",
-			"settings":
-			{
-				"buffer_size": 19495,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/RemoteActionsOfLeave.cls",
-			"settings":
-			{
-				"buffer_size": 4436,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/Peoples.cls",
-			"settings":
-			{
-				"buffer_size": 3008,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/classes/RemoteActionsOfLeaveTest.cls",
-			"settings":
-			{
-				"buffer_size": 2322,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/pages/AMLeaveApplication.page",
-			"settings":
-			{
-				"buffer_size": 20178,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "//\n//\n//j_id0:j_id15:form\n//Toastmaster\n////**************手動增加人員選擇視窗的程式******************************//\nfunction createLookUpFiled(formId,inputId){\n\n\tlet lastStr = [\n\t\t\"_lkid\",\n\t\t\"_lkold\",\n\t\t\"_lktp\",\n\t\t\"_lspf\",\n\t\t\"_lspfsub\",\n\t\t\"_mod\"];\n\tlet defVal = [\n\t\t\"000000000000000\",\n\t\t\"null\",\n\t\t\"_lktp\",\n\t\t\"_lspf\",\n\t\t\"_lspfsub\",\n\t\t\"_mod\"];\n\n\tlet i ;\n\n\tfor (i = 1; i <= 6; i++) { \n\t    let template = $( \"<input>\", \n\t\t{ \tid: formId+\":\"+inputId+lastStr[i], \n\t\t\t// html:$( \"<div>\", \n\t\t\t// \t\t{ \tclass: \"bar\", \n\t\t\t// \t\t\ttext: \"bla\" \n\t\t\t// \t\t} )\n\t\t\ttype:\"hidden\",\n\t\t\tname:formId+\":\"+inputId+lastStr[i],\n\t\t\tvalue:defVal[i]\n\t\t});\n\n\t\t$('body').append(template);\n\t} \n\n\tlet template = $( \"<a>\", \n\t\t{ \tid: formId+\":\"+inputId+lastStr[i], \n\t\t\thtml:$( \"<img>\", \n\t\t\t\t\t{ \t\n\t\t\t\t\t\tsrc:\"/img/s.gif\",\n\t\t\t\t\t\talt:\"员工 對應 (新視窗)\",\n\t\t\t\t\t\tclass:\"lookupIcon\",\n\t\t\t\t\t\tonblur:\"this.className = 'lookupIcon';\" ,\n\t\t\t\t\t\tonfocus:\"this.className = 'lookupIconOn';\",\n\t\t\t\t\t\tonmouseout:\"this.className = 'lookupIcon';this.className = 'lookupIcon';\" ,\n\t\t\t\t\t\tonmouseover:\"this.className = 'lookupIconOn';this.className = 'lookupIconOn';\",\n\t\t\t\t\t\ttitle:\"员工 對應 (新視窗)\"\n\n\t\t\t\t\t\t\n\t\t\t\t\t} ),\n\t\t\t\n\t\t\thref:\"javascript:openLookup('/_ui/common/data/LookupPage?lkfm=\"+formId+\"&lknm=\"+formId+\":\"+inputId+\"&lktp=003','&lksrch=' + escapeUTF(getElementByIdCS('\"+formId+\":\"+inputId+\"').value.substring(0, 80)))\",\n\t\t\tid:formId+\":\"+inputId+\"_lkwgt\",\n\t\t\tonclick:\"setLastMousePosition(event)\",\n\t\t\ttitle:\"员工 對應 (新視窗)\"\n\n\n\t\t});\n\n\t\t$('body').append(template);\n\n\t\n\t\n\n}",
-			"settings":
-			{
-				"buffer_size": 1488,
+				"buffer_size": 903,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "src/pages/AMBusinessTravel.page",
+			"contents": "https://kinglai--test--c.cs5.visual.force.com/_ui/common/data/LookupPage?lkfm=j_id0:j_id15:form&lknm=j_id0:j_id15:form:Toastmaster&lktp=003&lksrch=\n\n\n openLookup('/_ui/common/data/LookupPage?lkfm=j_id0:j_id15:form&lknm=j_id0:j_id15:form:Toastmaster&lktp=003','&lksrch=' + escapeUTF(getElementByIdCS('j_id0:j_id15:form:Toastmaster').value.substring(0, 80)))\n\nContact c = Peoples.getInstance().KlAllContactMapGetById.get('003O0000012IDiv');\n System.debug(c.Number__c);\n",
 			"settings":
 			{
-				"buffer_size": 9203,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "String result = UserInfo.getLanguage();\nSystem.debug(result);\n\n\n \n\n        \n SapJsonStringBuilder sjb = new SapJsonStringBuilder();\n String sql = sjb.getSelectFieldString('Approval_Managed_Item__c',null) + ' from ' + 'Approval_Managed_Item__c' + ' '+' WHERE ' + 'LeaveManage__c' + ' = \\'' + 'a010I00001o2EuOQAU' + '\\'' ;\n String sql1 = sjb.getSelectFieldString('Approval_Managed__c',null) + ' from ' + 'Approval_Managed__c' + ' '+' WHERE ' + 'id' + ' = \\'' + 'a010I00001o2EuOQAU' + '\\'' ;\n            sjb.setMaster(Database.query(sql1).get(0));\n            sjb.setDetails(Database.query(sql));\n            //LEAVE_TW 卡控\n            String SAPQueryResult = Utils.postToSAP( sjb.getJson('LEAVE_TW', 'leaveItem', null));\n            System.debug(SAPQueryResult);\n            // String SAPQueryResult = Utils.postSAP()",
-			"settings":
-			{
-				"buffer_size": 814,
+				"buffer_size": 467,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "35.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;VALIDATION,INFO;WORKFLOW,INFO\nExecute Anonymous: SapJsonStringBuilder sjb = new SapJsonStringBuilder();\nExecute Anonymous:  String sql = sjb.getSelectFieldString('Approval_Managed_Item__c',null) + ' from ' + 'Approval_Managed_Item__c' + ' '+' WHERE ' + 'LeaveManage__c' + ' = \\'' + 'a010I00001o2EuOQAU' + '\\'' ;\nExecute Anonymous:  String sql1 = sjb.getSelectFieldString('Approval_Managed__c',null) + ' from ' + 'Approval_Managed__c' + ' '+' WHERE ' + 'id' + ' = \\'' + 'a010I00001o2EuOQAU' + '\\'' ;\nExecute Anonymous:             sjb.setMaster(Database.query(sql1).get(0));\nExecute Anonymous:             sjb.setDetails(Database.query(sql));\nExecute Anonymous:             //LEAVE_TW 卡控\nExecute Anonymous:             String SAPQueryResult = Utils.postToSAP( sjb.getJson('LEAVE_TW', 'leaveItem', null));\nExecute Anonymous:             System.debug(SAPQueryResult);\n10:42:27.238 (238007488)|USER_INFO|[EXTERNAL]|00528000005lirp|martinlee-jfx3@force.com|中国标准时间|GMT+08:00\n10:42:27.238 (238098473)|EXECUTION_STARTED\n10:42:27.238 (238106806)|CODE_UNIT_STARTED|[EXTERNAL]|execute_anonymous_apex\n10:42:27.238 (261081565)|USER_DEBUG|[8]|DEBUG|fields:{abnormal_containment__c=Abnormal_Containment__c, abnormal_header__c=Abnormal_Header__c, abnormal_problem__c=Abnormal_Problem__c, abnormal_rectify__c=Abnormal_Rectify__c, accounting_code__c=Accounting_Code__c, accountname__c=AccountName__c, activitypartialdescription__c=ActivityPartialDescription__c, allocation__c=Allocation__c, amount__c=Amount__c, amount_p__c=Amount_P__c, ...}\n10:42:27.238 (306330806)|USER_DEBUG|[16]|DEBUG|accessiblefields:(Id, OwnerId, IsDeleted, Name, RecordTypeId, CreatedDate, CreatedById, LastModifiedDate, LastModifiedById, SystemModstamp, ...)\n10:42:27.238 (318174789)|USER_DEBUG|[8]|DEBUG|fields:{abnormal_code__c=Abnormal_Code__c, abnormal_type__c=Abnormal_Type__c, acacetin__c=acacetin__c, acceptance_condition__c=Acceptance_condition__c, account__c=Account__c, account_name__c=Account_Name__c, account_number__c=Account_Number__c, accumulated_depreciation__c=Accumulated_depreciation__c, actual_working_hours__c=actual_working_hours__c, adjustable_vacation__c=Adjustable_vacation__c, ...}\n10:42:27.238 (371848339)|USER_DEBUG|[16]|DEBUG|accessiblefields:(Id, OwnerId, IsDeleted, Name, RecordTypeId, CreatedDate, CreatedById, LastModifiedDate, LastModifiedById, SystemModstamp, ...)\n10:42:27.238 (380994675)|SOQL_EXECUTE_BEGIN|[4]|Aggregations:0|Select Id,OwnerId,IsDeleted,Name,RecordTypeId,CreatedDate,CreatedById,LastModifiedDate,LastModifiedById,SystemModstamp,LastActivityDate,LastViewedDate,LastReferencedDate,Approval_Name__c,Abnormal_Code__c,Abnormal_Type__c,Account_Name__c,Account_Number__c,Account__c,Amount_Asset__c,Amount_Confirm__c,Amount_Net_Days__c,Amount_Offset__c,Amount_Prepay__c,Amount_of_Borrow__c,Amount_of_Budget__c,Amount_of_Forecast__c,Amount_of_General__c,Amount_of_Paid__c,Amount_of_Purchase__c,Amount_of_Total__c,Applicant_Code_Cost__c,Applicant_Code__c,Applicant_Corp_Code__c,Applicant_Cost__c,Applicant_Name_Cost__c,Applicant_Name__c,Applicant_Travel__c,Applicant__c,Approval_Entertained_Code__c,Approval_Entertained__c,Approval_Status__c,Approval_Travel_Code__c,Approval_Travel__c,Approval_User10__c,Approval_User11__c,Approval_User12__c,Approval_User13__c,Approval_User14__c,Approval_User15__c,Approval_User16__c,Approval_User17__c,Approval_User18__c,Approval_User19__c,Approval_User1__c,Approval_User20__c,Approval_User2__c,Approval_User3__c,Approval_User4__c,Approval_User5__c,Approval_User6__c,Approval_User7__c,Approval_User8__c,Approval_User9__c,Arrangement__c,Asset_Code_Inner__c,Asset_Code_Official__c,Asset_Code__c,Asset_Name__c,Asset_Type__c,Bill_Date__c,Bill_No__c,Birthday__c,Capital_Order__c,Cause_of_Analysis1__c,Cause_of_Analysis2__c,Cause_of_Analysis3__c,Cause_of_Analysis4__c,Cause_of_Analysis5__c,Clearing_Description__c,Confirm_Date_of_Effect__c,Confirm_Date_of_Feedback__c,Confirmor_of_Effect__c,Confirmor_of_Feedback__c,Corp_Code__c,Corporation__c,Cost_Budget__c,Currcency_Budget__c,Currency__c,Currency_of_Borrow__c,Currency_of_Budget__c,Days_of_Payment_Term__c,Days_of_Payment__c,Delivery_Type__c,Department__c,Dept_Code__c,Dept_Name__c,Dept_PR_Approval__c,Dept_of_CostCenter__c,Dept_of_Discovery__c,Dept_of_Duty__c,Description_Avoid__c,Description__c,Description_of_Effect__c,Description_of_Travel__c,Device_Number__c,Dismisson_Reason_of_Operate__c,Employee_Code__c,Employee_Name__c,Employee__c,End_Travel_Datetime__c,Estimate_Cost__c,Exchange_Rate__c,Expense_ApprovalProcess_Status__c,Expense_Type_Cost__c,Expense_Type_Prepay__c,Factory__c,Handover_Man1_Code__c,Handover_Man1__c,Handover_Man2_Code__c,Handover_Man2__c,Handover_Man3_Code__c,Handover_Man3__c,Handover_Man4_Code__c,Handover_Man4__c,Human_Range__c,International_Trade_Term__c,Is_Agree_Refund__c,Is_Budgeted__c,Is_Good_Regurned__c,Is_Invoice__c,Is_Key_Returned__c,Is_Ok_Factory_Burthen__c,Is_Push_Sap__c,Is_Receipt_Info__c,Is_Salary_Adjust__c,Is_Taipei_Employee__c,Is_Tools_Returned__c,Is_Withhold__c,Is_Work_Transfered__c,Job_Title_Level_New__c,Job_Title_Level_Old__c,Job_Title_Level__c,Job_Title_New_Code__c,Job_Title_New__c,Job_Title_Old__c,Job_Title__c,Keeper_Reserved__c,Kind_of_Asset__c,Kind_of_Cost__c,Kind_of_Order__c,Kind_of_Work__c,Leave_Office_Date__c,License_Number__c,Make_Man__c,Manager_of_Duty__c,Material_Dealwith__c,Material_Description__c,Material_Name__c,Material_Number__c,Model_and_Spec__c,Model_of_Asset__c,Native_Place__c,Num_Order__c,Num_Unfinished__c,Num_Unqualified__c,Occur_Datetime__c,Operation_Type__c,Operator_Abnormal_Code__c,Operator_Abnormal__c,Order__c,Percent_Pay__c,Percent_of_Payment_Term__c,Period_Delivery__c,Person_Liable__c,Phone__c,Place__c,Post_Category__c,Posting_Date__c,Posting_of_Company__c,Price_Purchase__c,Price__c,Purchase_Date__c,Purchase_Group__c,Purchase_Order_Date__c,Purchase_Org__c,Purchase_Required_Date__c,Purchase__c,Quantity__c,REQ_Code__c,Rate_Unqualified__c,Real_Purchase__c,Reason_of_Description__c,Reason_of_Leave_Human__c,Reason_of_Leave__c,Reason_of_Operate__c,Reason_of_Purchase__c,Reject_Date__c,Reject_Reason__c,Rejector__c,Remark_Vendor_Prepay__c,Remark__c,Remark_of_Explain__c,Required_date__c,Responsible_CostCenter__c,Result_Effect_Current_Period__c,SAPID__c,Salary_Manager__c,Same_Sample__c,Staff_Group_New__c,Staff_Group_Old__c,Staff_Sub_Group_New__c,Staff_Sub_Group__c,Staff_of_Both__c,Start_Travel_Datetime__c,Status_Abnormal__c,Status_Asset__c,Status__c,Stock_Note__c,Stock_Number__c,Supervisor1_Code__c,Supervisor1__c,Supervisor2_Code__c,Supervisor2__c,Supervisor3_Code__c,Supervisor3__c,Supervisor4_Code__c,Supervisor4__c,Supplier_Name__c,Supplier_Number__c,Take_Office_Date__c,Target_of_Travel__c,Term_of_Payment__c,Text_of_Head__c,Transfer_Date__c,Type_of_Approval__c,Type_of_Payment__c,Type_of_Travel__c,Validate_Date__c,Vehicle_of_Travel__c,Vendor_Name__c,Vendor_Number__c,Vendor__c,Voucher_Code__c,Voucher_Date__c,Voucher_HeaderText__c,Voucher_Type__c,Work_Center__c,Work_Company_New__c,Work_Company_Old__c,Work_Date__c,sex__c,Invoice_Amount_Total__c,Is_Print__c,Preinvoice_No__c,Is_Invoice_Success__c,Approval_SyncCheck__c,Is_Reset_Approvaler__c,Asset_No__c,Is_Push_Sap_Once__c,Approval_User21__c,Approval_User22__c,Is_HLY_ExpenseReimburse__c,Keeper_Reserved_Name__c,Is_Reject_Submit__c,Total_Price__c,Supplier__c,Staff_Group_Name__c,Staff_Sub_Group_Name__c,Post_Category_Name__c,Service_Category__c,Approval_DeptName__c,Confirm_Is_Stand__c,Confirm_of_Goods__c,Is_Been_Evaluated__c,Purchasing_Request__c,T_Been_Evaluated__c,Amount_Net_Days_Formula__c,Interface_Info__c,Approval_User23__c,Amount_of_Total_P__c,Amount_of_General_P__c,Amount_of_Borrow_P__c,Cost_Budget_P__c,Estimate_Cost_P__c,Applicant_position__c,Adjustable_vacation__c,Annual_leave__c,Total_Miles__c,Sum_Vacation__c,Warehouse_confirmation__c,Overdue_amount__c,Acceptance_condition__c,Detail_of_Travel__c,Retention_penalty__c,signet_type__c,Bill_number__c,Citic_policy_no__c,Content_acceptance__c,Contract_number__c,Delivery_contract_review__c,Field1Intellectual_property__c,FileName__c,New_account__c,Retention__c,Standard_parts__c,Standards__c,Summary_content__c,acacetin__c,company_number__c,file_type__c,payment_terms_describe__c,Name_and_Spec__c,Spread__c,Age__c,Arrival_Date__c,Department_staffing__c,Education__c,Existing_man_power__c,Hiring_schedule__c,Lack_man_power__c,Major__c,Manpower_supplement_description__c,Manpower_type__c,Modify_description__c,Pay_scope__c,Position_Level__c,Qualification_Requirements__c,Require_Job_Name__c,Requirements_number__c,Sex_Preference__c,ZISCALC__c,apply_dept__c,Involving_production__c,overtime_instructions__c,Planning_staff_group__c,assembling__c,assembling_name__c,asset_number__c,device__c,device_name__c,duty_dept_name__c,fault_code__c,fault_description__c,fault_text__c,functional_position__c,functional_position_desc__c,notice_number__c,notice_status__c,notice_type__c,qualitative_analysis__c,reason_code__c,reason_description__c,reason_text__c,responsible_department__c,responsible_person__c,responsible_person_name__c,short_text_description__c,type_description__c,duty_person__c,InventoryType__c,Name__c,ConditionType__c,KeyCombination__c,Sales_Org__c,Sales_channels__c,Price_Group__c,actual_working_hours__c,die_number__c,die_type__c,die_use_bu__c,estimated_working_hic__c,estimated_working_hours__c,isOutsourcing__c,mr_number__c,production_number__c,workpiece_value__c,Travel_days__c,Amount_receivable__c,Annual_sales_amount__c,Application_credit_limit__c,Average_sales__c,Bad_debt_records__c,Capital_on_stock__c,Company_record__c,Confirmation_credit_limits__c,CreditArea__c,Credit_account_numbe__c,Credit_validity__c,Customer_kind__c,Employees_number__c,Exception_handling__c,Founded_time__c,Freeze_confirm__c,Guarantee_amount_receivable__c,KLCooperate_product__c,Local_market_share__c,No_delivery_amount__c,Not_received_Amount__c,Responsible_person_Quality__c,Risk_kind__c,Sales_value__c,Sincere_cooperation__c,Special_current_debt__c,Suppliers__c,Third_credit_line__c,Total_credit_risk__c,Used_Credit_amount__c,credit_line__c,lawsuit__c,supplement__c,Risk_kind_describe__c,Term_of_Payment_account__c,Head_description__c,Accumulated_depreciation__c,Asset_date__c,Asset_initial_value__c,ChangeCostCenter__c,ChangeType__c,Durable_years__c,Entity_asset_type__c,Post_transfer_site__c,Residual_value__c,ScrapOutage_date__c,Approval_User24__c  from Approval_Managed__c  WHERE id = 'a010I00001o2EuOQAU'\n10:42:27.238 (416166071)|SOQL_EXECUTE_END|[4]|Rows:1\n10:42:27.238 (418801986)|SOQL_EXECUTE_BEGIN|[5]|Aggregations:0|Select Id,OwnerId,IsDeleted,Name,RecordTypeId,CreatedDate,CreatedById,LastModifiedDate,LastModifiedById,SystemModstamp,LastViewedDate,LastReferencedDate,Abnormal_Containment__c,Abnormal_Header__c,Abnormal_Problem__c,Abnormal_Rectify__c,Accounting_Code__c,Allocation__c,Amount_Price__c,Amount__c,Applicant_Row__c,Applicant__c,Asset_Code__c,Asset_Now_Value__c,Asset_Purchase_Date__c,Asset_Value__c,Back_Project__c,Code_Group__c,Currency_Tax__c,Currency__c,Delivery_Date__c,Dept_of_CostCenter__c,Device_Number__c,Drawing_Number__c,Drawing_Version__c,Factory__c,Header_Code__c,Header_Name__c,Header__c,Index_Item__c,Is_Free__c,Item__c,Last_Pick_Currency__c,Last_Pick_Date__c,Last_Pick_Number__c,Last_Pick_Price__c,Ledger_Account_Purchase__c,Ledger_Account__c,Material_Description__c,Material_Name__c,Material_Number__c,Material_Number_of_Vendor__c,Material_of_Customer__c,Name_of_Price__c,Number_of_Item__c,Number_of_Purchase__c,Order2_Number__c,Order_Of_SalesOrder__c,Parent_Row_Index__c,Per__c,Plan_Completed_Date__c,Price_Net__c,Price_Tax__c,Price__c,Project_No__c,Project__c,Purchase_Info_Inquiry__c,Purchase_Item_Type__c,Purchase_Order_Number__c,Purchase_Order_Price__c,Purchase_Order__c,Quantity_Detail__c,Quantity__c,Quote_Item__c,Quote__c,Reason_Code__c,Remark__c,Row_Index__c,SAPID__c,SGL__c,Sales_Amount_Total__c,Schedule_Date__c,Selected__c,Status_Overview__c,Subject_Alloc_Type__c,TaskID__c,Text_Project__c,Text__c,Type_Description_Bug__c,Type_of_Affair__c,Type_of_Bug__c,Type_of_Cost__c,Type_of_Price__c,Unit3__c,Unit__c,Value_of_Price__c,Vendor_Response__c,Vendor__c,Voucher_Info__c,Expense_Type__c,Text_Long__c,LeadName__c,OpportunityName__c,AccountName__c,ActivityPartialDescription__c,OwnerName__c,TaskSubject__c,Lead2_Id__c,Opportunity2_Id__c,Opportunity2__c,Customer2_Id__c,Customer2__c,Lead2__c,Subject__c,Attachment__c,Cost_of_Tax__c,Fixed__c,Inventory_Quantity__c,Item_Category__c,Job_Number__c,Material_Group__c,Out_Delivery__c,P_Inclusive_of_Tax__c,Ratio__c,Sales_Order_Number__c,Sales_Order__c,Street_House_Num__c,Type_of_Account_Assign__c,Zip_Code_City__c,LevelNumber__c,Purchasing_Request__c,Tprice__c,Price_Net_Formula__c,Leave_reason__c,Leave_type__c,SalesPricing_son2__c,UOM__c,time_number__c,Price_P__c,Amount_P__c,Price_Tax_F__c,End_date__c,Start_date__c,reference_mileage__c,enter_mileage__c,LeaveManage__c,End_Time__c,Start_Time__c,InventoryKinglai_table__c,Storage__c,batch__c,NumerationType__c,EndTime__c,StartTime__c,TypesOfLeave__c,SalesPricing_son_table__c,Standard_parts__c,Device_fix_count__c,Device_fix_cost__c,Device_fix_date__c,matnr_purch_text__c  from Approval_Managed_Item__c  WHERE LeaveManage__c = 'a010I00001o2EuOQAU'\n10:42:27.238 (431901707)|SOQL_EXECUTE_END|[5]|Rows:1\n10:42:27.238 (432746743)|USER_DEBUG|[186]|DEBUG|*** 序列化后数据：{\"attributes\":{\"type\":\"Approval_Managed__c\",\"url\":\"/services/data/v42.0/sobjects/Approval_Managed__c/a010I00001o2EuOQAU\"},\"Id\":\"a010I00001o2EuOQAU\",\"OwnerId\":\"00528000007yJIWAA2\",\"IsDeleted\":false,\"Name\":\"AN-180605-00074428\",\"RecordTypeId\":\"0120I000001HrswQAC\",\"CreatedDate\":\"2018-06-05T23:55:16.000+0000\",\"CreatedById\":\"00528000007yJIWAA2\",\"LastModifiedDate\":\"2018-06-06T01:11:37.000+0000\",\"LastModifiedById\":\"00528000006nvgCAAQ\",\"SystemModstamp\":\"2018-06-06T01:11:37.000+0000\",\"LastViewedDate\":\"2018-06-07T01:40:43.000+0000\",\"LastReferencedDate\":\"2018-06-07T01:40:43.000+0000\",\"Approval_Name__c\":\"請假申請流程\",\"Amount_of_Borrow__c\":0.00,\"Applicant_Code__c\":\"30210378\",\"Applicant_Corp_Code__c\":\"3000\",\"Applicant_Name__c\":\"鄭 仰廷\",\"Applicant__c\":\"0032800001IcA3tAAF\",\"Approval_Status__c\":\"A\",\"Approval_User1__c\":\"00528000006o8EFAAY\",\"Approval_User2__c\":\"00528000006nvgBAAQ\",\"Approval_User3__c\":\"00528000006nvgCAAQ\",\"Approval_User4__c\":\"00528000006o8ESAAY\",\"Approval_User5__c\":\"00528000007yJIWAA2\",\"Approval_User6__c\":\"00528000006o8EFAAY\",\"Bill_Date__c\":\"2018-06-06\",\"Birthday__c\":\"1985-10-17\",\"Corp_Code__c\":\"3000\",\"Cost_Budget__c\":0.00,\"Dept_Name__c\":\"2010資訊課\",\"Employee_Code__c\":\"30210378\",\"Employee_Name__c\":\"鄭 仰廷\",\"Employee__c\":\"0032800001IcA3tAAF\",\"Expense_Type_Cost__c\":\"02\",\"Expense_Type_Prepay__c\":\"20\",\"Human_Range__c\":\"3000\",\"Is_Agree_Refund__c\":false,\"Is_Budgeted__c\":false,\"Is_Good_Regurned__c\":false,\"Is_Invoice__c\":false,\"Is_Key_Returned__c\":false,\"Is_Ok_Factory_Burthen__c\":false,\"Is_Push_Sap__c\":false,\"Is_Receipt_Info__c\":false,\"Is_Salary_Adjust__c\":false,\"Is_Taipei_Employee__c\":true,\"Is_Tools_Returned__c\":false,\"Is_Withhold__c\":false,\"Is_Work_Transfered__c\":false,\"Job_Title_Old__c\":\"2010資訊課-技術類\",\"Job_Title__c\":\"2010資訊課-技術類\",\"Kind_of_Order__c\":\"NB\",\"Operator_Abnormal_Code__c\":\"30210086\",\"Operator_Abnormal__c\":\"00328000014shO2AAI\",\"Remark__c\":\"請假明細:\\r\\n(1){ 家庭照顧假 / 事由: 祖父需再開刀 / 請假期間: 2018-06-06 08:00 至 2018-06-06 17:00 / 時數: 8.00 }\",\"Salary_Manager__c\":\"T01\",\"Status__c\":\"新建\",\"Take_Office_Date__c\":\"2017-10-02\",\"Voucher_Type__c\":\"KA\",\"Work_Company_Old__c\":\"2010資訊課\",\"Is_Print__c\":false,\"Is_Invoice_Success__c\":false,\"Approval_SyncCheck__c\":false,\"Is_Reset_Approvaler__c\":false,\"Is_Push_Sap_Once__c\":false,\"Is_HLY_ExpenseReimburse__c\":false,\"Is_Reject_Submit__c\":false,\"Is_Been_Evaluated__c\":false,\"Amount_Net_Days_Formula__c\":0.00,\"Amount_of_Total_P__c\":0.00,\"Amount_of_General_P__c\":0.00,\"Amount_of_Borrow_P__c\":0.00,\"Cost_Budget_P__c\":0.00,\"Estimate_Cost_P__c\":0.00,\"Applicant_position__c\":\"2010資訊課-技術類\",\"Adjustable_vacation__c\":\"0\",\"Annual_leave__c\":\"24\",\"Total_Miles__c\":\"0\",\"Sum_Vacation__c\":8.00,\"Warehouse_confirmation__c\":\"56\",\"Acceptance_condition__c\":false,\"Contract_number__c\":\"15209\",\"Delivery_contract_review__c\":false,\"Field1Intellectual_property__c\":false,\"New_account__c\":false,\"Retention__c\":false,\"Standard_parts__c\":false,\"Standards__c\":false,\"Involving_production__c\":false,\"isOutsourcing__c\":false,\"Bad_debt_records__c\":false,\"Credit_validity__c\":\"2018-06-06\",\"Freeze_confirm__c\":false,\"Suppliers__c\":false,\"lawsuit__c\":false}\n10:42:27.238 (437545395)|USER_DEBUG|[107]|DEBUG|*** main{Acceptance_condition__c=false, Adjustable_vacation__c=0, Amount_Net_Days_Formula__c=0.00, Amount_of_Borrow_P__c=0.00, Amount_of_Borrow__c=0.00, Amount_of_General_P__c=0.00, Amount_of_Total_P__c=0.00, Annual_leave__c=24, Applicant_Code__c=30210378, Applicant_Corp_Code__c=3000, ...}\n10:42:27.238 (437999075)|USER_DEBUG|[208]|DEBUG|*** 序列化后数据：{\"attributes\":{\"type\":\"Approval_Managed_Item__c\",\"url\":\"/services/data/v42.0/sobjects/Approval_Managed_Item__c/a050I00000m1VKaQAM\"},\"Id\":\"a050I00000m1VKaQAM\",\"OwnerId\":\"00528000007yJIWAA2\",\"IsDeleted\":false,\"Name\":\"000249068\",\"RecordTypeId\":\"01228000001HonfAAC\",\"CreatedDate\":\"2018-06-05T23:55:16.000+0000\",\"CreatedById\":\"00528000007yJIWAA2\",\"LastModifiedDate\":\"2018-06-05T23:55:16.000+0000\",\"LastModifiedById\":\"00528000007yJIWAA2\",\"SystemModstamp\":\"2018-06-05T23:55:16.000+0000\",\"Is_Free__c\":false,\"Fixed__c\":false,\"Price_Net_Formula__c\":0.000,\"Leave_reason__c\":\"祖父需再開刀\",\"time_number__c\":\"8.00\",\"Price_P__c\":0.00,\"Amount_P__c\":0.00,\"Price_Tax_F__c\":0.00,\"End_date__c\":\"2018-06-06\",\"Start_date__c\":\"2018-06-06\",\"LeaveManage__c\":\"a010I00001o2EuOQAU\",\"End_Time__c\":\"170000\",\"Start_Time__c\":\"080000\",\"TypesOfLeave__c\":\"1011\",\"Standard_parts__c\":false}\n10:42:27.238 (458452423)|USER_DEBUG|[188]|DEBUG|*** SF传送给SAP的数据: {\"operate\":null,\"content\":{\"main\":{\"lawsuit__c\":\"false\",\"Suppliers__c\":\"false\",\"Freeze_confirm__c\":\"false\",\"Credit_validity__c\": \"20180606\",\"Bad_debt_records__c\":\"false\",\"isOutsourcing__c\":\"false\",\"Involving_production__c\":\"false\",\"Standards__c\":\"false\",\"Standard_parts__c\":\"false\",\"Retention__c\":\"false\",\"New_account__c\":\"false\",\"Field1Intellectual_property__c\":\"false\",\"Delivery_contract_review__c\":\"false\",\"Contract_number__c\":\"15209\",\"Acceptance_condition__c\":\"false\",\"Warehouse_confirmation__c\":\"56\",\"Sum_Vacation__c\":\"8.00\",\"Total_Miles__c\":\"0\",\"Annual_leave__c\":\"24\",\"Adjustable_vacation__c\":\"0\",\"Applicant_position__c\":\"2010資訊課-技術類\",\"Estimate_Cost_P__c\":\"0.00\",\"Cost_Budget_P__c\":\"0.00\",\"Amount_of_Borrow_P__c\":\"0.00\",\"Amount_of_General_P__c\":\"0.00\",\"Amount_of_Total_P__c\":\"0.00\",\"Amount_Net_Days_Formula__c\":\"0.00\",\"Is_Been_Evaluated__c\":\"false\",\"Is_Reject_Submit__c\":\"false\",\"Is_HLY_ExpenseReimburse__c\":\"false\",\"Is_Push_Sap_Once__c\":\"false\",\"Is_Reset_Approvaler__c\":\"false\",\"Approval_SyncCheck__c\":\"false\",\"Is_Invoice_Success__c\":\"false\",\"Is_Print__c\":\"false\",\"Work_Company_Old__c\":\"2010資訊課\",\"Voucher_Type__c\":\"KA\",\"Take_Office_Date__c\": \"20171002\",\"Status__c\":\"新建\",\"Salary_Manager__c\":\"T01\",\"Remark__c\":\"請假明細:\\r\\n(1){ 家庭照顧假 / 事由: 祖父需再開刀 / 請假期間: 2018-06-06 08:00 至 2018-06-06 17:00 / 時數: 8.00 }\",\"Operator_Abnormal__c\":\"00328000014shO2AAI\",\"Operator_Abnormal_Code__c\":\"30210086\",\"Kind_of_Order__c\":\"NB\",\"Job_Title__c\":\"2010資訊課-技術類\",\"Job_Title_Old__c\":\"2010資訊課-技術類\",\"Is_Work_Transfered__c\":\"false\",\"Is_Withhold__c\":\"false\",\"Is_Tools_Returned__c\":\"false\",\"Is_Taipei_Employee__c\":\"true\",\"Is_Salary_Adjust__c\":\"false\",\"Is_Receipt_Info__c\":\"false\",\"Is_Push_Sap__c\":\"false\",\"Is_Ok_Factory_Burthen__c\":\"false\",\"Is_Key_Returned__c\":\"false\",\"Is_Invoice__c\":\"false\",\"Is_Good_Regurned__c\":\"false\",\"Is_Budgeted__c\":\"false\",\"Is_Agree_Refund__c\":\"false\",\"Human_Range__c\":\"3000\",\"Expense_Type_Prepay__c\":\"20\",\"Expense_Type_Cost__c\":\"02\",\"Employee__c\":\"0032800001IcA3tAAF\",\"Employee_Name__c\":\"鄭 仰廷\",\"Employee_Code__c\":\"30210378\",\"Dept_Name__c\":\"2010資訊課\",\"Cost_Budget__c\":\"0.00\",\"Corp_Code__c\":\"3000\",\"Birthday__c\": \"19851017\",\"Bill_Date__c\": \"20180606\",\"Approval_User6__c\":\"00528000006o8EFAAY\",\"Approval_User5__c\":\"00528000007yJIWAA2\",\"Approval_User4__c\":\"00528000006o8ESAAY\",\"Approval_User3__c\":\"00528000006nvgCAAQ\",\"Approval_User2__c\":\"00528000006nvgBAAQ\",\"Approval_User1__c\":\"00528000006o8EFAAY\",\"Approval_Status__c\":\"A\",\"Applicant__c\":\"0032800001IcA3tAAF\",\"Applicant_Name__c\":\"鄭 仰廷\",\"Applicant_Corp_Code__c\":\"3000\",\"Applicant_Code__c\":\"30210378\",\"Amount_of_Borrow__c\":\"0.00\",\"Approval_Name__c\":\"請假申請流程\",\"LastReferencedDate\":\"2018-06-07T01:40:43.000+0000\",\"LastViewedDate\":\"2018-06-07T01:40:43.000+0000\",\"SystemModstamp\":\"2018-06-06T01:11:37.000+0000\",\"LastModifiedById\":\"00528000006nvgCAAQ\",\"LastModifiedDate\":\"2018-06-06T01:11:37.000+0000\",\"CreatedById\":\"00528000007yJIWAA2\",\"CreatedDate\":\"2018-06-05T23:55:16.000+0000\",\"RecordTypeId\":\"0120I000001HrswQAC\",\"Name\":\"AN-180605-00074428\",\"IsDeleted\":\"false\",\"OwnerId\":\"00528000007yJIWAA2\",\"Id\":\"a010I00001o2EuOQAU\"},\"details\":{\"leaveItem\":[{\"Standard_parts__c\":\"false\",\"TypesOfLeave__c\":\"1011\",\"Start_Time__c\":\"080000\",\"End_Time__c\":\"170000\",\"LeaveManage__c\":\"a010I00001o2EuOQAU\",\"Start_date__c\": \"20180606\",\"End_date__c\": \"20180606\",\"Price_Tax_F__c\":\"0.00\",\"Amount_P__c\":\"0.00\",\"Price_P__c\":\"0.00\",\"time_number__c\":\"8.00\",\"Leave_reason__c\":\"祖父需再開刀\",\"Price_Net_Formula__c\":\"0.000\",\"Fixed__c\":\"false\",\"Is_Free__c\":\"false\",\"SystemModstamp\":\"2018-06-05T23:55:16.000+0000\",\"LastModifiedById\":\"00528000007yJIWAA2\",\"LastModifiedDate\":\"2018-06-05T23:55:16.000+0000\",\"CreatedById\":\"00528000007yJIWAA2\",\"CreatedDate\":\"2018-06-05T23:55:16.000+0000\",\"RecordTypeId\":\"01228000001HonfAAC\",\"Name\":\"000249068\",\"IsDeleted\":\"false\",\"OwnerId\":\"00528000007yJIWAA2\",\"Id\":\"a050I00000m1VKaQAM\",\"No\":\"0\"}]}},\"approval\":\"LEAVE_TW\"}\n10:42:27.238 (458987764)|USER_DEBUG|[31]|DEBUG|*** 开始调用Soap\n10:42:27.238 (461996010)|CALLOUT_REQUEST|[32]|ZwbSalesforce_element:[SalesforceJosnImport={\"operate\":null,\"content\":{\"main\":{\"lawsuit__c\":\"false\",\"Suppliers__c\":\"false\",\"Freeze_confirm__c\":\"false\",\"Credit_validity__c\": \"20180606\",\"Bad_debt_records__c\":\"false\",\"isOutsourcing__c\":\"false\",\"Involving_production__c\":\"false\",\"Standards__c\":\"false\",\"Standard_parts__c\":\"false\",\"Retention__c\":\"false\",\"New_account__c\":\"false\",\"Field1Intellectual_property__c\":\"false\",\"Delivery_contract_review__c\":\"false\",\"Contract_number__c\":\"15209\",\"Acceptance_condition__c\":\"false\",\"Warehouse_confirmation__c\":\"56\",\"Sum_Vacation__c\":\"8.00\",\"Total_Miles__c\":\"0\",\"Annual_leave__c\":\"24\",\"Adjustable_vacation__c\":\"0\",\"Applicant_position__c\":\"2010資訊課-技術類\",\"Estimate_Cost_P__c\":\"0.00\",\"Cost_Budget_P__c\":\"0.00\",\"Amount_of_Borrow_P__c\":\"0.00\",\"Amount_of_General_P__c\":\"0.00\",\"Amount_of_Total_P__c\":\"0.00\",\"Amount_Net_Days_Formula__c\":\"0.00\",\"Is_Been_Evaluated__c\":\"false\",\"Is_Reject_Submit__c\":\"false\",\"Is_HLY_ExpenseReimburse__c\":\"false\",\"Is_Push_Sap_Once__c\":\"false\",\"Is_Reset_Approvaler__c\":\"false\",\"Approval_SyncCheck__c\":\"false\",\"Is_Invoice_Success__c\":\"false\",\"Is_Print__c\":\"false\",\"Work_Company_Old__c\":\"2010資訊課\",\"Voucher_Type__c\":\"KA\",\"Take_Office_Date__c\": \"20171002\",\"Status__c\":\"新建\",\"Salary_Manager__c\":\"T01\",\"Remark__c\":\"請假明細:\\r\\n(1){ 家庭照顧假 / 事由: 祖父需再開刀 / 請假期間: 2018-06-06 08:00 至 2018-06-06 17:00 / 時數: 8.00 }\",\"Operator_Abnormal__c\":\"00328000014shO2AAI\",\"Operator_Abnormal_Code__c\":\"30210086\",\"Kind_of_Order__c\":\"NB\",\"Job_Title__c\":\"2010資訊課-技術類\",\"Job_Title_Old__c\":\"2010資訊課-技術類\",\"Is_Work_Transfered__c\":\"false\",\"Is_Withhold__c\":\"false\",\"Is_Tools_Returned__c\":\"false\",\"Is_Taipei_Employee__c\":\"true\",\"Is_Salary_Adjust__c\":\"false\",\"Is_Receipt_Info__c\":\"false\",\"Is_Push_Sap__c\":\"false\",\"Is_Ok_Factory_Burthen__c\":\"false\",\"Is_Key_Returned__c\":\"false\",\"Is_Invoice__c\":\"false\",\"Is_Good_Regurned__c\":\"false\",\"Is_Budgeted__c\":\"false\",\"Is_Agree_Refund__c\":\"false\",\"Human_Range__c\":\"3000\",\"Expense_Type_Prepay__c\":\"20\",\"Expense_Type_Cost__c\":\"02\",\"Employee__c\":\"0032800001IcA3tAAF\",\"Employee_Name__c\":\"鄭 仰廷\",\"Employee_Code__c\":\"30210378\",\"Dept_Name__c\":\"2010資訊課\",\"Cost_Budget__c\":\"0.00\",\"Corp_Code__c\":\"3000\",\"Birthday__c\": \"19851017\",\"Bill_Date__c\": \"20180606\",\"Approval_User6__c\":\"00528000006o8EFAAY\",\"Approval_User5__c\":\"00528000007yJIWAA2\",\"Approval_User4__c\":\"00528000006o8ESAAY\",\"Approval_User3__c\":\"00528000006nvgCAAQ\",\"Approval_User2__c\":\"00528000006nvgBAAQ\",\"Approval_User1__c\":\"00528000006o8EFAAY\",\"Approval_Status__c\":\"A\",\"Applicant__c\":\"0032800001IcA3tAAF\",\"Applicant_Name__c\":\"鄭 仰廷\",\"Applicant_Corp_Code__c\":\"3000\",\"Applicant_Code__c\":\"30210378\",\"Amount_of_Borrow__c\":\"0.00\",\"Approval_Name__c\":\"請假申請流程\",\"LastReferencedDate\":\"2018-06-07T01:40:43.000+0000\",\"LastViewedDate\":\"2018-06-07T01:40:43.000+0000\",\"SystemModstamp\":\"2018-06-06T01:11:37.000+0000\",\"LastModifiedById\":\"00528000006nvgCAAQ\",\"LastModifiedDate\":\"2018-06-06T01:11:37.000+0000\",\"CreatedById\":\"00528000007yJIWAA2\",\"CreatedDate\":\"2018-06-05T23:55:16.000+0000\",\"RecordTypeId\":\"0120I000001HrswQAC\",\"Name\":\"AN-180605-00074428\",\"IsDeleted\":\"false\",\"OwnerId\":\"00528000007yJIWAA2\",\"Id\":\"a010I00001o2EuOQAU\"},\"details\":{\"leaveItem\":[{\"Standard_parts__c\":\"false\",\"TypesOfLeave__c\":\"1011\",\"Start_Time__c\":\"080000\",\"End_Time__c\":\"170000\",\"LeaveManage__c\":\"a010I00001o2EuOQAU\",\"Start_date__c\": \"20180606\",\"End_date__c\": \"20180606\",\"Price_Tax_F__c\":\"0.00\",\"Amount_P__c\":\"0.00\",\"Price_P__c\":\"0.00\",\"time_number__c\":\"8.00\",\"Leave_reason__c\":\"祖父需再開刀\",\"Price_Net_Formula__c\":\"0.000\",\"Fixed__c\":\"false\",\"Is_Free__c\":\"false\",\"SystemModstamp\":\"2018-06-05T23:55:16.000+0000\",\"LastModifiedById\":\"00528000007yJIWAA2\",\"LastModifiedDate\":\"2018-06-05T23:55:16.000+0000\",\"CreatedById\":\"00528000007yJIWAA2\",\"CreatedDate\":\"2018-06-05T23:55:16.000+0000\",\"RecordTypeId\":\"01228000001HonfAAC\",\"Name\":\"000249068\",\"IsDeleted\":\"false\",\"OwnerId\":\"00528000007yJIWAA2\",\"Id\":\"a050I00000m1VKaQAM\",\"No\":\"0\"}]}},\"approval\":\"LEAVE_TW\"}, SalesforceJosnImport_type_info=(SalesforceJosnImport, urn:sap-com:document:sap:soap:functions:mc-style, null, 0, 1, false), apex_schema_type_info=(urn:sap-com:document:sap:soap:functions:mc-style, false, true), field_order_type_info=(SalesforceJosnImport)]::SOAPAction=\"\" Accept=text/xml User-Agent=SFDC-Callout/42.0 SFDC_STACK_DEPTH=1 Content-Type=text/xml;charset=UTF-8 \n10:42:27.238 (869691811)|CALLOUT_RESPONSE|[32]|\n10:42:27.238 (869885128)|USER_DEBUG|[44]|DEBUG|*** 结束调用Soap\n10:42:27.238 (870173187)|USER_DEBUG|[236]|DEBUG|*** SAP返回结果JSON: {\"status\":\"0\", \"message\":\"NO：0_因冲突不能插入\",  \"leave_data\":[{\"time_number__c\":\"  8.00\", \"end_time__c\":\"170000\", \"end_date__c\":\"20180606\", \"start_time__c\":\"080000\", \"start_date__c\":\"20180606\", \"leave_reason__c\":\"祖父需再開刀\", \"typesofleave__c\":\"1011\", \"recordtypeid\":\"01228000001HonfAAC\", \"no\":\"0\"}]}\n10:42:27.238 (870210231)|USER_DEBUG|[8]|DEBUG|{\"status\":\"0\", \"message\":\"NO：0_因冲突不能插入\",  \"leave_data\":[{\"time_number__c\":\"  8.00\", \"end_time__c\":\"170000\", \"end_date__c\":\"20180606\", \"start_time__c\":\"080000\", \"start_date__c\":\"20180606\", \"leave_reason__c\":\"祖父需再開刀\", \"typesofleave__c\":\"1011\", \"recordtypeid\":\"01228000001HonfAAC\", \"no\":\"0\"}]}\n10:42:27.872 (872310396)|CUMULATIVE_LIMIT_USAGE\n10:42:27.872 (872310396)|LIMIT_USAGE_FOR_NS|(default)|\n  Number of SOQL queries: 2 out of 100\n  Number of query rows: 2 out of 50000\n  Number of SOSL queries: 0 out of 20\n  Number of DML statements: 0 out of 150\n  Number of DML rows: 0 out of 10000\n  Maximum CPU time: 0 out of 10000\n  Maximum heap size: 0 out of 6000000\n  Number of callouts: 1 out of 100\n  Number of Email Invocations: 0 out of 10\n  Number of future calls: 0 out of 50\n  Number of queueable jobs added to the queue: 0 out of 50\n  Number of Mobile Apex push calls: 0 out of 10\n\n10:42:27.872 (872310396)|CUMULATIVE_LIMIT_USAGE_END\n\n10:42:27.238 (872373160)|CODE_UNIT_FINISHED|execute_anonymous_apex\n10:42:27.238 (873997972)|EXECUTION_FINISHED\n",
+			"contents": "var data = [\n    [\n        \"Tiger Nixon\",\n        \"System Architect\",\n        \"Edinburgh\",\n        \"5421\",\n        \"2011/04/25\",\n        \"$3,120\"\n    ],\n    [\n        \"Garrett Winters\",\n        \"Director\",\n        \"Edinburgh\",\n        \"8422\",\n        \"2011/07/25\",\n        \"$5,300\"\n    ]\n]\n\nj$('#queryTable').DataTable( {\n                                responsive: true,\n                                \"language\":languageConf,\n                                \"data\": data\n                                  \n                              } );\n\nSet<String> userIds = new Set<String>();\nuserIds.add('00528000006o8Dk');\nUtils.ManualShareRecordToUsers(userIds, 'Approval_Managed__c', id.valueOf('a010I00001pP4QNQA0'));\n",
 			"settings":
 			{
-				"buffer_size": 27520,
-				"line_ending": "Windows",
-				"name": "Execute Anonymous Result",
-				"scratch": true
-			}
-		},
-		{
-			"contents": "https://kinglai--test--c.cs5.visual.force.com/_ui/common/data/LookupPage?lkfm=j_id0:j_id15:form&lknm=j_id0:j_id15:form:Toastmaster&lktp=003&lksrch=\n\n\n openLookup('/_ui/common/data/LookupPage?lkfm=j_id0:j_id15:form&lknm=j_id0:j_id15:form:Toastmaster&lktp=003','&lksrch=' + escapeUTF(getElementByIdCS('j_id0:j_id15:form:Toastmaster').value.substring(0, 80)))",
-			"settings":
-			{
-				"buffer_size": 356,
+				"buffer_size": 716,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "var data = [\n    [\n        \"Tiger Nixon\",\n        \"System Architect\",\n        \"Edinburgh\",\n        \"5421\",\n        \"2011/04/25\",\n        \"$3,120\"\n    ],\n    [\n        \"Garrett Winters\",\n        \"Director\",\n        \"Edinburgh\",\n        \"8422\",\n        \"2011/07/25\",\n        \"$5,300\"\n    ]\n]\n\nj$('#queryTable').DataTable( {\n                                responsive: true,\n                                \"language\":languageConf,\n                                \"data\": data\n                                  \n                              } );",
+			"contents": "<section class=\"side-2\" id=\"pageTop\">\n    <div class=\"container clearfix\">\n        <aside class=\"one-fourth\" id=\"sidebar\">\n            <div class=\"widget\">\n                <h3>\n                    <strong>\n                        <span style=\"font-size: 16pt;\">\n                            DOWNLOAD\n                        </span>\n                    </strong>\n                </h3>\n                <nav class=\"manu\">\n                    <li>\n                        <strong>\n                            <span style=\"font-size: 12pt;\">\n                                <a href=\"#vacuum-product\">\n                                    Vacuum Products\n                                </a>\n                            </span>\n                        </strong>\n                    </li>\n                    <li>\n                        <strong>\n                            <span style=\"font-size: 12pt;\">\n                                <a href=\"#high-purity\">\n                                    High Purity\n                                </a>\n                            </span>\n                        </strong>\n                    </li>\n                    <li>\n                        <strong>\n                            <span style=\"font-size: 12pt;\">\n                                <a href=\"#brochures\">\n                                    Brochures\n                                </a>\n                            </span>\n                        </strong>\n                    </li>\n                    <li>\n                        <strong>\n                            <span style=\"font-size: 12pt;\">\n                                <a href=\"#manuals\">\n                                    Manuals\n                                </a>\n                            </span>\n                        </strong>\n                    </li>\n                </nav>\n            </div>\n        </aside>\n    </div>\n</section>\n<section class=\"center-2\" id=\"vacuum-product\">\n    <h2>\n        <span style=\"font-size: 16pt;\">\n            <strong>\n                Vacuum Products\n            </strong>\n        </span>\n    </h2>\n</section>\n<section class=\"center-2\" id=\"vacuum-product\">\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/70646d4462346535356d5976545448623665517945793055686f57426f3363445a49694d4e56736f486f673d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/2018-new-vacuum_catalogue.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0px; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em; text-align: left;\">\n                    KL GROUP-2018 NEW VACUUM PRODUCT Catalogue-1\n                </h2>\n                <p>\n                    Vacuum Product Catalogue - King Lai has always endeavored to pursue customer's fulfillment as we believe customer's success is our success. Continuous R&D and innovations gr ant us to offer more ...\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href='http://ss.mailcloud.com.tw/url.php/623062556239696f36536b516849322b456d58566a55376e6832642f756e327a4f46462f41355855784d453d.pdf\"' style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/2018-new-vacuum_catalogue.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0px; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em; text-align: left;\">\n                    KL GROUP-2018 NEW VACUUM PRODUCT Catalogue-2\n                </h2>\n                <p>\n                    Vacuum Product Catalogue - King Lai has always endeavored to pursue customer's fulfillment as we believe customer's success is our success. Continuous R&D and innovations gr ant us to offer more ...\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/454151306e42584874553669516677586e75547830634b68787832634839303457794255366f42682f39383d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/vacuum_catalogue_gnb.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0px; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em; text-align: left;\">\n                    GNB Vacuum Products\n                </h2>\n                <p>\n                    GNB is a company of technical experts serving other technology experts. Since our beginning in 1968 it has been our commitment to technology that has set us apart. During this time we have produced outstanding, innovative products that have met the most d\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <center>\n        <a href=\"#pageTop\">\n            GO TOP\n        </a>\n    </center>\n    <nav class=\"page-nav\">\n    </nav>\n</section>\n<section class=\"center-2\" id=\"high-purity\">\n    <h2 style=\"font-size: 1.2em; line-height: 1.3em; font-weight: 600; letter-spacing: -0.02em; border-bottom: 1px solid #e5e5e5; padding-bottom: 10px; margin-bottom: 25px;\">\n        <strong>\n            <span style=\"font-size: 16pt;\">\n                High Purity\n            </span>\n        </strong>\n    </h2>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/475864386e47484f396867716c726f4d6f4e4d524f364a396d557a43766d344f716d5676567954725731343d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/highpurity_catalogue.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    NanoPure Catalogue\n                </h2>\n                <p>\n                    UHP SEMI Grade AP, MP, BA & EP PIPE, TUBE, FITTING for SP1, SP2 (Hook Up) application.\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/4336694230507262523737536f7274516a6337657874494d4434596e56307833394e773262516d315849553d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/NanoPure-BALL-VALVE.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    NanoPure Ball Valve Catalogue\n                </h2>\n                <p>\n                    NanoPure® Ball Valves provide quick 1/4 turn on-off control of fluids utilized in process and instrumentation applications. A broad selection of valve seat, and seal materials provide a wide range of pressures and temperatures at which the valve may be used.\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/66382f4f447345473978726558567979364d6833663144416a673037793150456662774e6a4645786661413d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/NanoPure-3piece-BALL-VALVE.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    NanoPure 3 PIECE BALL VALVE\n                </h2>\n                <p>\n                    NanoPure® Ball Valves provide quick 1/4 turn on-off control of fluids utilized in process and instrumentation applications. A broad selection of valve seat, and seal materials provide a wide range of pressures and temperatures at which the valve may be used.\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/5a516c477335762f4c6a715852716744697545585242386d647543776d46336a2f595948537837747634553d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%; margin-bottom: 15%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/180301-NanoPureUHPFaceSeal_MicroFitting.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    NanoPure UHP Face Seal & Micro Fitting\n                </h2>\n                <p>\n                    \"NanoPure\" is a brand of Gas Delivery Total Solution, belongs to King Lai Group, who was founded 1991 in Taiwan and expanded production facility in Kunshan, Jiangsu Province, China. Supplying tubing/piping and fitting materials service for Semiconductor, FPD, LED and Photovoltaic industries, the core idea of \"NanoPure\" is providing \"Hygienic materials\" with high quality components for gas delivery applications.\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/6e676e526e6e4e703177397759434d6353492b366c34565746516a706876562b4a626436517959686b2f383d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%; margin-bottom: 15%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/180301-NanoPureUHPDIAPHRAGMVALVE.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    NanoPure UHP DIAPHRAGM VALVE\n                </h2>\n                <p>\n                    \"NanoPure\" is a brand of Gas Delivery Total Solution, belongs to King Lai Group, who was founded 1991 in Taiwan and expanded production facility in Kunshan, Jiangsu Province, China. Supplying tubing/piping and fitting materials service for Semiconductor, FPD, LED and Photovoltaic industries, the core idea of \"NanoPure\" is providing \"Hygienic materials\" with high quality components for gas delivery applications.\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/754462702f587a716b304163634f364152623279746d526957542b4a4249317a4a556f7766512b4c385a733d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%; margin-bottom: 15%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/180307-NanoPure Compression Tube Fittings.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    NanoPure Compression Tube Fittings\n                </h2>\n                <p>\n                    \"NanoPure\" is a brand of Gas Delivery Total Solution, belongs to King Lai Group, who was founded 1991 in Taiwan and expanded production facility in Kunshan, Jiangsu Province, China. Supplying tubing/piping and fitting materials service for Semiconductor, FPD, LED and Photovoltaic industries, the core idea of \"NanoPure\" is providing \"Hygienic materials\" with high quality components for gas delivery applications.\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <center>\n        <a href=\"#pageTop\">\n            GO TOP\n        </a>\n    </center>\n    <nav class=\"page-nav\">\n        <nav class=\"page-nav\">\n            <p>\n            </p>\n        </nav>\n    </nav>\n</section>\n<section class=\"center-2\" id=\"brochures\">\n    <h2 style=\"font-size: 1.2em; line-height: 1.3em; font-weight: 600; letter-spacing: -0.02em; border-bottom: 1px solid #e5e5e5; padding-bottom: 10px; margin-bottom: 25px;\">\n        <strong>\n            <span style=\"font-size: 16pt;\">\n                Brochures\n            </span>\n        </strong>\n    </h2>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/47554f4d553749504e6559776f63343374576852514b3255764d75514b324464747038706f7a5472732b6f3d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/AdvanTorrVacuumValves_edm.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    AdvanTorr Vacuum Valves- eDM\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/5a4f3530496837492b672b77585a54796b362b664e776569477a593130706f68734f6835594c7a6c41396f3d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/Heating-Jacket.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    Heating Jacket- eDM\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/35716648774d74734d6a346f5a79696353625a3478632f416e7a46654e3648537534317a725136396e6b6f3d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/AdvanTorr-Vacuum-Products-edm.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    <span lang=\"EN-US\">\n                        AdvanTorr Vacuum Products eDM\n                    </span>\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/6371453841517971747433394d6344764c4e7852437355616a584546714d4f6e417351735055314d2f306b3d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/Viewport-LED-Light.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    Viewport LED Light-eDM\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/316a6c714a6b57794253784b4c37726b655a65586d523634325474524a506165666c4f56447441495636453d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/Bubbler-Cylinders-Catalogue1.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    Bubbler Cylinders Catalogue-eDM\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <!-- add on 20180628 -->\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/7868534244786936424e354e6359735a546e58416343714344635348524c714136495772636262316331733d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/LION-General-Industry.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    LION General Industry Brochure-eDM\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/706c4f4e62616f564b2f63576b42314d446b4f4c7534344673384e496e6d5067747737504d6875306252733d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/LION-Semicon-Industry.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    LION Semicon Industry Brochure-eDM\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <center>\n        <a href=\"#pageTop\">\n            GO TOP\n        </a>\n    </center>\n    <nav class=\"page-nav\">\n        <p>\n        </p>\n    </nav>\n</section>\n<section class=\"center-2\" id=\"manuals\">\n    <h2 style=\"font-size: 1.2em; line-height: 1.3em; font-weight: 600; letter-spacing: -0.02em; border-bottom: 1px solid #e5e5e5; padding-bottom: 10px; margin-bottom: 25px;\">\n        <span style=\"font-size: 16pt;\">\n            <strong>\n                Manuals\n            </strong>\n        </span>\n    </h2>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/42773559764349394f6a6e433258346a4c506c3369515131536c7952444b555a50414a56416549384e4f673d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/SMART-Gate-Valves-Operation.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    SMART Gate Valves Operation Manual\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/43524c592f444e346e56753149455653744b566e6c6e536b6274324b3247416e786e644a502b537449764d3d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/Transfer-Slit-Valves-Operat.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    Transfer Slit Valves Operation Manual\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/2b32337a7a596f357758386e7337583432426453355159635748577957547256387a73624b4f42526678673d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/Vacuum-Poppet-Valves-Operat.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    Vacuum Poppet Valves Operation Manual\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <center>\n        <a href=\"#pageTop\">\n            GO TOP\n        </a>\n    </center>\n</section>",
 			"settings":
 			{
-				"buffer_size": 543,
+				"buffer_size": 44374,
 				"line_ending": "Windows"
 			}
 		}
@@ -660,7 +532,7 @@
 	},
 	"console":
 	{
-		"height": 60.0,
+		"height": 62.0,
 		"history":
 		[
 			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
@@ -679,49 +551,86 @@
 	"expanded_folders":
 	[
 		"/D/mmworkspace/TestEvn",
-		"/D/mmworkspace/TestEvn/resource-bundles",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/ApproverGroupMaintainSystem",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/MeetingMinutes",
 		"/D/mmworkspace/TestEvn/src",
-		"/D/mmworkspace/TestEvn/src/aura",
-		"/D/mmworkspace/TestEvn/src/classes",
-		"/D/mmworkspace/TestEvn/src/components",
-		"/D/mmworkspace/TestEvn/src/triggers"
+		"/D/mmworkspace/TestEvn/src/components"
 	],
 	"file_history":
 	[
+		"/D/mmworkspace/TestEvn/src/classes/SapApprovalEnum.cls",
+		"/D/mmworkspace/TestEvn/src/pages/AMEducationTraining.page",
+		"/D/mmworkspace/TestEvn/src/classes/ApproverUtilsTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/BaseExtension.cls",
+		"/D/mmworkspace/TestEvn/src/classes/VFShowInApprovalExtension.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMVisitorHostsHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SapOperateEnum.cls",
+		"/D/mmworkspace/TestEvn/src/components/SitePoweredBy.component",
+		"/D/mmworkspace/TestEvn/src/classes/AMInformationServiceHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/HarryUtils.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMAbnormalQualityExtension.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMVendorExtension.cls",
+		"/D/mmworkspace/TestEvn/src/pages/AMVendor.page",
+		"/D/mmworkspace/TestEvn/src/classes/PushApprovalDataToSapHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMVendorHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplicationHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/ApprovalHomeController.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMAdvanceChargeExtensionTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SampleExtension.cls",
+		"/D/mmworkspace/TestEvn/src/pages/SamplePage.page",
 		"/D/mmworkspace/TestEvn/src/classes/Utils.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMSaleOrderHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SapJsonStringBuilder.cls",
+		"/D/mmworkspace/TestEvn/src/pages/AMBusinessTravel.page",
+		"/D/mmworkspace/TestEvn/src/classes/ApprovalQueryController.cls",
+		"/D/mmworkspace/TestEvn/src/pages/ApprovalQuery.page",
+		"/D/mmworkspace/TestEvn/src/pages/AMLeaveApplication.page",
+		"/D/mmworkspace/TestEvn/src/classes/RemoteActionsOfLeaveTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/PeoplesTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/Peoples.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SapSoapFunctions.cls",
+		"/D/mmworkspace/TestEvn/src/classes/RemoteActionsOfLeave.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplictionTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/GetBoss.cls",
+		"/D/mmworkspace/TestEvn/src/pages/GetBoss.page",
+		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/toolingapi.sublime-settings",
+		"/D/mmworkspace/TestEvn/src/classes/MeetingMinutesMainPageController.cls",
+		"/D/mmworkspace/TestEvn/src/classes/MeetingMinutesQueryPageController.cls",
+		"/D/mmworkspace/TestEvn/src/pages/MeetingMinutesMainPage.page",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
+		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplicationExtension.cls",
+		"/D/mmworkspace/TestEvn/src/classes/SapJsonStringBuilderTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMClockInAndOutApplicationHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimExtension.cls",
+		"/D/mmworkspace/TestEvn/src/pages/AMVendorClaim.page",
+		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtensionTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandlerTest.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandler.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtension.cls",
+		"/D/mmworkspace/TestEvn/src/pages/ApprovalHome.page",
+		"/D/mmworkspace/TestEvn/src/classes/SObjectUtils.cls",
+		"/D/mmworkspace/TestEvn/src/classes/AMClockInAndOutApplicationExtension.cls",
+		"/D/mmworkspace/TestEvn/src/classes/ApproverUtils.cls",
+		"/D/mmworkspace/TestEvn/src/pages/AMClockInAndOutApplication.page",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/JValidator.js",
+		"/D/mmworkspace/TestEvn/src/classes/AMClockInAndOutApplication.cls",
 		"/D/mmworkspace/TestEvn/src/classes/UpdateLookupInfoHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplictionTest.cls-meta.xml",
 		"/D/mmworkspace/TestEvn/src/classes/SapQueryArgCreate.cls",
-		"/D/mmworkspace/TestEvn/src/pages/AMEducationTraining.page",
 		"/D/mmworkspace/TestEvn/src/pages/SOApprovalDemoPage.page",
 		"/D/mmworkspace/TestEvn/src/classes/SOApprovalDemo.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/CustomApprovalManageTrigger.trigger",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/MeetingMinutes/queryPageJS.js",
 		"/D/mmworkspace/TestEvn/src/triggers/KLSystemsTrigger.trigger",
-		"/D/mmworkspace/TestEvn/src/classes/BaseExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/MeetingMinutesMainPageHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/MeetingMinutesMainPageHandlerTest.cls",
-		"/D/mmworkspace/TestEvn/src/pages/AMVendorClaim.page",
-		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ProcessUtils.cls",
-		"/D/mmworkspace/TestEvn/src/classes/VFShowInApprovalExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/VFShowInApprovalExtensionTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/MeetingMinutesMainPageControllerTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ApprovalManualShareHandler.cls",
-		"/D/mmworkspace/TestEvn/src/classes/MeetingMinutesMainPageController.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtensionTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/QueryControllerTest.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/ApprovalManage1Trigger.trigger",
 		"/D/mmworkspace/TestEvn/src/classes/AMITServiceRequestHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMITServiceRequestExtension.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMITServiceRequest.page",
-		"/D/mmworkspace/TestEvn/src/classes/AMVisitorHostsHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMInternalmemoHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMVisitorHostsExtension.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMVisitorHosts.page",
@@ -731,44 +640,27 @@
 		"/D/mmworkspace/TestEvn/src/classes/AMExpenseReimburseExtension.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMExpenseReimburse.page",
 		"/D/mmworkspace/TestEvn/src/classes/QueryController.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMInformationServiceHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMInformationServiceHandlerTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/MeetingMinutesQueryPageControllerTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplicationHandler.cls",
-		"/D/mmworkspace/TestEvn/src/classes/MeetingMinutesQueryPageController.cls",
 		"/D/mmworkspace/TestEvn/src/pages/MeetingMinutesQueryPage.page",
-		"/D/mmworkspace/TestEvn/src/pages/MeetingMinutesMainPage.page",
 		"/D/mmworkspace/TestEvn/src/classes/SapInputArgCreateTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SapInputArgCreate.cls",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
 		"/D/mmworkspace/TestEvn/src/pages/LeaveQuery.page",
 		"/D/mmworkspace/TestEvn/src/classes/LeaveQueryController.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SapInputArgCreateForLeaveApplication.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SapInputArgCreateForLeaveApplicationTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/SObjectUtils.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SapJsonStringBulider.cls",
-		"/D/mmworkspace/TestEvn/src/classes/RemoteActionsOfLeave.cls",
 		"/D/mmworkspace/TestEvn/src/classes/HttpRest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SyncFromSfToSapSchedule.cls",
-		"/D/mmworkspace/TestEvn/src/classes/RemoteActionsOfLeaveTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandlerTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingHandler.cls",
 		"/C/Users/young_cheng/Downloads/language_pack.xml",
 		"/C/Users/young_cheng/Downloads/3.60_language_pack_zh.xml",
 		"/D/mmworkspace/TestEvn/src/classes/AMInternalmemoHandlerTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ApprovalPermissionHandler.cls",
-		"/D/mmworkspace/TestEvn/src/classes/SapApprovalEnum.cls",
 		"/D/mmworkspace/TestEvn/src/pages/WorkLayout.page",
 		"/D/mmworkspace/TestEvn/src/pages/ApprovalsPending.page",
 		"/D/mmworkspace/TestEvn/src/pages/BarCodeCo11n.page",
-		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplicationExtension.cls",
-		"/D/mmworkspace/TestEvn/src/pages/AMLeaveApplication.page",
-		"/D/mmworkspace/TestEvn/src/classes/PushApprovalDataToSapHandler.cls",
 		"/D/mmworkspace/TestEvn/src/triggers/ApprovalManageTrigger.trigger",
-		"/D/mmworkspace/TestEvn/src/classes/ApproverUtils.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMLeaveHander.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMLeaveApplictionTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/SapSoapFunctions.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AmAbnormalityHrPt60Controller.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMExpenseReimburseHandlerTest.cls",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/libs/jquery-3.2.1.js",
@@ -776,18 +668,11 @@
 		"/D/mmworkspace/TestEvn/src/classes/Barcodebg.cls",
 		"/D/mmworkspace/TestEvn/src/pages/ApprovalSetting.page",
 		"/D/mmworkspace/TestEvn/src/components/ApprovalProcessButtonSwitcher.component",
-		"/D/mmworkspace/TestEvn/src/classes/AMEducationTrainingExtension.cls",
 		"/D/mmworkspace/TestEvn/src/classes/KLSyncActivity.cls",
-		"/D/mmworkspace/TestEvn/src/pages/AMVendor.page",
-		"/D/mmworkspace/TestEvn/src/classes/SapOperateEnum.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMVendorExtension.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMVendorHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimHandlerTest.cls",
-		"/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/toolingapi.sublime-settings",
 		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication/LeaveQueryJS.js",
 		"/D/mmworkspace/TestEvn/src/pages/AMLeaveApplication.page-meta.xml",
-		"/D/mmworkspace/TestEvn/src/classes/ApprovalHomeController.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMEXP_ApplicationFee.page",
 		"/D/mmworkspace/TestEvn/src/pages/AMInventoryProcess.page",
 		"/D/mmworkspace/TestEvn/src/classes/AMInventoryProcessExtension.cls",
@@ -798,29 +683,7 @@
 		"/D/mmworkspace/TestEvn/src/classes/SyncSapToSfReturnArgs.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ApprovalContactExtension.cls",
 		"/D/mmworkspace/TestEvn/src/pages/ApprovalContact.page",
-		"/D/mmworkspace/TestEvn/src/triggers/MeetingMinutesTaskTrigger.trigger",
-		"/C/Users/young_cheng/Desktop/bootstrap.css",
-		"/D/mmworkspace/TestEvn/src/pages/bootstrapTest.page",
-		"/D/mmworkspace/TestEvn/src/classes/ApproverUtils.cls-meta.xml",
-		"/D/mmworkspace/TestEvn/src/classes/Peoples.cls",
-		"/D/mmworkspace/TestEvn/src/classes/SObjectUtilsTest.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AmAbnormalityHrPt60ControllerTest.cls",
-		"/D/mmworkspace/TestEvn/src/pages/AMleave.page",
-		"/D/mmworkspace/TestEvn/src/pages/ApproverGroupMaintainSystem.page",
-		"/D/mmworkspace/TestEvn/src/classes/AMAdvanceChargeHandler.cls-meta.xml",
-		"/D/mmworkspace/TestEvn/src/classes/ApproverUtilsTest.cls",
-		"/D/mmworkspace/testRun/AMEductionTrainingEmailTest.txt",
-		"/D/mmworkspace/TestEvn/src/classes/HarryUtils.cls",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/dataTableConfigObj.js",
-		"/D/mmworkspace/TestEvn/src/classes/TestUserUtil.cls",
-		"/D/mmworkspace/TestEvn/src/classes/AMVendorClaimExtensionTest.cls",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication/requireRedBarSetting.css",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/RWD-Table.css",
-		"/D/mmworkspace/TestEvn/src/classes/ProcessUtilsTest.cls",
-		"/D/mmworkspace/TestEvn/src/components/ApprovalProcessButtonSwitcher.component-meta.xml",
-		"/D/mmworkspace/TestEvn/src/components/baseFormInfo.component",
-		"/D/mmworkspace/TestEvn/src/classes/SapWebServiceReturnArgs.cls",
-		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMEducationTrainingJS.js"
+		"/D/mmworkspace/TestEvn/src/triggers/MeetingMinutesTaskTrigger.trigger"
 	],
 	"find":
 	{
@@ -832,6 +695,8 @@
 		"where_history":
 		[
 			"D:\\mmworkspace\\TestEvn",
+			"D:\\mmworkspace\\TestEvn\\resource-bundles\\JSbundle.resource",
+			"D:\\mmworkspace\\TestEvn",
 			"D:\\mmworkspace\\TestEvn\\src\\classes",
 			"D:\\mmworkspace\\TestEvn"
 		]
@@ -841,6 +706,26 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"getRecordTypeIdByDevNameAndObjName",
+			"insertString",
+			"HarryUtils",
+			"\"NanoPure\" is a brand of Gas Delivery Total Solution, belongs to King Lai Group, who was founded 1991 in Taiwan and expanded production facility in Kunshan, Jiangsu Province, China. Supplying tubing/piping and fitting materials service for Semiconductor, FPD, LED and Photovoltaic industries, the core idea of \"NanoPure\" is providing \"Hygienic materials\" with high quality components for gas delivery applications.",
+			"Brochures",
+			"AdvanTorr Vacuum Valves- Edm",
+			"AdvanTorr Vacuum Products ",
+			"AdvanTorr Vacuum Valves",
+			"check",
+			"addbutton",
+			"getEmpInfo",
+			"休假時數合計",
+			"特休可用時數",
+			"特休可用",
+			"am1",
+			"getEmpInfo",
+			"queryEmpId",
+			"queryVacation",
+			"Employee_Code",
+			"am",
 			"debug",
 			"validateDetailList",
 			"upsert",
@@ -948,27 +833,7 @@
 			"供应商",
 			"Custom_Approval_Managed__c",
 			"供应商",
-			"field",
-			"debug",
-			"2017",
-			"getNodeEditFields",
-			"DeveloperName",
-			"false",
-			"return false;",
-			"lable",
-			"label",
-			"edform",
-			"pl_EducationTrainingType",
-			"generateUrl",
-			"必输",
-			"必輸",
-			"parentId",
-			"save",
-			"公司",
-			"Is_Based_Invoice__c",
-			"\t账户组",
-			"\t\n账户组",
-			"createSapVendorInputArgs"
+			"field"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -989,407 +854,23 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/classes/ApproverUtils.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 10363,
+						"buffer_size": 1489,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4435,
-								4435
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1596.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/classes/ApproverUtilsTest.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7138,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								7138
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/classes/SapJsonStringBuilderTest.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7348,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5645,
-								5645
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 2584.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/classes/SapJsonStringBuilder.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7205,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								76,
-								76
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 3420.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "src/classes/AMLeaveApplicationExtension.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 14297,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								9402,
-								9402
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 4797.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 10963,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7418,
-								7418
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 13,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "src/pages/GetBoss.page",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 569,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								456,
-								456
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 16,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "src/classes/GetBoss.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 570,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								134,
-								548
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 15,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "src/classes/AMLeaveApplictionTest.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 19495,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								11945,
-								11945
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 4902.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "src/classes/RemoteActionsOfLeave.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4436,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1328,
-								1328
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 399.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 17,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "src/classes/Peoples.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3008,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1165,
-								1181
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 1420.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 14,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "src/classes/RemoteActionsOfLeaveTest.cls",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2322,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1539,
-								1539
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 18,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "src/pages/AMLeaveApplication.page",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 20178,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								16510,
-								16510
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 5149.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 13,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1488,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2,
-								2
+								639,
+								639
 							]
 						],
 						"settings":
@@ -1397,32 +878,31 @@
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 385.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
-					"file": "src/pages/AMBusinessTravel.page",
+					"buffer": 1,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9203,
+						"buffer_size": 903,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								869,
-								869
+								903,
+								903
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax"
+							"syntax": "Packages/Java/Java.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1432,19 +912,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 15,
+					"buffer": 2,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 814,
+						"buffer_size": 467,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								814,
-								814
+								374,
+								374
 							]
 						],
 						"settings":
@@ -1455,78 +935,23 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 16,
+					"buffer": 3,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 27520,
+						"buffer_size": 716,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								22523,
-								22549
-							]
-						],
-						"settings":
-						{
-							"is_debug_log": true,
-							"syntax": "Packages/Java/Java.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 2736.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 17,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 356,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								356,
-								356
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
-					"type": "text"
-				},
-				{
-					"buffer": 18,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 543,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								158,
-								158
+								715,
+								544
 							]
 						],
 						"settings":
@@ -1539,7 +964,34 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 44374,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								40489,
+								40489
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 996.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
@@ -1578,7 +1030,7 @@
 	"menu_visible": true,
 	"output.MavensMate-OutputPanel":
 	{
-		"height": 162.0
+		"height": 144.0
 	},
 	"output.error":
 	{
@@ -1601,6 +1053,106 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"sape",
+				"src\\classes\\SapApprovalEnum.cls"
+			],
+			[
+				"sapen",
+				"src\\classes\\SapApprovalEnum.cls"
+			],
+			[
+				"sao",
+				"src\\classes\\SapOperateEnum.cls"
+			],
+			[
+				"amven",
+				"src\\classes\\AMVendorHandler.cls"
+			],
+			[
+				"amvendor",
+				"src\\pages\\AMVendor.page"
+			],
+			[
+				"",
+				"src\\classes\\AMLeaveApplicationHandler.cls"
+			],
+			[
+				"leaveapphan",
+				"src\\classes\\AMLeaveApplicationHandler.cls"
+			],
+			[
+				"handler",
+				"src\\classes\\AMSaleOrderHandler.cls"
+			],
+			[
+				"home",
+				"src\\classes\\ApprovalHomeController.cls"
+			],
+			[
+				"sample",
+				"src\\classes\\SampleExtension.cls"
+			],
+			[
+				"sam",
+				"src\\classes\\SampleExtension.cls"
+			],
+			[
+				"samp",
+				"src\\classes\\SampleExtension.cls"
+			],
+			[
+				"leaveapp",
+				"src\\classes\\AMLeaveApplicationHandler.cls"
+			],
+			[
+				"meetingminutesquerypage",
+				"src\\classes\\MeetingMinutesQueryPageController.cls"
+			],
+			[
+				"mee",
+				"src\\pages\\MeetingMinutesMainPage.page"
+			],
+			[
+				"amvend",
+				"src\\pages\\AMVendorClaim.page"
+			],
+			[
+				"ameducationtraining",
+				"src\\classes\\AMEducationTrainingExtensionTest.cls"
+			],
+			[
+				"ameducationtraininghandler",
+				"src\\classes\\AMEducationTrainingHandlerTest.cls"
+			],
+			[
+				"amedc",
+				"src\\classes\\AMEducationTrainingHandler.cls"
+			],
+			[
+				"amed",
+				"src\\classes\\AMEducationTrainingExtension.cls"
+			],
+			[
+				"approvalquery",
+				"src\\pages\\ApprovalQuery.page"
+			],
+			[
+				"people",
+				"src\\classes\\PeoplesTest.cls"
+			],
+			[
+				"amleaveapplic",
+				"src\\classes\\AMLeaveApplicationHandler.cls"
+			],
+			[
+				"approvalhome",
+				"src\\pages\\ApprovalHome.page"
+			],
+			[
+				"sobj",
+				"src\\classes\\SObjectUtils.cls"
+			],
 			[
 				"trav",
 				"src\\pages\\AMBusinessTravel.page"
@@ -1754,24 +1306,12 @@
 				"src\\classes\\SapInputArgCreate.cls"
 			],
 			[
-				"amven",
-				"src\\classes\\AMVendorHandler.cls"
-			],
-			[
-				"amvend",
-				"src\\classes\\AMVendorExtension.cls"
-			],
-			[
 				"query",
 				"src\\classes\\QueryController.cls"
 			],
 			[
 				"amvendorext",
 				"src\\classes\\AMVendorExtension.cls"
-			],
-			[
-				"amed",
-				"src\\classes\\AMEducationTrainingExtension.cls"
 			],
 			[
 				"educationt",
@@ -1798,10 +1338,6 @@
 				"src\\classes\\MeetingMinutesMainPageHandler.cls"
 			],
 			[
-				"amedc",
-				"src\\classes\\AMEducationTrainingHandler.cls"
-			],
-			[
 				"aminventoryprocess",
 				"src\\pages\\AMInventoryProcess.page"
 			],
@@ -1820,10 +1356,6 @@
 			[
 				"amexp_applicationfee",
 				"src\\pages\\AMEXP_ApplicationFee.page"
-			],
-			[
-				"home",
-				"src\\classes\\ApprovalHomeController.cls"
 			],
 			[
 				"remote",
@@ -1910,10 +1442,6 @@
 				"src\\classes\\AMLeaveApplicationExtension.cls"
 			],
 			[
-				"sobj",
-				"src\\classes\\SObjectUtilsTest.cls"
-			],
-			[
 				"approveruti",
 				"src\\classes\\ApproverUtilsTest.cls"
 			],
@@ -1928,10 +1456,6 @@
 			[
 				"amvendorctest",
 				"src\\classes\\AMVendorClaimHandlerTest.cls"
-			],
-			[
-				"",
-				"src\\pages\\AMLeaveApplication.page"
 			],
 			[
 				"leaveatest",
@@ -2014,16 +1538,8 @@
 				"src\\classes\\VFShowInApprovalExtension.cls"
 			],
 			[
-				"leaveapp",
-				"src\\pages\\AMLeaveApplication.page"
-			],
-			[
 				"process",
 				"src\\classes\\ProcessUtils.cls"
-			],
-			[
-				"amvendor",
-				"src\\classes\\AMVendorClaimExtensionTest.cls"
 			],
 			[
 				"amver",
@@ -2048,70 +1564,6 @@
 			[
 				"4q",
 				"src\\classes\\RemoteAction4Query.cls"
-			],
-			[
-				"handler",
-				"src\\classes\\AMSaleOrderHandler.cls"
-			],
-			[
-				"dier",
-				"src\\pages\\AMDieRequest.page"
-			],
-			[
-				"approvalquery",
-				"src\\pages\\ApprovalQuery.page"
-			],
-			[
-				"edu",
-				"src\\pages\\AMEducationTraining.page"
-			],
-			[
-				"sapfu",
-				"src\\classes\\SapSoapFunctions.cls"
-			],
-			[
-				"amvendor.cls",
-				"src\\classes\\AMVendorExtension.cls"
-			],
-			[
-				"sape",
-				"src\\classes\\SapApprovalEnum.cls"
-			],
-			[
-				"approvalho",
-				"src\\pages\\ApprovalHome.page"
-			],
-			[
-				"amvench",
-				"src\\classes\\AMVendorClaimHandler.cls"
-			],
-			[
-				"amvenc",
-				"src\\pages\\AMVendorClaim.page"
-			],
-			[
-				"groupcontroller",
-				"src\\classes\\ApproverGroupMaintainSystemController.cls"
-			],
-			[
-				"approverg",
-				"src\\classes\\ApproverGroupMaintainSystemExtention.cls"
-			],
-			[
-				"appru",
-				"src\\classes\\ApproverUtils.cls"
-			],
-			[
-				"amvence",
-				"src\\classes\\AMVendorClaimExtension.cls"
-			],
-			[
-				"pushapprovaldatatosaphandler",
-				"src\\classes\\PushApprovalDataToSapHandler.cls"
-			],
-			[
-				"synctosap",
-				"src\\classes\\SyncFromSfToSapSchedule.cls"
 			]
 		],
 		"width": 0.0
@@ -2142,7 +1594,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 468.0,
+	"side_bar_width": 524.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

@@ -19,18 +19,18 @@
                 width: 75%
             }
 </style>
-<script>
+<!-- <script>
             J$ = jQuery.noConflict();
-            J$(document).ready(function(){
-               J$("#[id$=rectify]").hide();
-            });
+            // J$(document).ready(function(){
+            //    J$("#[id$=rectify]").hide();
+            // });
             J$("#radio").click(function(){
                  J$("#[id$=rectify]").show();
             });
             function selectProblem(rowID){
                 selectdProblem(rowID);
             }
-</script>
+</script> -->
 <body>
     <apex:sectionHeader title="品质异常单流程" subtitle="编辑品质异常单流程"></apex:sectionHeader>
     <!-- 页面信息提示区 -->
@@ -141,7 +141,7 @@
                 <apex:outputPanel id="problem" layout="block" styleClass="scroll">
                 <table class="list" border="0" cellspacing="0" cellpadding="0"  id="tableBank">
                     <thead>
-                        <th></th>
+                        <th>选择</th>
                         <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Row_Index__c.Label}</th>
                         <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Project__c.Label}</th>
                         <th>{!$ObjectType.Approval_Managed_Item__c.Fields.Project_No__c.Label}</th>
@@ -199,6 +199,7 @@
                                 <apex:param assignTo="{!rectifyRow}" name="rectifyRow" value="{!rectifyIndex}"></apex:param>
                             </apex:commandButton>
                         </td>
+                        <!-- 父行号 -->
                         <td><apex:outputField value="{!item.Parent_Row_Index__c}" style="width: 40px"></apex:outputField></td>
                         <!-- 行号 -->
                         <td><apex:inputField value="{!item.Row_Index__c}" style="width: 40px"></apex:inputField></td>

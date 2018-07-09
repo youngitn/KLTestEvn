@@ -163,7 +163,7 @@ public without sharing class AMAssetPurchaseHandler implements Triggers.Handler 
           cam.Approval_User23__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(27),cam.Applicant__c),0);
 
           //USER12 合并采购确认回厂-模具和103收货1000，空出USER12 用来通知张凤巧
-          cam.Approval_User12__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(50),null),0);
+          // cam.Approval_User12__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(50),null),0);
     }
 
     //评估单位审批节点

@@ -26,7 +26,7 @@ public class Peoples {
                             FROM Contact];
         }else{
             lc = [SELECT Id, Phone,SF_User__r.Id,SF_User__r.isActive, Email, Number__c, Name, Is_Manager__c,SF_User__c ,SF_User__r.Is_First_Manager__c ,SF_User__r.Is_Manager__c,Dept_Number__c,SAP_Dept_Number__c,Dept_Number__r.Parent_Number__c,Dept_Number__r.Name,Corp_Code__c,Take_Office_Date__c,Job_Title_Level__c,Title,Post_Number__r.Post_Description__c    
-                            FROM Contact WHERE RecordType.DeveloperName = 'Staff' or RecordType.DeveloperName = '员工' 
+                            FROM Contact WHERE RecordTypeId = '01228000000XcVmAAK' or RecordTypeId =  '012O0000000DLubIAG'
                             ];
         }
         

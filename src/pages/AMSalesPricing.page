@@ -182,7 +182,7 @@
             </apex:pageBlockSection>
 
 <!-- .........................................................- -->
-            <apex:outputPanel title="查询结果" layout="block" styleClass="scroll" id="list2" style="display:{!IF(isDeletedStatus,'','none')};"> 
+            <apex:outputPanel layout="block" styleClass="scroll" id="list2" style="display:{!IF(isDeletedStatus,'','none')};"> 
                 <div class="pbSubheader brandTertiaryBgr tertiaryPaleette" style="background-color: pink"><h3>查询结果</h3></div>
                 <table class="list" border="0" cellspacing="0" cellpadding="0">
                     <thead>

@@ -54,11 +54,7 @@
 
               // });
 
-            
-
-
-
-
+  
           $(
                function(){
  
@@ -112,7 +108,7 @@
                    });
                           // }
 
-            );
+           
                
 
 
@@ -403,7 +399,7 @@
                                 </div>
                             </fieldset>
     <!-------------------------- 流程审批信息 ------------------------------------------>
-                        <!--     <fieldset>
+                            <fieldset>
                                 <legend>
                                     <apex:pageblocksection title="流程审批信息">
                                     </apex:pageblocksection>
@@ -470,7 +466,7 @@
                                         </input>
                                      </div>
                                    </div>
-                            </fieldset>  -->
+                            </fieldset> 
 
   <!-------------------------- 信息说明------------------------------------------>
                              <fieldset>
@@ -575,13 +571,46 @@
                                     <apex:commandbutton action="{!newlist1}" id="btnAdd" immediate="true" rerender="list1" status="retrieveStatus" value="新增订单明细">
                                     </apex:commandbutton>
                                 </div>
-                                <apex:outputpanel id="list1" layout="block" styleclass="scroll">
-                                    <apex:pagemessages escape="true" id="message">
+                              <apex:outputpanel id="list1" layout="block" styleclass="scroll">
+                                  <apex:pagemessages escape="true" id="message">
                                 </apex:pagemessages>
                                     <apex:actionstatus id="retrieveStatus" starttext="(waiting...)">
                                     </apex:actionstatus>
                                     <table class="pure-table rwd-table" id="tableBank">
-                                       
+                                         
+                                        <thead>
+                                            <th>
+                                            </th>
+                                            <th>
+                                            </th>
+                                            <th>
+                                                自定义审批子项
+                                            </th>
+                                            <th>
+                                                操作类型
+                                            </th>
+                                            <th>
+                                                物料号
+                                            </th>
+                                            <th>
+                                                物料名称
+                                            </th>
+                                            <th>
+                                                需求数量
+                                            </th>
+                                            <th>
+                                                客户物料编码
+                                            </th>
+                                            <th>
+                                                预交日期
+                                            </th>
+                                            <th>
+                                               净价值
+                                            </th>
+                                            <th>
+                                               拒绝原因
+                                            </th>
+                                        </thead>
                                         <tbody>
                                             <apex:variable value="{!0}" var="list1Index">
                                             </apex:variable>
@@ -599,7 +628,7 @@
                                                   
 
                                                     </td>
-                                                  <!--  <td data-th="行号">
+                                                   <td data-th="行号">
                                                         {!list1Index+1}
                                                     </td>
                                                     
@@ -646,7 +675,7 @@
                                                     <td data-th="拒绝原因">
                                                         <apex:inputfield id="Reason" onclick="leaveHourCalBySingleDetail(j$(this))" required="true" style="width: 100%" value="{!item.Reason__c}">
                                                         </apex:inputfield>
-                                                    </td> -->
+                                                    </td>
                                                 </tr>
                                                 <apex:variable value="{!list1Index+1}" var="list1Index">
                                                 </apex:variable>

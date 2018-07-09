@@ -57,6 +57,8 @@ public without sharing class ApprovalQueryController {
         public String Head_Description {GET; SET;}
         //接口信息
         public String Interface_Info {GET; SET;}
+        //资产类型
+        public String Asset_type {GET; SET;}
     }   
 
     public PageReference query() {
@@ -136,6 +138,7 @@ public without sharing class ApprovalQueryController {
         //是否只查询自己相关记录
         if (standardApproval.Is_Withhold__c) {
             Id uId = UserInfo.getUserId();
+           System.debug('6666666666666666666666666666666666666666666666666666666'+uId);
             sqlWhere += ' AND (OwnerId = \'' + uId + '\' '+' OR CreatedById = \'' + uId + '\') ';
         }
         sqlWhere += ' ORDER BY CreatedDate DESC LIMIT 200 ';
@@ -155,6 +158,7 @@ public without sharing class ApprovalQueryController {
             data.Approval_Name = am.Approval_Name__c;
             data.Applicant_Id = am.Applicant__c;
             data.Applicant_Name = am.Applicant__r.Name;
+
             data.Dept_Name = am.Dept_Name__c;
             data.Bill_Date = HarryUtils.date2string(am.Bill_Date__c);
             // data.Approver = approval2currentApproverMap.get(am.Id);

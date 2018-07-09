@@ -20,6 +20,7 @@ public without sharing class AMWasteDisposeExtension {
         listRowInfo = new List<Custom_Approval_Managed_Item__c>();
         dellistRowInfo = new List<Custom_Approval_Managed_Item__c>();
         isDeletedStatus = false;
+        rowID = 1; 
         System.debug('*** con.getRecord(): ' + con.getRecord() + '!');
         //设置记录类型为废料处理 
         wasteHandle.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.WASTEDISPOSE,'Custom_Approval_Managed__c');
@@ -44,7 +45,8 @@ public without sharing class AMWasteDisposeExtension {
 
     public PageReference saveAction(){
         try {
-             
+             System.debug('*** listRowInfo: ' + listRowInfo + '');
+             upsert wasteHandle;
             //更新成本中心发料作业详细记录
             if (listRowInfo.size()>0) {
                 List<Custom_Approval_Managed_Item__c> lstUpdatedBankDetail = new List<Custom_Approval_Managed_Item__c>();
@@ -55,10 +57,11 @@ public without sharing class AMWasteDisposeExtension {
                     }
                     cami.RecordTypeId = recTypeBankDetailID;
                     lstUpdatedBankDetail.add(cami);
+                    System.debug('*** lstUpdatedBankDetail: ' + lstUpdatedBankDetail + '');
                     wasteHandle.Head_description__c = cami.Material_Name__c;   //流程备注
                 }
 
-                // upsert listRowInfo;
+                upsert listRowInfo;
                 upsert lstUpdatedBankDetail;
             } 
 
@@ -80,12 +83,16 @@ public without sharing class AMWasteDisposeExtension {
         System.debug('*** wasteHandle: ' + wasteHandle + '');
         return new PageReference('/'+wasteHandle.Id);
     }
+
+
     public PageReference cancelAction(){
         return new PageReference('/apex/ApprovalHome?sfdc.tabName=01rO0000000Dz6T');
     }
 
     public PageReference addBankDetail(){
         Custom_Approval_Managed_Item__c addItem = new Custom_Approval_Managed_Item__c();
+        addItem.Row_Index__c = String.valueOf(listRowInfo.size()+1);
+        additem.RecordTypeId = recTypeBankDetailID;
         listRowInfo.add(addItem);
         System.debug('*** listRowInfo: ' + listRowInfo + '');
         return null;

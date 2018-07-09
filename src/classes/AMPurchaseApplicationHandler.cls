@@ -82,23 +82,23 @@ public without sharing class AMPurchaseApplicationHandler implements Triggers.Ha
     public Id specialCal13(Approval_Managed__c cam){
 
 		if (cam.Applicant_Corp_Code__c != '3000' && cam.Confirm_Is_Stand__c == 'PB') { 			
-			return utils.getUserByEmployeeCode('10210955');
+			return utils.getUserByEmployeeCode('10210955');    //吴 正红
 		}
 		if (cam.Applicant_Corp_Code__c != '3000' && cam.Confirm_Is_Stand__c == 'BU1') { 			
-			return utils.getUserByEmployeeCode('10210006');
+			return utils.getUserByEmployeeCode('10210006');   //崇 加兴
 		}
 		if (cam.Applicant_Corp_Code__c != '3000' && cam.Confirm_Is_Stand__c == 'BU7') { 			
-			return utils.getUserByEmployeeCode('60210001');
+			return utils.getUserByEmployeeCode('60210001');   //陈 建安
 		}
 		if (cam.Applicant_Corp_Code__c != '3000' && cam.Confirm_Is_Stand__c == 'BU2') { 			
-			return utils.getUserByEmployeeCode('10210010');
+			return utils.getUserByEmployeeCode('10210010');   //郭 兴云
 		}
 		if (cam.Applicant_Corp_Code__c != '3000' && 
 		     (cam.Confirm_Is_Stand__c == 'BU3' ||  
 		      cam.Confirm_Is_Stand__c == 'BU4' || 
 		      cam.Confirm_Is_Stand__c == 'BU5' ||
 		      cam.Confirm_Is_Stand__c == 'BU6' ) ){ 			
-			return utils.getUserByEmployeeCode('10210004');
+			return utils.getUserByEmployeeCode('10210004');   //翁 鹏斌
 		}
 		if (cam.Applicant_Corp_Code__c != '3000' && cam.Confirm_Is_Stand__c == 'GYL') { 			
 			return utils.getUserByEmployeeCode('30002526');

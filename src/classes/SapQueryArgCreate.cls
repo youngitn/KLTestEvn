@@ -469,7 +469,7 @@ public with sharing class SapQueryArgCreate {
             lstCon.add(createCondition(index,'Vendor_Number__c','String','LIKE',Vendor_Number));
             index = index + 1;
         }
-        return JSON.serialize(createQueryArg('ASSETSTRANSFER',lstCon));    
+        return JSON.serialize(createQueryArg('AssetsTransferQuery',lstCon));    
     }
 
 

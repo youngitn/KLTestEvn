@@ -52,6 +52,7 @@ public without sharing class AMQccHandler implements Triggers.Handler {
         cam.Approval_User7__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(6),cam.Applicant__c),0);
         //节点七 申请人确认
        // cam.Approval_User8__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(8),cam.Applicant__c),0);
-        
+       //观察员 许雨兰
+       cam.Approval_User10__c  = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(10),null),0);  
     }
 }

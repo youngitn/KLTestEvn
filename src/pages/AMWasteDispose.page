@@ -4,6 +4,8 @@
 	创建时间：2017-04-11
 -->
 <apex:page standardController="Custom_Approval_Managed__c" extensions="AMWasteDisposeExtension">
+<html>
+  <body>
 	<head>
 		<style type="text/css">
 			input.text {
@@ -20,13 +22,24 @@
         </script>
 	</head>
 	<apex:sectionHeader title="废料处理" subtitle="新建废料处理申请单"></apex:sectionHeader>
-    <!-- 页面信息提示区 -->
-    <apex:pageMessages escape="true"></apex:pageMessages>
+    <!-- 页面信息提示区 --> 
+    <apex:pageMessages escape="true" id="message"></apex:pageMessages>
     <apex:form >
     	<apex:actionFunction action="{!deleteRow}" id="deleteRow" name="deleteRow" reRender="output1">
             <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
         </apex:actionFunction>
+
+        <apex:actionFunction action="{!addBankDetail}" name="addBankDetail" id="addBankDetail" reRender="output1">
+           <apex:param assignTo="{!rowID}" name="rowID" value=""></apex:param>
+        </apex:actionFunction>
+
     	<apex:pageBlock >
+
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!saveAction}" value="保存"/>
+                <apex:commandButton action="{!cancelAction}" value="取消"/>
+            </apex:pageBlockButtons>
+
 	    	<apex:pageBlockSection title="基本信息">
 	    		<!-- 申请人部门 -->
 	    		<apex:outputField value="{!wasteHandle.Dept_Name__c}"></apex:outputField>
@@ -61,25 +74,29 @@
                 <!-- 发票号及备注 -->
                 <apex:inputField value="{!wasteHandle.Invoice_and_Remark__c}"></apex:inputField>
             </apex:pageBlockSection>
-	    	<div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>内容</h3></div>
-            <apex:commandButton action="{!addBankDetail}" value="新增" reRender="output1" status="retrieveStatus"/>
+          
             <apex:outputPanel id="output1" layout="block" styleClass="scroll">
-            <apex:actionStatus startText="(waiting...)" id="retrieveStatus"/>
-                <table class="list" border="0" cellspacing="0" cellpadding="0"  id="tableBank" >
-                    <thead>
-                    <th></th>
-                    <th>行号</th>
-                    <th>物料名称</th>
-                    <th>数量</th>
-                    <th>实际称重(KG)</th>
-                    <th>单价(RMB)</th>
-                    <th>金额</th>
-                    </thead>
-                    <tbody>
-                    <apex:variable var="listIndex" value="{!1}"/>
-                    <apex:repeat value="{!listRowInfo}" var="item">
+                <div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>内容</h3></div>
+                <apex:commandButton action="{!addBankDetail}" value="新增" reRender="output1,message"  immediate="true"/>
+                <!-- <apex:actionStatus startText="(waiting...)" id="retrieveStatus"/> -->
+                    <table class="list" border="0" cellspacing="0" cellpadding="0"  id="tableBank">
+                      <thead>
+                        <th></th>
+                        <th>行号</th>
+                        <th>物料名称</th>
+                        <th>数量</th>
+                        <th>实际称重(KG)</th>
+                        <th>单价(RMB)</th>
+                        <th>金额</th>
+                      </thead>
+                      <tbody>
+                        <apex:variable var="listIndex" value="{!1}"/>
+                        <apex:repeat value="{!listRowInfo}" var="item">
                         <tr>
-                            <td><input type="button" onclick="deleteItemBankDetail('{!listIndex}')" value="删除" class="btn"/></td>
+                            <td>
+                                <input type="button" onclick="deleteItemBankDetail('{!listIndex}')" value="删除" class="btn" reRender="output1"/>
+                                <apex:param assignTo="{!rowID}" name="rowID" value="{!listIndex}"></apex:param>
+                            </td>
                             <td>{!listIndex}</td>
 							<td><apex:inputField value="{!item.Material_Name__c}" style="width: 90%;" styleClass="text"></apex:inputField></td>
                             <td><apex:inputField value="{!item.Qty__c}" styleClass="text"></apex:inputField></td>
@@ -89,13 +106,12 @@
                         </tr>
                          <apex:variable var="listIndex" value="{!listIndex+1}"/>
                         </apex:repeat>
-                    </tbody>
+                      </tbody>
                 </table>
             </apex:outputPanel>
-            <apex:pageBlockButtons >
-            	<apex:commandButton value="保存" action="{!saveAction}"></apex:commandButton>
-            	<apex:commandButton value="取消" action="{!cancelAction}"></apex:commandButton>
-            </apex:pageBlockButtons>
+            
     	</apex:pageBlock>
     </apex:form>
+    </body>
+  </html>
 </apex:page>

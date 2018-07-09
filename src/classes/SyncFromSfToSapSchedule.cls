@@ -180,7 +180,11 @@ global class SyncFromSfToSapSchedule implements Schedulable {
             }else if(job.Approval_Name__c == SapApprovalEnum.IT_SERVICEAPPLICATION){
                 //IT服务申请单(新莱IT人员处理)
                 //returnJson = Utils.postToSAP(SapInputArgCreate.你的函数名(job.ApprovalID__c));
-            }else{//以后有其它的流程请加在这里上面
+            }else if(job.Approval_Name__c == SapApprovalEnum.CREDITAUDITING){
+                //客户单笔信贷核发申请流程
+                returnJson = Utils.postToSAP(SapInputArgCreate.createSapCreditAuditingInputArgs(job.ApprovalID__c));
+             }
+            else{//以后有其它的流程请加在这里上面
                 System.debug('*** SF同步数据到SAP,出现未协商好的流程名称：' + job.Approval_Name__c);
                 return true;
             }

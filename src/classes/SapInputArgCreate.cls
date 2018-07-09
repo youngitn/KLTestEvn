@@ -765,6 +765,7 @@ public without sharing class SapInputArgCreate {
         }
         return strArgs;
     }
+
     //创建传送给SAP Web Service的品质异常单参数
     public static String createSapAbnormalQualityInputArgs(String abnormalQualityId){
         String sql = Utils.getApprovalSQL(SapApprovalEnum.ABNORMALQUALITY,true);
@@ -2329,6 +2330,69 @@ public without sharing class SapInputArgCreate {
             strArgs = Utils.serializeToJson(operate,SapApprovalEnum.ASSETSTRANSFER,main,details);
         }catch(Exception ex){
             System.debug('*** 资产转移报废停用申请流程回写参数错误：' + ex.getMessage() + '\n' + ex.getStackTraceString());
+        }
+
+        return strArgs; 
+    }
+
+
+
+
+   //客户单笔信贷核发申请流程 
+   //创建传送给SAP Web Service的资产转移报废停用申请参数STEP1
+    public static String createSapCreditAuditingInputArgs(String CreditAuditing){
+        String sql = Utils.getApprovalSQL(SapApprovalEnum.CREDITAUDITING,true);
+        sql = sql + ' WHERE Id = \'' + CreditAuditing + '\'';
+        List<Approval_Managed1__c> lstItems = Database.query(sql);
+        
+        if(lstItems.size() > 0){
+            return createSapCreditAuditingInputArgs(lstItems.get(0));
+        }else{
+            return '';
+        }
+    }
+
+
+
+    //创建传送给SAP Web Service的请假参数STEP2
+    public static String createSapCreditAuditingInputArgs(Approval_Managed1__c amCreditAuditing){
+      // List<Custom_Approval_Managed_Item__c> items = new List<Custom_Approval_Managed_Item__c>();
+       
+        List<Custom_Approval_Managed_Item__c> items = [ SELECT Id,Stock_Number__c,Customer_code__c,Customer_name__c,
+        Risk_category__c,Total_amount_receivable__c,Overdue_amount__c,Estimated_amount__c,Overdue_proportion__c,
+        Letter_limit__c,Open_amount__c,Prepayment_conditions__c,order_amount__c,Purchase_Order_Number__c,Prepaid_accounts__c 
+        FROM Custom_Approval_Managed_Item__c 
+        WHERE  Customer_credit__c = :amCreditAuditing.Id];
+
+            System.debug('*** xxxxxxxxxxx：' + amCreditAuditing.Id);
+            System.debug(LoggingLevel.INFO, '*** items: ' + items); 
+
+        return createSapCreditAuditingInputArgs(amCreditAuditing,items);
+    }
+
+
+
+    //创建传送给SAP Web Service的请假参数STEP3 
+    public static String createSapCreditAuditingInputArgs(Approval_Managed1__c amCreditAuditing,List<Custom_Approval_Managed_Item__c> items){
+        String strArgs = '';
+        try{
+            Map<String,String> main = Utils.convertSObjectToMap(amCreditAuditing);
+            System.debug('*** main' + main);
+            Map<String,List<Map<String,String>>> details = new Map<String,List<Map<String,String>>>();
+
+            if(items != null){
+                List<Map<String,String>> lstItems = new List<Map<String,String>>();
+                for(Custom_Approval_Managed_Item__c item : items){
+                    lstItems.add(Utils.convertSObjectToMap(item));
+                }
+                details.put('items', lstItems);
+            }
+
+            System.debug(LoggingLevel.INFO, '*** step3: ');
+            String operate = 'INSERT';
+            strArgs = Utils.serializeToJson(operate,SapApprovalEnum.CREDITAUDITING,main,details);
+        }catch(Exception ex){
+            System.debug('*** 客户单笔信贷核发申请流程回写参数错误：' + ex.getMessage() + '\n' + ex.getStackTraceString());
         }
 
         return strArgs; 

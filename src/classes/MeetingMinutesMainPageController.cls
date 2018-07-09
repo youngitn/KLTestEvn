@@ -23,7 +23,7 @@ public with sharing class MeetingMinutesMainPageController extends VFShowInAppro
         objList = new QueryController().objList;
         if(con.getId() != null)
         {
-            //因為沒有狀態欄位
+            //因為不是審批流程,沒有狀態欄位
             //禁止編輯的判斷要在這邊做
             this.isEditable = false;//無可編輯欄位設置
             this.nowStatus = 'PROCESS';//審批中狀態

@@ -140,6 +140,8 @@ global class SyncFromSapToSfSchedule implements Schedulable {
             syncPurchaseRequest(arg);    //采购申请作业流程(新莱IT人员处理)
         }else if(arg.approval == SapApprovalEnum.PMTICKET){
             syncPMTicket(arg);   //PM通知单
+        }else if(arg.approval == SapApprovalEnum.CREDITAUDITING){
+            syncCreditAauditing(arg);  // 客户单笔信贷核发申请
         // }else if(arg.approval == SapApprovalEnum.SALESPRICE){
         //     syncSalesPrice(arg);   //销售定价业务流程 
         // }else if(arg.approval == SapApprovalEnum.CUSTOMERCREDITLOAN){
@@ -418,7 +420,12 @@ global class SyncFromSapToSfSchedule implements Schedulable {
     public static void syncSaleOrder(SyncSapToSfReturnArgs args){
         //在这时把arg.main数据转化为你想要的类型
         //销售订单
+        // System.debug('销售订单审批流程：7/9');
+        // System.debug('args的值：'+args);
+        // System.debug('args.content的值：'+args.content);
+        // System.debug('args.content.main的值：'+args.content.main);
         Custom_Approval_Managed__c main = (Custom_Approval_Managed__c)JSON.deserialize(JSON.serialize(args.content.main), Custom_Approval_Managed__c.class);
+        // System.debug('main的值：'+main);
         main.Head_description__c='销售订单号：'+main.Order_of_Sales__c+' '+'售达方代码'+main.Customer_Code__c;
         System.debug(LoggingLevel.INFO, '*** main: ' + main);
         Map<String,Custom_Approval_Managed_Item__c> mapItems = new Map<String,Custom_Approval_Managed_Item__c>();
@@ -428,18 +435,19 @@ global class SyncFromSapToSfSchedule implements Schedulable {
         List<Contact> partners = new List<Contact> ();
         if(args.content.details.containsKey('items')){
             items = (List<Custom_Approval_Managed_item__c>)JSON.deserialize(JSON.serialize(args.content.details.get('items')), List<Custom_Approval_Managed_item__c>.class);
-
+            System.debug('items的值：'+items);
         }
         if(args.content.details.containsKey('zrows')){
             zrows = (List<Custom_Approval_Managed_item__c>)JSON.deserialize(JSON.serialize(args.content.details.get('zrows')), List<Custom_Approval_Managed_item__c>.class);
-
+            System.debug('zrows的值：'+zrows);
         }
         if(args.content.details.containsKey('partners')){
            partners = (List<Contact>)JSON.deserialize(JSON.serialize(args.content.details.get('partners')), List<Contact>.class);
-
+           System.debug('partners的值：'+partners);
        }
        if(args.content.details.containsKey('headers')){
-        headers = (List<Custom_Approval_Managed_item__c>)JSON.deserialize(JSON.serialize(args.content.details.get('headers')), List<Custom_Approval_Managed_item__c>.class);
+           headers = (List<Custom_Approval_Managed_item__c>)JSON.deserialize(JSON.serialize(args.content.details.get('headers')), List<Custom_Approval_Managed_item__c>.class);
+           System.debug('headers的值：'+headers);
         }
         Id recordTypeSaleOrderID = HarryUtils.getRecordTypeIdByDevNameAndObjName('SaleOrder','Custom_Approval_Managed__c');
         main.RecordTypeId = recordTypeSaleOrderID;
@@ -660,9 +668,22 @@ global class SyncFromSapToSfSchedule implements Schedulable {
         }
     }
     
+   //客户单笔信贷核发申请
+    public static void syncCreditAauditing(SyncSapToSfReturnArgs args){
 
 
 
+
+
+
+
+
+
+
+
+
+
+     }
     //销售定价业务流程  
 //     public static void syncSalesPrice(SyncSapToSfReturnArgs args){
 //         //在这时把arg.main数据转化为你想要的类型

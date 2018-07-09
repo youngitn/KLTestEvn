@@ -34,6 +34,8 @@ public with sharing class AMInventoryKinglaiExtension {
             FROM Approval_Managed_Item__c 
             Where InventoryKinglai_table__c = :con.getId() AND RecordTypeId = :recTypeInterviewerID];
             System.debug(LoggingLevel.INFO, '*** step2: ' );
+            System.debug('listDetail:'+ listDetail);
+
 
         }       
     } 

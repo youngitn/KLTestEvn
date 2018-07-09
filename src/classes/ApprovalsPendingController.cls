@@ -139,6 +139,8 @@ global class ApprovalsPendingController{
                 //p.approvalinfo = String.valueOf(mapSobject.get(p.recordId).get('SAPID__c')) +  Stirng .xxx
                 p.approvalinfo = String.valueOf(mapSobject.get(p.recordId).get('SAPID__c')==null?'':mapSobject.get(p.recordId).get('SAPID__c') + ' ') + String.valueOf(mapSobject.get(p.recordId).get('Head_description__c')==null?'':mapSobject.get(p.recordId).get('Head_description__c'));
                 //p.sObjectLabel = String.valueOf(mapSobject.get(p.recordId).get('Head_description__c'));
+            
+               // System.debug('第二个值p.applicantName'+p.applicantName);
             }
             if (p.approvalStepId != null) {
                 finalPendingApprovals.add(p);

@@ -147,7 +147,7 @@ public without sharing class AMInternalmemoHandler implements Triggers.Handler {
         lstID.add(utils.getUserByEmployeeCode('10210018')); //崔雪莉
         
     }else if (cam.Factory__c != '3000' && cam.TYPE__c == '15') {
-        lstID.add(utils.getUserByEmployeeCode('10211022')); //顾湘
+        lstID.add(utils.getUserByEmployeeCode('10212662')); //由顾 湘变为薛 炜
         
     }else if (cam.Factory__c != '3000' && cam.TYPE__c == '17') {
         lstID.add(utils.getUserByEmployeeCode('10210288')); //孙菊芳

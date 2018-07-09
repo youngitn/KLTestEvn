@@ -74,7 +74,7 @@ public with sharing class AMAbnormalQualityExtension {
 
         //执行失败回滚所有操作
         System.Savepoint savepoint = Database.setSavepoint();
-        am.Head_description__c = am.Approval_Name__c;
+        am.Head_description__c ='物料名称：'+ am.Material_Name__c+' '+'物料描述：'+am.Material_Description__c;
         try {
             update am;
             System.debug('*** rectifyList: ' + rectifyList + '');
@@ -134,6 +134,7 @@ public with sharing class AMAbnormalQualityExtension {
     public PageReference selectedProblem() {
         System.debug('*** problemRow: ' + problemRow + '');
         isRedered = true;
+        problemRow = 0; 
         currentProblems = problemList[problemRow];
         rectifyList = mapRectify.get(problemRow);
         System.debug(LoggingLevel.INFO, '*** selected rectifyList: ' + rectifyList);
@@ -157,12 +158,25 @@ public with sharing class AMAbnormalQualityExtension {
     }
     public PageReference newRectify() {
         System.debug('*** currentProblems: ' + currentProblems + '');
+        System.debug('***problemList:' + problemList);
+        System.debug('***mapRectify:' + mapRectify);
+        problemRow = 0;
+        currentProblems = problemList[problemRow];
         Approval_Managed_Item__c ami = new Approval_Managed_Item__c(Abnormal_Rectify__c = currentProblems.Id,Abnormal_Header__c = am.Id,
-                                                        Parent_Row_Index__c = currentProblems.Row_Index__c);
-        //设置品质异常纠正措施的记录类型ID
+                                                        Parent_Row_Index__c = currentProblems.Row_Index__c);                                            
+        
+        // Approval_Managed_Item__c ami = new Approval_Managed_Item__c();
+
+        // Approval_Managed_Item__c ami = new Approval_Managed_Item__c(Abnormal_Rectify__c = currentProblems.Id,Abnormal_Header__c = am.Id);
+         // ami.Parent_Row_Index__c = '1';   
+                                                   
+
+        //设置品质异常纠正措施的记录类型ID 
         ami.RecordTypeId = HarryUtils.getRecordTypeIdByDevNameAndObjName('Corrective_Action','Approval_Managed_Item__c');
         mapRectify.get(problemRow).add(ami);
+        System.debug('ami:' + ami);
         System.debug(LoggingLevel.INFO, '*** add rectifyList: ' + rectifyList);
+        System.debug('***mapRectify:' + mapRectify);
         return null;
     }
     public PageReference newContainment() {

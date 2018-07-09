@@ -65,27 +65,27 @@ public without sharing class AMAssetsTransferHandler implements Triggers.Handler
     public Id specialCall(Approval_Managed__c cam){
         //厂务工程和总务
         if (cam.Entity_asset_type__c =='a' || cam.Entity_asset_type__c =='b' || cam.Entity_asset_type__c =='e') {
-            return utils.getUserByEmployeeCode('10210533');
+            return utils.getUserByEmployeeCode('10210533');  //章 国庆
         }
         //生产及辅助设备
         else if (cam.Entity_asset_type__c =='c') {
-            return utils.getUserByEmployeeCode('10210350');
+            return utils.getUserByEmployeeCode('10210350');  //李 俊杰
         }
         //资讯办公设备
         else if (cam.Entity_asset_type__c =='d') {
-            return utils.getUserByEmployeeCode('10210225');
+            return utils.getUserByEmployeeCode('10210225');  //徐 井西
         }
         //检验设备
         else if(cam.Entity_asset_type__c == 'f'){
-            return utils.getUserByEmployeeCode('10210542');
+            return utils.getUserByEmployeeCode('10210542');  //张 然
         }
         //模具
         else if (cam.Entity_asset_type__c =='g') {
-            return utils.getUserByEmployeeCode('10210216');
+            return utils.getUserByEmployeeCode('10210216');   //李 鸿庆
         }
         //  其他
         else if (cam.Entity_asset_type__c =='h') {
-            return utils.getUserByEmployeeCode('10210841');
+            return utils.getUserByEmployeeCode('10210841');  //邵 玉波
         }
         else{
             return null;

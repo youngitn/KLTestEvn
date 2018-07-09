@@ -1,6 +1,6 @@
 public without sharing class AMCreditAuditingExtension {
     public Approval_Managed1__c cusAP{get;set;}
-    public List<Custom_Approval_Managed_Item__c> listRowInfo{get;set;}//行细目列表
+    public List<Custom_Approval_Managed_Item__c> listRowInfo{get;set;}//行细目列表、
     public String recTypeBankDetailID = '';
     public Integer rowID {GET;SET;}   //頁面子表行數
     public Integer resultRowID{GET;SET;}
@@ -40,7 +40,7 @@ public without sharing class AMCreditAuditingExtension {
              
 
              //查銀行细目子表
-            listRowInfo = [SELECT Id,RecordTypeId,Sales_name__c,Customer_code__c,Customer_name__c,Risk_category__c
+            listRowInfo = [SELECT Id,RecordTypeId,Stock_Number__c,Customer_code__c,Customer_name__c,Risk_category__c
                                  ,Total_amount_receivable__c,Overdue_amount__c
                                  ,Estimated_amount__c,Overdue_proportion__c,Letter_limit__c
                                  ,Open_amount__c,Prepayment_conditions__c,order_amount__c
@@ -48,12 +48,106 @@ public without sharing class AMCreditAuditingExtension {
                                  ,Processing_opinion_description__c,Reasons_for_refusal__c
                                  ,Reason_Notes__c,Row_Index__c
                           FROM Custom_Approval_Managed_Item__c  
-                          Where Customer_credit__c = :con.getId() AND RecordTypeId = :recTypeBankDetailID];
+                          Where  Customer_credit__c = :con.getId() AND RecordTypeId = :recTypeBankDetailID];
         }
        
     }
+
+
+      //获取备单号查询的
+    public List<Custom_Approval_Managed_Item__c> AmCreditmalityInfoFromSap(String sss){
+ 
+      
+
+        //拼接对应的JSON数据
+        String strJson = '{\"approval\":\"ZHTTP_REST_POST_VKM4_F_VL03N\",\"vbeln\":\"'+sss+'\"}';
+        //获取对应的SAP异常信息
+        //ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, sss));
+
+        HttpRest httprest = new HttpRest();
+        strJson = httprest.HttpPostSap(strJson);     
+        String json1=strJson.remove('{').remove('}'); 
+
+         listRowInfo[resultRowID-1].Stock_Number__c=getvalue(json1,'vbeln');
+         listRowInfo[resultRowID-1].Customer_code__c=getvalue(json1,'kunnr');
+         listRowInfo[resultRowID-1].Customer_name__c=getvalue(json1,'name');
+         listRowInfo[resultRowID-1].Risk_category__c=getvalue(json1,'rtext');
+         if(getvalue(json1,'skfor') == ' '){
+            listRowInfo[resultRowID-1].Total_amount_receivable__c=0;
+         }else{
+             listRowInfo[resultRowID-1].Total_amount_receivable__c=Double.valueOf(getvalue(json1,'skfor'));
+         }
+
+         if(getvalue(json1,'zdtr916') == ' '){
+            listRowInfo[resultRowID-1].Overdue_amount__c=0;
+         }else{
+             listRowInfo[resultRowID-1].Overdue_amount__c=Double.valueOf(getvalue(json1,'zdtr916'));
+         }
+
+         if(getvalue(json1,'zdmbtr') == ' '){
+            listRowInfo[resultRowID-1].Estimated_amount__c=0;
+         }else{
+            listRowInfo[resultRowID-1].Estimated_amount__c=Double.valueOf(getvalue(json1,'zdmbtr'));
+         }
+         
+         if(getvalue(json1,'gl')== ' '){
+            listRowInfo[resultRowID-1].Overdue_proportion__c=0;
+         }else{
+            listRowInfo[resultRowID-1].Overdue_proportion__c=Double.valueOf(getvalue(json1,'gl'));
+         }
+        
+         if(getvalue(json1,'klimk')== ' '){
+            listRowInfo[resultRowID-1].Letter_limit__c=0;
+         }else{
+           listRowInfo[resultRowID-1].Letter_limit__c=Double.valueOf(getvalue(json1,'klimk'));
+         }
+          
+          if(getvalue(json1,'zsolikw')== ' '){
+            listRowInfo[resultRowID-1].Open_amount__c=0;
+         }else{
+           listRowInfo[resultRowID-1].Open_amount__c=Double.valueOf(getvalue(json1,'zsolikw'));
+         } 
+         
+          if(getvalue(json1,'netwr')== ' '){
+            listRowInfo[resultRowID-1].order_amount__c=0;
+         }else{
+           listRowInfo[resultRowID-1].order_amount__c=Double.valueOf(getvalue(json1,'netwr'));
+         } 
+         
+        if(getvalue(json1,'ofakw')== ' '){
+            listRowInfo[resultRowID-1].Prepaid_accounts__c=0;
+         }else{
+           listRowInfo[resultRowID-1].Prepaid_accounts__c=Double.valueOf(getvalue(json1,'ofakw'));
+         } 
+         
+         listRowInfo[resultRowID-1].Prepayment_conditions__c=getvalue(json1,'text1');
+         
+         listRowInfo[resultRowID-1].Purchase_Order_Number__c=getvalue(json1,'bstkd');
+        
+     
+        return listRowInfo;
+    }
+
+
+    public  static  String getvalue(String json,String name){
+          Integer ind=json.indexOf(name);
+        System.debug('ind1的值'+ind);
+        if(ind != -1)
+        {
+            String is=json.subString(ind+name.length(),ind+50);
+            is=is.subString(is.indexOf(':')+2,is.length());
+            Integer ind2=is.indexOf('\"');
+            is=is.subString(0,ind2);
+            return  is;
+        }
+        else
+        {
+            return  ' ';
+        }
+
+    }
+
     public PageReference saveAction(){
-         a=1;
         a=1;
         a=1;
         a=1;
@@ -152,7 +246,6 @@ public without sharing class AMCreditAuditingExtension {
         a=1;
         a=1;
         a=1;
-         a=1;
         a=1;
         a=1;
         a=1;
@@ -212,7 +305,125 @@ public without sharing class AMCreditAuditingExtension {
         a=1;
         a=1;
         a=1;
-         a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+          a=1;
+        a=1;a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
         a=1;
         a=1;
         a=1;
@@ -254,7 +465,7 @@ public without sharing class AMCreditAuditingExtension {
         //   當銷售憑證為空時不允許保存
          for (Custom_Approval_Managed_Item__c cami : listRowInfo) {
              if (String.isBlank(cami.Customer_code__c)) {
-                 ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '請先查詢銷售憑證,帶出客戶'));
+                 ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '请先查询备货单号,带出客户'));
                  return null;
             }      
          }         
@@ -312,24 +523,20 @@ public PageReference addDetail(){
         System.debug(LoggingLevel.INFO, '*** resultRowID: ' + resultRowID);
         isQuery = true;
         Custom_Approval_Managed_Item__c item = listRowInfo[resultRowID-1];
+        String sss=item.Stock_Number__c;
         System.debug(LoggingLevel.INFO, '*** item: ' + item);
-        if (String.isBlank(item.Sales_name__c) ) {
-            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '先输入一個銷售憑證'));
+        if (String.isBlank(sss) ) {
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '先输入一个备货单号'));
             isQuery =false;
             return null;
         }
         try{
-            String str1 = SapQueryArgCreate.createSapClientQueryArgs(item.Sales_name__c);
-            System.debug(str1);
-            String str2 = Utils.postToSAP(str1);
-            SapWebServiceReturnArgs args = (SapWebServiceReturnArgs)JSON.deserialize(str2, SapWebServiceReturnArgs.class);
-            if (args.status != '1') {
-                ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '查询出错:'+args.message));
-                isQuery= false;
-                return null;
-            }
-            listQueryResult = args.clientdata;
-            System.debug(LoggingLevel.INFO, '*** listQueryResult: ' + listQueryResult);
+         
+         AmCreditmalityInfoFromSap(sss);
+            //ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, sss));
+        
+           
+    
         } 
         catch(Exception e){
             ApexPages.addMessages(e);
@@ -338,11 +545,13 @@ public PageReference addDetail(){
         
         return null; 
     }
+
+
     public PageReference selectClient(){
         System.debug(LoggingLevel.INFO, '*** selectRow: ' + selectRow);
         isQuery = false;
-        Custom_Approval_Managed_Item__c item = listQueryResult[selectRow];
-        listRowInfo[resultRowID-1].Sales_name__c = item.Sales_name__c;
+        Custom_Approval_Managed_Item__c item = listRowInfo[selectRow];
+        listRowInfo[resultRowID-1].Stock_Number__c = item.Stock_Number__c;
         listRowInfo[resultRowID-1].Customer_code__c = item.Customer_code__c;
         listRowInfo[resultRowID-1].Customer_name__c = item.Customer_name__c;
         listRowInfo[resultRowID-1].Risk_category__c = item.Risk_category__c;

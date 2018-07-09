@@ -240,8 +240,15 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
             //2.沒有email
             if (toCon == null || toCon.email == null || toCon.email == '')
             {
+                try
+                {
+                    nonEmp += num + '-' + toCon.Name;
+                }
+                catch(Exception e)
+                {
 
-                nonEmp += num + '-' + toCon.Name;
+                }
+
                 //sendMailToParticipants(toCon.Name , toCon.Email , bossEmail , cam ,noBoss , noContactEmail);
 
             }
@@ -325,13 +332,19 @@ public without sharing class AMEducationTrainingHandler implements Triggers.Hand
             //收件人增加申請人
             toAddresses.addAll(nnAddresses);
         }
-
+        try
+        {
         //寄送通知
-        Messaging.sendEmail(new Messaging.SingleEmailMessage[]
-                            {
-                                //建立Messaging.SingleEmailMessage物件並設置相關資料
-                                buildMail(subject, htmlBody, toAddresses, ccAddresses)
-                            });
+            Messaging.sendEmail(new Messaging.SingleEmailMessage[]
+                                {
+                                    //建立Messaging.SingleEmailMessage物件並設置相關資料
+                                    buildMail(subject, htmlBody, toAddresses, ccAddresses)
+                                });
+        }
+        catch(Exception e){
+
+        }
+
     }
 
     /**

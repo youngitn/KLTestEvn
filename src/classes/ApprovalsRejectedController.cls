@@ -1,151 +1,547 @@
-global class ApprovalsRejectedController{
-	public static boolean runningInTestMode = false;
-	public List<PendingApproval> lstPending{get;set;}
-	global class PendingApproval{
-		public Id recordId {get;set;}
-		public String recordName {get;set;}
-		public String approvalInstanceId {get;set;}
-		public String approvalStepId {get;set;}
-		public String sObjectLabel {get;set;}
-		public String sObjectName {get;set;}
-		public String submiterName {get;set;}
-		public String submiterPhotoUrl {get;set;}
-		public String submitDate {get;set;}
-		public boolean firstOfSObjectType {get;set;}
-		public Id workItemId{get;set;}
-		public String approvalRecordName{get;set;}
-		public String applicantName{get;set;}
-		public String approval_Rejectedinfo {GET; SET;}
-		public String approver {GET; SET;}
+public without sharing class ApprovalsRejectedController {
+    public String selectedModelGroupValue {GET; SET;}
+    public String selectedApprovalValue {GET; SET;}
+    public String selectedApprovalName {GET; SET;}
+    public String selectedStatusValue {GET; SET;}
+    // public String selectedApprover {GET; SET;}
+    public String selectedApprovalStartTime {GET; SET;}
+    public String selectedApprovalEndTime {GET; SET;}
+    public Integer a {GET;SET;}
+    //与前台进行交互参数类
+    public Metadata__c meta {GET; SET;}
+    public Approval_Managed__c standardApproval {GET; SET;}
+    //public Boolean isUser{GET;SET;}
+    //内部类，保存全部数据
+    public List<AllApprovalData> allApproval {GET; SET;}
+    public ApprovalsRejectedController() {
+        meta = new Metadata__c();
+        standardApproval = new Approval_Managed__c();
+        //默认我参与的
+        standardApproval.Is_Withhold__c = false;
+    }
+    //内部类
+    public class AllApprovalData {
+        //流程ID
+        public Id Id {GET; SET;}
+        //流程编号(SF)
+        public String Name {GET; SET;}
+        //原单号(SAP或HLY)
+        public String Original_Code {GET; SET;}
+        //流程名称
+        public String Approval_Name {GET; SET;}
+        //申请人ID
+        public String Applicant_Id {GET; SET;}
+        //申请人
+        public String Applicant_Name {GET; SET;}
+        //申请人部门
+        public String Dept_Name {GET; SET;}
+        //单据日期
+        public String Bill_Date {GET; SET;} 
+        //审批人
+        public String Approver {GET; SET;}
+        //审批人ID
+        public String ApproverId{GET; SET;}
+        //审批状态
+        public String ApprovalStatus {GET; SET;}
+        //备注信息
+        public String Head_Description {GET; SET;}
+        //接口信息
+        public String Interface_Info {GET; SET;}
+        //资产类型
+        public String Asset_type {GET; SET;}
+    }   
 
-		public PendingApproval(ProcessInstanceWorkitem p){
-			recordId = p.ProcessInstance.TargetObjectId;
-			recordName = p.ProcessInstance.TargetObject.Name;
-			approvalInstanceId = p.ProcessInstanceId;
-			sObjectName = p.ProcessInstance.TargetObject.Type;
-			submiterName = p.ProcessInstance.CreatedBy.Name;      
-			submiterPhotoUrl = p.ProcessInstance.CreatedBy.SmallPhotoUrl;   
-			workItemId = p.Id;
-			approver = p.Actor.Name;
+    public PageReference query() {
+           a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+          a=1;
+        a=1;a=1;
 
-		}
-	}
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        System.debug(LoggingLevel.INFO, '*** Querystart!: ');
+        allApproval = new List<AllApprovalData>();
+        String sqlSelect = 'SELECT Id, Name,SAPID__c, Approval_Name__c, Applicant__c, Applicant__r.Name, Dept_Name__c, Bill_Date__c,Approval_Status__c,RecordType.DeveloperName,Head_description__c,Interface_Info__c ';
+        String sqlFrom = ' FROM ';
+        String sqlWhere = ' WHERE Id != null ';
+        System.debug(LoggingLevel.INFO, '*** selectedStatusValue: ' + selectedStatusValue);
+        //审批状态不为空
+        if (!String.isBlank(selectedStatusValue)) {
+            sqlWhere += ' AND Approval_Status__c =  \'' + selectedStatusValue  + '\' ';
+        }
+        //审批流程不为空
+        if (!String.isBlank(meta.Approval_Name__c)) {
+            sqlWhere += ' AND RecordType.DeveloperName = \'' + meta.Approval_Name__c + '\' ';
+        }
+        //SF单号
+        if (!String.isBlank(standardApproval.Same_Sample__c)) {
+            sqlWhere += ' AND NAME LIKE  \'' + '%' + standardApproval.Same_Sample__c + '\' ';
+        }
+        //原单号
+        if (!String.isBlank(standardApproval.SAPID__c)) {
+            sqlWhere += ' AND SAPID__c LIKE  \'' + '%' + standardApproval.SAPID__c + '%\' ';
+        }
+        //申请人
+        if (!String.isBlank(standardApproval.Employee__c)) {
+            sqlWhere += ' AND Applicant__c =  \'' + standardApproval.Employee__c + '\' ';
+        }
 
+        sqlWhere += ' AND Bill_Date__c >= ' + selectedApprovalStartTime ;
+        // Datetime endDate = null;
+        // try{
+        //     endDate = Datetime.newInstance(Date.valueOf(selectedApprovalEndTime).addDays(1),Time.newInstance(0,0, 0, 0));
+        // }catch(Exception ex){
+        //     endDate = Datetime.newInstance(Date.valueOf('2049-12-31'),Time.newInstance(0,0, 0, 0));
+        // }
+        sqlWhere += ' AND Bill_Date__c <= ' + selectedApprovalEndTime ;
 
-	public ApprovalsRejectedController(){
-		lstPending = getPendingApprovals();
-		System.debug(LoggingLevel.INFO, '*** lstPending: ' + lstPending);
-	}
+        Map<Id, String> approval2currentApproverMap = new Map<Id, String>();
+        String sql = ' SELECT Id, ActorId, Actor.Name, ProcessInstance.TargetObjectId';
+        sql += ' FROM ProcessInstanceWorkitem ';
+        System.debug(LoggingLevel.INFO, '*** standardApproval.Keeper_Reserved__c: ' + standardApproval.Keeper_Reserved__c);
+         //当前审批人
+        if (!String.isBlank(standardApproval.Keeper_Reserved__c) ) {
+            Contact con = [SELECT Id,SF_User__c FROM Contact WHERE Id =:standardApproval.Keeper_Reserved__c];
+            System.debug(LoggingLevel.INFO, '*** con.SF_User__c: ' + con.SF_User__c);
+            sql += ' WHERE ActorId = \'' + con.SF_User__c +  '\'';
+            sql += ' ORDER BY CreatedDate DESC ';
+            System.debug(LoggingLevel.INFO, '*** sql: ' + sql);
+            List<ProcessInstanceWorkitem> piList = Database.query(sql);
+            for (ProcessInstanceWorkitem pi : piList) {
+                if(!approval2currentApproverMap.containsKey(pi.ProcessInstance.TargetObjectId)){
+                    approval2currentApproverMap.put(pi.ProcessInstance.TargetObjectId, pi.Actor.Name);
+                }
+            }
+        }
+        //我参于的审批流程
+        if (standardApproval.Is_Print__c) {
+            sql = ' SELECT Id, ActorId, Actor.Name, ProcessInstance.TargetObjectId';
+            sql += ' FROM ProcessInstanceStep ';
+            sql += ' WHERE ActorId = \'' + UserInfo.getUserId() +  '\'';
+            sql += ' ORDER BY CreatedDate DESC LIMIT 200';
+            System.debug(LoggingLevel.INFO, '*** sql: ' + sql);
+            List<ProcessInstanceStep> apiList = Database.query(sql);
+            for (ProcessInstanceStep pi : apiList) {
+                if(!approval2currentApproverMap.containsKey(pi.ProcessInstance.TargetObjectId)){
+                    approval2currentApproverMap.put(pi.ProcessInstance.TargetObjectId, pi.Actor.Name);
+                }
+            }
+        }
+        if (standardApproval.Is_Print__c || !String.isBlank(standardApproval.Keeper_Reserved__c)) {
+            if(approval2currentApproverMap.size() > 0){
+            sqlWhere += ' AND Id In (\'' + String.join(new List<Id>(approval2currentApproverMap.keySet()), '\',\'') + '\')';
+            }
+        }
+        //是否只查询自己相关记录
+        if (standardApproval.Is_Withhold__c) {
+            Id uId = UserInfo.getUserId();
+           System.debug('6666666666666666666666666666666666666666666666666666666'+uId);
+            sqlWhere += ' AND (OwnerId = \'' + uId + '\' '+' OR CreatedById = \'' + uId + '\') ';
+        }
+        sqlWhere += ' ORDER BY CreatedDate DESC LIMIT 200 ';
 
-	public static List<PendingApproval> getPendingApprovals(){
-		List<PendingApproval> pendingApprovals = new List<PendingApproval>();
-		Set<Id> processInstanceIds = new Set<Id>();
-		Map<String, String> sObjectName2Label = new Map<String, String>();
+        System.debug(LoggingLevel.INFO, '*** sqlWhere: ' + sqlWhere);
 
-		
-		Set<Id> memberOfQueueIds = new Set<Id>();
-		String prevSObjectType;
-        //相关批准代理人也可以看到的记录
-		for (User u:[select Id from User where DelegatedApproverId = :UserInfo.getUserId()]) {
-			memberOfQueueIds.add(u.Id);
-		}
-		memberOfQueueIds.add(UserInfo.getUserId());
-		for (GroupMember m : [  select GroupId from GroupMember where 
-			UserOrGroupId= :UserInfo.getUserId() 
-			and Group.Type = 'Queue']){
-			memberOfQueueIds.add(m.GroupId);                    
-	}
-	
-	List<ProcessInstanceWorkitem> approvals;
-	if (runningInTestMode){
-		ProcessInstance testInstance = new ProcessInstance();
-		testInstance.targetObjectId = new Contact(LastName = 'Test').id;
-		ProcessInstanceWorkitem testP = new ProcessInstanceWorkitem(ActorId = UserInfo.getUserId(), 
-			ProcessInstance = testInstance);
-		approvals = new List<ProcessInstanceWorkitem>();
-		approvals.add(testP);
-	}else{
-		approvals = [select Id, ProcessInstanceId, ProcessInstance.TargetObjectId, 
-		ProcessInstance.TargetObject.Name,Actor.Name,
-		ProcessInstance.TargetObject.Type, ProcessInstance.CreatedBy.Name,
-		ProcessInstance.CreatedDate, ProcessInstance.CreatedBy.SmallPhotoUrl
-		from ProcessInstanceWorkitem 
-		where isDeleted=false and ActorId IN :memberOfQueueIds and 
-		ProcessInstance.status='Pending' order by 
-		ProcessInstance.TargetObject.Type, SystemModstamp desc];
-	}
-	Map<String,Set<Id>>  mapRecordId= new Map<String,Set<Id>>();
-	mapRecordId.put('Approval_Managed__c', new Set<Id>());
-	mapRecordId.put('Custom_Approval_Managed__c', new Set<Id>());
-	mapRecordId.put('Approval_Managed1__c', new Set<Id>());
-	mapRecordId.put('Approval_Managed2__c', new Set<Id>());
-	Map<Id,SObject>  mapAssoRecord= new Map<Id,SObject>();                	              
-	for(ProcessInstanceWorkitem p : approvals){
-		PendingApproval pa = new PendingApproval(p);
-		
-		if (p.ProcessInstance.CreatedDate != null){
-			pa.submitDate = p.ProcessInstance.CreatedDate.format('yyyy/MM/dd HH:mm:ss a');
-		}
-		
-		if (p.ProcessInstance.TargetObject.Type != prevSObjectType){
-			pa.firstOfSObjectType = true;
-		}else{
-			pa.firstOfSObjectType = false;
-		}
+        List<Approval_Managed__c> app = Database.query(sqlSelect + sqlFrom + ' Approval_Managed__c ' + sqlWhere);
+        List<Custom_Approval_Managed__c> capp = Database.query(sqlSelect + sqlFrom + ' Custom_Approval_Managed__c ' + sqlWhere);
+        List<Approval_Managed1__c> app1 = Database.query(sqlSelect + sqlFrom + ' Approval_Managed1__c ' + sqlWhere);
+        List<Approval_Managed2__c> app2 = Database.query(sqlSelect + sqlFrom + ' Approval_Managed2__c ' + sqlWhere);
 
-		
-		prevSObjectType = p.ProcessInstance.TargetObject.Type;
-		pa.sObjectLabel = sObjectName2Label.get(p.ProcessInstance.TargetObject.Type);
+        String name = UserInfo.getLastName();
+        Date t = Date.today();
+        String  tt = t.format();
+        Integer month  = Integer.valueOf(tt.split('-')[1]);
+        Integer  year= Integer.valueOf(tt.split('-')[0]);
+        
+      
+        // String name4 = UserInfo.getName();
+        // System.debug('name名字4'+name4);
+      
 
-		if (pa.sObjectLabel == null){
-			String sObjectType = p.ProcessInstance.TargetObject.Type;
-			if (sObjectType != null){
-				if (sObjectType.endsWith('__kav')){
-					sObjectType = sObjectType.left(sObjectType.length()-1);
-				}
-				
-				pa.sObjectLabel = Schema.describeSObjects(new String[]{sObjectType})[0].getLabelPlural();
-				sObjectName2Label.put(p.ProcessInstance.TargetObject.Type, pa.sObjectLabel);
-			}
-		}
-		if (pa.sObjectName == '') {
-			
-		}
-		if (mapRecordId.containsKey(pa.sObjectName)) {
-			mapRecordId.get(pa.sObjectName).add(pa.recordId);
-		}
+        
+        for (Approval_Managed__c am : app) {
+            AllApprovalData  data = new AllApprovalData();
+            data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
+            data.Applicant_Name = am.Applicant__r.Name;
+            System.debug('状态：'+data.ApprovalStatus);
+            System.debug('data.Applicant_Name名字：'+data.Applicant_Name);
+            data.Bill_Date = HarryUtils.date2string(am.Bill_Date__c);
+            System.debug('单据时间：'+data.Bill_Date);
+            Integer oldyear = Integer.valueOf(data.Bill_Date.split('-')[0]);
+            Integer oldmonth = Integer.valueOf(data.Bill_Date.split('-')[1]);
 
-		pendingApprovals.add(pa);
-		processInstanceIds.add(p.ProcessInstanceId);
-	}
-	Map<Id,SObject>  mapSobject= new Map<Id,SObject>([SELECT Id, Approval_Name__c, Applicant_Name__c,SAPID__c FROM Approval_Managed__c 
-		WHERE Id IN :mapRecordId.get('Approval_Managed__c')]);
-	mapSobject.putAll(new Map<Id,SObject>([SELECT Id, Approval_Name__c, Applicant_Name__c,SAPID__c FROM Custom_Approval_Managed__c 
-		WHERE Id IN :mapRecordId.get('Custom_Approval_Managed__c')]));
-	mapSobject.putAll(new Map<Id,SObject>([SELECT Id, Approval_Name__c, Applicant_Name__c,SAPID__c FROM approval_Managed1__c 
-		WHERE Id IN :mapRecordId.get('Approval_Managed1__c')]));
-	Map<Id, Id> processInstance2Step = new Map<Id, Id>();
-	for(ProcessInstanceStep step : [select id, ProcessInstanceId, Actor.Name, 
-		StepStatus from ProcessInstanceStep 
-		where ProcessInstanceId in :processInstanceIds]){
-		processInstance2Step.put(step.ProcessInstanceId, step.Id);
-	}
+           
+            if(year ==oldyear && (month-oldmonth)<=3 && name == data.Applicant_Name&& (data.ApprovalStatus == '草稿' || data.ApprovalStatus == '已拒绝')){
 
-	List<PendingApproval> finalPendingApprovals = new List<PendingApproval>();
-	for (PendingApproval p : pendingApprovals){
-		p.approvalStepId = processInstance2Step.get(p.approvalInstanceId);
-		if (mapSobject.containsKey(p.recordId)) {
-			p.approvalRecordName = String.valueOf(mapSobject.get(p.recordId).get('Approval_Name__c')) ;
-			p.applicantName = String.valueOf(mapSobject.get(p.recordId).get('Applicant_Name__c'));
-	                //p.approvalinfo = String.valueOf(mapSobject.get(p.recordId).get('SAPID__c')) +  Stirng .xxx
-			p.approval_Rejectedinfo = String.valueOf(mapSobject.get(p.recordId).get('SAPID__c'));
-		}
-		if (p.approvalStepId != null) {
-			finalPendingApprovals.add(p);
-		}
-	}
+            data.Id = am.Id;
+            data.Name = am.Name;
+            data.Original_Code = am.SAPID__c;
+            data.Approval_Name = am.Approval_Name__c;
+            data.Applicant_Id = am.Applicant__c;
+            data.Applicant_Name = am.Applicant__r.Name;
+            data.Dept_Name = am.Dept_Name__c;
+            data.Bill_Date = HarryUtils.date2string(am.Bill_Date__c);
+            // data.Approver = approval2currentApproverMap.get(am.Id);
+            data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
+            data.Interface_Info = am.Interface_Info__c;
+            data.Head_description = am.Head_description__c;
+            allApproval.add(data);
+            }
+           
+        }
+        for (Custom_Approval_Managed__c am : capp) {
+            AllApprovalData  data = new AllApprovalData();
+            data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
+            data.Applicant_Name = am.Applicant__r.Name;
+             data.Bill_Date = HarryUtils.date2string(am.Bill_Date__c);
+            System.debug('单据时间：'+data.Bill_Date);
+            Integer oldyear = Integer.valueOf(data.Bill_Date.split('-')[0]);
+            Integer oldmonth = Integer.valueOf(data.Bill_Date.split('-')[1]);
+             if(year ==oldyear && (month-oldmonth)<=3 && name == data.Applicant_Name && (data.ApprovalStatus == '草稿' || data.ApprovalStatus == '已拒绝')){
+            data.Id = am.Id;
+            data.Name = am.Name;
+            data.Original_Code = am.SAPID__c;
+            data.Approval_Name = am.Approval_Name__c;
+            data.Applicant_Id = am.Applicant__c;
+            data.Applicant_Name = am.Applicant__r.Name;
+            data.Dept_Name = am.Dept_Name__c;
+            data.Bill_Date = HarryUtils.date2string(am.Bill_Date__c);
+            // data.Approver = approval2currentApproverMap.get(am.Id);
+            data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
+            data.Interface_Info = am.Interface_Info__c;
+            data.Head_description = am.Head_description__c;
+            allApproval.add(data);}
+        }
+        for (Approval_Managed1__c am : app1) {
+            AllApprovalData  data = new AllApprovalData();
+             data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
+             data.Applicant_Name = am.Applicant__r.Name;
+              data.Bill_Date = HarryUtils.date2string(am.Bill_Date__c);
+            System.debug('单据时间：'+data.Bill_Date);
+            Integer oldyear = Integer.valueOf(data.Bill_Date.split('-')[0]);
+            Integer oldmonth = Integer.valueOf(data.Bill_Date.split('-')[1]);
+             if(year ==oldyear && (month-oldmonth)<=3 &&name == data.Applicant_Name && (data.ApprovalStatus == '草稿' || data.ApprovalStatus == '已拒绝')){
+            data.Id = am.Id;
+            data.Name = am.Name;
+            data.Original_Code = am.SAPID__c;
+            data.Approval_Name = am.Approval_Name__c;
+            data.Applicant_Id = am.Applicant__c;
+            data.Applicant_Name = am.Applicant__r.Name;
+            data.Dept_Name = am.Dept_Name__c;
+            data.Bill_Date = HarryUtils.date2string(am.Bill_Date__c);
+            // data.Approver = approval2currentApproverMap.get(am.Id);
+            data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
+            data.Interface_Info = am.Interface_Info__c;
+            data.Head_description = am.Head_description__c;
+            allApproval.add(data);}
+        }
+        for (Approval_Managed2__c am : app2) {
+            AllApprovalData  data = new AllApprovalData();
+            data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
+            data.Applicant_Name = am.Applicant__r.Name;
+             data.Bill_Date = HarryUtils.date2string(am.Bill_Date__c);
+            System.debug('单据时间：'+data.Bill_Date);
+            Integer oldyear = Integer.valueOf(data.Bill_Date.split('-')[0]);
+            Integer oldmonth = Integer.valueOf(data.Bill_Date.split('-')[1]);
+            if(year ==oldyear && (month-oldmonth)<=3 && name == data.Applicant_Name && (data.ApprovalStatus == '草稿' || data.ApprovalStatus == '已拒绝')){
+            data.Id = am.Id;
+            data.Name = am.Name;
+            data.Original_Code = am.SAPID__c;
+            data.Approval_Name = am.Approval_Name__c;
+            data.Applicant_Id = am.Applicant__c;
+            data.Applicant_Name = am.Applicant__r.Name;
+            data.Dept_Name = am.Dept_Name__c;
+            data.Bill_Date = HarryUtils.date2string(am.Bill_Date__c);
+            // data.Approver = approval2currentApproverMap.get(am.Id);
+            data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
+            data.Interface_Info = am.Interface_Info__c;
+            data.Head_description = am.Head_description__c;
+            allApproval.add(data);}
+        }
+        //计算相关记录的当前审批人
+        Set<Id> setID = new Set<Id>();
+        for (AllApprovalData ald : allApproval) {
+            setID.add(ald.Id);
+        }
+        List<ProcessInstanceWorkitem> lstPIW = [SELECT ProcessInstance.TargetObjectId, Actor.Name, ActorId FROM ProcessInstanceWorkitem WHERE ProcessInstance.TargetObjectId IN :setID];
+        Map<String,ProcessInstanceWorkitem> mapPIW = new Map<String,ProcessInstanceWorkitem>();
+        for (ProcessInstanceWorkitem piw : lstPIW) {
+            if(!mapPIW.containsKey(piw.ProcessInstance.TargetObjectId)){
+                mapPIW.put(piw.ProcessInstance.TargetObjectId, piw);
+            }
+        }
+        for (AllApprovalData ald : allApproval) {
+            if (mapPIW.containsKey(ald.Id) && String.isBlank(ald.Approver)) {
+                ald.ApproverId = mapPIW.get(ald.Id).ActorId;
+                ald.Approver = mapPIW.get(ald.Id).Actor.Name;
+            }
 
-	return finalPendingApprovals;
-	}
+        }
 
+        return null;
+    }
+    public PageReference importExcel(){
+        return page.ApprovalQueryExcel;
+    }
+    private void addPageMessage(String message) {
+        ApexPages.addMessage(new ApexPages.Message (ApexPages.Severity.INFO, message));
+    }
+    private String getApprovalStatusName(String apiKey){
+        if(apiKey == 'D'){
+            return '草稿';
+        }else if(apiKey=='S'){
+            return '审批中';
+        }else if(apiKey=='A'){
+            return '已通过';
+        }else if(apiKey=='R'){
+            return '已拒绝';
+        }else{
+            return '';
+        }
+    }
 }

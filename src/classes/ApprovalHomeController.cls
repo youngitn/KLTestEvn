@@ -85,8 +85,10 @@ public with sharing class ApprovalHomeController
         canCreateApproval.add(SapApprovalEnum.SAMPLEREQUEST);//样品申请流程
         canCreateApproval.add(SapApprovalEnum.SALESRETURN);//退货申请流程
         canCreateApproval.add(SapApprovalEnum.CHANGEJOBS);//岗位变更流程
+        canCreateApproval.add(SapApprovalEnum.CLOCKINANDOUTAPPLICATION);//補考勤申請單
+        canCreateApproval.add('SampleMaster');//sample
         /*canCreateApproval.add(SapApprovalEnum.CLIENTAPPLY);//客户单笔信贷核发申请流程*/
-         // canCreateApproval.add(SapApprovalEnum.SALEORDERDATATABLE);//销售订单流程
+         canCreateApproval.add(SapApprovalEnum.SALEORDERDATATABLE);//销售订单流程
         //Object = Custom_Approval_Managed__c, approval counts = 16
         approval_Custom = Utils.getCAMApprovalName();
         //Object = Approval_Managed__c, approval counts = 16
@@ -320,11 +322,11 @@ public with sharing class ApprovalHomeController
                 //销售定价业务流程
                 pageName = '/apex/AMSalesPricing';
             }
-            // else if(selectedApprovalValue == SapApprovalEnum.SALEORDERDATATABLE)
-            // {
-            //     //銷售訂單流程
-            //     pageName = '/apex/AMSaleOrderDatatable';
-            // }
+            else if(selectedApprovalValue == SapApprovalEnum.SALEORDERDATATABLE)
+            {
+                //銷售訂單流程
+                pageName = '/apex/AMSaleOrderDatatable';
+            }
             else if(selectedApprovalValue == SapApprovalEnum.CUSTOMERCREDITLOAN){
                 //客户信用贷款主数据申请
                 pageName = '/apex/AMCustomerCreditLoan';
@@ -450,6 +452,19 @@ public with sharing class ApprovalHomeController
                 //請假申請流程
 
                 pageName = '/apex/AMLeaveApplication';
+
+            }else if(selectedApprovalValue == SapApprovalEnum.CLOCKINANDOUTAPPLICATION)
+            {
+                //補考勤申請單
+
+                pageName = '/apex/AMClockInAndOutApplication';
+
+            }
+            else if(selectedApprovalValue == 'SampleMaster')
+            {
+                //sample
+
+                pageName = '/apex/SamplePage';
 
             } else if(selectedApprovalValue == SapApprovalEnum.CHANGEJOBS)
             {

@@ -43,7 +43,7 @@
             	<!-- 公司代码 -->
             	<apex:inputField value="{!am.Corporation__c}" required="true"></apex:inputField>
                 <!-- 资产编号 -->
-                <apex:inputField value="{!am.Asset_Codes__c}" required="true"></apex:inputField>
+                <apex:inputField value="{!am.Asset_Code__c}" required="true"></apex:inputField>
                 <!-- 查询 -->
                 <apex:commandButton value="查询" action="{!queryAccountInfo}"/>
                 <!-- 资产名称-->
@@ -69,15 +69,28 @@
             	<!-- 变更成本中心 -->
             	<apex:inputField value="{!am.ChangeCostCenter__c}" ></apex:inputField>
             	<!-- 报废/停用日期 -->
-            	<apex:inputField value="{!am.ScrapOutage_date__c}" ></apex:inputField>
+            	<apex:inputField value="{!am.ScrapDate__c}" ></apex:inputField>
             	<!-- 转移后地点 -->
             	<apex:inputField value="{!am.Post_transfer_site__c}" ></apex:inputField>
             	<!-- 供应商编号 -->
             	<apex:outputField value="{!am.Vendor_Number__c}" ></apex:outputField>
             	<!-- 备注信息（文本） -->
             	<apex:inputField value="{!am.Remark__c}" style="width: 100%"></apex:inputField>
-
             </apex:pageBlockSection> 
+
+            <apex:pageBlockSection title="资产管理部" collapsible="false">
+                <!-- 是否是生产设备 -->
+                <apex:inputField value="{!am.ProductionEquipment__c}" ></apex:inputField>
+                <!-- 购置年限 -->
+                <apex:inputField value="{!am.PurchaseTime__c}" ></apex:inputField>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="财务维护" collapsible="false">
+                <!-- 报废日期 -->
+                <!-- <apex:inputField value="{!am.ScrapDate__c}" ></apex:inputField> -->
+                <!-- 过账日期 -->
+                <apex:inputField value="{!am.Posting_Date__c}" ></apex:inputField>
+            </apex:pageBlockSection>
         </apex:pageBlock>
     </apex:form>>
 </body>

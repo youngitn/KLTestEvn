@@ -177,4 +177,7 @@ public without sharing class SapApprovalEnum {
     public static final String  CHANGEJOBS='changejobs';
     //客户单笔信贷核发申请
     public static final String  CLIENTAPPLY='ClientApply';
+    //補考勤申請
+    public static final String  CLOCKINANDOUTAPPLICATION='AMClockInAndOutApplication';
+    public static final String  SAMPLEMASTER='SampleMaster';
 }

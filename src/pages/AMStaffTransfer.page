@@ -41,22 +41,22 @@
                 <!-- 原工作单位 -->
                 <apex:inputField value="{!am.Work_Company_Old__c}"></apex:inputField>
                 <!-- 异动工作单位 -->
-                <apex:inputField value="{!am.Work_Company_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Work_Company_New__c'))}"></apex:inputField>
+                <apex:inputField value="{!am.Work_Company_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Work_Company_New__c'))}" required="true"></apex:inputField>
                 <apex:outputField value="{!am.Work_Company_New__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Work_Company_New__c'))}"></apex:outputField>
                 <!-- 原职务 -->
                 <apex:inputField value="{!am.Job_Title_Old__c}"></apex:inputField>
                 <!-- 异动职务 -->
-                <apex:inputField value="{!am.Job_Title_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Job_Title_New__c'))}"></apex:inputField>
+                <apex:inputField value="{!am.Job_Title_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Job_Title_New__c'))}" required="true"></apex:inputField>
                 <apex:outputField value="{!am.Job_Title_New__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Job_Title_New__c'))}"></apex:outputField>
                 <!-- 原员工组 -->
                 <apex:outputField value="{!am.Staff_Group_Name__c}"></apex:outputField>
                 <!-- 员工组 -->
-                <apex:inputField value="{!am.Staff_Group_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Staff_Group_New__c'))}" style="width:173px;"></apex:inputField>
+                <apex:inputField value="{!am.Staff_Group_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Staff_Group_New__c'))}" style="width:173px;" required="true"></apex:inputField>
                 <apex:outputField value="{!am.Staff_Group_New__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Staff_Group_New__c'))}" style="width:173px;"></apex:outputField>
                 <!-- 原员工子组 -->
                 <apex:outputField value="{!am.Staff_Sub_Group_Name__c}"></apex:outputField>
                 <!-- 员工子组 -->
-                <apex:inputField value="{!am.Staff_Sub_Group_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Staff_Sub_Group_New__c'))}" style="width:173px;"></apex:inputField>
+                <apex:inputField value="{!am.Staff_Sub_Group_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Staff_Sub_Group_New__c'))}" style="width:173px;" required="true"></apex:inputField>
                 <apex:outputField value="{!am.Staff_Sub_Group_New__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Staff_Sub_Group_New__c'))}" style="width:173px;"></apex:outputField>
                 <!-- 原职等职级 -->
                 <apex:inputField value="{!am.Job_Title_Level_Old__c}"></apex:inputField>
@@ -64,22 +64,23 @@
                 <apex:inputField value="{!am.Job_Title_Level_New__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Job_Title_Level_New__c'))}"></apex:inputField>
                 <apex:outputField value="{!am.Job_Title_Level_New__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Job_Title_Level_New__c'))}"></apex:outputField>
                 <!-- 异动职务编号 -->
-                <apex:inputField value="{!am.Job_Title_New_Code__c}"></apex:inputField>
+                <apex:inputField value="{!am.Job_Title_New_Code__c}" required="true"></apex:inputField>
                 <!-- 操作原因 -->
-                <apex:inputField value="{!am.Reason_of_Operate__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Reason_of_Operate__c'))}"></apex:inputField>
+                <apex:inputField value="{!am.Reason_of_Operate__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Reason_of_Operate__c'))}" required="true"></apex:inputField>
                 <apex:outputField value="{!am.Reason_of_Operate__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Reason_of_Operate__c'))}"></apex:outputField>
                 <!-- 是否薪资调整 -->
-                <apex:inputField value="{!am.Is_Salary_Adjust__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Is_Salary_Adjust__c'))}"></apex:inputField>
+                <apex:inputField value="{!am.Is_Salary_Adjust__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Is_Salary_Adjust__c'))}" required="true"></apex:inputField>
                 <apex:outputField value="{!am.Is_Salary_Adjust__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Is_Salary_Adjust__c'))}"></apex:outputField>
                 <!-- 生效日期 -->
-                <apex:inputField value="{!am.Validate_Date__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Validate_Date__c'))}"></apex:inputField>
+                <apex:inputField value="{!am.Validate_Date__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Validate_Date__c'))}" required="true"></apex:inputField>
                 <apex:outputField value="{!am.Validate_Date__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Validate_Date__c'))}"></apex:outputField>
                 <!-- 成本中心 -->
                 <apex:inputField value="{!am.Dept_of_CostCenter__c}" required="true"></apex:inputField>
             </apex:pageBlockSection>
             <apex:pageBlockSection columns="1">
                 <!-- 说明 -->
-                <apex:inputField value="{!am.Remark_of_Explain__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Remark_of_Explain__c'))}" style="width: 50%"></apex:inputField>
+                <!-- <apex:inputField value="{!am.Remark_of_Explain__c}" required="true" style="width: 800px"></apex:inputField> -->
+                <apex:inputField value="{!am.Remark_of_Explain__c}" rendered="{!IF(isClosed,true,contains(szAbleEditFields, 'Remark_of_Explain__c'))}" style="width: 50%" required="true"></apex:inputField>
                 <apex:outputField value="{!am.Remark_of_Explain__c}" rendered="{!IF(isClosed,false,!contains(szAbleEditFields, 'Remark_of_Explain__c'))}" style="width: 50%"></apex:outputField>
             </apex:pageBlockSection>
 
