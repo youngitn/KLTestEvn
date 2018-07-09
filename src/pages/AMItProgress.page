@@ -1,0 +1,280 @@
+<apex:page controller="AMItProgress" docType="html-5.0" showHeader="true" readOnly="true" sidebar="false">
+	<head>
+		<apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+		<apex:stylesheet value="{!URLFOR($Resource.loading,'loading.gif')}" />
+		<style>
+
+           /*  div { 
+
+                 float : left;
+
+             }*/
+             *{
+
+            margin:0;
+            padding:0;
+
+            }
+
+			th.dataTableTh{
+				background: #f2f3f3;
+			    border-width: 1px 0 1px 1px;
+			    border-style: solid;
+			    border-color: #ccc;
+			    color: #000;
+			    font-weight: bold;
+			    padding: 5px 2px 4px 5px;
+			}
+			td.dataTableTd{
+				padding: 5px 3px;
+				text-align:left;
+				border-width: 1px 0px 1px 0px;
+				border-style: solid;
+				border-color: #ededed;
+    			color: #000;
+			}
+			td.rfc_info{
+				width: 200px;
+				padding: 5px 3px;
+				text-align:left;
+				border-width: 1px 0px 1px 0px;
+				border-style: solid;
+				border-color: #ededed;
+    			color: #000;
+			}
+			.colOper{
+				width:35px;
+				padding: 5px 0 5px 5px;
+				text-align: left;
+				border-width: 1px 0px 1px 0px;
+				border-style: solid;
+				border-color: #ededed;
+			}
+			.detailList tbody tr td table{
+				width:100%;
+				border-width: 1px;
+				border-style: solid;
+			    border-color: #ddd;
+			}
+			.detailList tbody tr td table tr{
+				background-color: #fff;
+			}
+			.detailList tbody tr td table tr:hover{
+				background-color: #eee;
+			}
+			.btnLink:link{
+				color: #015ba7;
+			    text-decoration: none;
+			    font-weight: normal;
+			}
+			.btnLink:hover{
+				color: #f00;
+			    text-decoration: none;
+			    font-weight: normal;
+			}
+			.btnLink:visited{
+				color: #015ba7;
+			    text-decoration: none;
+			    font-weight: normal;
+			}
+			.data2Col{padding-left:0px !important;padding-right:0px !important;}
+			.tertiaryPalette{background:#4c280f !important;border-color:#4c280f !important}
+			.requiredInput{
+               float: right;
+           }
+
+
+		</style>
+		
+	</head>
+	<!-- 灰屏 -->
+    <apex:outputpanel id="aaa">
+        <apex:actionstatus id="retrieveStatus">
+            <apex:facet name="start" >
+                <div class="waitingSearchDiv" id="el_loading" style=" background-color: #fbfbfb ;
+                       height: 2000px;opacity :0.65;width:100%;" >
+                    <div class="waitingHolder" style="position: fixed;top : 30%; right:50%;width: 91px;" >
+                        <img class="waitingImage" src="/img/loading.gif" title="正在加载数据，请稍候..." />
+                        <span class="waitingDescription" >正在加载数据，请稍候 ...</span >
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionstatus>
+    </apex:outputpanel> 
+	<apex:form >
+		 <!-- 刷新选择流程数据 -->
+        <apex:actionFunction action="{!query}" id="QueryApprovalData" name="QueryApprovalData" reRender="lstApproval" status="retrieveStatus">
+            <apex:param assignTo="{!selectedModelGroupValue}" name="modelGroupValue" value=""></apex:param>
+            <apex:param assignTo="{!selectedStatusValue}" name="statusValue" value=""></apex:param>
+            <apex:param assignTo="{!selectedApprovalStartTime}" name="startTime" value=""></apex:param>
+            <apex:param assignTo="{!selectedApprovalEndTime}" name="endTime" value=""></apex:param>
+        </apex:actionFunction>  
+
+
+          <apex:actionFunction action="{!query}" id="QueryApprovalData2" name="QueryApprovalData2" reRender="lstApproval2" status="retrieveStatus">
+            <apex:param assignTo="{!selectedModelGroupValue}" name="modelGroupValue" value=""></apex:param>
+            <apex:param assignTo="{!selectedStatusValue}" name="statusValue" value=""></apex:param>
+            <apex:param assignTo="{!selectedApprovalStartTime}" name="startTime" value=""></apex:param>
+            <apex:param assignTo="{!selectedApprovalEndTime}" name="endTime" value=""></apex:param>
+        </apex:actionFunction>              
+		<!-- <apex:pageBlock title="流程查询">
+			
+			<div style="width:1000%;float:left;padding:10px 0px; vertical-align: middle;">
+				<div style="float:left;width:180px;"> 
+					
+					模组/Model Group:
+					<apex:inputField id="cmbModelGroup" value="{!A.Model_Group__c}" label=""></apex:inputField>
+					
+				</div>
+				<div style="float:left;margin-left:10px;">
+					流程名称/Approval Name:    
+					<apex:inputField style="width: 180px;" id="cmbApproval" value="{!meta.Approval_Name__c}" label="" ></apex:inputField>
+				</div>
+				<div style="float:left;margin-left:10px;">
+					审批状态/Approval Status:
+					<apex:inputField style="width: 80px;" id="cmbStatus" value="{!standardApproval.Approval_Status__c}" label=""></apex:inputField>
+				</div>
+			</div>
+			
+			<div style="width:100%;float:left;padding:10px 0px; vertical-align: middle;">
+				<div style="float:left;">		
+					流程编号/Approval Number:　
+					<apex:inputField style="width:150px;" value="{!standardApproval.Same_Sample__c}" ></apex:inputField>
+				</div>
+				<div style="float:left;margin-left:10px;">
+					SAP/HLY单号/ SAP/HLY Number：　
+					<apex:inputField style="width:120px;" value="{!standardApproval.SAPID__c}" ></apex:inputField>
+				</div>
+				<div style="float:left;margin-left:10px;">
+					当前审批人/Approval Approver：　
+					<apex:inputField style="width:100px;" value="{!standardApproval.Keeper_Reserved__c}" ></apex:inputField>
+				</div>
+				<div style="float:left;margin-left:10px;">
+					申请人/Approval Applicant：　
+					<apex:inputField style="width:100px;" value="{!standardApproval.Employee__c}" ></apex:inputField>
+				</div>
+			</div>
+			
+			<div style="width:100%;float:left;padding:10px 0px; vertical-align: middle;">
+				<div style="float:left;">
+					单据日期/BillDate：从/start
+				
+					<input type="date" value="" id="startTime"/>
+					&nbsp;到/end&nbsp;
+					<input type="date" value="" id='endTime'/>
+				</div>
+				<div style="float:left;margin-left:10px;">
+
+					我参于审批的/I participated：　
+					<apex:inputField value="{!standardApproval.Is_Print__c}" ></apex:inputField>
+				</div>
+				<div style="float:left;margin-left:10px;">
+					我创建的/I created：　
+					<apex:inputField value="{!standardApproval.Is_Withhold__c}" ></apex:inputField>
+				</div>
+				<div style="left;margin-left:50px;">
+					<input type="button" value="{!$Label.Query}" onclick="queryApproval()" style="padding:2px 10px;" class="btn" />
+
+					<apex:commandButton action="{!importExcel}" value="导出/export"  style="padding:2px 10px;">
+					</apex:commandButton>
+				</div>
+
+			</div>
+			 -->
+			 
+		<apex:pageBlock title="IT门户页面">
+		<div style="width: 600PX;display: inline-block;">
+			<apex:pageBlockSection id="lstApproval" title="{!selectedApprovalName}资讯类资产购置状态" columns="1" >
+				<!-- 不选择审批流程时显示的Table -->
+				<apex:dataTable value="{!allApproval}" var="row">			
+					<!-- 所有流程公共显示字段 -->
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh"
+					style="width: 225px;">
+						<apex:outputLink target="_blank" styleClass="btnLink" value="/{!(row.id)}">{!row.Name}</apex:outputLink>
+					</apex:column>
+					<!-- <apex:column styleClass="dataTableTd" headerValue="原单号(SAP/HLY)" headerClass="dataTableTh" style="width: 100px;" value="{!row.Original_Code}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" style="width: 200px;" value="{!row.Approval_Name}" ></apex:column> -->
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" style="width: 80px;">
+						<apex:outputLink styleClass="btnLink" value="/{!(row.Applicant_Id)}">{!row.Applicant_Name}</apex:outputLink>
+					</apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" style="width: 100px;" value="{!row.Dept_Name}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" style="width: 120px;" value="{!row.Bill_Date}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="当前审批人" headerClass="dataTableTh" style="width: 80px;">
+						<apex:outputLink styleClass="btnLink" value="/{!(row.ApproverId)}">{!row.Approver}</apex:outputLink>
+					</apex:column>
+					<!-- <apex:column styleClass="dataTableTd" headerValue="审批状态" headerClass="dataTableTh" value="{!row.ApprovalStatus}"
+					style="width: 80px;"></apex:column> -->
+					<apex:column styleClass="dataTableTd" headerValue="备注" headerClass="dataTableTh" style="width: 200px;" value="{!row.Head_description}" />x
+				<!-- 	<apex:column styleClass="rfc_info" headerValue="接口信息" headerClass="dataTableTh" value="{!row.Interface_Info}"></apex:column> -->
+				</apex:dataTable>
+           </apex:pageBlockSection>
+       </div>
+
+
+  <!-----------------资讯类资产转移报废申请流程---------------------->
+  <div style="width: 600px;display: inline-block;">
+  <apex:pageBlockSection id="lstApproval111" title="{!selectedApprovalName}资讯类资产转移报废申请状态" columns="1">
+				<!-- 不选择审批流程时显示的Table -->
+				<apex:dataTable value="{!allApproval2}" var="row2">			
+					<!-- 所有流程公共显示字段 -->
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Name.label}" headerClass="dataTableTh"
+					style="width: 225px;">
+						<apex:outputLink target="_blank" styleClass="btnLink" value="/{!(row2.id)}">{!row2.Name}</apex:outputLink>
+					</apex:column>
+					<!-- <apex:column styleClass="dataTableTd" headerValue="原单号(SAP/HLY)" headerClass="dataTableTh" style="width: 100px;" value="{!row2.Original_Code}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Approval_Name__c.label}" headerClass="dataTableTh" style="width: 200px;" value="{!row2.Approval_Name}" ></apex:column> -->
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Applicant__c.label}" headerClass="dataTableTh" style="width: 80px;">
+						<apex:outputLink styleClass="btnLink" value="/{!(row2.Applicant_Id)}">{!row2.Applicant_Name}</apex:outputLink>
+					</apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Dept_Name__c.label}" headerClass="dataTableTh" style="width: 100px;" value="{!row2.Dept_Name}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="{!$ObjectType.Approval_Managed__c.fields.Bill_Date__c.label}" headerClass="dataTableTh" style="width: 120px;" value="{!row2.Bill_Date}" ></apex:column>
+					<apex:column styleClass="dataTableTd" headerValue="当前审批人" headerClass="dataTableTh" style="width: 80px;">
+						<apex:outputLink styleClass="btnLink" value="/{!(row2.ApproverId)}">{!row2.Approver}</apex:outputLink>
+					</apex:column>
+					<!-- <apex:column styleClass="dataTableTd" headerValue="审批状态" headerClass="dataTableTh" value="{!row2.ApprovalStatus}"
+					style="width: 80px;"></apex:column> -->
+					<apex:column styleClass="dataTableTd" headerValue="备注" headerClass="dataTableTh" style="width: 200px;" value="{!row2.Head_description}" />x
+					<!-- <apex:column styleClass="rfc_info" headerValue="接口信息" headerClass="dataTableTh" value="{!row2.Interface_Info}"></apex:column> -->
+				</apex:dataTable>
+           </apex:pageBlockSection>   
+           </div> 
+
+
+			
+		</apex:pageBlock>
+	</apex:form>
+	<script>
+		var j$ = jQuery.noConflict();
+		j$(document).ready(function(){
+			var status = j$("select[id$='cmbStatus']");
+			status.val('');
+		});
+       j$(document).ready(function(){queryApproval()});
+
+		function queryApproval(){
+
+
+			var modelGroup = j$("select[id$='cmbModelGroup']");
+			var modelGroupValue = modelGroup.val();
+
+			// var cmb = j$("select[id$='cmbApproval']");
+			// var approvalValue = cmb.val();
+			// var approvalName = cmb.find("option:selected").text();
+
+			var status = j$("select[id$='cmbStatus']");
+			var statusValue = status.val();
+			// if(statusValue == null || statusValue == '' || statusValue == undefined){
+			// 	alert('审批状态不能为空，请选择审批状态！');
+			// 	return false;
+			// }
+			// var approver = j$("#cmbApprover").val()||'';
+			var startTime = j$("#startTime").val()?j$("#startTime").val():'2000-01-01';
+			var endTime = j$("#endTime").val()?j$("#endTime").val():'2049-12-31';
+
+			QueryApprovalData(modelGroupValue,statusValue,startTime,endTime);
+			QueryApprovalData2(modelGroupValue,statusValue,startTime,endTime);
+		}
+
+
+	</script>
+</apex:page>
