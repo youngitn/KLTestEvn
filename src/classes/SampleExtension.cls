@@ -1,3 +1,13 @@
+/**
+ * ##有this表示為父類別成員
+ * 物件導向相關概念:https://www.cnblogs.com/oomusou/archive/2007/01/13/619310.html
+ * SF開發架構:https://developer.salesforce.com/page/Visualforce:_An_Overview
+ * 
+ * 
+ */
+
+
+
 global with sharing class SampleExtension extends VFShowInApprovalExtension
 {
 	//*必要 主表物件*
