@@ -67,6 +67,8 @@ public without sharing class AMStaffTransferHandler implements Triggers.Handler 
         cam.Approval_User9__c    = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(9),null),0);
 
         cam.Approval_User10__c    = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(10),null),0);
+        // HR确认
+        cam.Approval_User11__c    = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(11),null),0);
 
         cam.Approval_User20__c    = Utils.getByIndex(Utils.approvalSearchApprrovalerByRule(mapSpecify.get(20),null),0);
     }

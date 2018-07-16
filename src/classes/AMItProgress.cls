@@ -61,7 +61,7 @@ public without sharing class AMItProgress {
     public PageReference query() {
         System.debug(LoggingLevel.INFO, '*** Querystart!: ');
        
-        String sqlSelect = 'SELECT Id, Name,SAPID__c, Approval_Name__c, Asset_Type__c,Entity_asset_type__c,Applicant__c, Applicant__r.Name, Dept_Name__c, Bill_Date__c,Approval_Status__c,RecordType.DeveloperName,Head_description__c,Interface_Info__c ';
+        String sqlSelect = 'SELECT Id, Name,SAPID__c,Approval_Name__c, Asset_Type__c,Remark__c,Entity_asset_type__c,Applicant__c, Applicant__r.Name, Dept_Name__c, Bill_Date__c,Approval_Status__c,RecordType.DeveloperName,Head_description__c,Interface_Info__c ';
         String sqlFrom = ' FROM ';
         String sqlWhere = ' WHERE Id != null ';
         System.debug(LoggingLevel.INFO, '*** selectedStatusValue: ' + selectedStatusValue);
@@ -148,25 +148,24 @@ public without sharing class AMItProgress {
         // List<Approval_Managed1__c> app1 = Database.query(sqlSelect + sqlFrom + ' Approval_Managed1__c ' + sqlWhere);
         // List<Approval_Managed2__c> app2 = Database.query(sqlSelect + sqlFrom + ' Approval_Managed2__c ' + sqlWhere);
 
-        for (Approval_Managed__c am : app) {
-               
+        for (Approval_Managed__c am : app) {    
             AllApprovalData  data = new AllApprovalData();
             data.Asset_Type =  am.Asset_Type__c;
             System.debug('aaaaaaaaaaaaaaaa'+data.Asset_Type);
-            data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
-            if(data.Asset_Type ==  '04'){
+            data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);   
+            if(data.Asset_Type ==  '04' && data.ApprovalStatus == '审批中'){         
+            String idNum =String.valueOf(am.Id);
+            List<ProcessInstanceWorkitem> lstWorkItem = [SELECT CreatedById, CreatedDate, OriginalActorId, IsDeleted, ActorId,OriginalActor.Name, Actor.Name, SystemModstamp, ProcessInstanceId, Id FROM ProcessInstanceWorkitem WHERE ProcessInstance.TargetObjectId  =:idNum ORDER BY  SystemModstamp DESC  LIMIT 1];
+            System.debug('当前审批人：66666666666'+lstWorkItem[0].Actor.name);
             data.Id = am.Id;
             data.Name = am.Name;
             data.Original_Code = am.SAPID__c;
             data.Approval_Name = am.Approval_Name__c;
-          
-            // System.debug('Approval_Managed__c'+data.Approval_Name);
             data.Applicant_Id = am.Applicant__c;
             data.Applicant_Name = am.Applicant__r.Name;
-
             data.Dept_Name = am.Dept_Name__c;
             data.Bill_Date = HarryUtils.date2string(am.Bill_Date__c);
-            // data.Approver = approval2currentApproverMap.get(am.Id);
+             data.Approver = lstWorkItem[0].Actor.name;
             data.Interface_Info = am.Interface_Info__c;
             data.Head_description = am.Head_description__c;
             allApproval.add(data);
@@ -182,6 +181,8 @@ public without sharing class AMItProgress {
             System.debug('bbbbbbbbbbbbbbbb'+data2.Asset_Type);
             data2.ApprovalStatus = getApprovalStatusName(am2.Approval_Status__c);
             if(data2.Asset_Type == 'd' && data2.ApprovalStatus == '审批中'){
+             String idNum =String.valueOf(am2.Id);
+             List<ProcessInstanceWorkitem> lstWorkItem = [SELECT CreatedById, CreatedDate, OriginalActorId, IsDeleted, ActorId,OriginalActor.Name, Actor.Name, SystemModstamp, ProcessInstanceId, Id FROM ProcessInstanceWorkitem WHERE ProcessInstance.TargetObjectId  =:idNum ORDER BY  SystemModstamp DESC  LIMIT 1];
             data2.Id = am2.Id;
             data2.Name = am2.Name;
             data2.Original_Code = am2.SAPID__c;
@@ -191,13 +192,11 @@ public without sharing class AMItProgress {
             data2.Applicant_Name = am2.Applicant__r.Name;
             data2.Dept_Name = am2.Dept_Name__c;
             data2.Bill_Date = HarryUtils.date2string(am2.Bill_Date__c);
-            // data.Approver = approval2currentApproverMap.get(am.Id);
+           data2.Approver = lstWorkItem[0].Actor.name;
             data2.ApprovalStatus = getApprovalStatusName(am2.Approval_Status__c);
             data2.Interface_Info = am2.Interface_Info__c;
-            data2.Head_description = am2.Head_description__c;
+            data2.Head_description = am2.Remark__c;
             allApproval2.add(data2);
-
-
             }
            System.debug('allApproval2的值是什么'+allApproval2);
 

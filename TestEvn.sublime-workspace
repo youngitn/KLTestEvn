@@ -448,19 +448,171 @@
 	"buffers":
 	[
 		{
-			"contents": "//\n//\n//j_id0:j_id15:form\n//Toastmaster\n////**************手動增加人員選擇視窗的程式******************************//\nfunction createLookUpFiled(formId,inputId){\n\n\tlet lastStr = [\n\t\t\"_lkid\",\n\t\t\"_lkold\",\n\t\t\"_lktp\",\n\t\t\"_lspf\",\n\t\t\"_lspfsub\",\n\t\t\"_mod\"];\n\tlet defVal = [\n\t\t\"000000000000000\",\n\t\t\"null\",\n\t\t\"_lktp\",\n\t\t\"_lspf\",\n\t\t\"_lspfsub\",\n\t\t\"_mod\"];\n\n\tlet i ;\n\n\tfor (i = 1; i <= 6; i++) { \n\t    let template = $( \"<input>\", \n\t\t{ \tid: formId+\":\"+inputId+lastStr[i], \n\t\t\t// html:$( \"<div>\", \n\t\t\t// \t\t{ \tclass: \"bar\", \n\t\t\t// \t\t\ttext: \"bla\" \n\t\t\t// \t\t} )\n\t\t\ttype:\"hidden\",\n\t\t\tname:formId+\":\"+inputId+lastStr[i],\n\t\t\tvalue:defVal[i]\n\t\t});\n\n\t\t$('body').append(template);\n\t} \n\n\tlet template = $( \"<a>\", \n\t\t{ \tid: formId+\":\"+inputId+lastStr[i], \n\t\t\thtml:$( \"<img>\", \n\t\t\t\t\t{ \t\n\t\t\t\t\t\tsrc:\"/img/s.gif\",\n\t\t\t\t\t\talt:\"员工 對應 (新視窗)\",\n\t\t\t\t\t\tclass:\"lookupIcon\",\n\t\t\t\t\t\tonblur:\"this.className = 'lookupIcon';\" ,\n\t\t\t\t\t\tonfocus:\"this.className = 'lookupIconOn';\",\n\t\t\t\t\t\tonmouseout:\"this.className = 'lookupIcon';this.className = 'lookupIcon';\" ,\n\t\t\t\t\t\tonmouseover:\"this.className = 'lookupIconOn';this.className = 'lookupIconOn';\",\n\t\t\t\t\t\ttitle:\"员工 對應 (新視窗)\"\n\n\t\t\t\t\t\t\n\t\t\t\t\t} ),\n\t\t\t\n\t\t\thref:\"javascript:openLookup('/_ui/common/data/LookupPage?lkfm=\"+formId+\"&lknm=\"+formId+\":\"+inputId+\"&lktp=003','&lksrch=' + escapeUTF(getElementByIdCS('\"+formId+\":\"+inputId+\"').value.substring(0, 80)))\",\n\t\t\tid:formId+\":\"+inputId+\"_lkwgt\",\n\t\t\tonclick:\"setLastMousePosition(event)\",\n\t\t\ttitle:\"员工 對應 (新視窗)\"\n\n\n\t\t});\n\n\t\t$('body').append(template);\n\n\t\n\t\n\n}\n",
+			"contents": "<section class=\"side-2\" id=\"pageTop\">\n    <div class=\"container clearfix\">\n        <aside class=\"one-fourth\" id=\"sidebar\">\n            <div class=\"widget\">\n                <h3>\n                    <strong>\n                        <span style=\"font-size: 16pt;\">\n                            DOWNLOAD\n                        </span>\n                    </strong>\n                </h3>\n                <nav class=\"manu\">\n                    <li>\n                        <strong>\n                            <span style=\"font-size: 12pt;\">\n                                <a href=\"#vacuum-product\">\n                                    Vacuum Products\n                                </a>\n                            </span>\n                        </strong>\n                    </li>\n                    <li>\n                        <strong>\n                            <span style=\"font-size: 12pt;\">\n                                <a href=\"#high-purity\">\n                                    Ultra High Purity\n                                </a>\n                            </span>\n                        </strong>\n                    </li>\n                    <li>\n                        <strong>\n                            <span style=\"font-size: 12pt;\">\n                                <a href=\"#brochures\">\n                                    Brochures\n                                </a>\n                            </span>\n                        </strong>\n                    </li>\n                    <li>\n                        <strong>\n                            <span style=\"font-size: 12pt;\">\n                                <a href=\"#manuals\">\n                                    Manuals\n                                </a>\n                            </span>\n                        </strong>\n                    </li>\n                </nav>\n            </div>\n        </aside>\n    </div>\n</section>\n<section class=\"center-2\" id=\"vacuum-product\">\n    <h2>\n        <span style=\"font-size: 16pt;\">\n            <strong>\n                Vacuum Products\n            </strong>\n        </span>\n    </h2>\n</section>\n<section class=\"center-2\" id=\"vacuum-product\">\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/534b514a5264355970722f54452b7a36734c444f676b6d41784d7a4d2b6e4d3779525834714570784634673d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/2018-new-vacuum_catalogue.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0px; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em; text-align: left;\">\n                    KL GROUP-2018 NEW VACUUM PRODUCT Catalogue-1\n                </h2>\n                <p>\n                    Vacuum Product Catalogue - King Lai has always endeavored to pursue customer's fulfillment as we believe customer's success is our success. Continuous R&D and innovations gr ant us to offer more ...\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href='http://ss.mailcloud.com.tw/url.php/623062556239696f36536b516849322b456d58566a55376e6832642f756e327a4f46462f41355855784d453d.pdf\"' style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/2018-new-vacuum_catalogue.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0px; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em; text-align: left;\">\n                    KL GROUP-2018 NEW VACUUM PRODUCT Catalogue-2\n                </h2>\n                <p>\n                    Vacuum Product Catalogue - King Lai has always endeavored to pursue customer's fulfillment as we believe customer's success is our success. Continuous R&D and innovations gr ant us to offer more ...\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/454151306e42584874553669516677586e75547830634b68787832634839303457794255366f42682f39383d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/vacuum_catalogue_gnb.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0px; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em; text-align: left;\">\n                    GNB Vacuum Products\n                </h2>\n                <p>\n                    GNB is a company of technical experts serving other technology experts. Since our beginning in 1968 it has been our commitment to technology that has set us apart. During this time we have produced outstanding, innovative products that have met the most d\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <center>\n        <a href=\"#pageTop\">\n            GO TOP\n        </a>\n    </center>\n    <nav class=\"page-nav\">\n    </nav>\n</section>\n<section class=\"center-2\" id=\"high-purity\">\n    <h2 style=\"font-size: 1.2em; line-height: 1.3em; font-weight: 600; letter-spacing: -0.02em; border-bottom: 1px solid #e5e5e5; padding-bottom: 10px; margin-bottom: 25px;\">\n        <strong>\n            <span style=\"font-size: 16pt;\">\n                Ultra High Purity\n            </span>\n        </strong>\n    </h2>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/475864386e47484f396867716c726f4d6f4e4d524f364a396d557a43766d344f716d5676567954725731343d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/highpurity_catalogue.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    Ultra High Purity- NanoPure Catalogue\n                </h2>\n                <p>\n                    UHP SEMI Grade AP, MP, BA & EP PIPE, TUBE, FITTING for SP1, SP2 (Hook Up) application.\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/4336694230507262523737536f7274516a6337657874494d4434596e56307833394e773262516d315849553d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/NanoPure-BALL-VALVE.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    NanoPure Ball Valve Catalogue\n                </h2>\n                <p>\n                    NanoPure® Ball Valves provide quick 1/4 turn on-off control of fluids utilized in process and instrumentation applications. A broad selection of valve seat, and seal materials provide a wide range of pressures and temperatures at which the valve may be used.\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/66382f4f447345473978726558567979364d6833663144416a673037793150456662774e6a4645786661413d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/NanoPure-3piece-BALL-VALVE.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    NanoPure 3 PIECE BALL VALVE\n                </h2>\n                <p>\n                    NanoPure® Ball Valves provide quick 1/4 turn on-off control of fluids utilized in process and instrumentation applications. A broad selection of valve seat, and seal materials provide a wide range of pressures and temperatures at which the valve may be used.\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/5a516c477335762f4c6a715852716744697545585242386d647543776d46336a2f595948537837747634553d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%; margin-bottom: 15%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/180301-NanoPureUHPFaceSeal_MicroFitting.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    NanoPure UHP Face Seal & Micro Fitting\n                </h2>\n                <p>\n                    \"NanoPure\" is a brand of Gas Delivery Total Solution, belongs to King Lai Group, who was founded 1991 in Taiwan and expanded production facility in Kunshan, Jiangsu Province, China. Supplying tubing/piping and fitting materials service for Semiconductor, FPD, LED and Photovoltaic industries, the core idea of \"NanoPure\" is providing \"Hygienic materials\" with high quality components for gas delivery applications.\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/6e676e526e6e4e703177397759434d6353492b366c34565746516a706876562b4a626436517959686b2f383d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%; margin-bottom: 15%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/180301-NanoPureUHPDIAPHRAGMVALVE.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    NanoPure UHP DIAPHRAGM VALVE\n                </h2>\n                <p>\n                    \"NanoPure\" is a brand of Gas Delivery Total Solution, belongs to King Lai Group, who was founded 1991 in Taiwan and expanded production facility in Kunshan, Jiangsu Province, China. Supplying tubing/piping and fitting materials service for Semiconductor, FPD, LED and Photovoltaic industries, the core idea of \"NanoPure\" is providing \"Hygienic materials\" with high quality components for gas delivery applications.\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/754462702f587a716b304163634f364152623279746d526957542b4a4249317a4a556f7766512b4c385a733d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%; margin-bottom: 15%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/180307-NanoPure Compression Tube Fittings.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    NanoPure Compression Tube Fittings\n                </h2>\n                <p>\n                    \"NanoPure\" is a brand of Gas Delivery Total Solution, belongs to King Lai Group, who was founded 1991 in Taiwan and expanded production facility in Kunshan, Jiangsu Province, China. Supplying tubing/piping and fitting materials service for Semiconductor, FPD, LED and Photovoltaic industries, the core idea of \"NanoPure\" is providing \"Hygienic materials\" with high quality components for gas delivery applications.\n                </p>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <center>\n        <a href=\"#pageTop\">\n            GO TOP\n        </a>\n    </center>\n    <nav class=\"page-nav\">\n        <nav class=\"page-nav\">\n            <p>\n            </p>\n        </nav>\n    </nav>\n</section>\n<section class=\"center-2\" id=\"brochures\">\n    <h2 style=\"font-size: 1.2em; line-height: 1.3em; font-weight: 600; letter-spacing: -0.02em; border-bottom: 1px solid #e5e5e5; padding-bottom: 10px; margin-bottom: 25px;\">\n        <strong>\n            <span style=\"font-size: 16pt;\">\n                Brochures\n            </span>\n        </strong>\n    </h2>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/6543696370386b6651713030437944585450757062784b4d65347951796a482f484f5357342f446375796b3d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/AdvanTorrVacuumValves-eDM.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    AdvanTorr Vacuum Valves- eDM\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/5a4f3530496837492b672b77585a54796b362b664e776569477a593130706f68734f6835594c7a6c41396f3d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/Heating-Jacket.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    Heating Jacket- eDM\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/35716648774d74734d6a346f5a79696353625a3478632f416e7a46654e3648537534317a725136396e6b6f3d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/AdvanTorr-Vacuum-Products-edm.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    <span lang=\"EN-US\">\n                        AdvanTorr Vacuum Products eDM\n                    </span>\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/6371453841517971747433394d6344764c4e7852437355616a584546714d4f6e417351735055314d2f306b3d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/Viewport-LED-Light.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    Viewport LED Light-eDM\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/316a6c714a6b57794253784b4c37726b655a65586d523634325474524a506165666c4f56447441495636453d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/Bubbler-Cylinders-Catalogue1.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    Bubbler Cylinders Catalogue-eDM\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <!-- add on 20180628 -->\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/7868534244786936424e354e6359735a546e58416343714344635348524c714136495772636262316331733d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/LION-General-Industry.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    LION General Industry Brochure-eDM\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/706c4f4e62616f564b2f63576b42314d446b4f4c7534344673384e496e6d5067747737504d6875306252733d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/LION-Semicon-Industry.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    LION Semicon Industry Brochure-eDM\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <center>\n        <a href=\"#pageTop\">\n            GO TOP\n        </a>\n    </center>\n    <nav class=\"page-nav\">\n        <p>\n        </p>\n    </nav>\n</section>\n<section class=\"center-2\" id=\"manuals\">\n    <h2 style=\"font-size: 1.2em; line-height: 1.3em; font-weight: 600; letter-spacing: -0.02em; border-bottom: 1px solid #e5e5e5; padding-bottom: 10px; margin-bottom: 25px;\">\n        <span style=\"font-size: 16pt;\">\n            <strong>\n                Manuals\n            </strong>\n        </span>\n    </h2>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/42773559764349394f6a6e433258346a4c506c3369515131536c7952444b555a50414a56416549384e4f673d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/SMART-Gate-Valves-Operation.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    SMART Gate Valves Operation Manual\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/43524c592f444e346e56753149455653744b566e6c6e536b6274324b3247416e786e644a502b537449764d3d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/Transfer-Slit-Valves-Operat.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    Transfer Slit Valves Operation Manual\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"infobox\" style=\"margin-bottom: 20px; background-color: #f5f5f5; border: 1px solid #dbdbdb; border-left-width: 1px; border-left-style: solid; border-left-color: #dbdbdb; border-left: none; padding: 15px 20px;\">\n        <div class=\"infobox-inner\">\n            <a class=\"button large\" href=\"http://ss.mailcloud.com.tw/url.php/2b32337a7a596f357758386e7337583432426453355159635748577957547256387a73624b4f42526678673d.pdf\" style=\"float: right; font-size: 1.333em; -webkit-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -moz-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -ms-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; -o-transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease, opacity 0.2s ease-in-out; background-color: #a50022; width: auto; display: inline-block; cursor: pointer; line-height: normal; margin: 0 10px 20px 0; border: none; border-radius: 3px; color: #fff !important; padding: 6px 15px; text-shadow: 0 -1px rgba(0, 0, 0, 0.2);\" target=\"_blank\">\n                DOWNLOAD\n            </a>\n            <div class=\"with-button\" style=\"width: 60%;\">\n                <div class=\"latestimg\" style=\"float: left; margin-right: 5%;\">\n                    <img alt=\"\" src=\"/Content/Images/uploaded/Vacuum-Poppet-Valves-Operat.jpg\" width=\"96\"/>\n                </div>\n                <h2 style=\"margin-bottom: 5px; padding: 0; border: none; font-size: 1.2em; line-height: 1.3em; font-weight: 600; vertical-align: baseline; background: transparent; letter-spacing: -0.02em;\">\n                    Vacuum Poppet Valves Operation Manual\n                </h2>\n            </div>\n            <div style=\"clear: both; height: 0;\">\n            </div>\n        </div>\n    </div>\n    <center>\n        <a href=\"#pageTop\">\n            GO TOP\n        </a>\n    </center>\n</section>",
 			"settings":
 			{
-				"buffer_size": 1489,
+				"buffer_size": 44405,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "String result = UserInfo.getLanguage();\nSystem.debug(result);\n\n\n \n\n        \n SapJsonStringBuilder sjb = new SapJsonStringBuilder();\n\n //getSelectFieldString('物件名','給null就是找該物件全部欄位')\n \n String sql1 = sjb.getSelectFieldString('Approval_Managed__c',null) + ' from ' + 'Approval_Managed__c' + ' '+' WHERE ' + 'id' + ' = \\'' + 'a010I00001o2EuOQAU' + '\\'' ;\n\n String sql = sjb.getSelectFieldString('Approval_Managed_Item__c',null) + ' from ' + 'Approval_Managed_Item__c' + ' '+' WHERE ' + 'LeaveManage__c' + ' = \\'' + 'a010I00001o2EuOQAU' + '\\'' ;\n\n//setMaster(主表資料);\nsjb.setMaster(Database.query(sql1).get(0));\n//setMaster(所有子項);\nsjb.setDetails(Database.query(sql));\n\n//getJson('SAP函數名稱', 'SAP辨識子項的關鍵字', 'INSERT UPDATE等...以SAP的判斷為主,查詢SAP資料可以給 null')\nString SAPQueryResult = Utils.postToSAP( sjb.getJson('LEAVE_TW', 'leaveItem', null));\nSystem.debug(SAPQueryResult);\n// String SAPQueryResult = Utils.postSAP()",
+			"file": "src/classes/SapApprovalEnum.cls",
 			"settings":
 			{
-				"buffer_size": 903,
+				"buffer_size": 7927,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/ApprovalHomeController.cls",
+			"settings":
+			{
+				"buffer_size": 21518,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMSalesOrderDatatableExtension.cls",
+			"settings":
+			{
+				"buffer_size": 10390,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/SampleExtension.cls",
+			"settings":
+			{
+				"buffer_size": 3312,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/AMLeaveApplication.page",
+			"settings":
+			{
+				"buffer_size": 20178,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/AMLeaveApplicationExtension.cls",
+			"settings":
+			{
+				"buffer_size": 14700,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/MeetingMinutesMainPageController.cls",
+			"settings":
+			{
+				"buffer_size": 9292,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "resource-bundles/JSbundle.resource/app/RWD-Table.css",
+			"settings":
+			{
+				"buffer_size": 1085,
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/toolingapi.sublime-settings",
+			"settings":
+			{
+				"buffer_size": 1207,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/MeetingMinutesQueryPageController.cls",
+			"settings":
+			{
+				"buffer_size": 526,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/SObjectUtils.cls",
+			"settings":
+			{
+				"buffer_size": 2409,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/Peoples.cls",
+			"settings":
+			{
+				"buffer_size": 3013,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 1123 files for \"SObjectUtils\"\n\nD:\\mmworkspace\\TestEvn\\config\\.local_store:\n 2396          \"mmState\": \"clean\"\n 2397      },\n 2398:     \"SObjectUtils.cls\": {\n 2399          \"createdById\": \"00528000005lirpAAA\",\n 2400          \"createdByName\": \"Lee Martin\",\n 2401          \"createdDate\": \"2018-01-15T03:49:07.000Z\",\n 2402:         \"fileName\": \"unpackaged/classes/SObjectUtils.cls\",\n 2403:         \"fullName\": \"SObjectUtils\",\n 2404          \"id\": \"01pO0000000buYnIAI\",\n 2405          \"lastModifiedById\": \"00528000005lirpAAA\",\n ....\n 7372          \"mmState\": \"clean\"\n 7373      },\n 7374:     \"SObjectUtilsTest.cls\": {\n 7375          \"createdById\": \"00528000005lirpAAA\",\n 7376          \"createdByName\": \"Lee Martin\",\n 7377          \"createdDate\": \"2018-01-24T07:03:34.000Z\",\n 7378:         \"fileName\": \"unpackaged/classes/SObjectUtilsTest.cls\",\n 7379:         \"fullName\": \"SObjectUtilsTest\",\n 7380          \"id\": \"01pO0000000bw7oIAA\",\n 7381          \"lastModifiedById\": \"00528000005lirpAAA\",\n\nD:\\mmworkspace\\TestEvn\\config\\.org_metadata:\n 6273                  \"createdByName\": \"Lee Martin\",\n 6274                  \"createdDate\": \"2018-01-15T03:49:07.000Z\",\n 6275:                 \"fileName\": \"classes/SObjectUtils.cls\",\n 6276:                 \"fullName\": \"SObjectUtils\",\n 6277:                 \"id\": \"ApexClass.SObjectUtils\",\n 6278                  \"lastModifiedById\": \"00528000005lirpAAA\",\n 6279                  \"lastModifiedByName\": \"Lee Martin\",\n ....\n 6282                  \"type\": \"ApexClass\",\n 6283                  \"leaf\": true,\n 6284:                 \"title\": \"SObjectUtils\",\n 6285                  \"checked\": false,\n 6286:                 \"text\": \"SObjectUtils\",\n 6287                  \"cls\": \"\",\n 6288                  \"level\": 2,\n ....\n 6295                  \"createdByName\": \"Lee Martin\",\n 6296                  \"createdDate\": \"2018-01-24T07:03:34.000Z\",\n 6297:                 \"fileName\": \"classes/SObjectUtilsTest.cls\",\n 6298:                 \"fullName\": \"SObjectUtilsTest\",\n 6299:                 \"id\": \"ApexClass.SObjectUtilsTest\",\n 6300                  \"lastModifiedById\": \"00528000005lirpAAA\",\n 6301                  \"lastModifiedByName\": \"Lee Martin\",\n ....\n 6304                  \"type\": \"ApexClass\",\n 6305                  \"leaf\": true,\n 6306:                 \"title\": \"SObjectUtilsTest\",\n 6307                  \"checked\": false,\n 6308:                 \"text\": \"SObjectUtilsTest\",\n 6309                  \"cls\": \"\",\n 6310                  \"level\": 2,\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\AMClockInAndOutApplicationExtension.cls:\n   12          if (con.getId() == null)\n   13          {\n   14:             am = (Approval_Managed__c)SObjectUtils.init(am);\n   15  \n   16          }\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\AMLeaveApplicationExtension.cls:\n   25          if (con.getId() == null)\n   26          {\n   27:             am = (Approval_Managed__c)SObjectUtils.init(am);\n   28  \n   29          }\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\AMSalesOrderDatatableExtension.cls:\n   31          if (con.getId() == null)\n   32          {\n   33:             am = (Custom_Approval_Managed__c)SObjectUtils.init(am);\n   34  \n   35          }\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\LeaveQueryController.cls:\n   17          Id recType = HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.LEAVEAPPLICATION, 'Approval_Managed__c');\n   18          \n   19:         String sql = 'Select LeaveManage__r.Approval_Status__c,' + SObjectUtils.getAllFields(sobjName).get(sobjName) + ' from ' + sobjName;\n   20  \n   21          Map<String,String> inputMap = new Map<String,String>();\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\SampleExtension.cls:\n   41          if (con.getId() == null)\n   42          {\n   43:             am = (Approval_Managed__c)SObjectUtils.init(am);\n   44  \n   45          }\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\SapInputArgCreateForLeaveApplication.cls:\n    3      //创建传送给SAP Web Service的请假参数STEP1\n    4      public static String createSapAmleaveInputArgs(String amleaveId){\n    5:         String sql = 'Select ' + SObjectUtils.getAllFields('Approval_Managed__c').get('Approval_Managed__c')+' from Approval_Managed__c ' ;\n    6          sql = sql + ' WHERE Id = \\'' + amleaveId + '\\'';\n    7          System.debug(sql);\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\SapJsonStringBuilder.cls:\n   84              fields = fields.removeEnd(',');\n   85          }else{\n   86:             fields = SObjectUtils.getAllFields(sobjName).get(sobjName);\n   87          }\n   88  \n\nD:\\mmworkspace\\TestEvn\\src\\classes\\SOApprovalDemo.cls:\n   15          if (con.getId() != null)\n   16          {\n   17:             cam = (Custom_Approval_Managed__c)SObjectUtils.init(cam);\n   18              /***\n   19              \t此處可編輯一進入審批畫面要執行的邏輯\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\SObjectUtils.cls:\n    1: public with sharing class SObjectUtils\n    2  {\n    3      // 物件取得所有欄位\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\SObjectUtilsTest.cls:\n    1  @isTest\n    2: public  class SObjectUtilsTest {\n    3  \t@isTest\n    4  \tstatic void go() {\n    .\n   16          \tContact con2 = new Contact(LastName = 'bbb', number__c = '30210999', SF_User__c = usr.id );\n   17          \tinsert con2;\n   18: \t        SObjectUtils.getAllFields('Approval_Managed__c');\n   19  \t        \n   20: \t        SObjectUtils.init(new Approval_Managed__c());\n   21  \t    }\n   22          Test.stopTest();\n\nD:\\mmworkspace\\TestEvn\\src\\classes\\VFShowInApprovalExtension.cls:\n   50          {\n   51               String sql = '';\n   52:             sql += 'Select ' + SObjectUtils.getAllFields(sobjName).get(sobjName) + ' from ' + sobjName;\n   53              sql += ' WHERE Id = \\'' + stdController.getId() + '\\'';\n   54              System.debug(sql);\n   ..\n   97                  String dSql = '';\n   98           \n   99:                 dSql += 'Select ' + SObjectUtils.getAllFields(DetailSobjName).get(DetailSobjName) + ' from ' + DetailSobjName;\n  100                  dSql += ' WHERE ' + MasterKey + '= \\'' + stdController.getId() + '\\'';\n  101                  System.debug('detail Sql =' + dSql);\n\n30 matches across 13 files\n",
+			"settings":
+			{
+				"buffer_size": 6078,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "src/classes/AMClockInAndOutApplicationExtension.cls",
+			"settings":
+			{
+				"buffer_size": 2671,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/Utils.cls",
+			"settings":
+			{
+				"buffer_size": 106816,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "String result = UserInfo.getLanguage();\nSystem.debug(result);\n\n\n \n\n        \n SapJsonStringBuilder sjb = new SapJsonStringBuilder();\n\n //getSelectFieldString('物件名','給null就是找該物件全部欄位')\n \n String sql1 = sjb.getSelectFieldString('Approval_Managed__c',null) + ' from ' + 'Approval_Managed__c' + ' '+' WHERE ' + 'id' + ' = \\'' + 'a010I00001o2EuOQAU' + '\\'' ;\n\n String sql = sjb.getSelectFieldString('Approval_Managed_Item__c',null) + ' from ' + 'Approval_Managed_Item__c' + ' '+' WHERE ' + 'LeaveManage__c' + ' = \\'' + 'a010I00001o2EuOQAU' + '\\'' ;\n\n//setMaster(主表資料);\nsjb.setMaster(Database.query(sql1).get(0));\n//setMaster(所有子項);\nsjb.setDetails(Database.query(sql));\n\n//getJson('SAP函數名稱', 'SAP辨識子項的關鍵字', 'INSERT UPDATE等...以SAP的判斷為主,查詢SAP資料可以給 null')\nString SAPQueryResult = Utils.postToSAP( sjb.getJson('LEAVE_TW', 'leaveItem', null));\nSystem.debug(SAPQueryResult);\n// String SAPQueryResult = Utils.postSAP()\n// \n// \nset<String>  setSFID = new set<String>();\nsetSFID.add('00528000006o8Ex');\nUtils.ManualShareRecordToUsers(setSFID, 'Approval_Managed1__c', 'a070I00000dt0dBQAQ');\nUtils.ManualShareRecordToUsers(setSFID, 'Approval_Managed1__c', 'a070I00000dt0dLQAQ');\nUtils.ManualShareRecordToUsers(setSFID, 'Approval_Managed1__c', 'a070I00000dt0dbQAA');\nUtils.ManualShareRecordToUsers(setSFID, 'Approval_Managed1__c', 'a070I00000dt0dlQAA');\nUtils.ManualShareRecordToUsers(setSFID, 'Approval_Managed1__c', 'a070I00000dt2HoQAI');  \nUtils.ManualShareRecordToUsers(setSFID, 'Approval_Managed1__c', 'a070I00000dt3QoQAI');  ",
+			"settings":
+			{
+				"buffer_size": 1511,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
+			"settings":
+			{
+				"buffer_size": 10963,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/classes/LeaveQueryController.cls",
+			"settings":
+			{
+				"buffer_size": 1708,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
 			}
 		},
 		{
@@ -551,11 +703,18 @@
 	"expanded_folders":
 	[
 		"/D/mmworkspace/TestEvn",
+		"/D/mmworkspace/TestEvn/resource-bundles",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/AMLeaveApplication",
+		"/D/mmworkspace/TestEvn/resource-bundles/JSbundle.resource/app/MeetingMinutes",
 		"/D/mmworkspace/TestEvn/src",
-		"/D/mmworkspace/TestEvn/src/components"
+		"/D/mmworkspace/TestEvn/src/pages"
 	],
 	"file_history":
 	[
+		"/D/mmworkspace/TestEvn/src/pages/AMSalesOrderDatatable.page",
+		"/D/mmworkspace/TestEvn/src/classes/Utils.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SapApprovalEnum.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMEducationTraining.page",
 		"/D/mmworkspace/TestEvn/src/classes/ApproverUtilsTest.cls",
@@ -576,7 +735,6 @@
 		"/D/mmworkspace/TestEvn/src/classes/AMAdvanceChargeExtensionTest.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SampleExtension.cls",
 		"/D/mmworkspace/TestEvn/src/pages/SamplePage.page",
-		"/D/mmworkspace/TestEvn/src/classes/Utils.cls",
 		"/D/mmworkspace/TestEvn/src/classes/AMSaleOrderHandler.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SapJsonStringBuilder.cls",
 		"/D/mmworkspace/TestEvn/src/pages/AMBusinessTravel.page",
@@ -682,12 +840,11 @@
 		"/D/mmworkspace/TestEvn/src/classes/AMLeave.cls",
 		"/D/mmworkspace/TestEvn/src/classes/SyncSapToSfReturnArgs.cls",
 		"/D/mmworkspace/TestEvn/src/classes/ApprovalContactExtension.cls",
-		"/D/mmworkspace/TestEvn/src/pages/ApprovalContact.page",
-		"/D/mmworkspace/TestEvn/src/triggers/MeetingMinutesTaskTrigger.trigger"
+		"/D/mmworkspace/TestEvn/src/pages/ApprovalContact.page"
 	],
 	"find":
 	{
-		"height": 27.0
+		"height": 40.0
 	},
 	"find_in_files":
 	{
@@ -706,6 +863,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"AdvanTorr Vacuum Valves",
+			"AdvanTorr Vacuum Valves-eDM",
+			"SObjectUtils",
+			"op",
 			"getRecordTypeIdByDevNameAndObjName",
 			"insertString",
 			"HarryUtils",
@@ -829,11 +990,7 @@
 			"term",
 			"none",
 			"Term_of_Payment_Corp__c",
-			"API",
-			"供应商",
-			"Custom_Approval_Managed__c",
-			"供应商",
-			"field"
+			"API"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -862,23 +1019,23 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1489,
+						"buffer_size": 44405,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								639,
-								639
+								0,
+								44405
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 385.0,
+						"translation.y": 6588.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -886,18 +1043,597 @@
 				},
 				{
 					"buffer": 1,
+					"file": "src/classes/SapApprovalEnum.cls",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 903,
+						"buffer_size": 7927,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								903,
-								903
+								181,
+								181
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 21,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/classes/ApprovalHomeController.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 21518,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4842,
+								4842
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1374.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 20,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/classes/AMSalesOrderDatatableExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10390,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								65,
+								90
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 114.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/classes/SampleExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3312,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1024,
+								1024
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/pages/AMLeaveApplication.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 20178,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6100,
+								6114
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Visualforce.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2451.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/classes/AMLeaveApplicationExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14700,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13029,
+								13029
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7467.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/classes/MeetingMinutesMainPageController.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9292,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1357,
+								1357
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 399.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "resource-bundles/JSbundle.resource/app/RWD-Table.css",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 1085,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								243,
+								243
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 114.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/C/Users/young_cheng/AppData/Roaming/Sublime Text 3/Packages/User/toolingapi.sublime-settings",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1207,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								608,
+								608
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "src/classes/MeetingMinutesQueryPageController.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 526,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								524,
+								524
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "src/classes/SObjectUtils.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2409,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1380,
+								1380
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 481.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "src/classes/Peoples.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3013,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								70,
+								70
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6078,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										145,
+										157
+									],
+									[
+										369,
+										381
+									],
+									[
+										416,
+										428
+									],
+									[
+										597,
+										609
+									],
+									[
+										825,
+										837
+									],
+									[
+										876,
+										888
+									],
+									[
+										1205,
+										1217
+									],
+									[
+										1260,
+										1272
+									],
+									[
+										1315,
+										1327
+									],
+									[
+										1574,
+										1586
+									],
+									[
+										1662,
+										1674
+									],
+									[
+										1916,
+										1928
+									],
+									[
+										1975,
+										1987
+									],
+									[
+										2034,
+										2046
+									],
+									[
+										2297,
+										2309
+									],
+									[
+										2389,
+										2401
+									],
+									[
+										2656,
+										2668
+									],
+									[
+										2875,
+										2887
+									],
+									[
+										3104,
+										3116
+									],
+									[
+										3436,
+										3448
+									],
+									[
+										3747,
+										3759
+									],
+									[
+										4034,
+										4046
+									],
+									[
+										4402,
+										4414
+									],
+									[
+										4644,
+										4656
+									],
+									[
+										4818,
+										4830
+									],
+									[
+										4957,
+										4969
+									],
+									[
+										5178,
+										5190
+									],
+									[
+										5261,
+										5273
+									],
+									[
+										5512,
+										5524
+									],
+									[
+										5805,
+										5817
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								2528,
+								2528
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1026.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 18,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "src/classes/AMClockInAndOutApplicationExtension.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2671,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								685,
+								685
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "src/classes/Utils.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 106816,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								425,
+								1029
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 114.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1511,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1160,
+								1247
 							]
 						],
 						"settings":
@@ -905,14 +1641,74 @@
 							"syntax": "Packages/Java/Java.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 255.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 17,
+					"file": "resource-bundles/JSbundle.resource/app/AMLeaveApplication/AMLeaveApplicationJS.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10963,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								12,
+								12
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "src/classes/LeaveQueryController.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1708,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								179,
+								179
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MavensMate/sublime/lang/Apex.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
 					"semi_transient": false,
 					"settings":
 					{
@@ -935,11 +1731,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 20,
 					"semi_transient": false,
 					"settings":
 					{
@@ -950,8 +1746,8 @@
 						"selection":
 						[
 							[
-								715,
-								544
+								716,
+								716
 							]
 						],
 						"settings":
@@ -964,11 +1760,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 21,
 					"semi_transient": false,
 					"settings":
 					{
@@ -988,10 +1784,10 @@
 							"syntax": "Packages/HTML/HTML.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 996.0,
+						"translation.y": 84.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 14,
 					"type": "text"
 				}
 			]
@@ -1034,7 +1830,7 @@
 	},
 	"output.error":
 	{
-		"height": 89.0
+		"height": 56.0
 	},
 	"output.find_results":
 	{
@@ -1053,6 +1849,42 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"meet",
+				"src\\classes\\MeetingMinutesQueryPageController.cls"
+			],
+			[
+				"amleave",
+				"src\\pages\\AMLeaveApplication.page"
+			],
+			[
+				"sobj",
+				"src\\classes\\SObjectUtils.cls"
+			],
+			[
+				"amlea",
+				"src\\classes\\AMLeaveApplicationExtension.cls"
+			],
+			[
+				"sampleex",
+				"src\\classes\\SampleExtension.cls"
+			],
+			[
+				"amsalesord",
+				"src\\pages\\AMSalesOrderDatatable.page"
+			],
+			[
+				"amsalesorderdatatableextension",
+				"src\\classes\\AMSalesOrderDatatableExtension.cls"
+			],
+			[
+				"home",
+				"src\\classes\\ApprovalHomeController.cls"
+			],
+			[
+				"saoen",
+				"src\\classes\\SapApprovalEnum.cls"
+			],
 			[
 				"sape",
 				"src\\classes\\SapApprovalEnum.cls"
@@ -1084,10 +1916,6 @@
 			[
 				"handler",
 				"src\\classes\\AMSaleOrderHandler.cls"
-			],
-			[
-				"home",
-				"src\\classes\\ApprovalHomeController.cls"
 			],
 			[
 				"sample",
@@ -1148,10 +1976,6 @@
 			[
 				"approvalhome",
 				"src\\pages\\ApprovalHome.page"
-			],
-			[
-				"sobj",
-				"src\\classes\\SObjectUtils.cls"
 			],
 			[
 				"trav",
@@ -1230,10 +2054,6 @@
 				"src\\classes\\AMITServiceRequestHandler.cls"
 			],
 			[
-				"amleave",
-				"src\\classes\\AMLeaveApplicationExtension.cls"
-			],
-			[
 				"ameduca",
 				"src\\pages\\AMEducationTraining.page"
 			],
@@ -1288,10 +2108,6 @@
 			[
 				"sapin",
 				"src\\classes\\SapInputArgCreate.cls"
-			],
-			[
-				"meet",
-				"src\\classes\\MeetingMinutesMainPageController.cls"
 			],
 			[
 				"approval",
@@ -1544,26 +2360,6 @@
 			[
 				"amver",
 				"src\\pages\\AMVendor.page"
-			],
-			[
-				"p",
-				"src\\classes\\Peoples.cls"
-			],
-			[
-				"vendorc",
-				"src\\classes\\AMVendorClaimHandler.cls"
-			],
-			[
-				"util",
-				"src\\classes\\Utils.cls"
-			],
-			[
-				"appro",
-				"src\\pages\\ApprovalContact.page"
-			],
-			[
-				"4q",
-				"src\\classes\\RemoteAction4Query.cls"
 			]
 		],
 		"width": 0.0
@@ -1594,7 +2390,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 524.0,
+	"side_bar_width": 116.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

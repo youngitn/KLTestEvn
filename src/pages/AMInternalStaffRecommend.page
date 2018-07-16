@@ -1,0 +1,41 @@
+<apex:page standardController="Approval_Managed2__c" extensions="AMInternalStaffRecommendExtension" >
+<!-- 内部员工引荐详细信息 -->
+<html>
+<body>
+<apex:sectionHeader title="内部员工引荐流程" subtitle="新建/内部员工引荐流程"></apex:sectionHeader>
+    <apex:pageMessages escape="true"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="保存"/>
+                <apex:commandButton action="{!cancel}" value="取消"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="标准审批编辑" collapsible="false">
+                <!-- 申请人(工号) -->
+                <apex:outputField value="{!am.Applicant_Code__c}"></apex:outputField>
+                <!-- 流程名称 -->
+                <apex:outputField value="{!am.Approval_Name__c}"></apex:outputField>
+                <!-- 申请人(姓名) -->
+                <apex:outputField value="{!am.Applicant_Name__c}"></apex:outputField>
+                <!-- 申请人部门 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 申请人公司代码 -->
+                <apex:outputField value="{!am.Dept_Name__c}"></apex:outputField>
+                <!-- 单据日期-->
+                <apex:outputField value="{!am.Bill_Date__c}"></apex:outputField>
+                <!-- 审核状态 -->
+                <apex:outputField value="{!am.Approval_Status__c}"></apex:outputField>
+
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="内部员工引荐详细信息" collapsible="false">
+                <apex:inputField value="{!am.Introducer__c}" required="true"  ></apex:inputField>
+                <apex:inputField value="{!am.TheIntroducer__c}" required="true"  ></apex:inputField>
+                <apex:inputField value="{!am.IntroducerDept__c}" required="true"  ></apex:inputField>
+
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>>
+</body>
+</html>
+</apex:page>

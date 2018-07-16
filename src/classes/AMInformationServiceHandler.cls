@@ -232,10 +232,6 @@ public without sharing class AMInformationServiceHandler implements Triggers.Han
             lstID.add(utils.getUserByEmployeeCode('10210225')); //徐井西
         }
 
-        if (cam.Factory__c == '3000' && cam.ServiceCategory__c =='270') {
-          lstID.add(utils.getUserByEmployeeCode('30210240')); // 李軏瀚          
-        }
-
          if (cam.Factory__c != '3000' && (cam.ServiceCategory__c == '120' || cam.ServiceCategory__c == '270')) {
           lstID.add(utils.getUserByEmployeeCode('10210225')); //徐井西
         }
@@ -280,7 +276,7 @@ public without sharing class AMInformationServiceHandler implements Triggers.Han
         //TW 
         if (cam.Factory__c == '3000' && (cam.ServiceCategory__c == '100' || cam.ServiceCategory__c == '110'|| cam.ServiceCategory__c == '111'))
         {
-          lstID.add(utils.getUserByEmployeeCode('30210086')); //
+          lstID.add(utils.getUserByEmployeeCode('30210380')); //
         }
         if (cam.Factory__c == '3000' && (cam.ServiceCategory__c == '160' || cam.ServiceCategory__c == '170'|| cam.ServiceCategory__c == '180'|| cam.ServiceCategory__c == '181'))
         {
@@ -301,6 +297,9 @@ public without sharing class AMInformationServiceHandler implements Triggers.Han
              { 
           lstID.add(utils.getUserByEmployeeCode('30210086')); //
              }
+        }
+        if (cam.Factory__c == '3000' && cam.ServiceCategory__c =='270') {
+          lstID.add(utils.getUserByEmployeeCode('30210086')); // 李軏瀚          
         }
 
         //TW 

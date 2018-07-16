@@ -1,6 +1,6 @@
 // 销售订单审批流程
 
-public with sharing class AMSaleOrderExtension {
+public with sharing class AMSaleOrderExtension  {
 
     public Custom_Approval_Managed__c am {get; set;}
 
@@ -26,6 +26,9 @@ public with sharing class AMSaleOrderExtension {
 
 
     public AMSaleOrderExtension(ApexPages.StandardController con) {
+
+      
+
         recTypeDetailTd = HarryUtils.getRecordTypeIdByDevNameAndObjName('Sale_Order_Detail','Custom_Approval_Managed_Item__c');
         recTypeHeaderId = HarryUtils.getRecordTypeIdByDevNameAndObjName('Sale_Order_Detail_Header','Custom_Approval_Managed_Item__c');
         recTypeRowId = HarryUtils.getRecordTypeIdByDevNameAndObjName('Sale_Order_Detail_Row','Custom_Approval_Managed_Item__c');
@@ -55,7 +58,7 @@ public with sharing class AMSaleOrderExtension {
           Custom_Approval_Managed__c  am= new  Custom_Approval_Managed__c();
           am=  (Custom_Approval_Managed__c )con.getRecord();
 
-        list1 = [SELECT RecordTypeId,Sales_Order__c,Index_Item__c, Material_Number__c, Material_Name__c,
+        list1 = [SELECT Name,RecordTypeId,Sales_Order__c,Index_Item__c, Material_Number__c, Material_Name__c,
                  Material_Description__c, Quantity__c, Unit__c, Status_Overview__c,
                  Material_of_Customer__c, Schedule_Date__c, Price_Net__c, Currency__c
                  FROM Custom_Approval_Managed_Item__c WHERE Sales_Order__c = :amId ];

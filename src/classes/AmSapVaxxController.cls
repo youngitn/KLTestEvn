@@ -16,6 +16,8 @@ global class AmSapVaxxController {
 
     public AmSapVaxxController() {
     	Map<String, String> params = ApexPages.currentPage().getParameters();
+        System.debug('params的值：'+params);
+
     	if(params.containsKey('vbeln')){
 	    	String Vbeln = params.get('vbeln');
 	    	InfoText = '订单:' + Vbeln;
@@ -25,6 +27,17 @@ global class AmSapVaxxController {
             InfoText = '未找到订单编号';
 	    }
     }
+
+    public boolean displayPopup {get; set;}
+ 
+    public void closePopup() {
+        displayPopup = false;
+    }
+ 
+    public void showPopup() {
+        displayPopup = true;
+    }
+
 
     public void ListSapVaxx(String Vbeln){
     	//从SAP中获取单据信息
@@ -72,7 +85,8 @@ global class AmSapVaxxController {
     	SyncSapToSfReturnArgs args = null;
     	try{
 	    	args = (SyncSapToSfReturnArgs)JSON.deserialize(sapJson,SyncSapToSfReturnArgs.class);
-    	}catch(Exception ex){
+    	    System.debug('args的值:'+args);
+        }catch(Exception ex){
             InfoText = '从SAP获取数据失败';
             System.debug('************************************************');
             System.debug('' + ex.getMessage() + '\n' + ex.getStackTraceString());
@@ -80,34 +94,38 @@ global class AmSapVaxxController {
             return;
     	}
     	//填充到行项目
-    	main = (Custom_Approval_Managed__c)JSON.deserialize(JSON.serialize(args.content.main), Custom_Approval_Managed__c.class);
-        System.debug(LoggingLevel.INFO, '*** main: ' + main);
+    	// main = (Custom_Approval_Managed__c)JSON.deserialize(JSON.serialize(args.content.main), Custom_Approval_Managed__c.class);
+     //    System.debug(LoggingLevel.INFO, '*** main: ' + main);
 
-        mapItems = new Map<String,Custom_Approval_Managed_Item__c>();
+        // mapItems = new Map<String,Custom_Approval_Managed_Item__c>();
         items = new List<Custom_Approval_Managed_item__c> ();
         zrows = new List<Custom_Approval_Managed_item__c> ();
-        headers = new List<Custom_Approval_Managed_item__c> ();
         partners = new List<Contact> ();
-
+        
+        // 销售订单明细
         if(args.content.details.containsKey('items')){
             items = (List<Custom_Approval_Managed_item__c>)JSON.deserialize(JSON.serialize(args.content.details.get('items')), List<Custom_Approval_Managed_item__c>.class);
+            System.debug('items的值：'+items);
             for(Custom_Approval_Managed_item__c citems:items){
                 //因为公式字段不能赋值，所以前台用其他未用到的变量进行显示
                 //citems.Price_Net_P__c = citems.Price_Net__c; 
                 citems.Price_of_Last__c = citems.Price_Net__c;
-            }
+             }
         }
         if(args.content.details.containsKey('zrows')){
             zrows = (List<Custom_Approval_Managed_item__c>)JSON.deserialize(JSON.serialize(args.content.details.get('zrows')), List<Custom_Approval_Managed_item__c>.class);
+           System.debug('zrows的值：'+zrows);
         }
 
         if(args.content.details.containsKey('partners')){
            partners = (List<Contact>)JSON.deserialize(JSON.serialize(args.content.details.get('partners')), List<Contact>.class);
-       }
+           for(Contact cpartners:partners){
+                //因为公式字段不能赋值，所以前台用其他未用到的变量进行显示
+               cpartners.AssistantName = cpartners.LastName ;
+           }
+      }
 
-       if(args.content.details.containsKey('headers')){
-           headers = (List<Custom_Approval_Managed_item__c>)JSON.deserialize(JSON.serialize(args.content.details.get('headers')), List<Custom_Approval_Managed_item__c>.class);
-        }
+     
 
 
     }

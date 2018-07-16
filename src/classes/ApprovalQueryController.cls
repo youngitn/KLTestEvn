@@ -23,6 +23,9 @@ public without sharing class ApprovalQueryController {
     //public Boolean isUser{GET;SET;}
     //内部类，保存全部数据
     public List<AllApprovalData> allApproval {GET; SET;}
+
+    public Integer a  {GET; SET;}
+
     public ApprovalQueryController() {
         meta = new Metadata__c();
         standardApproval = new Approval_Managed__c();
@@ -64,7 +67,7 @@ public without sharing class ApprovalQueryController {
     public PageReference query() {
         System.debug(LoggingLevel.INFO, '*** Querystart!: ');
         allApproval = new List<AllApprovalData>();
-        String sqlSelect = 'SELECT Id, Name,SAPID__c, Approval_Name__c, Applicant__c, Applicant__r.Name, Dept_Name__c, Bill_Date__c,Approval_Status__c,RecordType.DeveloperName,Head_description__c,Interface_Info__c ';
+        String sqlSelect = 'SELECT Id, Name,SAPID__c,Approval_Name__c,Service_Desc__c, Applicant__c, Applicant__r.Name, Dept_Name__c, Bill_Date__c,Approval_Status__c,RecordType.DeveloperName,Head_description__c,Interface_Info__c ';
         String sqlFrom = ' FROM ';
         String sqlWhere = ' WHERE Id != null ';
         System.debug(LoggingLevel.INFO, '*** selectedStatusValue: ' + selectedStatusValue);
@@ -147,24 +150,28 @@ public without sharing class ApprovalQueryController {
 
         List<Approval_Managed__c> app = Database.query(sqlSelect + sqlFrom + ' Approval_Managed__c ' + sqlWhere);
         List<Custom_Approval_Managed__c> capp = Database.query(sqlSelect + sqlFrom + ' Custom_Approval_Managed__c ' + sqlWhere);
-        List<Approval_Managed1__c> app1 = Database.query(sqlSelect + sqlFrom + ' Approval_Managed1__c ' + sqlWhere);
+        List<Approval_Managed1__c> app1 = Database.query(sqlSelect+ sqlFrom + ' Approval_Managed1__c ' + sqlWhere);
         List<Approval_Managed2__c> app2 = Database.query(sqlSelect + sqlFrom + ' Approval_Managed2__c ' + sqlWhere);
 
         for (Approval_Managed__c am : app) {
             AllApprovalData  data = new AllApprovalData();
             data.Id = am.Id;
             data.Name = am.Name;
+            System.debug('data.data.Name的值'+data.Name);
             data.Original_Code = am.SAPID__c;
             data.Approval_Name = am.Approval_Name__c;
+            System.debug('data.Approval_Name的值'+data.Approval_Name);
             data.Applicant_Id = am.Applicant__c;
             data.Applicant_Name = am.Applicant__r.Name;
-
+            System.debug('data.Applicant_Name的值'+data.Applicant_Name);
             data.Dept_Name = am.Dept_Name__c;
+            System.debug('data.Dept_Name的值'+data.Dept_Name);
             data.Bill_Date = HarryUtils.date2string(am.Bill_Date__c);
             // data.Approver = approval2currentApproverMap.get(am.Id);
             data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
             data.Interface_Info = am.Interface_Info__c;
             data.Head_description = am.Head_description__c;
+            System.debug('data的值：123456'+data);
             allApproval.add(data);
         }
         for (Custom_Approval_Managed__c am : capp) {
@@ -196,7 +203,14 @@ public without sharing class ApprovalQueryController {
             // data.Approver = approval2currentApproverMap.get(am.Id);
             data.ApprovalStatus = getApprovalStatusName(am.Approval_Status__c);
             data.Interface_Info = am.Interface_Info__c;
-            data.Head_description = am.Head_description__c;
+            if(am.Head_description__c != null && am.Service_Desc__c != null){
+                data.Head_description = am.Head_description__c+am.Service_Desc__c;
+            }else if(am.Head_description__c == null){
+                data.Head_description =am.Service_Desc__c;
+            }else if(am.Service_Desc__c == null){
+                data.Head_description = am.Head_description__c;
+            }
+           
             allApproval.add(data);
         }
         for (Approval_Managed2__c am : app2) {
@@ -214,6 +228,7 @@ public without sharing class ApprovalQueryController {
             data.Interface_Info = am.Interface_Info__c;
             data.Head_description = am.Head_description__c;
             allApproval.add(data);
+            System.debug('***data:'+ data);
         }
         //计算相关记录的当前审批人
         Set<Id> setID = new Set<Id>();
@@ -233,7 +248,14 @@ public without sharing class ApprovalQueryController {
                 ald.Approver = mapPIW.get(ald.Id).Actor.Name;
             }
         }
-
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
+        a=1;
         return null;
     }
     public PageReference importExcel(){

@@ -1,11 +1,62 @@
 <!--> 
- 名    称：资产转移报废停用申请流程
+ 名    称：资产转移报废停用申请流程 
  作    者：刘忠林 
  创建日期：2018-3-7
 <-->
 
 <apex:page standardController="Approval_Managed__c" extensions="AMAssetsTransferExtension">
 <html>
+    <apex:includeScript value="{!URLFOR($Resource.jquery,'media/js/jquery.js')}" />
+    <script>
+    var j$ = jQuery.noConflict();
+       //阻止事件继续进行
+    var EventUtil = {
+        preventDefault: function(event){
+            if(event.preventDefault){
+                event.preventDefault();
+            } else {
+                event.returnValue = false;
+            }
+        }
+    };
+    function toggleData(){
+        var cmb = j$("select[id$='ChangeType']");
+        var approvalValue = cmb.val();
+        console.log('approvalValue: ' + approvalValue);
+            
+        var desc1 = j$("[id$='ChangeCostCenter']");
+        var desc2 = j$("[id$='ScrapDate']");
+        var desc3 = j$("[id$='Work_Company_New']");
+        var desc4 = j$("[id$='Post_transfer_site']");
+
+        if (approvalValue == '1') {
+            desc1.show();
+            desc1.parent().prev().children("label").show();
+
+            desc2.hide();
+            desc2.parent().prev().children("label").hide();
+
+            desc3.show();
+            desc3.parent().prev().children("label").show();
+
+            desc4.show();
+            desc4.parent().prev().children("label").show();
+        }else {
+            desc1.hide();
+            desc1.parent().prev().children("label").hide();
+
+            desc2.show();
+            desc2.parent().prev().children("label").show();
+
+            desc3.hide();
+            desc3.parent().prev().children("label").hide();
+
+            desc4.hide();
+            desc4.parent().prev().children("label").hide();
+        }
+    }        
+                
+    </script>
 <body>
 <apex:sectionHeader title="资产转移报废停用申请流程" subtitle="新建/资产转移报废停用申请流程"></apex:sectionHeader>
     <apex:pageMessages escape="true"></apex:pageMessages> 
@@ -39,7 +90,7 @@
  
             <apex:pageBlockSection title="头信息" collapsible="false">
             	<!-- 变更类型 -->
-            	<apex:inputField value="{!am.ChangeType__c}" required="true"></apex:inputField>
+            	<apex:inputField id="ChangeType" value="{!am.ChangeType__c}" required="true" onchange="toggleData()"></apex:inputField>
             	<!-- 公司代码 -->
             	<apex:inputField value="{!am.Corporation__c}" required="true"></apex:inputField>
                 <!-- 资产编号 -->
@@ -67,13 +118,16 @@
             	<!-- 实物资产分类 -->
             	<apex:inputField value="{!am.Entity_asset_type__c}" ></apex:inputField>
             	<!-- 变更成本中心 -->
-            	<apex:inputField value="{!am.ChangeCostCenter__c}" ></apex:inputField>
+            	<apex:inputField id="ChangeCostCenter" value="{!am.ChangeCostCenter__c}" ></apex:inputField>
             	<!-- 报废/停用日期 -->
-            	<apex:inputField value="{!am.ScrapDate__c}" ></apex:inputField>
-            	<!-- 转移后地点 -->
-            	<apex:inputField value="{!am.Post_transfer_site__c}" ></apex:inputField>
+            	<apex:inputField id="ScrapDate" value="{!am.ScrapDate__c}" ></apex:inputField>
+                <!-- 异动工作单位 -->
+                <apex:inputField id="Work_Company_New" value="{!am.Work_Company_New__c}"></apex:inputField>
+            	
             	<!-- 供应商编号 -->
             	<apex:outputField value="{!am.Vendor_Number__c}" ></apex:outputField>
+                <!-- 转移后地点 -->
+                <apex:inputField id="Post_transfer_site" value="{!am.Post_transfer_site__c}" ></apex:inputField>
             	<!-- 备注信息（文本） -->
             	<apex:inputField value="{!am.Remark__c}" style="width: 100%"></apex:inputField>
             </apex:pageBlockSection> 

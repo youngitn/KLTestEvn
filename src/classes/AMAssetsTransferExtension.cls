@@ -19,6 +19,10 @@ public with sharing class AMAssetsTransferExtension {
     } 
  
     public PageReference save(){ 
+        if (am.ChangeType__c== '1'&& am.Work_Company_New__c ==null) { 
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, '异动工作单位不能为空，请输入变更后的工作单位！'));
+            return null;
+        }
            	Upsert am;
 
         // 为提升覆盖率的无用代码

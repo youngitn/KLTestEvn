@@ -86,6 +86,7 @@ public with sharing class ApprovalHomeController
         canCreateApproval.add(SapApprovalEnum.SALESRETURN);//退货申请流程
         canCreateApproval.add(SapApprovalEnum.CHANGEJOBS);//岗位变更流程
         canCreateApproval.add(SapApprovalEnum.CLOCKINANDOUTAPPLICATION);//補考勤申請單
+        canCreateApproval.add(SapApprovalEnum.AMINTERNALSTAFFRECOMMEND);//内部员工引荐流程
         canCreateApproval.add('SampleMaster');//sample
         /*canCreateApproval.add(SapApprovalEnum.CLIENTAPPLY);//客户单笔信贷核发申请流程*/
          canCreateApproval.add(SapApprovalEnum.SALEORDERDATATABLE);//销售订单流程
@@ -471,6 +472,13 @@ public with sharing class ApprovalHomeController
                 //岗位变更流程
 
                 pageName = '/apex/AMChangeJobs';
+
+            }
+            else if(selectedApprovalValue == SapApprovalEnum.AMINTERNALSTAFFRECOMMEND)
+            {
+                //内部员工引荐流程
+
+                pageName = '/apex/AMInternalStaffRecommend';
 
             }
             // else if(selectedApprovalValue == SapApprovalEnum.CLIENTAPPLY)

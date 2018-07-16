@@ -29,6 +29,7 @@ public without sharing class SapApprovalEnum {
 	public static final String SALEORDERDATATABLE = 'SaleOrderDatatable';
 	//销售订单流程
 	public static final String SALEORDER = 'SaleOrder';
+	
 	//标准采购订单作业流程
 	public static final String PURCHASEORDER = 'PurchaseOrder';
 	//成本中心发料作业流程
@@ -179,5 +180,6 @@ public without sharing class SapApprovalEnum {
     public static final String  CLIENTAPPLY='ClientApply';
     //補考勤申請
     public static final String  CLOCKINANDOUTAPPLICATION='AMClockInAndOutApplication';
-    public static final String  SAMPLEMASTER='SampleMaster';
+    //内部员工引荐流程
+    public static final String  AMINTERNALSTAFFRECOMMEND='AMInternalStaffRecommend';
 }

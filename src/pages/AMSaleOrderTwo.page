@@ -27,10 +27,10 @@
     <apex:pageMessages escape="false"></apex:pageMessages>
     <apex:form >
         <apex:pageBlock >
-            <!-- <apex:pageBlockButtons >
+            <apex:pageBlockButtons >
                 <apex:commandButton action="{!save}" value="保存"/>
-                <apex:commandButton action="{!cancel}" value="取消"/>
-            </apex:pageBlockButtons> -->
+              <!--   <apex:commandButton action="{!cancel}" value="取消"/> -->
+            </apex:pageBlockButtons>
             <apex:pageBlockSection title="基本信息" >
            
                 <!-- 审批流程编号 -->
@@ -104,7 +104,7 @@
                 <!-- 货物价值-->
                 <apex:outputField value="{!am.Goods_Price__c}"></apex:outputField>
                 <!-- 商机编号 -->
-                <apex:outputField value="{!am.Opportunity_Code__c}"></apex:outputField>
+                <apex:inputField value="{!am.Opportunity_Code__c}"></apex:inputField>
                  <!-- 折扣率 -->
                 <apex:outputField value="{!am.Discount_Rate__c}"></apex:outputField>
                 <!-- 总重量(KG) -->
@@ -140,19 +140,14 @@
                 <br></br>
                 <!-- 采购人信息 -->
                 <apex:outputField value="{!am.Purchaser_Info__c}" style="width: 1200px"></apex:outputField>
-                 
-               
-
-                
+      
                 <!-- 记录类型 -->
           <!--       <apex:inputField value="{!am.RecordType}"></apex:inputField>
  -->                <!-- 所有人 -->
                 <!-- <apex:inputField value="{!am.Owner}"></apex:inputField> -->
 
             </apex:pageBlockSection>
-               
-              
-                
+      
         </apex:pageBlock>
     </apex:form>
 </body>

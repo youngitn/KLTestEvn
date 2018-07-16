@@ -75,6 +75,7 @@ private class ApprovalQueryControllerTest {
         capp2.RecordTypeId = rc.Id;
         capp2.Applicant__c = con.Id;
         capp2.Approval_Status__c = 'R';
+
         tcapp.add(capp2);
 
         INSERT tcapp;
@@ -86,6 +87,8 @@ private class ApprovalQueryControllerTest {
         app1.Applicant__c = con.Id;
         app1.Approval_Status__c = 'A';
         INSERT app1;
+
+
 
         //QUERY查询方法1
         ApprovalQueryController am = new ApprovalQueryController();

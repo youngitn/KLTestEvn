@@ -303,7 +303,9 @@ public without sharing class UpdateBillHeaderInfoHandler implements Triggers.Han
 					 	cam.Approval_Name__c = '盘盈盘亏流程'; //流程名称
 					 } else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.CANCELTECO, 'Approval_Managed2__c')) {
 					 	cam.Approval_Name__c = 'SAP生产工单取消TECO申请流程'; //流程名称
-					 }// else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.SCRAPAPPLICATION, 'Approval_Managed2__c')) {
+					 }else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.AMINTERNALSTAFFRECOMMEND, 'Approval_Managed2__c')) {
+					 	cam.Approval_Name__c = '内部员工引荐流程'; //流程名称
+					 } // else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.SCRAPAPPLICATION, 'Approval_Managed2__c')) {
 					// 	cam.Approval_Name__c = '报废申请流程'; //流程名称
 					// } else if (cam.RecordTypeId == HarryUtils.getRecordTypeIdByDevNameAndObjName(SapApprovalEnum.PM_NOTICE, 'Approval_Managed2__c')) {
 					// 	cam.Approval_Name__c = 'PM通知流程'; //流程名称

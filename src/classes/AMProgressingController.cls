@@ -416,7 +416,7 @@ public without sharing class AMProgressingController {
             Integer oldmonth = Integer.valueOf(data.Bill_Date.split('-')[1]);
 
            
-            if(year ==oldyear && (month-oldmonth)<=3 && name == data.Applicant_Name && data.ApprovalStatus == '审批中'){
+            if( name == data.Applicant_Name && data.ApprovalStatus == '审批中'){
 
             data.Id = am.Id;
             data.Name = am.Name;
@@ -442,7 +442,7 @@ public without sharing class AMProgressingController {
             System.debug('单据时间：'+data.Bill_Date);
             Integer oldyear = Integer.valueOf(data.Bill_Date.split('-')[0]);
             Integer oldmonth = Integer.valueOf(data.Bill_Date.split('-')[1]);
-             if(year ==oldyear && (month-oldmonth)<=3 && name == data.Applicant_Name && data.ApprovalStatus == '审批中'){
+             if( name == data.Applicant_Name && data.ApprovalStatus == '审批中'){
             data.Id = am.Id;
             data.Name = am.Name;
             data.Original_Code = am.SAPID__c;
@@ -465,7 +465,7 @@ public without sharing class AMProgressingController {
             System.debug('单据时间：'+data.Bill_Date);
             Integer oldyear = Integer.valueOf(data.Bill_Date.split('-')[0]);
             Integer oldmonth = Integer.valueOf(data.Bill_Date.split('-')[1]);
-             if(year ==oldyear && (month-oldmonth)<=3 &&name == data.Applicant_Name && data.ApprovalStatus == '审批中'){
+             if(name == data.Applicant_Name && data.ApprovalStatus == '审批中'){
             data.Id = am.Id;
             data.Name = am.Name;
             data.Original_Code = am.SAPID__c;
@@ -488,7 +488,7 @@ public without sharing class AMProgressingController {
             System.debug('单据时间：'+data.Bill_Date);
             Integer oldyear = Integer.valueOf(data.Bill_Date.split('-')[0]);
             Integer oldmonth = Integer.valueOf(data.Bill_Date.split('-')[1]);
-            if(year ==oldyear && (month-oldmonth)<=3 && name == data.Applicant_Name && data.ApprovalStatus == '审批中'){
+            if( name == data.Applicant_Name && data.ApprovalStatus == '审批中'){
             data.Id = am.Id;
             data.Name = am.Name;
             data.Original_Code = am.SAPID__c;

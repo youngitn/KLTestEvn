@@ -1,0 +1,146 @@
+<apex:page applybodytag="false" applyhtmltag="false" doctype="html-5.0" showheader="false" sidebar="false" standardstylesheets="false">
+    <html lang="en" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+            <meta charset="utf-8"/>
+            <meta content="ie=edge" http-equiv="x-ua-compatible"/>
+            <title>
+                Salesforce Lightning Design System Trailhead Module
+            </title>
+            <meta content="width=device-width, initial-scale=1" name="viewport"/>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+            </script>
+            <!-- Import the Design System style sheet -->
+            <apex:slds >
+            </apex:slds>
+        </head>
+        <body>
+            <!-- REQUIRED SLDS WRAPPER -->
+            <div class="slds-scope">
+                <!-- MASTHEAD -->
+                <p class="slds-text-heading--label slds-m-bottom--small">
+                    Salesforce Lightning Design System Trailhead Module
+                </p>
+                <!-- / MASTHEAD -->
+                <!-- PAGE HEADER -->
+                <!-- HEADING AREA -->
+                <div class="slds-media slds-no-space slds-grow">
+                    <div class="slds-media__figure">
+                        <span class="slds-avatar slds-avatar--medium">
+                            <img alt="" src="{!URLFOR($Asset.SLDS, 'assets/images/avatar1.jpg')}"/>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <p class="slds-text-title--caps slds-line-height--reset">
+                            Accounts
+                        </p>
+                        <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="My Accounts">
+                            My Accounts
+                        </h1>
+                    </div>
+                </div>
+                <!-- / HEADING AREA -->
+                <!-- / PAGE HEADER -->
+                <!-- PRIMARY CONTENT WRAPPER -->
+                <div class="myapp">
+                    <span class="slds-icon_container slds-icon-standard-account" title="description of icon when needed">
+                        <svg aria-hidden="true" class="slds-icon">
+                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#account')}">
+                            </use>
+                        </svg>
+                        <span class="slds-assistive-text">
+                            Account Icon
+                        </span>
+                    </span>
+                    <!-- PRIMARY CONTENT WRAPPER -->
+                    <apex:remoteobjects >
+                        <apex:remoteobjectmodel fields="Id,Name,LastModifiedDate" name="KL_Systems__c">
+                        </apex:remoteobjectmodel>
+                    </apex:remoteobjects>
+                    <!-- ACCOUNT LIST TABLE -->
+                    <div class="slds-p-vertical--medium" id="account-list">
+                    </div>
+                    <!-- / ACCOUNT LIST TABLE -->
+                    <!-- / PRIMARY CONTENT WRAPPER -->
+                </div>
+                <!-- / PRIMARY CONTENT WRAPPER -->
+                <!-- FOOTER -->
+                <footer class="slds-p-around--large" role="contentinfo">
+                    <!-- LAYOUT GRID -->
+                    <div class="slds-grid slds-grid--align-spread">
+                        <p class="slds-col">
+                            Salesforce Lightning Design System Example
+                        </p>
+                        <p class="slds-col">
+                            © Your Name Here
+                        </p>
+                    </div>
+                    <!-- / LAYOUT GRID -->
+                </footer>
+                <!-- / FOOTER -->
+            </div>
+            <!-- / REQUIRED SLDS WRAPPER -->
+            <!-- JAVASCRIPT -->
+            <!-- / JAVASCRIPT -->
+        </body>
+    </html>
+    <script>
+        (function() {
+    var account = new SObjectModel.KL_Systems__c();
+    var outputDiv = document.getElementById('account-list');
+
+    var updateOutputDiv = function() {
+
+      account.retrieve(
+        {where:{Id:{eq:'a08O000000TJqCuIAL'}}, orderby: [{ LastModifiedDate: 'DESC' }], limit: 10 },
+        function(error, records) {
+          if (error) {
+            alert(error.message);
+          } else {
+            // create data table
+            var dataTable = document.createElement('table');
+            dataTable.className = 'slds-table slds-table--bordered slds-table--cell-buffer slds-no-row-hover';
+
+            // add header row
+            var tableHeader = dataTable.createTHead();
+            var tableHeaderRow = tableHeader.insertRow();
+
+            var tableHeaderRowCell1 = tableHeaderRow.insertCell(0);
+            tableHeaderRowCell1.appendChild(document.createTextNode('Account name'));
+            tableHeaderRowCell1.setAttribute('scope', 'col');
+            tableHeaderRowCell1.setAttribute('class', 'slds-text-heading--label');
+
+            var tableHeaderRowCell2 = tableHeaderRow.insertCell(1);
+            tableHeaderRowCell2.appendChild(document.createTextNode('Account ID'));
+            tableHeaderRowCell2.setAttribute('scope', 'col');
+            tableHeaderRowCell2.setAttribute('class', 'slds-text-heading--label');
+
+            // build table body
+            var tableBody = dataTable.appendChild(document.createElement('tbody'))
+            var dataRow, dataRowCell1, dataRowCell2, recordName, recordId;
+            records.forEach(function(record) {
+              dataRow = tableBody.insertRow();
+
+              dataRowCell1 = dataRow.insertCell(0);
+              recordName = document.createTextNode(record.get('Name'));
+              dataRowCell1.appendChild(recordName);
+
+              dataRowCell2 = dataRow.insertCell(1);
+              recordId = document.createTextNode(record.get('Id'));
+              dataRowCell2.appendChild(recordId);
+            });
+
+            if (outputDiv.firstChild) {
+              // replace table if it already exists
+              // see later in tutorial
+              outputDiv.replaceChild(dataTable, outputDiv.firstChild);
+            } else {
+              outputDiv.appendChild(dataTable);
+            }
+          }
+        }
+      );
+    }
+    updateOutputDiv();
+  })();
+    </script>
+</apex:page>

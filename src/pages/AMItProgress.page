@@ -233,7 +233,7 @@
 					</apex:column>
 					<!-- <apex:column styleClass="dataTableTd" headerValue="审批状态" headerClass="dataTableTh" value="{!row2.ApprovalStatus}"
 					style="width: 80px;"></apex:column> -->
-					<apex:column styleClass="dataTableTd" headerValue="备注" headerClass="dataTableTh" style="width: 200px;" value="{!row2.Head_description}" />x
+					<apex:column styleClass="dataTableTd" headerValue="备注" headerClass="dataTableTh" style="width: 200px;" value="{!row2.Head_description}" />
 					<!-- <apex:column styleClass="rfc_info" headerValue="接口信息" headerClass="dataTableTh" value="{!row2.Interface_Info}"></apex:column> -->
 				</apex:dataTable>
            </apex:pageBlockSection>   
